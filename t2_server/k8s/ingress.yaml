@@ -10,12 +10,12 @@ metadata:
 spec:
   tls:
   - hosts:
-    - api.my-points.ru
-    - web.my-points.ru
-    - insights.my-points.ru
+    - api4.my-points.ru
+    - web4.my-points.ru
+    - insights4.my-points.ru
     secretName: serverpod-tls-t2
   rules:
-  - host: "api.my-points.ru"
+  - host: "api4.my-points.ru"
     http:
       paths:
       - path: /
@@ -25,7 +25,7 @@ spec:
             name: t2-server-service
             port:
               name: api
-  - host: "web.my-points.ru"
+  - host: "web4.my-points.ru"
     http:
       paths:
       - path: /
@@ -35,7 +35,7 @@ spec:
             name: t2-server-service
             port:
               name: web
-  - host: "insights.my-points.ru"
+  - host: "insights4.my-points.ru"
     http:
       paths:
       - path: /

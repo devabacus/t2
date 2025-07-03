@@ -3,21 +3,21 @@
 # Configuration for the main API server.
 apiServer:
   port: 8080
-  publicHost: api.my-points.ru
+  publicHost: api4.my-points.ru
   publicPort: 443
   publicScheme: https
 
 # Configuration for the Insights server.
 insightsServer:
   port: 8081
-  publicHost: insights.my-points.ru
+  publicHost: insights4.my-points.ru
   publicPort: 443
   publicScheme: https
 
 # Configuration for the web server.
 webServer:
   port: 8082
-  publicHost: web.my-points.ru
+  publicHost: web4.my-points.ru
   publicPort: 443
   publicScheme: https
 
