@@ -1,0 +1,12 @@
+class: Customer
+table: customer
+fields:
+  id: UuidValue?, defaultPersist=random_v7
+  isDeleted: bool, default=false
+  lastModified: DateTime?
+  userId: int
+  name: String,
+  email: String?,  
+  info: String?,
+  subscriptionStatus: String?
+  createdAt: DateTime?
