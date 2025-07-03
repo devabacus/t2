@@ -1,0 +1,268 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'tag_data_providers.dart';
+
+// **************************************************************************
+// RiverpodGenerator
+// **************************************************************************
+
+String _$tagDaoHash() => r'965263acbade480e4321108eee53e80f0c9ce56c';
+
+/// See also [tagDao].
+@ProviderFor(tagDao)
+final tagDaoProvider = AutoDisposeProvider<TagDao>.internal(
+  tagDao,
+  name: r'tagDaoProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$tagDaoHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef TagDaoRef = AutoDisposeProviderRef<TagDao>;
+String _$tagLocalDataSourceHash() =>
+    r'0a6ff7c90cc43f1f99724bf9bef1d17f458a9fee';
+
+/// See also [tagLocalDataSource].
+@ProviderFor(tagLocalDataSource)
+final tagLocalDataSourceProvider =
+    AutoDisposeProvider<ITagLocalDataSource>.internal(
+      tagLocalDataSource,
+      name: r'tagLocalDataSourceProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$tagLocalDataSourceHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef TagLocalDataSourceRef = AutoDisposeProviderRef<ITagLocalDataSource>;
+String _$syncMetadataDaoHash() => r'4875e7284109092e2c7f00057f7329e847c5dce2';
+
+/// See also [syncMetadataDao].
+@ProviderFor(syncMetadataDao)
+final syncMetadataDaoProvider = AutoDisposeProvider<SyncMetadataDao>.internal(
+  syncMetadataDao,
+  name: r'syncMetadataDaoProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$syncMetadataDaoHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef SyncMetadataDaoRef = AutoDisposeProviderRef<SyncMetadataDao>;
+String _$syncMetadataLocalDataSourceHash() =>
+    r'8fe23dd3a0392e40a49b10c234daf3add7018260';
+
+/// See also [syncMetadataLocalDataSource].
+@ProviderFor(syncMetadataLocalDataSource)
+final syncMetadataLocalDataSourceProvider =
+    AutoDisposeProvider<ISyncMetadataLocalDataSource>.internal(
+      syncMetadataLocalDataSource,
+      name: r'syncMetadataLocalDataSourceProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$syncMetadataLocalDataSourceHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef SyncMetadataLocalDataSourceRef =
+    AutoDisposeProviderRef<ISyncMetadataLocalDataSource>;
+String _$tagRepositoryHash() => r'50aee92ecaa7270a253db655043651621b0eecbb';
+
+/// Copied from Dart SDK
+class _SystemHash {
+  _SystemHash._();
+
+  static int combine(int hash, int value) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + value);
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
+    return hash ^ (hash >> 6);
+  }
+
+  static int finish(int hash) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
+    // ignore: parameter_assignments
+    hash = hash ^ (hash >> 11);
+    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
+  }
+}
+
+/// Семейный провайдер репозитория для конкретного пользователя
+/// Каждый userId получает свой изолированный экземпляр репозитория
+///
+/// Copied from [tagRepository].
+@ProviderFor(tagRepository)
+const tagRepositoryProvider = TagRepositoryFamily();
+
+/// Семейный провайдер репозитория для конкретного пользователя
+/// Каждый userId получает свой изолированный экземпляр репозитория
+///
+/// Copied from [tagRepository].
+class TagRepositoryFamily extends Family<ITagRepository> {
+  /// Семейный провайдер репозитория для конкретного пользователя
+  /// Каждый userId получает свой изолированный экземпляр репозитория
+  ///
+  /// Copied from [tagRepository].
+  const TagRepositoryFamily();
+
+  /// Семейный провайдер репозитория для конкретного пользователя
+  /// Каждый userId получает свой изолированный экземпляр репозитория
+  ///
+  /// Copied from [tagRepository].
+  TagRepositoryProvider call(int userId) {
+    return TagRepositoryProvider(userId);
+  }
+
+  @override
+  TagRepositoryProvider getProviderOverride(
+    covariant TagRepositoryProvider provider,
+  ) {
+    return call(provider.userId);
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'tagRepositoryProvider';
+}
+
+/// Семейный провайдер репозитория для конкретного пользователя
+/// Каждый userId получает свой изолированный экземпляр репозитория
+///
+/// Copied from [tagRepository].
+class TagRepositoryProvider extends AutoDisposeProvider<ITagRepository> {
+  /// Семейный провайдер репозитория для конкретного пользователя
+  /// Каждый userId получает свой изолированный экземпляр репозитория
+  ///
+  /// Copied from [tagRepository].
+  TagRepositoryProvider(int userId)
+    : this._internal(
+        (ref) => tagRepository(ref as TagRepositoryRef, userId),
+        from: tagRepositoryProvider,
+        name: r'tagRepositoryProvider',
+        debugGetCreateSourceHash:
+            const bool.fromEnvironment('dart.vm.product')
+                ? null
+                : _$tagRepositoryHash,
+        dependencies: TagRepositoryFamily._dependencies,
+        allTransitiveDependencies:
+            TagRepositoryFamily._allTransitiveDependencies,
+        userId: userId,
+      );
+
+  TagRepositoryProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.userId,
+  }) : super.internal();
+
+  final int userId;
+
+  @override
+  Override overrideWith(
+    ITagRepository Function(TagRepositoryRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: TagRepositoryProvider._internal(
+        (ref) => create(ref as TagRepositoryRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        userId: userId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeProviderElement<ITagRepository> createElement() {
+    return _TagRepositoryProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is TagRepositoryProvider && other.userId == userId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, userId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin TagRepositoryRef on AutoDisposeProviderRef<ITagRepository> {
+  /// The parameter `userId` of this provider.
+  int get userId;
+}
+
+class _TagRepositoryProviderElement
+    extends AutoDisposeProviderElement<ITagRepository>
+    with TagRepositoryRef {
+  _TagRepositoryProviderElement(super.provider);
+
+  @override
+  int get userId => (origin as TagRepositoryProvider).userId;
+}
+
+String _$currentUserTagRepositoryHash() =>
+    r'd8014fe12b47e753eadce6432aec91481015fbca';
+
+/// Удобный провайдер для получения репозитория текущего пользователя
+/// Автоматически следит за сменой пользователя и предоставляет соответствующий репозиторий
+///
+/// Copied from [currentUserTagRepository].
+@ProviderFor(currentUserTagRepository)
+final currentUserTagRepositoryProvider =
+    AutoDisposeProvider<ITagRepository?>.internal(
+      currentUserTagRepository,
+      name: r'currentUserTagRepositoryProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$currentUserTagRepositoryHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef CurrentUserTagRepositoryRef = AutoDisposeProviderRef<ITagRepository?>;
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -1,0 +1,12 @@
+class: Task
+table: task
+fields:
+  id: UuidValue?, defaultPersist=random_v7
+  isDeleted: bool, default=false
+  lastModified: DateTime?
+  userId: int
+  title: String
+  categoryId: UuidValue?, relation(parent=category, onDelete=SetNull)
+  category: Category?, scope=serverOnly
+  taskTagMaps: List<TaskTagMap>?, relation
+

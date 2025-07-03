@@ -1,25 +1,21 @@
-
 import 'package:flutter/material.dart';
-import 'package:serverpod_flutter/serverpod_flutter.dart';
-import 'package:t2/check/server_check_ui.dart';
-import 'package:t2_client/t2_client.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:talker_riverpod_logger/talker_riverpod_logger.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+import './app.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized(); 
+  await dotenv.load(fileName: ".env");
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Category Test',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const ServerCheckUi(),
-    );
-  }
+  runApp(
+  ProviderScope(
+    observers: [
+      // TalkerRiverpodObserver(),
+    ],
+    child: App(),
+  )
+ );
 }
 

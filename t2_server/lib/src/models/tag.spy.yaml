@@ -1,0 +1,9 @@
+class: Tag
+table: tag
+fields:
+  id: UuidValue?, defaultPersist=random_v7
+  isDeleted: bool, default=false
+  lastModified: DateTime?
+  userId: int
+  title: String
+  taskTagMaps: List<TaskTagMap>?, relation
