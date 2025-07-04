@@ -20,7 +20,7 @@ class UserManagementEndpoint extends Endpoint {
         session,
         where: (cu) => cu.userId.equals(userId),
       );
-
+    
       if (customerUser == null) {
         session.log('User $userId is not associated with any customer.');
         return null;
