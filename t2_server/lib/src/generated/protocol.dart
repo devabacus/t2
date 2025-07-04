@@ -32,7 +32,8 @@ import 'user/user_session_data.dart' as _i20;
 import 'package:t2_server/src/generated/category.dart' as _i21;
 import 'package:t2_server/src/generated/tag.dart' as _i22;
 import 'package:t2_server/src/generated/task.dart' as _i23;
-import 'package:t2_server/src/generated/test_data.dart' as _i24;
+import 'package:t2_server/src/generated/task_tag_map.dart' as _i24;
+import 'package:t2_server/src/generated/test_data.dart' as _i25;
 export 'greeting.dart';
 export 'category.dart';
 export 'category_sync_event.dart';
@@ -1000,8 +1001,12 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == List<_i23.Task>) {
       return (data as List).map((e) => deserialize<_i23.Task>(e)).toList() as T;
     }
-    if (t == List<_i24.TestData>) {
-      return (data as List).map((e) => deserialize<_i24.TestData>(e)).toList()
+    if (t == List<_i24.TaskTagMap>) {
+      return (data as List).map((e) => deserialize<_i24.TaskTagMap>(e)).toList()
+          as T;
+    }
+    if (t == List<_i25.TestData>) {
+      return (data as List).map((e) => deserialize<_i25.TestData>(e)).toList()
           as T;
     }
     try {

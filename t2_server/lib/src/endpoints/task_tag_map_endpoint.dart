@@ -23,32 +23,32 @@ class TaskTagMapEndpoint extends Endpoint {
         '🔔 Событие TaskTagMap ${event.type.name} отправлено в канал "$channel"');
   }
 
-  Future<void> _validateTaskAndTag(
-      Session session, UuidValue taskId, UuidValue tagId, int userId) async {
+  Future<void> _validateTaskAndTag(Session session, TaskTagMap model) async {
     // Проверяем, что Task существует и принадлежит пользователю
     final task = await Task.db.findFirstRow(
       session,
       where: (t) =>
-          t.id.equals(taskId) &
-          t.userId.equals(userId) &
+          t.id.equals(model.taskId) &
+          t.userId.equals(model.userId) &
+          t.customerId.equals(model.customerId) &
           t.isDeleted.equals(false),
     );
     if (task == null) {
       throw Exception(
-          'Task с ID $taskId не найден или не принадлежит пользователю');
+          'Task с ID ${model.taskId} не найден или не принадлежит пользователю');
     }
 
     // Проверяем, что Tag существует и принадлежит пользователю
     final tag = await Tag.db.findFirstRow(
       session,
       where: (t) =>
-          t.id.equals(tagId) &
-          t.userId.equals(userId) &
+          t.id.equals(model.tagId) &
+          t.userId.equals(model.userId) &
           t.isDeleted.equals(false),
     );
     if (tag == null) {
       throw Exception(
-          'Tag с ID $tagId не найден или не принадлежит пользователю');
+          'Tag с ID ${model.tagId} не найден или не принадлежит пользователю');
     }
   }
 
@@ -60,7 +60,7 @@ class TaskTagMapEndpoint extends Endpoint {
     final tagId = taskTagMap.tagId;
 
     // Валидация входных данных
-    await _validateTaskAndTag(session, taskId, tagId, userId);
+    await _validateTaskAndTag(session, taskTagMap);
 
     return await session.db.transaction((transaction) async {
       // Ищем существующую связь (включая удаленные) внутри транзакции
@@ -107,7 +107,9 @@ class TaskTagMapEndpoint extends Endpoint {
             taskId: taskId,
             tagId: tagId,
             userId: userId,
-            lastModified: now,
+            customerId: taskTagMap.customerId,
+            createdAt: taskTagMap.createdAt,
+            lastModified: DateTime.now().toUtc(),
             isDeleted: false,
           ),
           transaction: transaction,

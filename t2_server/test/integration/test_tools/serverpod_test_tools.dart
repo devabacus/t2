@@ -21,8 +21,11 @@ import 'package:t2_server/src/generated/tag.dart' as _i7;
 import 'package:t2_server/src/generated/tag_sync_event.dart' as _i8;
 import 'package:t2_server/src/generated/task.dart' as _i9;
 import 'package:t2_server/src/generated/task_sync_event.dart' as _i10;
-import 'package:t2_server/src/generated/test_data.dart' as _i11;
-import 'package:t2_server/src/generated/greeting.dart' as _i12;
+import 'package:t2_server/src/generated/task_tag_map.dart' as _i11;
+import 'package:t2_server/src/generated/task_tag_map_sync_event.dart' as _i12;
+import 'package:t2_server/src/generated/test_data.dart' as _i13;
+import 'package:t2_server/src/generated/user/user_session_data.dart' as _i14;
+import 'package:t2_server/src/generated/greeting.dart' as _i15;
 import 'package:t2_server/src/generated/protocol.dart';
 import 'package:t2_server/src/generated/endpoints.dart';
 export 'package:serverpod_test/serverpod_test_public_exports.dart';
@@ -115,7 +118,11 @@ class TestEndpoints {
 
   late final _TaskEndpoint task;
 
+  late final _TaskTagMapEndpoint taskTagMap;
+
   late final _TestDataEndpoint testData;
+
+  late final _UserManagementEndpoint userManagement;
 
   late final _GreetingEndpoint greeting;
 }
@@ -139,7 +146,15 @@ class _InternalTestEndpoints extends TestEndpoints
       endpoints,
       serializationManager,
     );
+    taskTagMap = _TaskTagMapEndpoint(
+      endpoints,
+      serializationManager,
+    );
     testData = _TestDataEndpoint(
+      endpoints,
+      serializationManager,
+    );
+    userManagement = _UserManagementEndpoint(
       endpoints,
       serializationManager,
     );
@@ -825,6 +840,226 @@ class _TaskEndpoint {
   }
 }
 
+class _TaskTagMapEndpoint {
+  _TaskTagMapEndpoint(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _i2.EndpointDispatch _endpointDispatch;
+
+  final _i2.SerializationManager _serializationManager;
+
+  _i3.Future<_i11.TaskTagMap> createTaskTagMap(
+    _i1.TestSessionBuilder sessionBuilder,
+    _i11.TaskTagMap taskTagMap,
+  ) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+        endpoint: 'taskTagMap',
+        method: 'createTaskTagMap',
+      );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'taskTagMap',
+          methodName: 'createTaskTagMap',
+          parameters: _i1.testObjectToJson({'taskTagMap': taskTagMap}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue = await (_localCallContext.method.call(
+          _localUniqueSession,
+          _localCallContext.arguments,
+        ) as _i3.Future<_i11.TaskTagMap>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _i3.Future<bool> deleteTaskTagMapById(
+    _i1.TestSessionBuilder sessionBuilder,
+    _i5.UuidValue id,
+  ) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+        endpoint: 'taskTagMap',
+        method: 'deleteTaskTagMapById',
+      );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'taskTagMap',
+          methodName: 'deleteTaskTagMapById',
+          parameters: _i1.testObjectToJson({'id': id}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue = await (_localCallContext.method.call(
+          _localUniqueSession,
+          _localCallContext.arguments,
+        ) as _i3.Future<bool>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _i3.Future<List<_i7.Tag>> getTagsForTask(
+    _i1.TestSessionBuilder sessionBuilder,
+    _i5.UuidValue taskId,
+  ) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+        endpoint: 'taskTagMap',
+        method: 'getTagsForTask',
+      );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'taskTagMap',
+          methodName: 'getTagsForTask',
+          parameters: _i1.testObjectToJson({'taskId': taskId}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue = await (_localCallContext.method.call(
+          _localUniqueSession,
+          _localCallContext.arguments,
+        ) as _i3.Future<List<_i7.Tag>>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _i3.Future<List<_i9.Task>> getTasksForTag(
+    _i1.TestSessionBuilder sessionBuilder,
+    _i5.UuidValue tagId,
+  ) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+        endpoint: 'taskTagMap',
+        method: 'getTasksForTag',
+      );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'taskTagMap',
+          methodName: 'getTasksForTag',
+          parameters: _i1.testObjectToJson({'tagId': tagId}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue = await (_localCallContext.method.call(
+          _localUniqueSession,
+          _localCallContext.arguments,
+        ) as _i3.Future<List<_i9.Task>>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _i3.Future<List<_i11.TaskTagMap>> getTaskTagMapsSince(
+    _i1.TestSessionBuilder sessionBuilder,
+    DateTime? since,
+  ) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+        endpoint: 'taskTagMap',
+        method: 'getTaskTagMapsSince',
+      );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'taskTagMap',
+          methodName: 'getTaskTagMapsSince',
+          parameters: _i1.testObjectToJson({'since': since}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue = await (_localCallContext.method.call(
+          _localUniqueSession,
+          _localCallContext.arguments,
+        ) as _i3.Future<List<_i11.TaskTagMap>>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _i3.Stream<_i12.TaskTagMapSyncEvent> watchEvents(
+      _i1.TestSessionBuilder sessionBuilder) {
+    var _localTestStreamManager =
+        _i1.TestStreamManager<_i12.TaskTagMapSyncEvent>();
+    _i1.callStreamFunctionAndHandleExceptions(
+      () async {
+        var _localUniqueSession =
+            (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+          endpoint: 'taskTagMap',
+          method: 'watchEvents',
+        );
+        var _localCallContext =
+            await _endpointDispatch.getMethodStreamCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'taskTagMap',
+          methodName: 'watchEvents',
+          arguments: {},
+          requestedInputStreams: [],
+          serializationManager: _serializationManager,
+        );
+        await _localTestStreamManager.callStreamMethod(
+          _localCallContext,
+          _localUniqueSession,
+          {},
+        );
+      },
+      _localTestStreamManager.outputStreamController,
+    );
+    return _localTestStreamManager.outputStreamController.stream;
+  }
+
+  _i3.Future<bool> deleteTaskTagMapByTaskAndTag(
+    _i1.TestSessionBuilder sessionBuilder,
+    _i5.UuidValue taskId,
+    _i5.UuidValue tagId,
+  ) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+        endpoint: 'taskTagMap',
+        method: 'deleteTaskTagMapByTaskAndTag',
+      );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'taskTagMap',
+          methodName: 'deleteTaskTagMapByTaskAndTag',
+          parameters: _i1.testObjectToJson({
+            'taskId': taskId,
+            'tagId': tagId,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue = await (_localCallContext.method.call(
+          _localUniqueSession,
+          _localCallContext.arguments,
+        ) as _i3.Future<bool>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
 class _TestDataEndpoint {
   _TestDataEndpoint(
     this._endpointDispatch,
@@ -835,9 +1070,9 @@ class _TestDataEndpoint {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i11.TestData> createTestData(
+  _i3.Future<_i13.TestData> createTestData(
     _i1.TestSessionBuilder sessionBuilder,
-    _i11.TestData testData,
+    _i13.TestData testData,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -856,7 +1091,7 @@ class _TestDataEndpoint {
         var _localReturnValue = await (_localCallContext.method.call(
           _localUniqueSession,
           _localCallContext.arguments,
-        ) as _i3.Future<_i11.TestData>);
+        ) as _i3.Future<_i13.TestData>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -864,7 +1099,7 @@ class _TestDataEndpoint {
     });
   }
 
-  _i3.Future<List<_i11.TestData>> listTestDatas(
+  _i3.Future<List<_i13.TestData>> listTestDatas(
       _i1.TestSessionBuilder sessionBuilder) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -883,7 +1118,7 @@ class _TestDataEndpoint {
         var _localReturnValue = await (_localCallContext.method.call(
           _localUniqueSession,
           _localCallContext.arguments,
-        ) as _i3.Future<List<_i11.TestData>>);
+        ) as _i3.Future<List<_i13.TestData>>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -891,9 +1126,9 @@ class _TestDataEndpoint {
     });
   }
 
-  _i3.Future<_i11.TestData> updateTestData(
+  _i3.Future<_i13.TestData> updateTestData(
     _i1.TestSessionBuilder sessionBuilder,
-    _i11.TestData testData,
+    _i13.TestData testData,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -912,7 +1147,7 @@ class _TestDataEndpoint {
         var _localReturnValue = await (_localCallContext.method.call(
           _localUniqueSession,
           _localCallContext.arguments,
-        ) as _i3.Future<_i11.TestData>);
+        ) as _i3.Future<_i13.TestData>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -922,7 +1157,7 @@ class _TestDataEndpoint {
 
   _i3.Future<bool> deleteTestData(
     _i1.TestSessionBuilder sessionBuilder,
-    _i11.TestData testData,
+    _i13.TestData testData,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -950,6 +1185,44 @@ class _TestDataEndpoint {
   }
 }
 
+class _UserManagementEndpoint {
+  _UserManagementEndpoint(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _i2.EndpointDispatch _endpointDispatch;
+
+  final _i2.SerializationManager _serializationManager;
+
+  _i3.Future<_i14.UserSessionData?> getMyUserContext(
+      _i1.TestSessionBuilder sessionBuilder) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+        endpoint: 'userManagement',
+        method: 'getMyUserContext',
+      );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'userManagement',
+          methodName: 'getMyUserContext',
+          parameters: _i1.testObjectToJson({}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue = await (_localCallContext.method.call(
+          _localUniqueSession,
+          _localCallContext.arguments,
+        ) as _i3.Future<_i14.UserSessionData?>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
 class _GreetingEndpoint {
   _GreetingEndpoint(
     this._endpointDispatch,
@@ -960,7 +1233,7 @@ class _GreetingEndpoint {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i12.Greeting> hello(
+  _i3.Future<_i15.Greeting> hello(
     _i1.TestSessionBuilder sessionBuilder,
     String name,
   ) async {
@@ -981,7 +1254,7 @@ class _GreetingEndpoint {
         var _localReturnValue = await (_localCallContext.method.call(
           _localUniqueSession,
           _localCallContext.arguments,
-        ) as _i3.Future<_i12.Greeting>);
+        ) as _i3.Future<_i15.Greeting>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();

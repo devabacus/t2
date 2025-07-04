@@ -30,8 +30,9 @@ import 'user/user_session_data.dart' as _i18;
 import 'package:t2_client/src/protocol/category.dart' as _i19;
 import 'package:t2_client/src/protocol/tag.dart' as _i20;
 import 'package:t2_client/src/protocol/task.dart' as _i21;
-import 'package:t2_client/src/protocol/test_data.dart' as _i22;
-import 'package:serverpod_auth_client/serverpod_auth_client.dart' as _i23;
+import 'package:t2_client/src/protocol/task_tag_map.dart' as _i22;
+import 'package:t2_client/src/protocol/test_data.dart' as _i23;
+import 'package:serverpod_auth_client/serverpod_auth_client.dart' as _i24;
 export 'greeting.dart';
 export 'category.dart';
 export 'category_sync_event.dart';
@@ -190,12 +191,16 @@ class Protocol extends _i1.SerializationManager {
     if (t == List<_i21.Task>) {
       return (data as List).map((e) => deserialize<_i21.Task>(e)).toList() as T;
     }
-    if (t == List<_i22.TestData>) {
-      return (data as List).map((e) => deserialize<_i22.TestData>(e)).toList()
+    if (t == List<_i22.TaskTagMap>) {
+      return (data as List).map((e) => deserialize<_i22.TaskTagMap>(e)).toList()
+          as T;
+    }
+    if (t == List<_i23.TestData>) {
+      return (data as List).map((e) => deserialize<_i23.TestData>(e)).toList()
           as T;
     }
     try {
-      return _i23.Protocol().deserialize<T>(data, t);
+      return _i24.Protocol().deserialize<T>(data, t);
     } on _i1.DeserializationTypeNotFoundException catch (_) {}
     return super.deserialize<T>(data, t);
   }
@@ -255,7 +260,7 @@ class Protocol extends _i1.SerializationManager {
     if (data is _i18.UserSessionData) {
       return 'UserSessionData';
     }
-    className = _i23.Protocol().getClassNameForObject(data);
+    className = _i24.Protocol().getClassNameForObject(data);
     if (className != null) {
       return 'serverpod_auth.$className';
     }
@@ -321,7 +326,7 @@ class Protocol extends _i1.SerializationManager {
     }
     if (dataClassName.startsWith('serverpod_auth.')) {
       data['className'] = dataClassName.substring(15);
-      return _i23.Protocol().deserializeByClassName(data);
+      return _i24.Protocol().deserializeByClassName(data);
     }
     return super.deserializeByClassName(data);
   }

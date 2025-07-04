@@ -44,7 +44,9 @@ void run(List<String> args) async {
     args,
     Protocol(),
     Endpoints(),
+    // authenticationHandler: auth.authenticationHandler,
     authenticationHandler: auth.authenticationHandler,
+    
   );
 
 
@@ -54,10 +56,8 @@ void run(List<String> args) async {
     pod.webServer.addRoute(RouteRoot(), '/');
     pod.webServer.addRoute(RouteRoot(), '/index.html');
     // Serve all files in the /static directory.
-    pod.webServer.addRoute(
-      RouteStaticDirectory(serverDirectory: 'static', basePath: '/'),
-      '/*',
-    );
+    pod.webServer.addRoute(RouteStaticDirectory(serverDirectory: 'static', basePath: '/'),'/*',);
+    
   }
   // ------------------------------------------
 
