@@ -169,13 +169,8 @@ class TagRepositoryImpl extends BaseSyncRepository
     } catch (e) {
       rethrow;
     }
-  }
-    
-  @override
-  Future<List<TagEntity>> getTagsByCustomerId(String customerId) async {
-    final tags = await _localDataSource.getTagsByCustomerId(customerId, userId: userId);
-    return tags.map((e) => e.toEntity()).toList();
-  }
+  } 
+ 
 }
 
 

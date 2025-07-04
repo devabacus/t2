@@ -10,8 +10,6 @@ abstract class ITagRepository {
   Future<bool> deleteTag(String id);
   Future<void> syncWithServer();
   void initEventBasedSync();
-  void dispose();
-  
-  Future<List<TagEntity>> getTagsByCustomerId(String customerId);
+  void dispose();  
 }
 
