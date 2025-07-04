@@ -10,3 +10,4 @@ fields:
   info: String?,
   subscriptionStatus: String?
   createdAt: DateTime?
+  

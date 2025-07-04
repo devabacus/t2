@@ -4,5 +4,6 @@ fields:
   id: UuidValue?, defaultPersist=random_v7
   isDeleted: bool, default=false
   lastModified: DateTime?
+  customerId: UuidValue, relation(parent=customer, onDelete=Cascade)
   userId: int
   title: String
