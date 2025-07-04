@@ -7,7 +7,7 @@ import '../../../models/tag/tag_model.dart';
 import '../../../models/extensions/tag_model_extension.dart';
 import '../../../../../../core/database/local/database_types.dart';
 import '../dao/tag/tag_dao.dart';
-import '../interfaces/tag_local_datasource_service.dart'; // Предполагается, что интерфейс находится здесь
+import '../interfaces/tag_local_datasource_service.dart'; 
 
 class TagLocalDataSource implements ITagLocalDataSource {
   final TagDao _tagDao;
@@ -29,11 +29,12 @@ class TagLocalDataSource implements ITagLocalDataSource {
 
   @override
   Future<TagModel?> getTagById(String id,
-      {required int userId}) async {
+      {required int userId, required String customerId}) async {
     try {
-      final tag = await _tagDao.getTagById(id, userId: userId);
-      return tag.toModel();
+      final tag = await _tagDao.getTagById(id, userId: userId, customerId: customerId);
+      return tag?.toModel();
     } catch (e) {
+      print('Ошибка получения Tag по ID: $e');
       return null;
     }
   }
@@ -110,8 +111,7 @@ class TagLocalDataSource implements ITagLocalDataSource {
           continue;
         }
 
-        final serverTime =
-            serverChange.lastModified ?? DateTime.fromMicrosecondsSinceEpoch(0);
+        final serverTime = serverChange.lastModified;
         final localTime = localRecord.lastModified;
 
         if (serverChange.isDeleted) {
@@ -174,10 +174,6 @@ class TagLocalDataSource implements ITagLocalDataSource {
     }
   }
   
-  @override
-  Future<List<TagModel>> getTagsByCustomerId(String customerId, {required int userId}) async {
-    final tags = await _tagDao.getTagsByCustomerId(customerId, userId: userId);
-    return tags.toModels();
-  }
+  
 }
   

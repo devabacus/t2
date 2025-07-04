@@ -46,8 +46,8 @@ class GetTagByIdUseCase {
 
   GetTagByIdUseCase(this._repository);
 
-  Future<TagEntity?> call(String id) {
-    return _repository.getTagById(id);
+  Future<TagEntity?> call(String id, String customerId) {
+    return _repository.getTagById(id, customerId);
   }
 }
 
@@ -58,15 +58,5 @@ class WatchTagsUseCase {
 
   Stream<List<TagEntity>> call() {
     return _repository.watchTags();
-  }
-}
-
-class GetTagsByCustomerIdUseCase {
-  final ITagRepository _repository;
-
-  GetTagsByCustomerIdUseCase(this._repository);
-
-  Future<List<TagEntity>> call(String customerId) {
-    return _repository.getTagsByCustomerId(customerId);
   }
 }

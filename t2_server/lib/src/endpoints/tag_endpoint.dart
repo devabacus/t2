@@ -1,11 +1,8 @@
-// lib/features/home/data/datasources/remote/sources/tag_endpoint.dart
 import 'package:serverpod/serverpod.dart';
-import 'package:t2_server/src/generated/protocol.dart'; // Включает UserSessionData, CustomerUser
+import 'package:t2_server/src/generated/protocol.dart';
+import 'user_manager_endpoint.dart';
 
 const _tagChannelBase = 't2_tag_events_for_user_';
-
-// Определяем Record Type для возвращаемого контекста, содержащего userId и customerId
-typedef AuthenticatedUserContext = ({int userId, UuidValue customerId /*, List<String> activePermissions */}); // activePermissions, если нужно в других местах
 
 class TagEndpoint extends Endpoint {
   
@@ -25,22 +22,11 @@ class TagEndpoint extends Endpoint {
     if (customerUser == null) {
       throw Exception('Пользователь $userId не привязан к клиенту (Customer).');
     }
-
-    // Если вам нужны activePermissions здесь, то их тоже надо получить из DB:
-    // final rolePermissions = await RolePermission.db.find(session, where: (rp) => rp.roleId.equals(customerUser.roleId));
-    // final permissionKeys = <String>{};
-    // for (var rp in rolePermissions) {
-    //   final permission = await Permission.db.findById(session, rp.permissionId);
-    //   if (permission != null) { permissionKeys.add(permission.key); }
-    // }
-    // return (userId: userId, customerId: customerUser.customerId, activePermissions: permissionKeys.toList());
-
     return (userId: userId, customerId: customerUser.customerId);
   }
 
-  // Метод _notifyChange теперь принимает AuthenticatedUserContext
-  Future<void> _notifyChange(Session session, TagSyncEvent event, AuthenticatedUserContext authContext) async { // ИЗМЕНЕНО
-    final channel = '$_tagChannelBase${authContext.userId}-${authContext.customerId.uuid}'; // Используем authContext
+  Future<void> _notifyChange(Session session, TagSyncEvent event, AuthenticatedUserContext authContext) async { 
+    final channel = '$_tagChannelBase${authContext.userId}-${authContext.customerId.uuid}'; 
     await session.messages.postMessage(channel, event);
     session.log('🔔 Событие ${event.type.name} отправлено в канал "$channel"');
   }
@@ -69,7 +55,7 @@ class TagEndpoint extends Endpoint {
       await _notifyChange(session, TagSyncEvent(
           type: SyncEventType.update, 
           tag: updatedTag,
-      ), authContext); // ИЗМЕНЕНО: передаем authContext
+      ), authContext); 
       return updatedTag;
 
     } else {
@@ -77,7 +63,7 @@ class TagEndpoint extends Endpoint {
       await _notifyChange(session, TagSyncEvent(
           type: SyncEventType.create,
           tag: createdTag,
-      ), authContext); // ИЗМЕНЕНО: передаем authContext
+      ), authContext); 
       return createdTag;
     }
   }
@@ -142,7 +128,7 @@ class TagEndpoint extends Endpoint {
       await _notifyChange(session, TagSyncEvent(
         type: SyncEventType.update,
         tag: serverTag,
-      ), authContext); // ИЗМЕНЕНО: передаем authContext
+      ), authContext);
       return true;
     } catch (e) {
       return false;
@@ -171,7 +157,7 @@ class TagEndpoint extends Endpoint {
       type: SyncEventType.delete,
       tag: result, 
       id: id,
-    ), authContext); // ИЗМЕНЕНО: передаем authContext
+    ), authContext);
 
     return true;
   }

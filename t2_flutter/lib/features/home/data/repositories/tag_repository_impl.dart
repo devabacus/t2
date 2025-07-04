@@ -1,3 +1,4 @@
+import 'package:t2/features/home/data/datasources/local/tables/extensions/tag_table_extension.dart';
 import 'package:t2/features/home/domain/entities/extensions/tag_entity_extension.dart';
 import 'package:t2_client/t2_client.dart' as serverpod;
 
@@ -128,8 +129,8 @@ class TagRepositoryImpl extends BaseSyncRepository
           .then((models) => models.toEntities());
 
   @override
-  Future<TagEntity?> getTagById(String id) async {
-    final model = await _localDataSource.getTagById(id, userId: userId);
+  Future<TagEntity?> getTagById(String id, String customerId) async {
+    final model = await _localDataSource.getTagById(id, userId: userId, customerId: customerId);
     return model?.toEntity();
   }
 

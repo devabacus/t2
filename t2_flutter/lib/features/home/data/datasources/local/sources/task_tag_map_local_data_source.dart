@@ -141,7 +141,7 @@ Future<TaskTagMapModel?> getRelationByTaskAndTag(String taskId, String tagId, {r
               ..where((t) => t.id.equals(serverChange.id.toString())))
             .getSingleOrNull();
 
-        final serverTime = serverChange.lastModified ?? DateTime.fromMicrosecondsSinceEpoch(0);
+        final serverTime = serverChange.lastModified;
 
         if (localRecord == null) {
           if (!serverChange.isDeleted) {

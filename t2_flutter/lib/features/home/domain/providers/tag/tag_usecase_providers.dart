@@ -60,14 +60,6 @@ GetTagByIdUseCase? getTagByIdUseCase(Ref ref) {
   return GetTagByIdUseCase(repository);
 }
   
-@riverpod
-GetTagsByCustomerIdUseCase? getTagsByCustomerIdUseCase(Ref ref) {
-  final repository = ref.watch(currentUserTagRepositoryProvider);
-  if (repository == null) {
-    // пользователь не авторизован
-    return null;
-  }
-  return GetTagsByCustomerIdUseCase(repository);
-}
+
 
     

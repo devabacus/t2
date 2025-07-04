@@ -27,14 +27,14 @@ class TagDao extends DatabaseAccessor<AppDatabase>
       ..where((t) => userId != null ? t.userId.equals(userId) : const Constant(true)))
     .watch();
 
-  Future<TagTableData> getTagById(String id, {required int userId}) =>
+  Future<TagTableData?> getTagById(String id, {required int userId, required String customerId}) =>
       (select(tagTable)
-        ..where((t) => t.id.equals(id) & t.userId.equals(userId)))
-      .getSingle();
+        ..where((t) => t.id.equals(id) & t.userId.equals(userId) & t.customerId.equals(customerId)))
+      .getSingleOrNull();
 
   Future<List<TagTableData>> getTagsByIds(List<String> ids, {required int userId}) {
     if (ids.isEmpty) {
-      return Future.value([]); // Возвращаем пустой список, если нет ID
+      return Future.value([]);
     }
     return (select(tagTable)
           ..where((t) => t.id.isIn(ids) & t.userId.equals(userId) & t.syncStatus.equals(SyncStatus.deleted.name).not()))
@@ -120,9 +120,5 @@ Future<bool> updateTag(TagTableCompanion companion, {required int userId}) async
       return delete(tagTable).go();
     }
   }
-  
-  Future<List<TagTableData>> getTagsByCustomerId(String customerId, {required int userId}) =>
-    (select(tagTable)
-      ..where((t) => t.customerId.equals(customerId) & t.userId.equals(userId) & t.syncStatus.equals(SyncStatus.deleted.name).not()))
-    .get();
+ 
 }

@@ -7,7 +7,7 @@ import '../../../../../../core/database/local/database_types.dart';
 abstract class ITagLocalDataSource {
   Future<List<TagModel>> getTags({int? userId});
   Stream<List<TagModel>> watchTags({int? userId});
-  Future<TagModel?> getTagById(String id, {required int userId});
+  Future<TagModel?> getTagById(String id, {required int userId, required String customerId});
   Future<List<TagModel>> getTagsByIds(List<String> ids, {required int userId});
   Future<String> createTag(TagModel tag);
   Future<bool> updateTag(TagModel tag);
@@ -24,6 +24,5 @@ abstract class ITagLocalDataSource {
   );
   Future<void> handleSyncEvent(dynamic event, int userId);
 
-  Future<List<TagModel>> getTagsByCustomerId(String customerId, {required int userId}); 
 }
 
