@@ -121,4 +121,8 @@ Future<bool> updateTag(TagTableCompanion companion, {required int userId}) async
     }
   }
   
+  Future<List<TagTableData>> getTagsByCustomerId(String customerId, {required int userId}) =>
+    (select(tagTable)
+      ..where((t) => t.customerId.equals(customerId) & t.userId.equals(userId) & t.syncStatus.equals(SyncStatus.deleted.name).not()))
+    .get();
 }

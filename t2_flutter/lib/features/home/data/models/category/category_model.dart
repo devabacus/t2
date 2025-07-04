@@ -7,8 +7,11 @@ part 'category_model.g.dart';
 abstract class CategoryModel with _$CategoryModel {
   const factory CategoryModel({
     required String id,
-    required DateTime lastModified,
     required int userId,
+    required String customerId,
+    required DateTime createdAt,
+    required DateTime lastModified,
+    @Default(false) bool isDeleted,
     required String title,
   }) = _CategoryModel;
 

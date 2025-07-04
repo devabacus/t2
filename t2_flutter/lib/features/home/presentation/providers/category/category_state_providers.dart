@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import '../../../domain/entities/category/category.dart';
+import '../../../domain/entities/category/category_entity.dart';
 import '../../../domain/providers/category/category_usecase_providers.dart';
 
 part 'category_state_providers.g.dart';

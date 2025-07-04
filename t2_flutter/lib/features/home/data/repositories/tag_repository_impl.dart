@@ -1,10 +1,9 @@
-import 'package:t2/features/home/data/datasources/local/tables/extensions/tag_table_extension.dart';
 import 'package:t2/features/home/domain/entities/extensions/tag_entity_extension.dart';
 import 'package:t2_client/t2_client.dart' as serverpod;
 
 import '../../../../core/database/local/database.dart';
 import '../../../../core/sync/base_sync_repository.dart';
-import '../../domain/entities/tag/tag.dart';
+import '../../domain/entities/tag/tag_entity.dart';
 import '../../domain/repositories/tag_repository.dart';
 import '../../../../core/database/local/database_types.dart';
 import '../datasources/local/interfaces/tag_local_datasource_service.dart';
@@ -171,6 +170,11 @@ class TagRepositoryImpl extends BaseSyncRepository
     }
   }
     
+  @override
+  Future<List<TagEntity>> getTagsByCustomerId(String customerId) async {
+    final tags = await _localDataSource.getTagsByCustomerId(customerId, userId: userId);
+    return tags.map((e) => e.toEntity()).toList();
+  }
 }
 
 

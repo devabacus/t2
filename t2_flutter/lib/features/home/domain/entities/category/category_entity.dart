@@ -1,11 +1,11 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'tag_model.freezed.dart';
-part 'tag_model.g.dart';
+part 'category_entity.freezed.dart';
+part 'category_entity.g.dart';
 
 @freezed
-abstract class TagModel with _$TagModel {
-  const factory TagModel({
+abstract class CategoryEntity with _$CategoryEntity {
+  const factory CategoryEntity({
     required String id,
     required int userId,
     required String customerId,
@@ -13,7 +13,7 @@ abstract class TagModel with _$TagModel {
     required DateTime lastModified,
     @Default(false) bool isDeleted,
     required String title,
-  }) = _TagModel;
+  }) = _CategoryEntity;
 
-  factory TagModel.fromJson(Map<String, dynamic> json) => _$TagModelFromJson(json);
+  factory CategoryEntity.fromJson(Map<String, dynamic> json) => _$CategoryEntityFromJson(json);
 }

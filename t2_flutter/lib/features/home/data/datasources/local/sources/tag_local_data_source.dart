@@ -174,5 +174,10 @@ class TagLocalDataSource implements ITagLocalDataSource {
     }
   }
   
+  @override
+  Future<List<TagModel>> getTagsByCustomerId(String customerId, {required int userId}) async {
+    final tags = await _tagDao.getTagsByCustomerId(customerId, userId: userId);
+    return tags.toModels();
+  }
 }
   

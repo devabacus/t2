@@ -1,4 +1,4 @@
-import '../entities/tag/tag.dart';
+import '../entities/tag/tag_entity.dart';
 
 abstract class ITagRepository {
   Future<List<TagEntity>> getTags();
@@ -12,5 +12,6 @@ abstract class ITagRepository {
   void initEventBasedSync();
   void dispose();
   
+  Future<List<TagEntity>> getTagsByCustomerId(String customerId);
 }
 

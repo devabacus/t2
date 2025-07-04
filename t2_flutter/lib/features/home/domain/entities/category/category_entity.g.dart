@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'category_model.dart';
+part of 'category_entity.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_CategoryModel _$CategoryModelFromJson(Map<String, dynamic> json) =>
-    _CategoryModel(
+_CategoryEntity _$CategoryEntityFromJson(Map<String, dynamic> json) =>
+    _CategoryEntity(
       id: json['id'] as String,
       userId: (json['userId'] as num).toInt(),
       customerId: json['customerId'] as String,
@@ -17,7 +17,7 @@ _CategoryModel _$CategoryModelFromJson(Map<String, dynamic> json) =>
       title: json['title'] as String,
     );
 
-Map<String, dynamic> _$CategoryModelToJson(_CategoryModel instance) =>
+Map<String, dynamic> _$CategoryEntityToJson(_CategoryEntity instance) =>
     <String, dynamic>{
       'id': instance.id,
       'userId': instance.userId,

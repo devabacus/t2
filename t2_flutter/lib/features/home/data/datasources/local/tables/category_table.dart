@@ -5,16 +5,16 @@ import '../../../../../../core/database/local/database_types.dart';
 
 class CategoryTable extends Table {
 
-  // Статичные поля для всех моделей
+    TextColumn get title => text()();
+  
   TextColumn get id => text().clientDefault(() => Uuid().v7())();
   IntColumn get userId => integer()();
   TextColumn get customerId => text()();
+  DateTimeColumn get createdAt => dateTime().clientDefault(() => DateTime.now().toUtc())();
   IntColumn get lastModified => integer().map(const MillisecondEpochConverter())();
   TextColumn get syncStatus => text().map(const SyncStatusConverter())();
-  
-  // Поля модели
-    TextColumn get title => text()();
-  
+  BoolColumn get isDeleted => boolean().withDefault(const Constant(false))();
+    
   @override
   Set<Column> get primaryKey => {id};
 }

@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'category_model.dart';
+part of 'category_entity.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -13,22 +13,22 @@ part of 'category_model.dart';
 T _$identity<T>(T value) => value;
 
 /// @nodoc
-mixin _$CategoryModel {
+mixin _$CategoryEntity {
 
  String get id; int get userId; String get customerId; DateTime get createdAt; DateTime get lastModified; bool get isDeleted; String get title;
-/// Create a copy of CategoryModel
+/// Create a copy of CategoryEntity
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$CategoryModelCopyWith<CategoryModel> get copyWith => _$CategoryModelCopyWithImpl<CategoryModel>(this as CategoryModel, _$identity);
+$CategoryEntityCopyWith<CategoryEntity> get copyWith => _$CategoryEntityCopyWithImpl<CategoryEntity>(this as CategoryEntity, _$identity);
 
-  /// Serializes this CategoryModel to a JSON map.
+  /// Serializes this CategoryEntity to a JSON map.
   Map<String, dynamic> toJson();
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CategoryModel&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.customerId, customerId) || other.customerId == customerId)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.lastModified, lastModified) || other.lastModified == lastModified)&&(identical(other.isDeleted, isDeleted) || other.isDeleted == isDeleted)&&(identical(other.title, title) || other.title == title));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CategoryEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.customerId, customerId) || other.customerId == customerId)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.lastModified, lastModified) || other.lastModified == lastModified)&&(identical(other.isDeleted, isDeleted) || other.isDeleted == isDeleted)&&(identical(other.title, title) || other.title == title));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -37,15 +37,15 @@ int get hashCode => Object.hash(runtimeType,id,userId,customerId,createdAt,lastM
 
 @override
 String toString() {
-  return 'CategoryModel(id: $id, userId: $userId, customerId: $customerId, createdAt: $createdAt, lastModified: $lastModified, isDeleted: $isDeleted, title: $title)';
+  return 'CategoryEntity(id: $id, userId: $userId, customerId: $customerId, createdAt: $createdAt, lastModified: $lastModified, isDeleted: $isDeleted, title: $title)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $CategoryModelCopyWith<$Res>  {
-  factory $CategoryModelCopyWith(CategoryModel value, $Res Function(CategoryModel) _then) = _$CategoryModelCopyWithImpl;
+abstract mixin class $CategoryEntityCopyWith<$Res>  {
+  factory $CategoryEntityCopyWith(CategoryEntity value, $Res Function(CategoryEntity) _then) = _$CategoryEntityCopyWithImpl;
 @useResult
 $Res call({
  String id, int userId, String customerId, DateTime createdAt, DateTime lastModified, bool isDeleted, String title
@@ -56,14 +56,14 @@ $Res call({
 
 }
 /// @nodoc
-class _$CategoryModelCopyWithImpl<$Res>
-    implements $CategoryModelCopyWith<$Res> {
-  _$CategoryModelCopyWithImpl(this._self, this._then);
+class _$CategoryEntityCopyWithImpl<$Res>
+    implements $CategoryEntityCopyWith<$Res> {
+  _$CategoryEntityCopyWithImpl(this._self, this._then);
 
-  final CategoryModel _self;
-  final $Res Function(CategoryModel) _then;
+  final CategoryEntity _self;
+  final $Res Function(CategoryEntity) _then;
 
-/// Create a copy of CategoryModel
+/// Create a copy of CategoryEntity
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? userId = null,Object? customerId = null,Object? createdAt = null,Object? lastModified = null,Object? isDeleted = null,Object? title = null,}) {
   return _then(_self.copyWith(
@@ -81,8 +81,8 @@ as String,
 }
 
 
-/// Adds pattern-matching-related methods to [CategoryModel].
-extension CategoryModelPatterns on CategoryModel {
+/// Adds pattern-matching-related methods to [CategoryEntity].
+extension CategoryEntityPatterns on CategoryEntity {
 /// A variant of `map` that fallback to returning `orElse`.
 ///
 /// It is equivalent to doing:
@@ -95,10 +95,10 @@ extension CategoryModelPatterns on CategoryModel {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _CategoryModel value)?  $default,{required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _CategoryEntity value)?  $default,{required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case _CategoryModel() when $default != null:
+case _CategoryEntity() when $default != null:
 return $default(_that);case _:
   return orElse();
 
@@ -117,10 +117,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _CategoryModel value)  $default,){
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _CategoryEntity value)  $default,){
 final _that = this;
 switch (_that) {
-case _CategoryModel():
+case _CategoryEntity():
 return $default(_that);case _:
   throw StateError('Unexpected subclass');
 
@@ -138,10 +138,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _CategoryModel value)?  $default,){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _CategoryEntity value)?  $default,){
 final _that = this;
 switch (_that) {
-case _CategoryModel() when $default != null:
+case _CategoryEntity() when $default != null:
 return $default(_that);case _:
   return null;
 
@@ -161,7 +161,7 @@ return $default(_that);case _:
 
 @optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  int userId,  String customerId,  DateTime createdAt,  DateTime lastModified,  bool isDeleted,  String title)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case _CategoryModel() when $default != null:
+case _CategoryEntity() when $default != null:
 return $default(_that.id,_that.userId,_that.customerId,_that.createdAt,_that.lastModified,_that.isDeleted,_that.title);case _:
   return orElse();
 
@@ -182,7 +182,7 @@ return $default(_that.id,_that.userId,_that.customerId,_that.createdAt,_that.las
 
 @optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  int userId,  String customerId,  DateTime createdAt,  DateTime lastModified,  bool isDeleted,  String title)  $default,) {final _that = this;
 switch (_that) {
-case _CategoryModel():
+case _CategoryEntity():
 return $default(_that.id,_that.userId,_that.customerId,_that.createdAt,_that.lastModified,_that.isDeleted,_that.title);case _:
   throw StateError('Unexpected subclass');
 
@@ -202,7 +202,7 @@ return $default(_that.id,_that.userId,_that.customerId,_that.createdAt,_that.las
 
 @optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  int userId,  String customerId,  DateTime createdAt,  DateTime lastModified,  bool isDeleted,  String title)?  $default,) {final _that = this;
 switch (_that) {
-case _CategoryModel() when $default != null:
+case _CategoryEntity() when $default != null:
 return $default(_that.id,_that.userId,_that.customerId,_that.createdAt,_that.lastModified,_that.isDeleted,_that.title);case _:
   return null;
 
@@ -214,9 +214,9 @@ return $default(_that.id,_that.userId,_that.customerId,_that.createdAt,_that.las
 /// @nodoc
 @JsonSerializable()
 
-class _CategoryModel implements CategoryModel {
-  const _CategoryModel({required this.id, required this.userId, required this.customerId, required this.createdAt, required this.lastModified, this.isDeleted = false, required this.title});
-  factory _CategoryModel.fromJson(Map<String, dynamic> json) => _$CategoryModelFromJson(json);
+class _CategoryEntity implements CategoryEntity {
+  const _CategoryEntity({required this.id, required this.userId, required this.customerId, required this.createdAt, required this.lastModified, this.isDeleted = false, required this.title});
+  factory _CategoryEntity.fromJson(Map<String, dynamic> json) => _$CategoryEntityFromJson(json);
 
 @override final  String id;
 @override final  int userId;
@@ -226,20 +226,20 @@ class _CategoryModel implements CategoryModel {
 @override@JsonKey() final  bool isDeleted;
 @override final  String title;
 
-/// Create a copy of CategoryModel
+/// Create a copy of CategoryEntity
 /// with the given fields replaced by the non-null parameter values.
 @override @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-_$CategoryModelCopyWith<_CategoryModel> get copyWith => __$CategoryModelCopyWithImpl<_CategoryModel>(this, _$identity);
+_$CategoryEntityCopyWith<_CategoryEntity> get copyWith => __$CategoryEntityCopyWithImpl<_CategoryEntity>(this, _$identity);
 
 @override
 Map<String, dynamic> toJson() {
-  return _$CategoryModelToJson(this, );
+  return _$CategoryEntityToJson(this, );
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CategoryModel&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.customerId, customerId) || other.customerId == customerId)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.lastModified, lastModified) || other.lastModified == lastModified)&&(identical(other.isDeleted, isDeleted) || other.isDeleted == isDeleted)&&(identical(other.title, title) || other.title == title));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CategoryEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.customerId, customerId) || other.customerId == customerId)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.lastModified, lastModified) || other.lastModified == lastModified)&&(identical(other.isDeleted, isDeleted) || other.isDeleted == isDeleted)&&(identical(other.title, title) || other.title == title));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -248,15 +248,15 @@ int get hashCode => Object.hash(runtimeType,id,userId,customerId,createdAt,lastM
 
 @override
 String toString() {
-  return 'CategoryModel(id: $id, userId: $userId, customerId: $customerId, createdAt: $createdAt, lastModified: $lastModified, isDeleted: $isDeleted, title: $title)';
+  return 'CategoryEntity(id: $id, userId: $userId, customerId: $customerId, createdAt: $createdAt, lastModified: $lastModified, isDeleted: $isDeleted, title: $title)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class _$CategoryModelCopyWith<$Res> implements $CategoryModelCopyWith<$Res> {
-  factory _$CategoryModelCopyWith(_CategoryModel value, $Res Function(_CategoryModel) _then) = __$CategoryModelCopyWithImpl;
+abstract mixin class _$CategoryEntityCopyWith<$Res> implements $CategoryEntityCopyWith<$Res> {
+  factory _$CategoryEntityCopyWith(_CategoryEntity value, $Res Function(_CategoryEntity) _then) = __$CategoryEntityCopyWithImpl;
 @override @useResult
 $Res call({
  String id, int userId, String customerId, DateTime createdAt, DateTime lastModified, bool isDeleted, String title
@@ -267,17 +267,17 @@ $Res call({
 
 }
 /// @nodoc
-class __$CategoryModelCopyWithImpl<$Res>
-    implements _$CategoryModelCopyWith<$Res> {
-  __$CategoryModelCopyWithImpl(this._self, this._then);
+class __$CategoryEntityCopyWithImpl<$Res>
+    implements _$CategoryEntityCopyWith<$Res> {
+  __$CategoryEntityCopyWithImpl(this._self, this._then);
 
-  final _CategoryModel _self;
-  final $Res Function(_CategoryModel) _then;
+  final _CategoryEntity _self;
+  final $Res Function(_CategoryEntity) _then;
 
-/// Create a copy of CategoryModel
+/// Create a copy of CategoryEntity
 /// with the given fields replaced by the non-null parameter values.
 @override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? userId = null,Object? customerId = null,Object? createdAt = null,Object? lastModified = null,Object? isDeleted = null,Object? title = null,}) {
-  return _then(_CategoryModel(
+  return _then(_CategoryEntity(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as int,customerId: null == customerId ? _self.customerId : customerId // ignore: cast_nullable_to_non_nullable

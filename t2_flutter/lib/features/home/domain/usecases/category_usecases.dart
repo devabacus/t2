@@ -1,5 +1,5 @@
 import '../repositories/category_repository.dart';
-import '../entities/category/category.dart';
+import '../entities/category/category_entity.dart';
 
 class CreateCategoryUseCase {
   final ICategoryRepository _repository;
@@ -61,3 +61,12 @@ class WatchCategoriesUseCase {
   }
 }
 
+class GetCategoriesByCustomerIdUseCase {
+  final ICategoryRepository _repository;
+
+  GetCategoriesByCustomerIdUseCase(this._repository);
+
+  Future<List<CategoryEntity>> call(String customerId) {
+    return _repository.getCategoriesByCustomerId(customerId);
+  }
+}

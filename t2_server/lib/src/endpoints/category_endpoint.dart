@@ -60,7 +60,6 @@ class CategoryEndpoint extends Endpoint {
     return await Category.db.find(
       session,
       where: (c) => c.userId.equals(userId) & c.isDeleted.equals(false),
-      orderBy: (c) => c.title,         
       limit: limit
     );
   }     
@@ -149,4 +148,11 @@ class CategoryEndpoint extends Endpoint {
     }
   }
     
+Future<List<Category>> getCategoriesByCustomerId(Session session, UuidValue customerId) async {
+    return await Category.db.find(
+      session,
+      where: (t) => t.customerId.equals(customerId),
+      orderBy: (t) => t.title,
+    );
+  }
 }          

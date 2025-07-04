@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import '../../../domain/entities/tag/tag.dart';
+import '../../../domain/entities/tag/tag_entity.dart';
 import '../../../domain/providers/tag/tag_usecase_providers.dart';
 import 'tag_state_providers.dart';
 

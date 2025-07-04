@@ -60,7 +60,6 @@ class TagEndpoint extends Endpoint {
     return await Tag.db.find(
       session,
       where: (c) => c.userId.equals(userId) & c.isDeleted.equals(false),
-      orderBy: (c) => c.title,         
       limit: limit
     );
   }     
@@ -149,4 +148,11 @@ class TagEndpoint extends Endpoint {
     }
   }
     
+Future<List<Tag>> getTagsByCustomerId(Session session, UuidValue customerId) async {
+    return await Tag.db.find(
+      session,
+      where: (t) => t.customerId.equals(customerId),
+      orderBy: (t) => t.title,
+    );
+  }
 }          

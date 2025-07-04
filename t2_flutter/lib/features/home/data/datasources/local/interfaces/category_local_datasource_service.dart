@@ -24,5 +24,6 @@ abstract class ICategoryLocalDataSource {
   );
   Future<void> handleSyncEvent(dynamic event, int userId);
 
+  Future<List<CategoryModel>> getCategoriesByCustomerId(String customerId, {required int userId}); 
 }
 

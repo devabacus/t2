@@ -24,5 +24,6 @@ abstract class ITagLocalDataSource {
   );
   Future<void> handleSyncEvent(dynamic event, int userId);
 
+  Future<List<TagModel>> getTagsByCustomerId(String customerId, {required int userId}); 
 }
 

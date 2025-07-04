@@ -174,5 +174,10 @@ class CategoryLocalDataSource implements ICategoryLocalDataSource {
     }
   }
   
+  @override
+  Future<List<CategoryModel>> getCategoriesByCustomerId(String customerId, {required int userId}) async {
+    final categorys = await _categoryDao.getCategoriesByCustomerId(customerId, userId: userId);
+    return categorys.toModels();
+  }
 }
   

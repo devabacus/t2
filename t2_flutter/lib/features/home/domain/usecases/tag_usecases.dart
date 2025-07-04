@@ -1,5 +1,5 @@
 import '../repositories/tag_repository.dart';
-import '../entities/tag/tag.dart';
+import '../entities/tag/tag_entity.dart';
 
 class CreateTagUseCase {
   final ITagRepository _repository;
@@ -61,3 +61,12 @@ class WatchTagsUseCase {
   }
 }
 
+class GetTagsByCustomerIdUseCase {
+  final ITagRepository _repository;
+
+  GetTagsByCustomerIdUseCase(this._repository);
+
+  Future<List<TagEntity>> call(String customerId) {
+    return _repository.getTagsByCustomerId(customerId);
+  }
+}

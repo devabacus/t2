@@ -1,14 +1,17 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'tag.freezed.dart';
-part 'tag.g.dart';
+part 'tag_entity.freezed.dart';
+part 'tag_entity.g.dart';
 
 @freezed
 abstract class TagEntity with _$TagEntity {
   const factory TagEntity({
     required String id,
-    required DateTime lastModified,
     required int userId,
+    required String customerId,
+    required DateTime createdAt,
+    required DateTime lastModified,
+    @Default(false) bool isDeleted,
     required String title,
   }) = _TagEntity;
 

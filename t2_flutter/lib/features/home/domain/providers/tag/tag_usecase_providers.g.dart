@@ -119,5 +119,26 @@ final getTagByIdUseCaseProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef GetTagByIdUseCaseRef = AutoDisposeProviderRef<GetTagByIdUseCase?>;
+String _$getTagsByCustomerIdUseCaseHash() =>
+    r'aea6eb71f7617ede9184b4ed47cba788b5ddce3f';
+
+/// See also [getTagsByCustomerIdUseCase].
+@ProviderFor(getTagsByCustomerIdUseCase)
+final getTagsByCustomerIdUseCaseProvider =
+    AutoDisposeProvider<GetTagsByCustomerIdUseCase?>.internal(
+      getTagsByCustomerIdUseCase,
+      name: r'getTagsByCustomerIdUseCaseProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$getTagsByCustomerIdUseCaseHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef GetTagsByCustomerIdUseCaseRef =
+    AutoDisposeProviderRef<GetTagsByCustomerIdUseCase?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

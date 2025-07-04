@@ -1,3 +1,25 @@
+import '../../../features/home/data/datasources/local/tables/category_table.dart';
+import '../../../features/home/data/datasources/local/tables/category_table.dart';
+import '../../../features/home/data/datasources/local/tables/tag_table.dart';
+import '../../../features/home/data/datasources/local/tables/tag_table.dart';
+import '../../../features/home/data/datasources/local/tables/tag_table.dart';
+import '../../../features/home/data/datasources/local/tables/tag_table.dart';
+import '../../../features/home/data/datasources/local/tables/tag_table.dart';
+import '../../../features/home/data/datasources/local/tables/tag_table.dart';
+import '../../../features/home/data/datasources/local/tables/tag_table.dart';
+import '../../../features/home/data/datasources/local/tables/tag_table.dart';
+import '../../../features/home/data/datasources/local/tables/tag_table.dart';
+import '../../../features/home/data/datasources/local/tables/tag_table.dart';
+import '../../../features/home/data/datasources/local/tables/tag_table.dart';
+import '../../../features/home/data/datasources/local/tables/tag_table.dart';
+import '../../../features/home/data/datasources/local/tables/tag_table.dart';
+import '../../../features/home/data/datasources/local/tables/tag_table.dart';
+import '../../../features/home/data/datasources/local/tables/tag_table.dart';
+import '../../../features/home/data/datasources/local/tables/tag_table.dart';
+import '../../../features/home/data/datasources/local/tables/tag_table.dart';
+import '../../../features/home/data/datasources/local/tables/tag_table.dart';
+import '../../../features/home/data/datasources/local/tables/tag_table.dart';
+import '../../../features/home/data/datasources/local/tables/tag_table.dart';
 import '../../../features/home/data/datasources/local/tables/task_tag_map_table.dart';
 import '../../../features/home/data/datasources/local/tables/task_table.dart';
 import '../../../features/home/data/datasources/local/tables/tag_table.dart';
@@ -12,7 +34,7 @@ import 'tables/sync_metadata_table.dart';
 
 part 'database.g.dart';
 
-@DriftDatabase(tables: [SyncMetadata, CategoryTable, TagTable, TaskTable, TaskTagMapTable])
+@DriftDatabase(tables: [SyncMetadata, CategoryTable, TagTable, TaskTable, TaskTagMapTable, TagTable, TagTable, TagTable, TagTable, TagTable, TagTable, TagTable, TagTable, TagTable, TagTable, TagTable, TagTable, TagTable, TagTable, TagTable, TagTable, TagTable, TagTable, TagTable, TagTable, CategoryTable, CategoryTable])
 class AppDatabase extends _$AppDatabase {
   AppDatabase([QueryExecutor? executor]) : super(executor ?? _openConnection());
 

@@ -1,4 +1,4 @@
-import '../entities/category/category.dart';
+import '../entities/category/category_entity.dart';
 
 abstract class ICategoryRepository {
   Future<List<CategoryEntity>> getCategories();
@@ -12,5 +12,6 @@ abstract class ICategoryRepository {
   void initEventBasedSync();
   void dispose();
   
+  Future<List<CategoryEntity>> getCategoriesByCustomerId(String customerId);
 }
 

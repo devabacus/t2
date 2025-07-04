@@ -121,4 +121,8 @@ Future<bool> updateCategory(CategoryTableCompanion companion, {required int user
     }
   }
   
+  Future<List<CategoryTableData>> getCategoriesByCustomerId(String customerId, {required int userId}) =>
+    (select(categoryTable)
+      ..where((t) => t.customerId.equals(customerId) & t.userId.equals(userId) & t.syncStatus.equals(SyncStatus.deleted.name).not()))
+    .get();
 }
