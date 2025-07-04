@@ -131,26 +131,5 @@ final getCategoryByIdUseCaseProvider =
 // ignore: unused_element
 typedef GetCategoryByIdUseCaseRef =
     AutoDisposeProviderRef<GetCategoryByIdUseCase?>;
-String _$getCategoriesByCustomerIdUseCaseHash() =>
-    r'1c475ca97fe476b05994caa08f67cc2bb7196314';
-
-/// See also [getCategoriesByCustomerIdUseCase].
-@ProviderFor(getCategoriesByCustomerIdUseCase)
-final getCategoriesByCustomerIdUseCaseProvider =
-    AutoDisposeProvider<GetCategoriesByCustomerIdUseCase?>.internal(
-      getCategoriesByCustomerIdUseCase,
-      name: r'getCategoriesByCustomerIdUseCaseProvider',
-      debugGetCreateSourceHash:
-          const bool.fromEnvironment('dart.vm.product')
-              ? null
-              : _$getCategoriesByCustomerIdUseCaseHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef GetCategoriesByCustomerIdUseCaseRef =
-    AutoDisposeProviderRef<GetCategoriesByCustomerIdUseCase?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

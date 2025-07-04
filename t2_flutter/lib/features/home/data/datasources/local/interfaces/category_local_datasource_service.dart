@@ -7,7 +7,7 @@ import '../../../../../../core/database/local/database_types.dart';
 abstract class ICategoryLocalDataSource {
   Future<List<CategoryModel>> getCategories({int? userId});
   Stream<List<CategoryModel>> watchCategories({int? userId});
-  Future<CategoryModel?> getCategoryById(String id, {required int userId});
+  Future<CategoryModel?> getCategoryById(String id, {required int userId, required String customerId});
   Future<List<CategoryModel>> getCategoriesByIds(List<String> ids, {required int userId});
   Future<String> createCategory(CategoryModel category);
   Future<bool> updateCategory(CategoryModel category);
@@ -24,6 +24,5 @@ abstract class ICategoryLocalDataSource {
   );
   Future<void> handleSyncEvent(dynamic event, int userId);
 
-  Future<List<CategoryModel>> getCategoriesByCustomerId(String customerId, {required int userId}); 
 }
 

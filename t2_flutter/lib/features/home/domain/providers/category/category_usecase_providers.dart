@@ -60,14 +60,5 @@ GetCategoryByIdUseCase? getCategoryByIdUseCase(Ref ref) {
   return GetCategoryByIdUseCase(repository);
 }
   
-@riverpod
-GetCategoriesByCustomerIdUseCase? getCategoriesByCustomerIdUseCase(Ref ref) {
-  final repository = ref.watch(currentUserCategoryRepositoryProvider);
-  if (repository == null) {
-    // пользователь не авторизован
-    return null;
-  }
-  return GetCategoriesByCustomerIdUseCase(repository);
-}
 
     

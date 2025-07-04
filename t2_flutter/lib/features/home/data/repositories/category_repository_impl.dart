@@ -129,8 +129,8 @@ class CategoryRepositoryImpl extends BaseSyncRepository
           .then((models) => models.toEntities());
 
   @override
-  Future<CategoryEntity?> getCategoryById(String id) async {
-    final model = await _localDataSource.getCategoryById(id, userId: userId);
+  Future<CategoryEntity?> getCategoryById(String id, String customerId) async {
+    final model = await _localDataSource.getCategoryById(id, userId: userId, customerId: customerId);
     return model?.toEntity();
   }
 
@@ -171,11 +171,6 @@ class CategoryRepositoryImpl extends BaseSyncRepository
     }
   }
     
-  @override
-  Future<List<CategoryEntity>> getCategoriesByCustomerId(String customerId) async {
-    final categorys = await _localDataSource.getCategoriesByCustomerId(customerId, userId: userId);
-    return categorys.map((e) => e.toEntity()).toList();
-  }
 }
 
 

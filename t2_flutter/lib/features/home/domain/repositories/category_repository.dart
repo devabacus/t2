@@ -3,7 +3,7 @@ import '../entities/category/category_entity.dart';
 abstract class ICategoryRepository {
   Future<List<CategoryEntity>> getCategories();
   Stream<List<CategoryEntity>> watchCategories();
-  Future<CategoryEntity?> getCategoryById(String id);
+  Future<CategoryEntity?> getCategoryById(String id, String customerId);
   Future<List<CategoryEntity>> getCategoriesByIds(List<String> ids);
   Future<String> createCategory(CategoryEntity category);
   Future<bool> updateCategory(CategoryEntity category);
@@ -12,6 +12,5 @@ abstract class ICategoryRepository {
   void initEventBasedSync();
   void dispose();
   
-  Future<List<CategoryEntity>> getCategoriesByCustomerId(String customerId);
 }
 

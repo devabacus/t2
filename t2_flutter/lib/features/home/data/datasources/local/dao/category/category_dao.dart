@@ -27,10 +27,10 @@ class CategoryDao extends DatabaseAccessor<AppDatabase>
       ..where((t) => userId != null ? t.userId.equals(userId) : const Constant(true)))
     .watch();
 
-  Future<CategoryTableData> getCategoryById(String id, {required int userId}) =>
+  Future<CategoryTableData?> getCategoryById(String id, {required int userId, required String customerId}) =>
       (select(categoryTable)
-        ..where((t) => t.id.equals(id) & t.userId.equals(userId)))
-      .getSingle();
+        ..where((t) => t.id.equals(id) & t.userId.equals(userId) & t.customerId.equals(customerId)))
+      .getSingleOrNull();
 
   Future<List<CategoryTableData>> getCategoriesByIds(List<String> ids, {required int userId}) {
     if (ids.isEmpty) {
@@ -121,8 +121,4 @@ Future<bool> updateCategory(CategoryTableCompanion companion, {required int user
     }
   }
   
-  Future<List<CategoryTableData>> getCategoriesByCustomerId(String customerId, {required int userId}) =>
-    (select(categoryTable)
-      ..where((t) => t.customerId.equals(customerId) & t.userId.equals(userId) & t.syncStatus.equals(SyncStatus.deleted.name).not()))
-    .get();
 }

@@ -29,10 +29,10 @@ class CategoryLocalDataSource implements ICategoryLocalDataSource {
 
   @override
   Future<CategoryModel?> getCategoryById(String id,
-      {required int userId}) async {
+      {required int userId, required String customerId}) async {
     try {
-      final category = await _categoryDao.getCategoryById(id, userId: userId);
-      return category.toModel();
+      final category = await _categoryDao.getCategoryById(id, userId: userId, customerId: customerId);
+      return category?.toModel();
     } catch (e) {
       return null;
     }
@@ -174,10 +174,5 @@ class CategoryLocalDataSource implements ICategoryLocalDataSource {
     }
   }
   
-  @override
-  Future<List<CategoryModel>> getCategoriesByCustomerId(String customerId, {required int userId}) async {
-    final categorys = await _categoryDao.getCategoriesByCustomerId(customerId, userId: userId);
-    return categorys.toModels();
-  }
 }
   
