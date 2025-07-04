@@ -19,9 +19,11 @@ abstract class Task
     implements _i1.TableRow<_i1.UuidValue?>, _i1.ProtocolSerialization {
   Task._({
     this.id,
-    bool? isDeleted,
-    this.lastModified,
     required this.userId,
+    required this.customerId,
+    required this.createdAt,
+    required this.lastModified,
+    bool? isDeleted,
     required this.title,
     this.categoryId,
     this.category,
@@ -30,9 +32,11 @@ abstract class Task
 
   factory Task({
     _i1.UuidValue? id,
-    bool? isDeleted,
-    DateTime? lastModified,
     required int userId,
+    required _i1.UuidValue customerId,
+    required DateTime createdAt,
+    required DateTime lastModified,
+    bool? isDeleted,
     required String title,
     _i1.UuidValue? categoryId,
     _i2.Category? category,
@@ -44,12 +48,14 @@ abstract class Task
       id: jsonSerialization['id'] == null
           ? null
           : _i1.UuidValueJsonExtension.fromJson(jsonSerialization['id']),
-      isDeleted: jsonSerialization['isDeleted'] as bool,
-      lastModified: jsonSerialization['lastModified'] == null
-          ? null
-          : _i1.DateTimeJsonExtension.fromJson(
-              jsonSerialization['lastModified']),
       userId: jsonSerialization['userId'] as int,
+      customerId:
+          _i1.UuidValueJsonExtension.fromJson(jsonSerialization['customerId']),
+      createdAt:
+          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['createdAt']),
+      lastModified:
+          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['lastModified']),
+      isDeleted: jsonSerialization['isDeleted'] as bool,
       title: jsonSerialization['title'] as String,
       categoryId: jsonSerialization['categoryId'] == null
           ? null
@@ -72,11 +78,15 @@ abstract class Task
   @override
   _i1.UuidValue? id;
 
-  bool isDeleted;
-
-  DateTime? lastModified;
-
   int userId;
+
+  _i1.UuidValue customerId;
+
+  DateTime createdAt;
+
+  DateTime lastModified;
+
+  bool isDeleted;
 
   String title;
 
@@ -94,9 +104,11 @@ abstract class Task
   @_i1.useResult
   Task copyWith({
     _i1.UuidValue? id,
-    bool? isDeleted,
-    DateTime? lastModified,
     int? userId,
+    _i1.UuidValue? customerId,
+    DateTime? createdAt,
+    DateTime? lastModified,
+    bool? isDeleted,
     String? title,
     _i1.UuidValue? categoryId,
     _i2.Category? category,
@@ -106,9 +118,11 @@ abstract class Task
   Map<String, dynamic> toJson() {
     return {
       if (id != null) 'id': id?.toJson(),
-      'isDeleted': isDeleted,
-      if (lastModified != null) 'lastModified': lastModified?.toJson(),
       'userId': userId,
+      'customerId': customerId.toJson(),
+      'createdAt': createdAt.toJson(),
+      'lastModified': lastModified.toJson(),
+      'isDeleted': isDeleted,
       'title': title,
       if (categoryId != null) 'categoryId': categoryId?.toJson(),
       if (category != null) 'category': category?.toJson(),
@@ -121,9 +135,11 @@ abstract class Task
   Map<String, dynamic> toJsonForProtocol() {
     return {
       if (id != null) 'id': id?.toJson(),
-      'isDeleted': isDeleted,
-      if (lastModified != null) 'lastModified': lastModified?.toJson(),
       'userId': userId,
+      'customerId': customerId.toJson(),
+      'createdAt': createdAt.toJson(),
+      'lastModified': lastModified.toJson(),
+      'isDeleted': isDeleted,
       'title': title,
       if (categoryId != null) 'categoryId': categoryId?.toJson(),
       if (taskTagMaps != null)
@@ -167,18 +183,22 @@ class _Undefined {}
 class _TaskImpl extends Task {
   _TaskImpl({
     _i1.UuidValue? id,
-    bool? isDeleted,
-    DateTime? lastModified,
     required int userId,
+    required _i1.UuidValue customerId,
+    required DateTime createdAt,
+    required DateTime lastModified,
+    bool? isDeleted,
     required String title,
     _i1.UuidValue? categoryId,
     _i2.Category? category,
     List<_i3.TaskTagMap>? taskTagMaps,
   }) : super._(
           id: id,
-          isDeleted: isDeleted,
-          lastModified: lastModified,
           userId: userId,
+          customerId: customerId,
+          createdAt: createdAt,
+          lastModified: lastModified,
+          isDeleted: isDeleted,
           title: title,
           categoryId: categoryId,
           category: category,
@@ -191,9 +211,11 @@ class _TaskImpl extends Task {
   @override
   Task copyWith({
     Object? id = _Undefined,
-    bool? isDeleted,
-    Object? lastModified = _Undefined,
     int? userId,
+    _i1.UuidValue? customerId,
+    DateTime? createdAt,
+    DateTime? lastModified,
+    bool? isDeleted,
     String? title,
     Object? categoryId = _Undefined,
     Object? category = _Undefined,
@@ -201,10 +223,11 @@ class _TaskImpl extends Task {
   }) {
     return Task(
       id: id is _i1.UuidValue? ? id : this.id,
-      isDeleted: isDeleted ?? this.isDeleted,
-      lastModified:
-          lastModified is DateTime? ? lastModified : this.lastModified,
       userId: userId ?? this.userId,
+      customerId: customerId ?? this.customerId,
+      createdAt: createdAt ?? this.createdAt,
+      lastModified: lastModified ?? this.lastModified,
+      isDeleted: isDeleted ?? this.isDeleted,
       title: title ?? this.title,
       categoryId: categoryId is _i1.UuidValue? ? categoryId : this.categoryId,
       category:
@@ -218,18 +241,26 @@ class _TaskImpl extends Task {
 
 class TaskTable extends _i1.Table<_i1.UuidValue?> {
   TaskTable({super.tableRelation}) : super(tableName: 'task') {
-    isDeleted = _i1.ColumnBool(
-      'isDeleted',
+    userId = _i1.ColumnInt(
+      'userId',
       this,
-      hasDefault: true,
+    );
+    customerId = _i1.ColumnUuid(
+      'customerId',
+      this,
+    );
+    createdAt = _i1.ColumnDateTime(
+      'createdAt',
+      this,
     );
     lastModified = _i1.ColumnDateTime(
       'lastModified',
       this,
     );
-    userId = _i1.ColumnInt(
-      'userId',
+    isDeleted = _i1.ColumnBool(
+      'isDeleted',
       this,
+      hasDefault: true,
     );
     title = _i1.ColumnString(
       'title',
@@ -245,11 +276,15 @@ class TaskTable extends _i1.Table<_i1.UuidValue?> {
     );
   }
 
-  late final _i1.ColumnBool isDeleted;
+  late final _i1.ColumnInt userId;
+
+  late final _i1.ColumnUuid customerId;
+
+  late final _i1.ColumnDateTime createdAt;
 
   late final _i1.ColumnDateTime lastModified;
 
-  late final _i1.ColumnInt userId;
+  late final _i1.ColumnBool isDeleted;
 
   late final _i1.ColumnString title;
 
@@ -295,9 +330,11 @@ class TaskTable extends _i1.Table<_i1.UuidValue?> {
   @override
   List<_i1.Column> get columns => [
         id,
-        isDeleted,
-        lastModified,
         userId,
+        customerId,
+        createdAt,
+        lastModified,
+        isDeleted,
         title,
         categoryId,
         category,

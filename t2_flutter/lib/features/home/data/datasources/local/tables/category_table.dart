@@ -8,6 +8,7 @@ class CategoryTable extends Table {
   // Статичные поля для всех моделей
   TextColumn get id => text().clientDefault(() => Uuid().v7())();
   IntColumn get userId => integer()();
+  TextColumn get customerId => text()();
   IntColumn get lastModified => integer().map(const MillisecondEpochConverter())();
   TextColumn get syncStatus => text().map(const SyncStatusConverter())();
   

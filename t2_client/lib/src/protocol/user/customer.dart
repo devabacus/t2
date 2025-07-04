@@ -11,41 +11,46 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
 
-abstract class Category implements _i1.SerializableModel {
-  Category._({
+abstract class Customer implements _i1.SerializableModel {
+  Customer._({
     this.id,
     required this.userId,
-    required this.customerId,
     required this.createdAt,
     required this.lastModified,
     bool? isDeleted,
-    required this.title,
+    required this.name,
+    this.email,
+    this.info,
+    this.subscriptionStatus,
   }) : isDeleted = isDeleted ?? false;
 
-  factory Category({
+  factory Customer({
     _i1.UuidValue? id,
     required int userId,
-    required _i1.UuidValue customerId,
     required DateTime createdAt,
     required DateTime lastModified,
     bool? isDeleted,
-    required String title,
-  }) = _CategoryImpl;
+    required String name,
+    String? email,
+    String? info,
+    String? subscriptionStatus,
+  }) = _CustomerImpl;
 
-  factory Category.fromJson(Map<String, dynamic> jsonSerialization) {
-    return Category(
+  factory Customer.fromJson(Map<String, dynamic> jsonSerialization) {
+    return Customer(
       id: jsonSerialization['id'] == null
           ? null
           : _i1.UuidValueJsonExtension.fromJson(jsonSerialization['id']),
       userId: jsonSerialization['userId'] as int,
-      customerId:
-          _i1.UuidValueJsonExtension.fromJson(jsonSerialization['customerId']),
       createdAt:
           _i1.DateTimeJsonExtension.fromJson(jsonSerialization['createdAt']),
       lastModified:
           _i1.DateTimeJsonExtension.fromJson(jsonSerialization['lastModified']),
       isDeleted: jsonSerialization['isDeleted'] as bool,
-      title: jsonSerialization['title'] as String,
+      name: jsonSerialization['name'] as String,
+      email: jsonSerialization['email'] as String?,
+      info: jsonSerialization['info'] as String?,
+      subscriptionStatus: jsonSerialization['subscriptionStatus'] as String?,
     );
   }
 
@@ -56,38 +61,46 @@ abstract class Category implements _i1.SerializableModel {
 
   int userId;
 
-  _i1.UuidValue customerId;
-
   DateTime createdAt;
 
   DateTime lastModified;
 
   bool isDeleted;
 
-  String title;
+  String name;
 
-  /// Returns a shallow copy of this [Category]
+  String? email;
+
+  String? info;
+
+  String? subscriptionStatus;
+
+  /// Returns a shallow copy of this [Customer]
   /// with some or all fields replaced by the given arguments.
   @_i1.useResult
-  Category copyWith({
+  Customer copyWith({
     _i1.UuidValue? id,
     int? userId,
-    _i1.UuidValue? customerId,
     DateTime? createdAt,
     DateTime? lastModified,
     bool? isDeleted,
-    String? title,
+    String? name,
+    String? email,
+    String? info,
+    String? subscriptionStatus,
   });
   @override
   Map<String, dynamic> toJson() {
     return {
       if (id != null) 'id': id?.toJson(),
       'userId': userId,
-      'customerId': customerId.toJson(),
       'createdAt': createdAt.toJson(),
       'lastModified': lastModified.toJson(),
       'isDeleted': isDeleted,
-      'title': title,
+      'name': name,
+      if (email != null) 'email': email,
+      if (info != null) 'info': info,
+      if (subscriptionStatus != null) 'subscriptionStatus': subscriptionStatus,
     };
   }
 
@@ -99,46 +112,56 @@ abstract class Category implements _i1.SerializableModel {
 
 class _Undefined {}
 
-class _CategoryImpl extends Category {
-  _CategoryImpl({
+class _CustomerImpl extends Customer {
+  _CustomerImpl({
     _i1.UuidValue? id,
     required int userId,
-    required _i1.UuidValue customerId,
     required DateTime createdAt,
     required DateTime lastModified,
     bool? isDeleted,
-    required String title,
+    required String name,
+    String? email,
+    String? info,
+    String? subscriptionStatus,
   }) : super._(
           id: id,
           userId: userId,
-          customerId: customerId,
           createdAt: createdAt,
           lastModified: lastModified,
           isDeleted: isDeleted,
-          title: title,
+          name: name,
+          email: email,
+          info: info,
+          subscriptionStatus: subscriptionStatus,
         );
 
-  /// Returns a shallow copy of this [Category]
+  /// Returns a shallow copy of this [Customer]
   /// with some or all fields replaced by the given arguments.
   @_i1.useResult
   @override
-  Category copyWith({
+  Customer copyWith({
     Object? id = _Undefined,
     int? userId,
-    _i1.UuidValue? customerId,
     DateTime? createdAt,
     DateTime? lastModified,
     bool? isDeleted,
-    String? title,
+    String? name,
+    Object? email = _Undefined,
+    Object? info = _Undefined,
+    Object? subscriptionStatus = _Undefined,
   }) {
-    return Category(
+    return Customer(
       id: id is _i1.UuidValue? ? id : this.id,
       userId: userId ?? this.userId,
-      customerId: customerId ?? this.customerId,
       createdAt: createdAt ?? this.createdAt,
       lastModified: lastModified ?? this.lastModified,
       isDeleted: isDeleted ?? this.isDeleted,
-      title: title ?? this.title,
+      name: name ?? this.name,
+      email: email is String? ? email : this.email,
+      info: info is String? ? info : this.info,
+      subscriptionStatus: subscriptionStatus is String?
+          ? subscriptionStatus
+          : this.subscriptionStatus,
     );
   }
 }

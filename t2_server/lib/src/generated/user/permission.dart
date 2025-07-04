@@ -11,81 +11,76 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
 
-abstract class Customer
+abstract class Permission
     implements _i1.TableRow<_i1.UuidValue?>, _i1.ProtocolSerialization {
-  Customer._({
+  Permission._({
     this.id,
-    required this.name,
-    this.email,
-    this.info,
-    this.subscriptionStatus,
+    required this.key,
+    this.description,
     this.createdAt,
+    this.updatedAt,
   });
 
-  factory Customer({
+  factory Permission({
     _i1.UuidValue? id,
-    required String name,
-    String? email,
-    String? info,
-    String? subscriptionStatus,
+    required String key,
+    String? description,
     DateTime? createdAt,
-  }) = _CustomerImpl;
+    DateTime? updatedAt,
+  }) = _PermissionImpl;
 
-  factory Customer.fromJson(Map<String, dynamic> jsonSerialization) {
-    return Customer(
+  factory Permission.fromJson(Map<String, dynamic> jsonSerialization) {
+    return Permission(
       id: jsonSerialization['id'] == null
           ? null
           : _i1.UuidValueJsonExtension.fromJson(jsonSerialization['id']),
-      name: jsonSerialization['name'] as String,
-      email: jsonSerialization['email'] as String?,
-      info: jsonSerialization['info'] as String?,
-      subscriptionStatus: jsonSerialization['subscriptionStatus'] as String?,
+      key: jsonSerialization['key'] as String,
+      description: jsonSerialization['description'] as String?,
       createdAt: jsonSerialization['createdAt'] == null
           ? null
           : _i1.DateTimeJsonExtension.fromJson(jsonSerialization['createdAt']),
+      updatedAt: jsonSerialization['updatedAt'] == null
+          ? null
+          : _i1.DateTimeJsonExtension.fromJson(jsonSerialization['updatedAt']),
     );
   }
 
-  static final t = CustomerTable();
+  static final t = PermissionTable();
 
-  static const db = CustomerRepository._();
+  static const db = PermissionRepository._();
 
   @override
   _i1.UuidValue? id;
 
-  String name;
+  String key;
 
-  String? email;
-
-  String? info;
-
-  String? subscriptionStatus;
+  String? description;
 
   DateTime? createdAt;
+
+  DateTime? updatedAt;
 
   @override
   _i1.Table<_i1.UuidValue?> get table => t;
 
-  /// Returns a shallow copy of this [Customer]
+  /// Returns a shallow copy of this [Permission]
   /// with some or all fields replaced by the given arguments.
   @_i1.useResult
-  Customer copyWith({
+  Permission copyWith({
     _i1.UuidValue? id,
-    String? name,
-    String? email,
-    String? info,
-    String? subscriptionStatus,
+    String? key,
+    String? description,
     DateTime? createdAt,
+    DateTime? updatedAt,
   });
   @override
   Map<String, dynamic> toJson() {
     return {
       if (id != null) 'id': id?.toJson(),
-      'name': name,
-      if (email != null) 'email': email,
-      if (info != null) 'info': info,
-      if (subscriptionStatus != null) 'subscriptionStatus': subscriptionStatus,
+      'key': key,
+      if (description != null) 'description': description,
       if (createdAt != null) 'createdAt': createdAt?.toJson(),
+      if (updatedAt != null) 'updatedAt': updatedAt?.toJson(),
     };
   }
 
@@ -93,34 +88,33 @@ abstract class Customer
   Map<String, dynamic> toJsonForProtocol() {
     return {
       if (id != null) 'id': id?.toJson(),
-      'name': name,
-      if (email != null) 'email': email,
-      if (info != null) 'info': info,
-      if (subscriptionStatus != null) 'subscriptionStatus': subscriptionStatus,
+      'key': key,
+      if (description != null) 'description': description,
       if (createdAt != null) 'createdAt': createdAt?.toJson(),
+      if (updatedAt != null) 'updatedAt': updatedAt?.toJson(),
     };
   }
 
-  static CustomerInclude include() {
-    return CustomerInclude._();
+  static PermissionInclude include() {
+    return PermissionInclude._();
   }
 
-  static CustomerIncludeList includeList({
-    _i1.WhereExpressionBuilder<CustomerTable>? where,
+  static PermissionIncludeList includeList({
+    _i1.WhereExpressionBuilder<PermissionTable>? where,
     int? limit,
     int? offset,
-    _i1.OrderByBuilder<CustomerTable>? orderBy,
+    _i1.OrderByBuilder<PermissionTable>? orderBy,
     bool orderDescending = false,
-    _i1.OrderByListBuilder<CustomerTable>? orderByList,
-    CustomerInclude? include,
+    _i1.OrderByListBuilder<PermissionTable>? orderByList,
+    PermissionInclude? include,
   }) {
-    return CustomerIncludeList._(
+    return PermissionIncludeList._(
       where: where,
       limit: limit,
       offset: offset,
-      orderBy: orderBy?.call(Customer.t),
+      orderBy: orderBy?.call(Permission.t),
       orderDescending: orderDescending,
-      orderByList: orderByList?.call(Customer.t),
+      orderByList: orderByList?.call(Permission.t),
       include: include,
     );
   }
@@ -133,106 +127,93 @@ abstract class Customer
 
 class _Undefined {}
 
-class _CustomerImpl extends Customer {
-  _CustomerImpl({
+class _PermissionImpl extends Permission {
+  _PermissionImpl({
     _i1.UuidValue? id,
-    required String name,
-    String? email,
-    String? info,
-    String? subscriptionStatus,
+    required String key,
+    String? description,
     DateTime? createdAt,
+    DateTime? updatedAt,
   }) : super._(
           id: id,
-          name: name,
-          email: email,
-          info: info,
-          subscriptionStatus: subscriptionStatus,
+          key: key,
+          description: description,
           createdAt: createdAt,
+          updatedAt: updatedAt,
         );
 
-  /// Returns a shallow copy of this [Customer]
+  /// Returns a shallow copy of this [Permission]
   /// with some or all fields replaced by the given arguments.
   @_i1.useResult
   @override
-  Customer copyWith({
+  Permission copyWith({
     Object? id = _Undefined,
-    String? name,
-    Object? email = _Undefined,
-    Object? info = _Undefined,
-    Object? subscriptionStatus = _Undefined,
+    String? key,
+    Object? description = _Undefined,
     Object? createdAt = _Undefined,
+    Object? updatedAt = _Undefined,
   }) {
-    return Customer(
+    return Permission(
       id: id is _i1.UuidValue? ? id : this.id,
-      name: name ?? this.name,
-      email: email is String? ? email : this.email,
-      info: info is String? ? info : this.info,
-      subscriptionStatus: subscriptionStatus is String?
-          ? subscriptionStatus
-          : this.subscriptionStatus,
+      key: key ?? this.key,
+      description: description is String? ? description : this.description,
       createdAt: createdAt is DateTime? ? createdAt : this.createdAt,
+      updatedAt: updatedAt is DateTime? ? updatedAt : this.updatedAt,
     );
   }
 }
 
-class CustomerTable extends _i1.Table<_i1.UuidValue?> {
-  CustomerTable({super.tableRelation}) : super(tableName: 'customer') {
-    name = _i1.ColumnString(
-      'name',
+class PermissionTable extends _i1.Table<_i1.UuidValue?> {
+  PermissionTable({super.tableRelation}) : super(tableName: 'permission') {
+    key = _i1.ColumnString(
+      'key',
       this,
     );
-    email = _i1.ColumnString(
-      'email',
-      this,
-    );
-    info = _i1.ColumnString(
-      'info',
-      this,
-    );
-    subscriptionStatus = _i1.ColumnString(
-      'subscriptionStatus',
+    description = _i1.ColumnString(
+      'description',
       this,
     );
     createdAt = _i1.ColumnDateTime(
       'createdAt',
       this,
     );
+    updatedAt = _i1.ColumnDateTime(
+      'updatedAt',
+      this,
+    );
   }
 
-  late final _i1.ColumnString name;
+  late final _i1.ColumnString key;
 
-  late final _i1.ColumnString email;
-
-  late final _i1.ColumnString info;
-
-  late final _i1.ColumnString subscriptionStatus;
+  late final _i1.ColumnString description;
 
   late final _i1.ColumnDateTime createdAt;
+
+  late final _i1.ColumnDateTime updatedAt;
 
   @override
   List<_i1.Column> get columns => [
         id,
-        name,
-        email,
-        info,
-        subscriptionStatus,
+        key,
+        description,
         createdAt,
+        updatedAt,
       ];
 }
 
-class CustomerInclude extends _i1.IncludeObject {
-  CustomerInclude._();
+class PermissionInclude extends _i1.IncludeObject {
+  PermissionInclude._();
 
   @override
   Map<String, _i1.Include?> get includes => {};
 
   @override
-  _i1.Table<_i1.UuidValue?> get table => Customer.t;
+  _i1.Table<_i1.UuidValue?> get table => Permission.t;
 }
 
-class CustomerIncludeList extends _i1.IncludeList {
-  CustomerIncludeList._({
-    _i1.WhereExpressionBuilder<CustomerTable>? where,
+class PermissionIncludeList extends _i1.IncludeList {
+  PermissionIncludeList._({
+    _i1.WhereExpressionBuilder<PermissionTable>? where,
     super.limit,
     super.offset,
     super.orderBy,
@@ -240,20 +221,20 @@ class CustomerIncludeList extends _i1.IncludeList {
     super.orderByList,
     super.include,
   }) {
-    super.where = where?.call(Customer.t);
+    super.where = where?.call(Permission.t);
   }
 
   @override
   Map<String, _i1.Include?> get includes => include?.includes ?? {};
 
   @override
-  _i1.Table<_i1.UuidValue?> get table => Customer.t;
+  _i1.Table<_i1.UuidValue?> get table => Permission.t;
 }
 
-class CustomerRepository {
-  const CustomerRepository._();
+class PermissionRepository {
+  const PermissionRepository._();
 
-  /// Returns a list of [Customer]s matching the given query parameters.
+  /// Returns a list of [Permission]s matching the given query parameters.
   ///
   /// Use [where] to specify which items to include in the return value.
   /// If none is specified, all items will be returned.
@@ -275,20 +256,20 @@ class CustomerRepository {
   ///   limit: 100,
   /// );
   /// ```
-  Future<List<Customer>> find(
+  Future<List<Permission>> find(
     _i1.Session session, {
-    _i1.WhereExpressionBuilder<CustomerTable>? where,
+    _i1.WhereExpressionBuilder<PermissionTable>? where,
     int? limit,
     int? offset,
-    _i1.OrderByBuilder<CustomerTable>? orderBy,
+    _i1.OrderByBuilder<PermissionTable>? orderBy,
     bool orderDescending = false,
-    _i1.OrderByListBuilder<CustomerTable>? orderByList,
+    _i1.OrderByListBuilder<PermissionTable>? orderByList,
     _i1.Transaction? transaction,
   }) async {
-    return session.db.find<Customer>(
-      where: where?.call(Customer.t),
-      orderBy: orderBy?.call(Customer.t),
-      orderByList: orderByList?.call(Customer.t),
+    return session.db.find<Permission>(
+      where: where?.call(Permission.t),
+      orderBy: orderBy?.call(Permission.t),
+      orderByList: orderByList?.call(Permission.t),
       orderDescending: orderDescending,
       limit: limit,
       offset: offset,
@@ -296,7 +277,7 @@ class CustomerRepository {
     );
   }
 
-  /// Returns the first matching [Customer] matching the given query parameters.
+  /// Returns the first matching [Permission] matching the given query parameters.
   ///
   /// Use [where] to specify which items to include in the return value.
   /// If none is specified, all items will be returned.
@@ -313,136 +294,136 @@ class CustomerRepository {
   ///   orderBy: (t) => t.age,
   /// );
   /// ```
-  Future<Customer?> findFirstRow(
+  Future<Permission?> findFirstRow(
     _i1.Session session, {
-    _i1.WhereExpressionBuilder<CustomerTable>? where,
+    _i1.WhereExpressionBuilder<PermissionTable>? where,
     int? offset,
-    _i1.OrderByBuilder<CustomerTable>? orderBy,
+    _i1.OrderByBuilder<PermissionTable>? orderBy,
     bool orderDescending = false,
-    _i1.OrderByListBuilder<CustomerTable>? orderByList,
+    _i1.OrderByListBuilder<PermissionTable>? orderByList,
     _i1.Transaction? transaction,
   }) async {
-    return session.db.findFirstRow<Customer>(
-      where: where?.call(Customer.t),
-      orderBy: orderBy?.call(Customer.t),
-      orderByList: orderByList?.call(Customer.t),
+    return session.db.findFirstRow<Permission>(
+      where: where?.call(Permission.t),
+      orderBy: orderBy?.call(Permission.t),
+      orderByList: orderByList?.call(Permission.t),
       orderDescending: orderDescending,
       offset: offset,
       transaction: transaction,
     );
   }
 
-  /// Finds a single [Customer] by its [id] or null if no such row exists.
-  Future<Customer?> findById(
+  /// Finds a single [Permission] by its [id] or null if no such row exists.
+  Future<Permission?> findById(
     _i1.Session session,
     _i1.UuidValue id, {
     _i1.Transaction? transaction,
   }) async {
-    return session.db.findById<Customer>(
+    return session.db.findById<Permission>(
       id,
       transaction: transaction,
     );
   }
 
-  /// Inserts all [Customer]s in the list and returns the inserted rows.
+  /// Inserts all [Permission]s in the list and returns the inserted rows.
   ///
-  /// The returned [Customer]s will have their `id` fields set.
+  /// The returned [Permission]s will have their `id` fields set.
   ///
   /// This is an atomic operation, meaning that if one of the rows fails to
   /// insert, none of the rows will be inserted.
-  Future<List<Customer>> insert(
+  Future<List<Permission>> insert(
     _i1.Session session,
-    List<Customer> rows, {
+    List<Permission> rows, {
     _i1.Transaction? transaction,
   }) async {
-    return session.db.insert<Customer>(
+    return session.db.insert<Permission>(
       rows,
       transaction: transaction,
     );
   }
 
-  /// Inserts a single [Customer] and returns the inserted row.
+  /// Inserts a single [Permission] and returns the inserted row.
   ///
-  /// The returned [Customer] will have its `id` field set.
-  Future<Customer> insertRow(
+  /// The returned [Permission] will have its `id` field set.
+  Future<Permission> insertRow(
     _i1.Session session,
-    Customer row, {
+    Permission row, {
     _i1.Transaction? transaction,
   }) async {
-    return session.db.insertRow<Customer>(
+    return session.db.insertRow<Permission>(
       row,
       transaction: transaction,
     );
   }
 
-  /// Updates all [Customer]s in the list and returns the updated rows. If
+  /// Updates all [Permission]s in the list and returns the updated rows. If
   /// [columns] is provided, only those columns will be updated. Defaults to
   /// all columns.
   /// This is an atomic operation, meaning that if one of the rows fails to
   /// update, none of the rows will be updated.
-  Future<List<Customer>> update(
+  Future<List<Permission>> update(
     _i1.Session session,
-    List<Customer> rows, {
-    _i1.ColumnSelections<CustomerTable>? columns,
+    List<Permission> rows, {
+    _i1.ColumnSelections<PermissionTable>? columns,
     _i1.Transaction? transaction,
   }) async {
-    return session.db.update<Customer>(
+    return session.db.update<Permission>(
       rows,
-      columns: columns?.call(Customer.t),
+      columns: columns?.call(Permission.t),
       transaction: transaction,
     );
   }
 
-  /// Updates a single [Customer]. The row needs to have its id set.
+  /// Updates a single [Permission]. The row needs to have its id set.
   /// Optionally, a list of [columns] can be provided to only update those
   /// columns. Defaults to all columns.
-  Future<Customer> updateRow(
+  Future<Permission> updateRow(
     _i1.Session session,
-    Customer row, {
-    _i1.ColumnSelections<CustomerTable>? columns,
+    Permission row, {
+    _i1.ColumnSelections<PermissionTable>? columns,
     _i1.Transaction? transaction,
   }) async {
-    return session.db.updateRow<Customer>(
+    return session.db.updateRow<Permission>(
       row,
-      columns: columns?.call(Customer.t),
+      columns: columns?.call(Permission.t),
       transaction: transaction,
     );
   }
 
-  /// Deletes all [Customer]s in the list and returns the deleted rows.
+  /// Deletes all [Permission]s in the list and returns the deleted rows.
   /// This is an atomic operation, meaning that if one of the rows fail to
   /// be deleted, none of the rows will be deleted.
-  Future<List<Customer>> delete(
+  Future<List<Permission>> delete(
     _i1.Session session,
-    List<Customer> rows, {
+    List<Permission> rows, {
     _i1.Transaction? transaction,
   }) async {
-    return session.db.delete<Customer>(
+    return session.db.delete<Permission>(
       rows,
       transaction: transaction,
     );
   }
 
-  /// Deletes a single [Customer].
-  Future<Customer> deleteRow(
+  /// Deletes a single [Permission].
+  Future<Permission> deleteRow(
     _i1.Session session,
-    Customer row, {
+    Permission row, {
     _i1.Transaction? transaction,
   }) async {
-    return session.db.deleteRow<Customer>(
+    return session.db.deleteRow<Permission>(
       row,
       transaction: transaction,
     );
   }
 
   /// Deletes all rows matching the [where] expression.
-  Future<List<Customer>> deleteWhere(
+  Future<List<Permission>> deleteWhere(
     _i1.Session session, {
-    required _i1.WhereExpressionBuilder<CustomerTable> where,
+    required _i1.WhereExpressionBuilder<PermissionTable> where,
     _i1.Transaction? transaction,
   }) async {
-    return session.db.deleteWhere<Customer>(
-      where: where(Customer.t),
+    return session.db.deleteWhere<Permission>(
+      where: where(Permission.t),
       transaction: transaction,
     );
   }
@@ -451,12 +432,12 @@ class CustomerRepository {
   /// will return the count of all rows in the table.
   Future<int> count(
     _i1.Session session, {
-    _i1.WhereExpressionBuilder<CustomerTable>? where,
+    _i1.WhereExpressionBuilder<PermissionTable>? where,
     int? limit,
     _i1.Transaction? transaction,
   }) async {
-    return session.db.count<Customer>(
-      where: where?.call(Customer.t),
+    return session.db.count<Permission>(
+      where: where?.call(Permission.t),
       limit: limit,
       transaction: transaction,
     );

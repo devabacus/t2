@@ -15,24 +15,27 @@ import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i3;
 import 'greeting.dart' as _i4;
 import 'category.dart' as _i5;
 import 'category_sync_event.dart' as _i6;
-import 'customer.dart' as _i7;
-import 'sync_event_type.dart' as _i8;
-import 'tag.dart' as _i9;
-import 'tag_sync_event.dart' as _i10;
-import 'task.dart' as _i11;
-import 'task_sync_event.dart' as _i12;
-import 'task_tag_map.dart' as _i13;
-import 'task_tag_map_sync_event.dart' as _i14;
-import 'test_data.dart' as _i15;
-import 'package:t2_server/src/generated/category.dart' as _i16;
-import 'package:t2_server/src/generated/tag.dart' as _i17;
-import 'package:t2_server/src/generated/task.dart' as _i18;
-import 'package:t2_server/src/generated/task_tag_map.dart' as _i19;
-import 'package:t2_server/src/generated/test_data.dart' as _i20;
+import 'sync_event_type.dart' as _i7;
+import 'tag.dart' as _i8;
+import 'tag_sync_event.dart' as _i9;
+import 'task.dart' as _i10;
+import 'task_sync_event.dart' as _i11;
+import 'task_tag_map.dart' as _i12;
+import 'task_tag_map_sync_event.dart' as _i13;
+import 'test_data.dart' as _i14;
+import 'user/customer.dart' as _i15;
+import 'user/customer_user.dart' as _i16;
+import 'user/permission.dart' as _i17;
+import 'user/role.dart' as _i18;
+import 'user/role_permission.dart' as _i19;
+import 'user/user_session_data.dart' as _i20;
+import 'package:t2_server/src/generated/category.dart' as _i21;
+import 'package:t2_server/src/generated/tag.dart' as _i22;
+import 'package:t2_server/src/generated/task.dart' as _i23;
+import 'package:t2_server/src/generated/test_data.dart' as _i24;
 export 'greeting.dart';
 export 'category.dart';
 export 'category_sync_event.dart';
-export 'customer.dart';
 export 'sync_event_type.dart';
 export 'tag.dart';
 export 'tag_sync_event.dart';
@@ -41,6 +44,12 @@ export 'task_sync_event.dart';
 export 'task_tag_map.dart';
 export 'task_tag_map_sync_event.dart';
 export 'test_data.dart';
+export 'user/customer.dart';
+export 'user/customer_user.dart';
+export 'user/permission.dart';
+export 'user/role.dart';
+export 'user/role_permission.dart';
+export 'user/user_session_data.dart';
 
 class Protocol extends _i1.SerializationManagerServer {
   Protocol._();
@@ -64,23 +73,35 @@ class Protocol extends _i1.SerializationManagerServer {
           columnDefault: 'gen_random_uuid_v7()',
         ),
         _i2.ColumnDefinition(
+          name: 'userId',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _i2.ColumnDefinition(
+          name: 'customerId',
+          columnType: _i2.ColumnType.uuid,
+          isNullable: false,
+          dartType: 'UuidValue',
+        ),
+        _i2.ColumnDefinition(
+          name: 'createdAt',
+          columnType: _i2.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+        ),
+        _i2.ColumnDefinition(
+          name: 'lastModified',
+          columnType: _i2.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+        ),
+        _i2.ColumnDefinition(
           name: 'isDeleted',
           columnType: _i2.ColumnType.boolean,
           isNullable: false,
           dartType: 'bool',
           columnDefault: 'false',
-        ),
-        _i2.ColumnDefinition(
-          name: 'lastModified',
-          columnType: _i2.ColumnType.timestampWithoutTimeZone,
-          isNullable: true,
-          dartType: 'DateTime?',
-        ),
-        _i2.ColumnDefinition(
-          name: 'userId',
-          columnType: _i2.ColumnType.bigint,
-          isNullable: false,
-          dartType: 'int',
         ),
         _i2.ColumnDefinition(
           name: 'title',
@@ -89,7 +110,18 @@ class Protocol extends _i1.SerializationManagerServer {
           dartType: 'String',
         ),
       ],
-      foreignKeys: [],
+      foreignKeys: [
+        _i2.ForeignKeyDefinition(
+          constraintName: 'category_fk_0',
+          columns: ['customerId'],
+          referenceTable: 'customer',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _i2.ForeignKeyAction.noAction,
+          onDelete: _i2.ForeignKeyAction.cascade,
+          matchType: null,
+        )
+      ],
       indexes: [
         _i2.IndexDefinition(
           indexName: 'category_pkey',
@@ -121,6 +153,31 @@ class Protocol extends _i1.SerializationManagerServer {
           columnDefault: 'gen_random_uuid_v7()',
         ),
         _i2.ColumnDefinition(
+          name: 'userId',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _i2.ColumnDefinition(
+          name: 'createdAt',
+          columnType: _i2.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+        ),
+        _i2.ColumnDefinition(
+          name: 'lastModified',
+          columnType: _i2.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+        ),
+        _i2.ColumnDefinition(
+          name: 'isDeleted',
+          columnType: _i2.ColumnType.boolean,
+          isNullable: false,
+          dartType: 'bool',
+          columnDefault: 'false',
+        ),
+        _i2.ColumnDefinition(
           name: 'name',
           columnType: _i2.ColumnType.text,
           isNullable: false,
@@ -144,8 +201,129 @@ class Protocol extends _i1.SerializationManagerServer {
           isNullable: true,
           dartType: 'String?',
         ),
+      ],
+      foreignKeys: [],
+      indexes: [
+        _i2.IndexDefinition(
+          indexName: 'customer_pkey',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'id',
+            )
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: true,
+        )
+      ],
+      managed: true,
+    ),
+    _i2.TableDefinition(
+      name: 'customer_user',
+      dartName: 'CustomerUser',
+      schema: 'public',
+      module: 't2',
+      columns: [
+        _i2.ColumnDefinition(
+          name: 'id',
+          columnType: _i2.ColumnType.uuid,
+          isNullable: false,
+          dartType: 'UuidValue?',
+          columnDefault: 'gen_random_uuid_v7()',
+        ),
+        _i2.ColumnDefinition(
+          name: 'customerId',
+          columnType: _i2.ColumnType.uuid,
+          isNullable: false,
+          dartType: 'UuidValue',
+        ),
+        _i2.ColumnDefinition(
+          name: 'userId',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _i2.ColumnDefinition(
+          name: 'roleId',
+          columnType: _i2.ColumnType.uuid,
+          isNullable: false,
+          dartType: 'UuidValue',
+        ),
+      ],
+      foreignKeys: [
+        _i2.ForeignKeyDefinition(
+          constraintName: 'customer_user_fk_0',
+          columns: ['customerId'],
+          referenceTable: 'customer',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _i2.ForeignKeyAction.noAction,
+          onDelete: _i2.ForeignKeyAction.cascade,
+          matchType: null,
+        ),
+        _i2.ForeignKeyDefinition(
+          constraintName: 'customer_user_fk_1',
+          columns: ['roleId'],
+          referenceTable: 'role',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _i2.ForeignKeyAction.noAction,
+          onDelete: _i2.ForeignKeyAction.cascade,
+          matchType: null,
+        ),
+      ],
+      indexes: [
+        _i2.IndexDefinition(
+          indexName: 'customer_user_pkey',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'id',
+            )
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: true,
+        )
+      ],
+      managed: true,
+    ),
+    _i2.TableDefinition(
+      name: 'permission',
+      dartName: 'Permission',
+      schema: 'public',
+      module: 't2',
+      columns: [
+        _i2.ColumnDefinition(
+          name: 'id',
+          columnType: _i2.ColumnType.uuid,
+          isNullable: false,
+          dartType: 'UuidValue?',
+          columnDefault: 'gen_random_uuid_v7()',
+        ),
+        _i2.ColumnDefinition(
+          name: 'key',
+          columnType: _i2.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _i2.ColumnDefinition(
+          name: 'description',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
         _i2.ColumnDefinition(
           name: 'createdAt',
+          columnType: _i2.ColumnType.timestampWithoutTimeZone,
+          isNullable: true,
+          dartType: 'DateTime?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'updatedAt',
           columnType: _i2.ColumnType.timestampWithoutTimeZone,
           isNullable: true,
           dartType: 'DateTime?',
@@ -154,7 +332,145 @@ class Protocol extends _i1.SerializationManagerServer {
       foreignKeys: [],
       indexes: [
         _i2.IndexDefinition(
-          indexName: 'customer_pkey',
+          indexName: 'permission_pkey',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'id',
+            )
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: true,
+        )
+      ],
+      managed: true,
+    ),
+    _i2.TableDefinition(
+      name: 'role',
+      dartName: 'Role',
+      schema: 'public',
+      module: 't2',
+      columns: [
+        _i2.ColumnDefinition(
+          name: 'id',
+          columnType: _i2.ColumnType.uuid,
+          isNullable: false,
+          dartType: 'UuidValue?',
+          columnDefault: 'gen_random_uuid_v7()',
+        ),
+        _i2.ColumnDefinition(
+          name: 'customerId',
+          columnType: _i2.ColumnType.uuid,
+          isNullable: false,
+          dartType: 'UuidValue',
+        ),
+        _i2.ColumnDefinition(
+          name: 'name',
+          columnType: _i2.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _i2.ColumnDefinition(
+          name: 'description',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'createdAt',
+          columnType: _i2.ColumnType.timestampWithoutTimeZone,
+          isNullable: true,
+          dartType: 'DateTime?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'updatedAt',
+          columnType: _i2.ColumnType.timestampWithoutTimeZone,
+          isNullable: true,
+          dartType: 'DateTime?',
+        ),
+      ],
+      foreignKeys: [
+        _i2.ForeignKeyDefinition(
+          constraintName: 'role_fk_0',
+          columns: ['customerId'],
+          referenceTable: 'customer',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _i2.ForeignKeyAction.noAction,
+          onDelete: _i2.ForeignKeyAction.cascade,
+          matchType: null,
+        )
+      ],
+      indexes: [
+        _i2.IndexDefinition(
+          indexName: 'role_pkey',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'id',
+            )
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: true,
+        )
+      ],
+      managed: true,
+    ),
+    _i2.TableDefinition(
+      name: 'role_permission',
+      dartName: 'RolePermission',
+      schema: 'public',
+      module: 't2',
+      columns: [
+        _i2.ColumnDefinition(
+          name: 'id',
+          columnType: _i2.ColumnType.uuid,
+          isNullable: false,
+          dartType: 'UuidValue?',
+          columnDefault: 'gen_random_uuid_v7()',
+        ),
+        _i2.ColumnDefinition(
+          name: 'roleId',
+          columnType: _i2.ColumnType.uuid,
+          isNullable: false,
+          dartType: 'UuidValue',
+        ),
+        _i2.ColumnDefinition(
+          name: 'permissionId',
+          columnType: _i2.ColumnType.uuid,
+          isNullable: false,
+          dartType: 'UuidValue',
+        ),
+      ],
+      foreignKeys: [
+        _i2.ForeignKeyDefinition(
+          constraintName: 'role_permission_fk_0',
+          columns: ['roleId'],
+          referenceTable: 'role',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _i2.ForeignKeyAction.noAction,
+          onDelete: _i2.ForeignKeyAction.cascade,
+          matchType: null,
+        ),
+        _i2.ForeignKeyDefinition(
+          constraintName: 'role_permission_fk_1',
+          columns: ['permissionId'],
+          referenceTable: 'permission',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _i2.ForeignKeyAction.noAction,
+          onDelete: _i2.ForeignKeyAction.cascade,
+          matchType: null,
+        ),
+      ],
+      indexes: [
+        _i2.IndexDefinition(
+          indexName: 'role_permission_pkey',
           tableSpace: null,
           elements: [
             _i2.IndexElementDefinition(
@@ -183,23 +499,35 @@ class Protocol extends _i1.SerializationManagerServer {
           columnDefault: 'gen_random_uuid_v7()',
         ),
         _i2.ColumnDefinition(
+          name: 'userId',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _i2.ColumnDefinition(
+          name: 'customerId',
+          columnType: _i2.ColumnType.uuid,
+          isNullable: false,
+          dartType: 'UuidValue',
+        ),
+        _i2.ColumnDefinition(
+          name: 'createdAt',
+          columnType: _i2.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+        ),
+        _i2.ColumnDefinition(
+          name: 'lastModified',
+          columnType: _i2.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+        ),
+        _i2.ColumnDefinition(
           name: 'isDeleted',
           columnType: _i2.ColumnType.boolean,
           isNullable: false,
           dartType: 'bool',
           columnDefault: 'false',
-        ),
-        _i2.ColumnDefinition(
-          name: 'lastModified',
-          columnType: _i2.ColumnType.timestampWithoutTimeZone,
-          isNullable: true,
-          dartType: 'DateTime?',
-        ),
-        _i2.ColumnDefinition(
-          name: 'userId',
-          columnType: _i2.ColumnType.bigint,
-          isNullable: false,
-          dartType: 'int',
         ),
         _i2.ColumnDefinition(
           name: 'title',
@@ -208,7 +536,18 @@ class Protocol extends _i1.SerializationManagerServer {
           dartType: 'String',
         ),
       ],
-      foreignKeys: [],
+      foreignKeys: [
+        _i2.ForeignKeyDefinition(
+          constraintName: 'tag_fk_0',
+          columns: ['customerId'],
+          referenceTable: 'customer',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _i2.ForeignKeyAction.noAction,
+          onDelete: _i2.ForeignKeyAction.cascade,
+          matchType: null,
+        )
+      ],
       indexes: [
         _i2.IndexDefinition(
           indexName: 'tag_pkey',
@@ -240,23 +579,35 @@ class Protocol extends _i1.SerializationManagerServer {
           columnDefault: 'gen_random_uuid_v7()',
         ),
         _i2.ColumnDefinition(
+          name: 'userId',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _i2.ColumnDefinition(
+          name: 'customerId',
+          columnType: _i2.ColumnType.uuid,
+          isNullable: false,
+          dartType: 'UuidValue',
+        ),
+        _i2.ColumnDefinition(
+          name: 'createdAt',
+          columnType: _i2.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+        ),
+        _i2.ColumnDefinition(
+          name: 'lastModified',
+          columnType: _i2.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+        ),
+        _i2.ColumnDefinition(
           name: 'isDeleted',
           columnType: _i2.ColumnType.boolean,
           isNullable: false,
           dartType: 'bool',
           columnDefault: 'false',
-        ),
-        _i2.ColumnDefinition(
-          name: 'lastModified',
-          columnType: _i2.ColumnType.timestampWithoutTimeZone,
-          isNullable: true,
-          dartType: 'DateTime?',
-        ),
-        _i2.ColumnDefinition(
-          name: 'userId',
-          columnType: _i2.ColumnType.bigint,
-          isNullable: false,
-          dartType: 'int',
         ),
         _i2.ColumnDefinition(
           name: 'title',
@@ -280,6 +631,16 @@ class Protocol extends _i1.SerializationManagerServer {
       foreignKeys: [
         _i2.ForeignKeyDefinition(
           constraintName: 'task_fk_0',
+          columns: ['customerId'],
+          referenceTable: 'customer',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _i2.ForeignKeyAction.noAction,
+          onDelete: _i2.ForeignKeyAction.cascade,
+          matchType: null,
+        ),
+        _i2.ForeignKeyDefinition(
+          constraintName: 'task_fk_1',
           columns: ['categoryId'],
           referenceTable: 'category',
           referenceTableSchema: 'public',
@@ -287,7 +648,7 @@ class Protocol extends _i1.SerializationManagerServer {
           onUpdate: _i2.ForeignKeyAction.noAction,
           onDelete: _i2.ForeignKeyAction.setNull,
           matchType: null,
-        )
+        ),
       ],
       indexes: [
         _i2.IndexDefinition(
@@ -320,6 +681,37 @@ class Protocol extends _i1.SerializationManagerServer {
           columnDefault: 'gen_random_uuid_v7()',
         ),
         _i2.ColumnDefinition(
+          name: 'userId',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _i2.ColumnDefinition(
+          name: 'customerId',
+          columnType: _i2.ColumnType.uuid,
+          isNullable: false,
+          dartType: 'UuidValue',
+        ),
+        _i2.ColumnDefinition(
+          name: 'createdAt',
+          columnType: _i2.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+        ),
+        _i2.ColumnDefinition(
+          name: 'lastModified',
+          columnType: _i2.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+        ),
+        _i2.ColumnDefinition(
+          name: 'isDeleted',
+          columnType: _i2.ColumnType.boolean,
+          isNullable: false,
+          dartType: 'bool',
+          columnDefault: 'false',
+        ),
+        _i2.ColumnDefinition(
           name: 'taskId',
           columnType: _i2.ColumnType.uuid,
           isNullable: false,
@@ -330,25 +722,6 @@ class Protocol extends _i1.SerializationManagerServer {
           columnType: _i2.ColumnType.uuid,
           isNullable: false,
           dartType: 'UuidValue',
-        ),
-        _i2.ColumnDefinition(
-          name: 'userId',
-          columnType: _i2.ColumnType.bigint,
-          isNullable: false,
-          dartType: 'int',
-        ),
-        _i2.ColumnDefinition(
-          name: 'lastModified',
-          columnType: _i2.ColumnType.timestampWithoutTimeZone,
-          isNullable: true,
-          dartType: 'DateTime?',
-        ),
-        _i2.ColumnDefinition(
-          name: 'isDeleted',
-          columnType: _i2.ColumnType.boolean,
-          isNullable: false,
-          dartType: 'bool',
-          columnDefault: 'false',
         ),
         _i2.ColumnDefinition(
           name: '_tagTasktagmapsTagId',
@@ -366,26 +739,36 @@ class Protocol extends _i1.SerializationManagerServer {
       foreignKeys: [
         _i2.ForeignKeyDefinition(
           constraintName: 'task_tag_map_fk_0',
+          columns: ['customerId'],
+          referenceTable: 'customer',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _i2.ForeignKeyAction.noAction,
+          onDelete: _i2.ForeignKeyAction.cascade,
+          matchType: null,
+        ),
+        _i2.ForeignKeyDefinition(
+          constraintName: 'task_tag_map_fk_1',
           columns: ['taskId'],
           referenceTable: 'task',
           referenceTableSchema: 'public',
           referenceColumns: ['id'],
           onUpdate: _i2.ForeignKeyAction.noAction,
-          onDelete: _i2.ForeignKeyAction.noAction,
+          onDelete: _i2.ForeignKeyAction.cascade,
           matchType: null,
         ),
         _i2.ForeignKeyDefinition(
-          constraintName: 'task_tag_map_fk_1',
+          constraintName: 'task_tag_map_fk_2',
           columns: ['tagId'],
           referenceTable: 'tag',
           referenceTableSchema: 'public',
           referenceColumns: ['id'],
           onUpdate: _i2.ForeignKeyAction.noAction,
-          onDelete: _i2.ForeignKeyAction.noAction,
+          onDelete: _i2.ForeignKeyAction.cascade,
           matchType: null,
         ),
         _i2.ForeignKeyDefinition(
-          constraintName: 'task_tag_map_fk_2',
+          constraintName: 'task_tag_map_fk_3',
           columns: ['_tagTasktagmapsTagId'],
           referenceTable: 'tag',
           referenceTableSchema: 'public',
@@ -395,7 +778,7 @@ class Protocol extends _i1.SerializationManagerServer {
           matchType: null,
         ),
         _i2.ForeignKeyDefinition(
-          constraintName: 'task_tag_map_fk_3',
+          constraintName: 'task_tag_map_fk_4',
           columns: ['_taskTasktagmapsTaskId'],
           referenceTable: 'task',
           referenceTableSchema: 'public',
@@ -500,32 +883,47 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i6.CategorySyncEvent) {
       return _i6.CategorySyncEvent.fromJson(data) as T;
     }
-    if (t == _i7.Customer) {
-      return _i7.Customer.fromJson(data) as T;
+    if (t == _i7.SyncEventType) {
+      return _i7.SyncEventType.fromJson(data) as T;
     }
-    if (t == _i8.SyncEventType) {
-      return _i8.SyncEventType.fromJson(data) as T;
+    if (t == _i8.Tag) {
+      return _i8.Tag.fromJson(data) as T;
     }
-    if (t == _i9.Tag) {
-      return _i9.Tag.fromJson(data) as T;
+    if (t == _i9.TagSyncEvent) {
+      return _i9.TagSyncEvent.fromJson(data) as T;
     }
-    if (t == _i10.TagSyncEvent) {
-      return _i10.TagSyncEvent.fromJson(data) as T;
+    if (t == _i10.Task) {
+      return _i10.Task.fromJson(data) as T;
     }
-    if (t == _i11.Task) {
-      return _i11.Task.fromJson(data) as T;
+    if (t == _i11.TaskSyncEvent) {
+      return _i11.TaskSyncEvent.fromJson(data) as T;
     }
-    if (t == _i12.TaskSyncEvent) {
-      return _i12.TaskSyncEvent.fromJson(data) as T;
+    if (t == _i12.TaskTagMap) {
+      return _i12.TaskTagMap.fromJson(data) as T;
     }
-    if (t == _i13.TaskTagMap) {
-      return _i13.TaskTagMap.fromJson(data) as T;
+    if (t == _i13.TaskTagMapSyncEvent) {
+      return _i13.TaskTagMapSyncEvent.fromJson(data) as T;
     }
-    if (t == _i14.TaskTagMapSyncEvent) {
-      return _i14.TaskTagMapSyncEvent.fromJson(data) as T;
+    if (t == _i14.TestData) {
+      return _i14.TestData.fromJson(data) as T;
     }
-    if (t == _i15.TestData) {
-      return _i15.TestData.fromJson(data) as T;
+    if (t == _i15.Customer) {
+      return _i15.Customer.fromJson(data) as T;
+    }
+    if (t == _i16.CustomerUser) {
+      return _i16.CustomerUser.fromJson(data) as T;
+    }
+    if (t == _i17.Permission) {
+      return _i17.Permission.fromJson(data) as T;
+    }
+    if (t == _i18.Role) {
+      return _i18.Role.fromJson(data) as T;
+    }
+    if (t == _i19.RolePermission) {
+      return _i19.RolePermission.fromJson(data) as T;
+    }
+    if (t == _i20.UserSessionData) {
+      return _i20.UserSessionData.fromJson(data) as T;
     }
     if (t == _i1.getType<_i4.Greeting?>()) {
       return (data != null ? _i4.Greeting.fromJson(data) : null) as T;
@@ -536,60 +934,74 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i1.getType<_i6.CategorySyncEvent?>()) {
       return (data != null ? _i6.CategorySyncEvent.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i7.Customer?>()) {
-      return (data != null ? _i7.Customer.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i7.SyncEventType?>()) {
+      return (data != null ? _i7.SyncEventType.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i8.SyncEventType?>()) {
-      return (data != null ? _i8.SyncEventType.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i8.Tag?>()) {
+      return (data != null ? _i8.Tag.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i9.Tag?>()) {
-      return (data != null ? _i9.Tag.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i9.TagSyncEvent?>()) {
+      return (data != null ? _i9.TagSyncEvent.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i10.TagSyncEvent?>()) {
-      return (data != null ? _i10.TagSyncEvent.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i10.Task?>()) {
+      return (data != null ? _i10.Task.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i11.Task?>()) {
-      return (data != null ? _i11.Task.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i11.TaskSyncEvent?>()) {
+      return (data != null ? _i11.TaskSyncEvent.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i12.TaskSyncEvent?>()) {
-      return (data != null ? _i12.TaskSyncEvent.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i12.TaskTagMap?>()) {
+      return (data != null ? _i12.TaskTagMap.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i13.TaskTagMap?>()) {
-      return (data != null ? _i13.TaskTagMap.fromJson(data) : null) as T;
-    }
-    if (t == _i1.getType<_i14.TaskTagMapSyncEvent?>()) {
-      return (data != null ? _i14.TaskTagMapSyncEvent.fromJson(data) : null)
+    if (t == _i1.getType<_i13.TaskTagMapSyncEvent?>()) {
+      return (data != null ? _i13.TaskTagMapSyncEvent.fromJson(data) : null)
           as T;
     }
-    if (t == _i1.getType<_i15.TestData?>()) {
-      return (data != null ? _i15.TestData.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i14.TestData?>()) {
+      return (data != null ? _i14.TestData.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<List<_i13.TaskTagMap>?>()) {
+    if (t == _i1.getType<_i15.Customer?>()) {
+      return (data != null ? _i15.Customer.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i16.CustomerUser?>()) {
+      return (data != null ? _i16.CustomerUser.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i17.Permission?>()) {
+      return (data != null ? _i17.Permission.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i18.Role?>()) {
+      return (data != null ? _i18.Role.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i19.RolePermission?>()) {
+      return (data != null ? _i19.RolePermission.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i20.UserSessionData?>()) {
+      return (data != null ? _i20.UserSessionData.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<List<_i12.TaskTagMap>?>()) {
       return (data != null
-          ? (data as List).map((e) => deserialize<_i13.TaskTagMap>(e)).toList()
+          ? (data as List).map((e) => deserialize<_i12.TaskTagMap>(e)).toList()
           : null) as T;
     }
-    if (t == _i1.getType<List<_i13.TaskTagMap>?>()) {
+    if (t == _i1.getType<List<_i12.TaskTagMap>?>()) {
       return (data != null
-          ? (data as List).map((e) => deserialize<_i13.TaskTagMap>(e)).toList()
+          ? (data as List).map((e) => deserialize<_i12.TaskTagMap>(e)).toList()
           : null) as T;
     }
-    if (t == List<_i16.Category>) {
-      return (data as List).map((e) => deserialize<_i16.Category>(e)).toList()
+    if (t == List<String>) {
+      return (data as List).map((e) => deserialize<String>(e)).toList() as T;
+    }
+    if (t == List<_i21.Category>) {
+      return (data as List).map((e) => deserialize<_i21.Category>(e)).toList()
           as T;
     }
-    if (t == List<_i17.Tag>) {
-      return (data as List).map((e) => deserialize<_i17.Tag>(e)).toList() as T;
+    if (t == List<_i22.Tag>) {
+      return (data as List).map((e) => deserialize<_i22.Tag>(e)).toList() as T;
     }
-    if (t == List<_i18.Task>) {
-      return (data as List).map((e) => deserialize<_i18.Task>(e)).toList() as T;
+    if (t == List<_i23.Task>) {
+      return (data as List).map((e) => deserialize<_i23.Task>(e)).toList() as T;
     }
-    if (t == List<_i19.TaskTagMap>) {
-      return (data as List).map((e) => deserialize<_i19.TaskTagMap>(e)).toList()
-          as T;
-    }
-    if (t == List<_i20.TestData>) {
-      return (data as List).map((e) => deserialize<_i20.TestData>(e)).toList()
+    if (t == List<_i24.TestData>) {
+      return (data as List).map((e) => deserialize<_i24.TestData>(e)).toList()
           as T;
     }
     try {
@@ -614,32 +1026,47 @@ class Protocol extends _i1.SerializationManagerServer {
     if (data is _i6.CategorySyncEvent) {
       return 'CategorySyncEvent';
     }
-    if (data is _i7.Customer) {
-      return 'Customer';
-    }
-    if (data is _i8.SyncEventType) {
+    if (data is _i7.SyncEventType) {
       return 'SyncEventType';
     }
-    if (data is _i9.Tag) {
+    if (data is _i8.Tag) {
       return 'Tag';
     }
-    if (data is _i10.TagSyncEvent) {
+    if (data is _i9.TagSyncEvent) {
       return 'TagSyncEvent';
     }
-    if (data is _i11.Task) {
+    if (data is _i10.Task) {
       return 'Task';
     }
-    if (data is _i12.TaskSyncEvent) {
+    if (data is _i11.TaskSyncEvent) {
       return 'TaskSyncEvent';
     }
-    if (data is _i13.TaskTagMap) {
+    if (data is _i12.TaskTagMap) {
       return 'TaskTagMap';
     }
-    if (data is _i14.TaskTagMapSyncEvent) {
+    if (data is _i13.TaskTagMapSyncEvent) {
       return 'TaskTagMapSyncEvent';
     }
-    if (data is _i15.TestData) {
+    if (data is _i14.TestData) {
       return 'TestData';
+    }
+    if (data is _i15.Customer) {
+      return 'Customer';
+    }
+    if (data is _i16.CustomerUser) {
+      return 'CustomerUser';
+    }
+    if (data is _i17.Permission) {
+      return 'Permission';
+    }
+    if (data is _i18.Role) {
+      return 'Role';
+    }
+    if (data is _i19.RolePermission) {
+      return 'RolePermission';
+    }
+    if (data is _i20.UserSessionData) {
+      return 'UserSessionData';
     }
     className = _i2.Protocol().getClassNameForObject(data);
     if (className != null) {
@@ -667,32 +1094,47 @@ class Protocol extends _i1.SerializationManagerServer {
     if (dataClassName == 'CategorySyncEvent') {
       return deserialize<_i6.CategorySyncEvent>(data['data']);
     }
-    if (dataClassName == 'Customer') {
-      return deserialize<_i7.Customer>(data['data']);
-    }
     if (dataClassName == 'SyncEventType') {
-      return deserialize<_i8.SyncEventType>(data['data']);
+      return deserialize<_i7.SyncEventType>(data['data']);
     }
     if (dataClassName == 'Tag') {
-      return deserialize<_i9.Tag>(data['data']);
+      return deserialize<_i8.Tag>(data['data']);
     }
     if (dataClassName == 'TagSyncEvent') {
-      return deserialize<_i10.TagSyncEvent>(data['data']);
+      return deserialize<_i9.TagSyncEvent>(data['data']);
     }
     if (dataClassName == 'Task') {
-      return deserialize<_i11.Task>(data['data']);
+      return deserialize<_i10.Task>(data['data']);
     }
     if (dataClassName == 'TaskSyncEvent') {
-      return deserialize<_i12.TaskSyncEvent>(data['data']);
+      return deserialize<_i11.TaskSyncEvent>(data['data']);
     }
     if (dataClassName == 'TaskTagMap') {
-      return deserialize<_i13.TaskTagMap>(data['data']);
+      return deserialize<_i12.TaskTagMap>(data['data']);
     }
     if (dataClassName == 'TaskTagMapSyncEvent') {
-      return deserialize<_i14.TaskTagMapSyncEvent>(data['data']);
+      return deserialize<_i13.TaskTagMapSyncEvent>(data['data']);
     }
     if (dataClassName == 'TestData') {
-      return deserialize<_i15.TestData>(data['data']);
+      return deserialize<_i14.TestData>(data['data']);
+    }
+    if (dataClassName == 'Customer') {
+      return deserialize<_i15.Customer>(data['data']);
+    }
+    if (dataClassName == 'CustomerUser') {
+      return deserialize<_i16.CustomerUser>(data['data']);
+    }
+    if (dataClassName == 'Permission') {
+      return deserialize<_i17.Permission>(data['data']);
+    }
+    if (dataClassName == 'Role') {
+      return deserialize<_i18.Role>(data['data']);
+    }
+    if (dataClassName == 'RolePermission') {
+      return deserialize<_i19.RolePermission>(data['data']);
+    }
+    if (dataClassName == 'UserSessionData') {
+      return deserialize<_i20.UserSessionData>(data['data']);
     }
     if (dataClassName.startsWith('serverpod.')) {
       data['className'] = dataClassName.substring(10);
@@ -722,16 +1164,24 @@ class Protocol extends _i1.SerializationManagerServer {
     switch (t) {
       case _i5.Category:
         return _i5.Category.t;
-      case _i7.Customer:
-        return _i7.Customer.t;
-      case _i9.Tag:
-        return _i9.Tag.t;
-      case _i11.Task:
-        return _i11.Task.t;
-      case _i13.TaskTagMap:
-        return _i13.TaskTagMap.t;
-      case _i15.TestData:
-        return _i15.TestData.t;
+      case _i8.Tag:
+        return _i8.Tag.t;
+      case _i10.Task:
+        return _i10.Task.t;
+      case _i12.TaskTagMap:
+        return _i12.TaskTagMap.t;
+      case _i14.TestData:
+        return _i14.TestData.t;
+      case _i15.Customer:
+        return _i15.Customer.t;
+      case _i16.CustomerUser:
+        return _i16.CustomerUser.t;
+      case _i17.Permission:
+        return _i17.Permission.t;
+      case _i18.Role:
+        return _i18.Role.t;
+      case _i19.RolePermission:
+        return _i19.RolePermission.t;
     }
     return null;
   }

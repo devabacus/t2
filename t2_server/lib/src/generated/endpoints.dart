@@ -13,15 +13,14 @@ import 'package:serverpod/serverpod.dart' as _i1;
 import '../endpoints/category_endpoint.dart' as _i2;
 import '../endpoints/tag_endpoint.dart' as _i3;
 import '../endpoints/task_endpoint.dart' as _i4;
-import '../endpoints/task_tag_map_endpoint.dart' as _i5;
-import '../endpoints/test_data_endpoint.dart' as _i6;
-import '../greeting_endpoint.dart' as _i7;
-import 'package:t2_server/src/generated/category.dart' as _i8;
-import 'package:uuid/uuid_value.dart' as _i9;
-import 'package:t2_server/src/generated/tag.dart' as _i10;
-import 'package:t2_server/src/generated/task.dart' as _i11;
-import 'package:t2_server/src/generated/test_data.dart' as _i12;
-import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i13;
+import '../endpoints/test_data_endpoint.dart' as _i5;
+import '../greeting_endpoint.dart' as _i6;
+import 'package:t2_server/src/generated/category.dart' as _i7;
+import 'package:uuid/uuid_value.dart' as _i8;
+import 'package:t2_server/src/generated/tag.dart' as _i9;
+import 'package:t2_server/src/generated/task.dart' as _i10;
+import 'package:t2_server/src/generated/test_data.dart' as _i11;
+import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i12;
 
 class Endpoints extends _i1.EndpointDispatch {
   @override
@@ -45,19 +44,13 @@ class Endpoints extends _i1.EndpointDispatch {
           'task',
           null,
         ),
-      'taskTagMap': _i5.TaskTagMapEndpoint()
-        ..initialize(
-          server,
-          'taskTagMap',
-          null,
-        ),
-      'testData': _i6.TestDataEndpoint()
+      'testData': _i5.TestDataEndpoint()
         ..initialize(
           server,
           'testData',
           null,
         ),
-      'greeting': _i7.GreetingEndpoint()
+      'greeting': _i6.GreetingEndpoint()
         ..initialize(
           server,
           'greeting',
@@ -73,7 +66,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'category': _i1.ParameterDescription(
               name: 'category',
-              type: _i1.getType<_i8.Category>(),
+              type: _i1.getType<_i7.Category>(),
               nullable: false,
             )
           },
@@ -109,7 +102,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'id': _i1.ParameterDescription(
               name: 'id',
-              type: _i1.getType<_i9.UuidValue>(),
+              type: _i1.getType<_i8.UuidValue>(),
               nullable: false,
             )
           },
@@ -146,7 +139,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'category': _i1.ParameterDescription(
               name: 'category',
-              type: _i1.getType<_i8.Category>(),
+              type: _i1.getType<_i7.Category>(),
               nullable: false,
             )
           },
@@ -164,7 +157,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'id': _i1.ParameterDescription(
               name: 'id',
-              type: _i1.getType<_i9.UuidValue>(),
+              type: _i1.getType<_i8.UuidValue>(),
               nullable: false,
             )
           },
@@ -201,7 +194,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'tag': _i1.ParameterDescription(
               name: 'tag',
-              type: _i1.getType<_i10.Tag>(),
+              type: _i1.getType<_i9.Tag>(),
               nullable: false,
             )
           },
@@ -237,7 +230,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'id': _i1.ParameterDescription(
               name: 'id',
-              type: _i1.getType<_i9.UuidValue>(),
+              type: _i1.getType<_i8.UuidValue>(),
               nullable: false,
             )
           },
@@ -273,7 +266,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'tag': _i1.ParameterDescription(
               name: 'tag',
-              type: _i1.getType<_i10.Tag>(),
+              type: _i1.getType<_i9.Tag>(),
               nullable: false,
             )
           },
@@ -291,7 +284,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'id': _i1.ParameterDescription(
               name: 'id',
-              type: _i1.getType<_i9.UuidValue>(),
+              type: _i1.getType<_i8.UuidValue>(),
               nullable: false,
             )
           },
@@ -327,7 +320,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'task': _i1.ParameterDescription(
               name: 'task',
-              type: _i1.getType<_i11.Task>(),
+              type: _i1.getType<_i10.Task>(),
               nullable: false,
             )
           },
@@ -363,7 +356,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'id': _i1.ParameterDescription(
               name: 'id',
-              type: _i1.getType<_i9.UuidValue>(),
+              type: _i1.getType<_i8.UuidValue>(),
               nullable: false,
             )
           },
@@ -399,7 +392,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'task': _i1.ParameterDescription(
               name: 'task',
-              type: _i1.getType<_i11.Task>(),
+              type: _i1.getType<_i10.Task>(),
               nullable: false,
             )
           },
@@ -417,7 +410,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'id': _i1.ParameterDescription(
               name: 'id',
-              type: _i1.getType<_i9.UuidValue>(),
+              type: _i1.getType<_i8.UuidValue>(),
               nullable: false,
             )
           },
@@ -435,7 +428,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'categoryId': _i1.ParameterDescription(
               name: 'categoryId',
-              type: _i1.getType<_i9.UuidValue>(),
+              type: _i1.getType<_i8.UuidValue>(),
               nullable: false,
             )
           },
@@ -462,151 +455,6 @@ class Endpoints extends _i1.EndpointDispatch {
         ),
       },
     );
-    connectors['taskTagMap'] = _i1.EndpointConnector(
-      name: 'taskTagMap',
-      endpoint: endpoints['taskTagMap']!,
-      methodConnectors: {
-        'createTaskTagMap': _i1.MethodConnector(
-          name: 'createTaskTagMap',
-          params: {
-            'taskId': _i1.ParameterDescription(
-              name: 'taskId',
-              type: _i1.getType<_i9.UuidValue>(),
-              nullable: false,
-            ),
-            'tagId': _i1.ParameterDescription(
-              name: 'tagId',
-              type: _i1.getType<_i9.UuidValue>(),
-              nullable: false,
-            ),
-          },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['taskTagMap'] as _i5.TaskTagMapEndpoint)
-                  .createTaskTagMap(
-            session,
-            params['taskId'],
-            params['tagId'],
-          ),
-        ),
-        'deleteTaskTagMapById': _i1.MethodConnector(
-          name: 'deleteTaskTagMapById',
-          params: {
-            'id': _i1.ParameterDescription(
-              name: 'id',
-              type: _i1.getType<_i9.UuidValue>(),
-              nullable: false,
-            )
-          },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['taskTagMap'] as _i5.TaskTagMapEndpoint)
-                  .deleteTaskTagMapById(
-            session,
-            params['id'],
-          ),
-        ),
-        'getTagsForTask': _i1.MethodConnector(
-          name: 'getTagsForTask',
-          params: {
-            'taskId': _i1.ParameterDescription(
-              name: 'taskId',
-              type: _i1.getType<_i9.UuidValue>(),
-              nullable: false,
-            )
-          },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['taskTagMap'] as _i5.TaskTagMapEndpoint)
-                  .getTagsForTask(
-            session,
-            params['taskId'],
-          ),
-        ),
-        'getTasksForTag': _i1.MethodConnector(
-          name: 'getTasksForTag',
-          params: {
-            'tagId': _i1.ParameterDescription(
-              name: 'tagId',
-              type: _i1.getType<_i9.UuidValue>(),
-              nullable: false,
-            )
-          },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['taskTagMap'] as _i5.TaskTagMapEndpoint)
-                  .getTasksForTag(
-            session,
-            params['tagId'],
-          ),
-        ),
-        'getTaskTagMapsSince': _i1.MethodConnector(
-          name: 'getTaskTagMapsSince',
-          params: {
-            'since': _i1.ParameterDescription(
-              name: 'since',
-              type: _i1.getType<DateTime?>(),
-              nullable: true,
-            )
-          },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['taskTagMap'] as _i5.TaskTagMapEndpoint)
-                  .getTaskTagMapsSince(
-            session,
-            params['since'],
-          ),
-        ),
-        'deleteTaskTagMapByTaskAndTag': _i1.MethodConnector(
-          name: 'deleteTaskTagMapByTaskAndTag',
-          params: {
-            'taskId': _i1.ParameterDescription(
-              name: 'taskId',
-              type: _i1.getType<_i9.UuidValue>(),
-              nullable: false,
-            ),
-            'tagId': _i1.ParameterDescription(
-              name: 'tagId',
-              type: _i1.getType<_i9.UuidValue>(),
-              nullable: false,
-            ),
-          },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['taskTagMap'] as _i5.TaskTagMapEndpoint)
-                  .deleteTaskTagMapByTaskAndTag(
-            session,
-            params['taskId'],
-            params['tagId'],
-          ),
-        ),
-        'watchEvents': _i1.MethodStreamConnector(
-          name: 'watchEvents',
-          params: {},
-          streamParams: {},
-          returnType: _i1.MethodStreamReturnType.streamType,
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-            Map<String, Stream> streamParams,
-          ) =>
-              (endpoints['taskTagMap'] as _i5.TaskTagMapEndpoint)
-                  .watchEvents(session),
-        ),
-      },
-    );
     connectors['testData'] = _i1.EndpointConnector(
       name: 'testData',
       endpoint: endpoints['testData']!,
@@ -616,7 +464,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'testData': _i1.ParameterDescription(
               name: 'testData',
-              type: _i1.getType<_i12.TestData>(),
+              type: _i1.getType<_i11.TestData>(),
               nullable: false,
             )
           },
@@ -624,7 +472,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['testData'] as _i6.TestDataEndpoint).createTestData(
+              (endpoints['testData'] as _i5.TestDataEndpoint).createTestData(
             session,
             params['testData'],
           ),
@@ -636,7 +484,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['testData'] as _i6.TestDataEndpoint)
+              (endpoints['testData'] as _i5.TestDataEndpoint)
                   .listTestDatas(session),
         ),
         'updateTestData': _i1.MethodConnector(
@@ -644,7 +492,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'testData': _i1.ParameterDescription(
               name: 'testData',
-              type: _i1.getType<_i12.TestData>(),
+              type: _i1.getType<_i11.TestData>(),
               nullable: false,
             )
           },
@@ -652,7 +500,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['testData'] as _i6.TestDataEndpoint).updateTestData(
+              (endpoints['testData'] as _i5.TestDataEndpoint).updateTestData(
             session,
             params['testData'],
           ),
@@ -662,7 +510,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'testData': _i1.ParameterDescription(
               name: 'testData',
-              type: _i1.getType<_i12.TestData>(),
+              type: _i1.getType<_i11.TestData>(),
               nullable: false,
             )
           },
@@ -670,7 +518,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['testData'] as _i6.TestDataEndpoint).deleteTestData(
+              (endpoints['testData'] as _i5.TestDataEndpoint).deleteTestData(
             session,
             params['testData'],
           ),
@@ -694,13 +542,13 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['greeting'] as _i7.GreetingEndpoint).hello(
+              (endpoints['greeting'] as _i6.GreetingEndpoint).hello(
             session,
             params['name'],
           ),
         )
       },
     );
-    modules['serverpod_auth'] = _i13.Endpoints()..initializeEndpoints(server);
+    modules['serverpod_auth'] = _i12.Endpoints()..initializeEndpoints(server);
   }
 }

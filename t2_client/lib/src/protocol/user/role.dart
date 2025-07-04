@@ -11,37 +11,40 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
 
-abstract class Customer implements _i1.SerializableModel {
-  Customer._({
+abstract class Role implements _i1.SerializableModel {
+  Role._({
     this.id,
+    required this.customerId,
     required this.name,
-    this.email,
-    this.info,
-    this.subscriptionStatus,
+    this.description,
     this.createdAt,
+    this.updatedAt,
   });
 
-  factory Customer({
+  factory Role({
     _i1.UuidValue? id,
+    required _i1.UuidValue customerId,
     required String name,
-    String? email,
-    String? info,
-    String? subscriptionStatus,
+    String? description,
     DateTime? createdAt,
-  }) = _CustomerImpl;
+    DateTime? updatedAt,
+  }) = _RoleImpl;
 
-  factory Customer.fromJson(Map<String, dynamic> jsonSerialization) {
-    return Customer(
+  factory Role.fromJson(Map<String, dynamic> jsonSerialization) {
+    return Role(
       id: jsonSerialization['id'] == null
           ? null
           : _i1.UuidValueJsonExtension.fromJson(jsonSerialization['id']),
+      customerId:
+          _i1.UuidValueJsonExtension.fromJson(jsonSerialization['customerId']),
       name: jsonSerialization['name'] as String,
-      email: jsonSerialization['email'] as String?,
-      info: jsonSerialization['info'] as String?,
-      subscriptionStatus: jsonSerialization['subscriptionStatus'] as String?,
+      description: jsonSerialization['description'] as String?,
       createdAt: jsonSerialization['createdAt'] == null
           ? null
           : _i1.DateTimeJsonExtension.fromJson(jsonSerialization['createdAt']),
+      updatedAt: jsonSerialization['updatedAt'] == null
+          ? null
+          : _i1.DateTimeJsonExtension.fromJson(jsonSerialization['updatedAt']),
     );
   }
 
@@ -50,36 +53,36 @@ abstract class Customer implements _i1.SerializableModel {
   /// the id will be null.
   _i1.UuidValue? id;
 
+  _i1.UuidValue customerId;
+
   String name;
 
-  String? email;
-
-  String? info;
-
-  String? subscriptionStatus;
+  String? description;
 
   DateTime? createdAt;
 
-  /// Returns a shallow copy of this [Customer]
+  DateTime? updatedAt;
+
+  /// Returns a shallow copy of this [Role]
   /// with some or all fields replaced by the given arguments.
   @_i1.useResult
-  Customer copyWith({
+  Role copyWith({
     _i1.UuidValue? id,
+    _i1.UuidValue? customerId,
     String? name,
-    String? email,
-    String? info,
-    String? subscriptionStatus,
+    String? description,
     DateTime? createdAt,
+    DateTime? updatedAt,
   });
   @override
   Map<String, dynamic> toJson() {
     return {
       if (id != null) 'id': id?.toJson(),
+      'customerId': customerId.toJson(),
       'name': name,
-      if (email != null) 'email': email,
-      if (info != null) 'info': info,
-      if (subscriptionStatus != null) 'subscriptionStatus': subscriptionStatus,
+      if (description != null) 'description': description,
       if (createdAt != null) 'createdAt': createdAt?.toJson(),
+      if (updatedAt != null) 'updatedAt': updatedAt?.toJson(),
     };
   }
 
@@ -91,44 +94,42 @@ abstract class Customer implements _i1.SerializableModel {
 
 class _Undefined {}
 
-class _CustomerImpl extends Customer {
-  _CustomerImpl({
+class _RoleImpl extends Role {
+  _RoleImpl({
     _i1.UuidValue? id,
+    required _i1.UuidValue customerId,
     required String name,
-    String? email,
-    String? info,
-    String? subscriptionStatus,
+    String? description,
     DateTime? createdAt,
+    DateTime? updatedAt,
   }) : super._(
           id: id,
+          customerId: customerId,
           name: name,
-          email: email,
-          info: info,
-          subscriptionStatus: subscriptionStatus,
+          description: description,
           createdAt: createdAt,
+          updatedAt: updatedAt,
         );
 
-  /// Returns a shallow copy of this [Customer]
+  /// Returns a shallow copy of this [Role]
   /// with some or all fields replaced by the given arguments.
   @_i1.useResult
   @override
-  Customer copyWith({
+  Role copyWith({
     Object? id = _Undefined,
+    _i1.UuidValue? customerId,
     String? name,
-    Object? email = _Undefined,
-    Object? info = _Undefined,
-    Object? subscriptionStatus = _Undefined,
+    Object? description = _Undefined,
     Object? createdAt = _Undefined,
+    Object? updatedAt = _Undefined,
   }) {
-    return Customer(
+    return Role(
       id: id is _i1.UuidValue? ? id : this.id,
+      customerId: customerId ?? this.customerId,
       name: name ?? this.name,
-      email: email is String? ? email : this.email,
-      info: info is String? ? info : this.info,
-      subscriptionStatus: subscriptionStatus is String?
-          ? subscriptionStatus
-          : this.subscriptionStatus,
+      description: description is String? ? description : this.description,
       createdAt: createdAt is DateTime? ? createdAt : this.createdAt,
+      updatedAt: updatedAt is DateTime? ? updatedAt : this.updatedAt,
     );
   }
 }

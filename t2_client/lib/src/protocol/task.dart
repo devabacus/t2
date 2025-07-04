@@ -15,9 +15,11 @@ import 'task_tag_map.dart' as _i2;
 abstract class Task implements _i1.SerializableModel {
   Task._({
     this.id,
-    bool? isDeleted,
-    this.lastModified,
     required this.userId,
+    required this.customerId,
+    required this.createdAt,
+    required this.lastModified,
+    bool? isDeleted,
     required this.title,
     this.categoryId,
     this.taskTagMaps,
@@ -25,9 +27,11 @@ abstract class Task implements _i1.SerializableModel {
 
   factory Task({
     _i1.UuidValue? id,
-    bool? isDeleted,
-    DateTime? lastModified,
     required int userId,
+    required _i1.UuidValue customerId,
+    required DateTime createdAt,
+    required DateTime lastModified,
+    bool? isDeleted,
     required String title,
     _i1.UuidValue? categoryId,
     List<_i2.TaskTagMap>? taskTagMaps,
@@ -38,12 +42,14 @@ abstract class Task implements _i1.SerializableModel {
       id: jsonSerialization['id'] == null
           ? null
           : _i1.UuidValueJsonExtension.fromJson(jsonSerialization['id']),
-      isDeleted: jsonSerialization['isDeleted'] as bool,
-      lastModified: jsonSerialization['lastModified'] == null
-          ? null
-          : _i1.DateTimeJsonExtension.fromJson(
-              jsonSerialization['lastModified']),
       userId: jsonSerialization['userId'] as int,
+      customerId:
+          _i1.UuidValueJsonExtension.fromJson(jsonSerialization['customerId']),
+      createdAt:
+          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['createdAt']),
+      lastModified:
+          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['lastModified']),
+      isDeleted: jsonSerialization['isDeleted'] as bool,
       title: jsonSerialization['title'] as String,
       categoryId: jsonSerialization['categoryId'] == null
           ? null
@@ -60,11 +66,15 @@ abstract class Task implements _i1.SerializableModel {
   /// the id will be null.
   _i1.UuidValue? id;
 
-  bool isDeleted;
-
-  DateTime? lastModified;
-
   int userId;
+
+  _i1.UuidValue customerId;
+
+  DateTime createdAt;
+
+  DateTime lastModified;
+
+  bool isDeleted;
 
   String title;
 
@@ -77,9 +87,11 @@ abstract class Task implements _i1.SerializableModel {
   @_i1.useResult
   Task copyWith({
     _i1.UuidValue? id,
-    bool? isDeleted,
-    DateTime? lastModified,
     int? userId,
+    _i1.UuidValue? customerId,
+    DateTime? createdAt,
+    DateTime? lastModified,
+    bool? isDeleted,
     String? title,
     _i1.UuidValue? categoryId,
     List<_i2.TaskTagMap>? taskTagMaps,
@@ -88,9 +100,11 @@ abstract class Task implements _i1.SerializableModel {
   Map<String, dynamic> toJson() {
     return {
       if (id != null) 'id': id?.toJson(),
-      'isDeleted': isDeleted,
-      if (lastModified != null) 'lastModified': lastModified?.toJson(),
       'userId': userId,
+      'customerId': customerId.toJson(),
+      'createdAt': createdAt.toJson(),
+      'lastModified': lastModified.toJson(),
+      'isDeleted': isDeleted,
       'title': title,
       if (categoryId != null) 'categoryId': categoryId?.toJson(),
       if (taskTagMaps != null)
@@ -109,17 +123,21 @@ class _Undefined {}
 class _TaskImpl extends Task {
   _TaskImpl({
     _i1.UuidValue? id,
-    bool? isDeleted,
-    DateTime? lastModified,
     required int userId,
+    required _i1.UuidValue customerId,
+    required DateTime createdAt,
+    required DateTime lastModified,
+    bool? isDeleted,
     required String title,
     _i1.UuidValue? categoryId,
     List<_i2.TaskTagMap>? taskTagMaps,
   }) : super._(
           id: id,
-          isDeleted: isDeleted,
-          lastModified: lastModified,
           userId: userId,
+          customerId: customerId,
+          createdAt: createdAt,
+          lastModified: lastModified,
+          isDeleted: isDeleted,
           title: title,
           categoryId: categoryId,
           taskTagMaps: taskTagMaps,
@@ -131,19 +149,22 @@ class _TaskImpl extends Task {
   @override
   Task copyWith({
     Object? id = _Undefined,
-    bool? isDeleted,
-    Object? lastModified = _Undefined,
     int? userId,
+    _i1.UuidValue? customerId,
+    DateTime? createdAt,
+    DateTime? lastModified,
+    bool? isDeleted,
     String? title,
     Object? categoryId = _Undefined,
     Object? taskTagMaps = _Undefined,
   }) {
     return Task(
       id: id is _i1.UuidValue? ? id : this.id,
-      isDeleted: isDeleted ?? this.isDeleted,
-      lastModified:
-          lastModified is DateTime? ? lastModified : this.lastModified,
       userId: userId ?? this.userId,
+      customerId: customerId ?? this.customerId,
+      createdAt: createdAt ?? this.createdAt,
+      lastModified: lastModified ?? this.lastModified,
+      isDeleted: isDeleted ?? this.isDeleted,
       title: title ?? this.title,
       categoryId: categoryId is _i1.UuidValue? ? categoryId : this.categoryId,
       taskTagMaps: taskTagMaps is List<_i2.TaskTagMap>?

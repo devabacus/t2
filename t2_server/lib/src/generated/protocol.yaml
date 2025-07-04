@@ -23,14 +23,6 @@ task:
   - deleteTask:
   - watchEvents:
   - getTasksByCategoryId:
-taskTagMap:
-  - createTaskTagMap:
-  - deleteTaskTagMapById:
-  - getTagsForTask:
-  - getTasksForTag:
-  - getTaskTagMapsSince:
-  - watchEvents:
-  - deleteTaskTagMapByTaskAndTag:
 testData:
   - createTestData:
   - listTestDatas:

@@ -18,18 +18,22 @@ abstract class Tag
     implements _i1.TableRow<_i1.UuidValue?>, _i1.ProtocolSerialization {
   Tag._({
     this.id,
-    bool? isDeleted,
-    this.lastModified,
     required this.userId,
+    required this.customerId,
+    required this.createdAt,
+    required this.lastModified,
+    bool? isDeleted,
     required this.title,
     this.taskTagMaps,
   }) : isDeleted = isDeleted ?? false;
 
   factory Tag({
     _i1.UuidValue? id,
-    bool? isDeleted,
-    DateTime? lastModified,
     required int userId,
+    required _i1.UuidValue customerId,
+    required DateTime createdAt,
+    required DateTime lastModified,
+    bool? isDeleted,
     required String title,
     List<_i2.TaskTagMap>? taskTagMaps,
   }) = _TagImpl;
@@ -39,12 +43,14 @@ abstract class Tag
       id: jsonSerialization['id'] == null
           ? null
           : _i1.UuidValueJsonExtension.fromJson(jsonSerialization['id']),
-      isDeleted: jsonSerialization['isDeleted'] as bool,
-      lastModified: jsonSerialization['lastModified'] == null
-          ? null
-          : _i1.DateTimeJsonExtension.fromJson(
-              jsonSerialization['lastModified']),
       userId: jsonSerialization['userId'] as int,
+      customerId:
+          _i1.UuidValueJsonExtension.fromJson(jsonSerialization['customerId']),
+      createdAt:
+          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['createdAt']),
+      lastModified:
+          _i1.DateTimeJsonExtension.fromJson(jsonSerialization['lastModified']),
+      isDeleted: jsonSerialization['isDeleted'] as bool,
       title: jsonSerialization['title'] as String,
       taskTagMaps: (jsonSerialization['taskTagMaps'] as List?)
           ?.map((e) => _i2.TaskTagMap.fromJson((e as Map<String, dynamic>)))
@@ -59,11 +65,15 @@ abstract class Tag
   @override
   _i1.UuidValue? id;
 
-  bool isDeleted;
-
-  DateTime? lastModified;
-
   int userId;
+
+  _i1.UuidValue customerId;
+
+  DateTime createdAt;
+
+  DateTime lastModified;
+
+  bool isDeleted;
 
   String title;
 
@@ -77,9 +87,11 @@ abstract class Tag
   @_i1.useResult
   Tag copyWith({
     _i1.UuidValue? id,
-    bool? isDeleted,
-    DateTime? lastModified,
     int? userId,
+    _i1.UuidValue? customerId,
+    DateTime? createdAt,
+    DateTime? lastModified,
+    bool? isDeleted,
     String? title,
     List<_i2.TaskTagMap>? taskTagMaps,
   });
@@ -87,9 +99,11 @@ abstract class Tag
   Map<String, dynamic> toJson() {
     return {
       if (id != null) 'id': id?.toJson(),
-      'isDeleted': isDeleted,
-      if (lastModified != null) 'lastModified': lastModified?.toJson(),
       'userId': userId,
+      'customerId': customerId.toJson(),
+      'createdAt': createdAt.toJson(),
+      'lastModified': lastModified.toJson(),
+      'isDeleted': isDeleted,
       'title': title,
       if (taskTagMaps != null)
         'taskTagMaps': taskTagMaps?.toJson(valueToJson: (v) => v.toJson()),
@@ -100,9 +114,11 @@ abstract class Tag
   Map<String, dynamic> toJsonForProtocol() {
     return {
       if (id != null) 'id': id?.toJson(),
-      'isDeleted': isDeleted,
-      if (lastModified != null) 'lastModified': lastModified?.toJson(),
       'userId': userId,
+      'customerId': customerId.toJson(),
+      'createdAt': createdAt.toJson(),
+      'lastModified': lastModified.toJson(),
+      'isDeleted': isDeleted,
       'title': title,
       if (taskTagMaps != null)
         'taskTagMaps':
@@ -145,16 +161,20 @@ class _Undefined {}
 class _TagImpl extends Tag {
   _TagImpl({
     _i1.UuidValue? id,
-    bool? isDeleted,
-    DateTime? lastModified,
     required int userId,
+    required _i1.UuidValue customerId,
+    required DateTime createdAt,
+    required DateTime lastModified,
+    bool? isDeleted,
     required String title,
     List<_i2.TaskTagMap>? taskTagMaps,
   }) : super._(
           id: id,
-          isDeleted: isDeleted,
-          lastModified: lastModified,
           userId: userId,
+          customerId: customerId,
+          createdAt: createdAt,
+          lastModified: lastModified,
+          isDeleted: isDeleted,
           title: title,
           taskTagMaps: taskTagMaps,
         );
@@ -165,18 +185,21 @@ class _TagImpl extends Tag {
   @override
   Tag copyWith({
     Object? id = _Undefined,
-    bool? isDeleted,
-    Object? lastModified = _Undefined,
     int? userId,
+    _i1.UuidValue? customerId,
+    DateTime? createdAt,
+    DateTime? lastModified,
+    bool? isDeleted,
     String? title,
     Object? taskTagMaps = _Undefined,
   }) {
     return Tag(
       id: id is _i1.UuidValue? ? id : this.id,
-      isDeleted: isDeleted ?? this.isDeleted,
-      lastModified:
-          lastModified is DateTime? ? lastModified : this.lastModified,
       userId: userId ?? this.userId,
+      customerId: customerId ?? this.customerId,
+      createdAt: createdAt ?? this.createdAt,
+      lastModified: lastModified ?? this.lastModified,
+      isDeleted: isDeleted ?? this.isDeleted,
       title: title ?? this.title,
       taskTagMaps: taskTagMaps is List<_i2.TaskTagMap>?
           ? taskTagMaps
@@ -187,18 +210,26 @@ class _TagImpl extends Tag {
 
 class TagTable extends _i1.Table<_i1.UuidValue?> {
   TagTable({super.tableRelation}) : super(tableName: 'tag') {
-    isDeleted = _i1.ColumnBool(
-      'isDeleted',
+    userId = _i1.ColumnInt(
+      'userId',
       this,
-      hasDefault: true,
+    );
+    customerId = _i1.ColumnUuid(
+      'customerId',
+      this,
+    );
+    createdAt = _i1.ColumnDateTime(
+      'createdAt',
+      this,
     );
     lastModified = _i1.ColumnDateTime(
       'lastModified',
       this,
     );
-    userId = _i1.ColumnInt(
-      'userId',
+    isDeleted = _i1.ColumnBool(
+      'isDeleted',
       this,
+      hasDefault: true,
     );
     title = _i1.ColumnString(
       'title',
@@ -206,11 +237,15 @@ class TagTable extends _i1.Table<_i1.UuidValue?> {
     );
   }
 
-  late final _i1.ColumnBool isDeleted;
+  late final _i1.ColumnInt userId;
+
+  late final _i1.ColumnUuid customerId;
+
+  late final _i1.ColumnDateTime createdAt;
 
   late final _i1.ColumnDateTime lastModified;
 
-  late final _i1.ColumnInt userId;
+  late final _i1.ColumnBool isDeleted;
 
   late final _i1.ColumnString title;
 
@@ -252,9 +287,11 @@ class TagTable extends _i1.Table<_i1.UuidValue?> {
   @override
   List<_i1.Column> get columns => [
         id,
-        isDeleted,
-        lastModified,
         userId,
+        customerId,
+        createdAt,
+        lastModified,
+        isDeleted,
         title,
       ];
 

@@ -11,55 +11,58 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
 
-abstract class Category
+abstract class Customer
     implements _i1.TableRow<_i1.UuidValue?>, _i1.ProtocolSerialization {
-  Category._({
+  Customer._({
     this.id,
     required this.userId,
-    required this.customerId,
     required this.createdAt,
     required this.lastModified,
     bool? isDeleted,
-    required this.title,
+    required this.name,
+    this.email,
+    this.info,
+    this.subscriptionStatus,
   }) : isDeleted = isDeleted ?? false;
 
-  factory Category({
+  factory Customer({
     _i1.UuidValue? id,
     required int userId,
-    required _i1.UuidValue customerId,
     required DateTime createdAt,
     required DateTime lastModified,
     bool? isDeleted,
-    required String title,
-  }) = _CategoryImpl;
+    required String name,
+    String? email,
+    String? info,
+    String? subscriptionStatus,
+  }) = _CustomerImpl;
 
-  factory Category.fromJson(Map<String, dynamic> jsonSerialization) {
-    return Category(
+  factory Customer.fromJson(Map<String, dynamic> jsonSerialization) {
+    return Customer(
       id: jsonSerialization['id'] == null
           ? null
           : _i1.UuidValueJsonExtension.fromJson(jsonSerialization['id']),
       userId: jsonSerialization['userId'] as int,
-      customerId:
-          _i1.UuidValueJsonExtension.fromJson(jsonSerialization['customerId']),
       createdAt:
           _i1.DateTimeJsonExtension.fromJson(jsonSerialization['createdAt']),
       lastModified:
           _i1.DateTimeJsonExtension.fromJson(jsonSerialization['lastModified']),
       isDeleted: jsonSerialization['isDeleted'] as bool,
-      title: jsonSerialization['title'] as String,
+      name: jsonSerialization['name'] as String,
+      email: jsonSerialization['email'] as String?,
+      info: jsonSerialization['info'] as String?,
+      subscriptionStatus: jsonSerialization['subscriptionStatus'] as String?,
     );
   }
 
-  static final t = CategoryTable();
+  static final t = CustomerTable();
 
-  static const db = CategoryRepository._();
+  static const db = CustomerRepository._();
 
   @override
   _i1.UuidValue? id;
 
   int userId;
-
-  _i1.UuidValue customerId;
 
   DateTime createdAt;
 
@@ -67,33 +70,43 @@ abstract class Category
 
   bool isDeleted;
 
-  String title;
+  String name;
+
+  String? email;
+
+  String? info;
+
+  String? subscriptionStatus;
 
   @override
   _i1.Table<_i1.UuidValue?> get table => t;
 
-  /// Returns a shallow copy of this [Category]
+  /// Returns a shallow copy of this [Customer]
   /// with some or all fields replaced by the given arguments.
   @_i1.useResult
-  Category copyWith({
+  Customer copyWith({
     _i1.UuidValue? id,
     int? userId,
-    _i1.UuidValue? customerId,
     DateTime? createdAt,
     DateTime? lastModified,
     bool? isDeleted,
-    String? title,
+    String? name,
+    String? email,
+    String? info,
+    String? subscriptionStatus,
   });
   @override
   Map<String, dynamic> toJson() {
     return {
       if (id != null) 'id': id?.toJson(),
       'userId': userId,
-      'customerId': customerId.toJson(),
       'createdAt': createdAt.toJson(),
       'lastModified': lastModified.toJson(),
       'isDeleted': isDeleted,
-      'title': title,
+      'name': name,
+      if (email != null) 'email': email,
+      if (info != null) 'info': info,
+      if (subscriptionStatus != null) 'subscriptionStatus': subscriptionStatus,
     };
   }
 
@@ -102,34 +115,36 @@ abstract class Category
     return {
       if (id != null) 'id': id?.toJson(),
       'userId': userId,
-      'customerId': customerId.toJson(),
       'createdAt': createdAt.toJson(),
       'lastModified': lastModified.toJson(),
       'isDeleted': isDeleted,
-      'title': title,
+      'name': name,
+      if (email != null) 'email': email,
+      if (info != null) 'info': info,
+      if (subscriptionStatus != null) 'subscriptionStatus': subscriptionStatus,
     };
   }
 
-  static CategoryInclude include() {
-    return CategoryInclude._();
+  static CustomerInclude include() {
+    return CustomerInclude._();
   }
 
-  static CategoryIncludeList includeList({
-    _i1.WhereExpressionBuilder<CategoryTable>? where,
+  static CustomerIncludeList includeList({
+    _i1.WhereExpressionBuilder<CustomerTable>? where,
     int? limit,
     int? offset,
-    _i1.OrderByBuilder<CategoryTable>? orderBy,
+    _i1.OrderByBuilder<CustomerTable>? orderBy,
     bool orderDescending = false,
-    _i1.OrderByListBuilder<CategoryTable>? orderByList,
-    CategoryInclude? include,
+    _i1.OrderByListBuilder<CustomerTable>? orderByList,
+    CustomerInclude? include,
   }) {
-    return CategoryIncludeList._(
+    return CustomerIncludeList._(
       where: where,
       limit: limit,
       offset: offset,
-      orderBy: orderBy?.call(Category.t),
+      orderBy: orderBy?.call(Customer.t),
       orderDescending: orderDescending,
-      orderByList: orderByList?.call(Category.t),
+      orderByList: orderByList?.call(Customer.t),
       include: include,
     );
   }
@@ -142,58 +157,64 @@ abstract class Category
 
 class _Undefined {}
 
-class _CategoryImpl extends Category {
-  _CategoryImpl({
+class _CustomerImpl extends Customer {
+  _CustomerImpl({
     _i1.UuidValue? id,
     required int userId,
-    required _i1.UuidValue customerId,
     required DateTime createdAt,
     required DateTime lastModified,
     bool? isDeleted,
-    required String title,
+    required String name,
+    String? email,
+    String? info,
+    String? subscriptionStatus,
   }) : super._(
           id: id,
           userId: userId,
-          customerId: customerId,
           createdAt: createdAt,
           lastModified: lastModified,
           isDeleted: isDeleted,
-          title: title,
+          name: name,
+          email: email,
+          info: info,
+          subscriptionStatus: subscriptionStatus,
         );
 
-  /// Returns a shallow copy of this [Category]
+  /// Returns a shallow copy of this [Customer]
   /// with some or all fields replaced by the given arguments.
   @_i1.useResult
   @override
-  Category copyWith({
+  Customer copyWith({
     Object? id = _Undefined,
     int? userId,
-    _i1.UuidValue? customerId,
     DateTime? createdAt,
     DateTime? lastModified,
     bool? isDeleted,
-    String? title,
+    String? name,
+    Object? email = _Undefined,
+    Object? info = _Undefined,
+    Object? subscriptionStatus = _Undefined,
   }) {
-    return Category(
+    return Customer(
       id: id is _i1.UuidValue? ? id : this.id,
       userId: userId ?? this.userId,
-      customerId: customerId ?? this.customerId,
       createdAt: createdAt ?? this.createdAt,
       lastModified: lastModified ?? this.lastModified,
       isDeleted: isDeleted ?? this.isDeleted,
-      title: title ?? this.title,
+      name: name ?? this.name,
+      email: email is String? ? email : this.email,
+      info: info is String? ? info : this.info,
+      subscriptionStatus: subscriptionStatus is String?
+          ? subscriptionStatus
+          : this.subscriptionStatus,
     );
   }
 }
 
-class CategoryTable extends _i1.Table<_i1.UuidValue?> {
-  CategoryTable({super.tableRelation}) : super(tableName: 'category') {
+class CustomerTable extends _i1.Table<_i1.UuidValue?> {
+  CustomerTable({super.tableRelation}) : super(tableName: 'customer') {
     userId = _i1.ColumnInt(
       'userId',
-      this,
-    );
-    customerId = _i1.ColumnUuid(
-      'customerId',
       this,
     );
     createdAt = _i1.ColumnDateTime(
@@ -209,15 +230,25 @@ class CategoryTable extends _i1.Table<_i1.UuidValue?> {
       this,
       hasDefault: true,
     );
-    title = _i1.ColumnString(
-      'title',
+    name = _i1.ColumnString(
+      'name',
+      this,
+    );
+    email = _i1.ColumnString(
+      'email',
+      this,
+    );
+    info = _i1.ColumnString(
+      'info',
+      this,
+    );
+    subscriptionStatus = _i1.ColumnString(
+      'subscriptionStatus',
       this,
     );
   }
 
   late final _i1.ColumnInt userId;
-
-  late final _i1.ColumnUuid customerId;
 
   late final _i1.ColumnDateTime createdAt;
 
@@ -225,33 +256,41 @@ class CategoryTable extends _i1.Table<_i1.UuidValue?> {
 
   late final _i1.ColumnBool isDeleted;
 
-  late final _i1.ColumnString title;
+  late final _i1.ColumnString name;
+
+  late final _i1.ColumnString email;
+
+  late final _i1.ColumnString info;
+
+  late final _i1.ColumnString subscriptionStatus;
 
   @override
   List<_i1.Column> get columns => [
         id,
         userId,
-        customerId,
         createdAt,
         lastModified,
         isDeleted,
-        title,
+        name,
+        email,
+        info,
+        subscriptionStatus,
       ];
 }
 
-class CategoryInclude extends _i1.IncludeObject {
-  CategoryInclude._();
+class CustomerInclude extends _i1.IncludeObject {
+  CustomerInclude._();
 
   @override
   Map<String, _i1.Include?> get includes => {};
 
   @override
-  _i1.Table<_i1.UuidValue?> get table => Category.t;
+  _i1.Table<_i1.UuidValue?> get table => Customer.t;
 }
 
-class CategoryIncludeList extends _i1.IncludeList {
-  CategoryIncludeList._({
-    _i1.WhereExpressionBuilder<CategoryTable>? where,
+class CustomerIncludeList extends _i1.IncludeList {
+  CustomerIncludeList._({
+    _i1.WhereExpressionBuilder<CustomerTable>? where,
     super.limit,
     super.offset,
     super.orderBy,
@@ -259,20 +298,20 @@ class CategoryIncludeList extends _i1.IncludeList {
     super.orderByList,
     super.include,
   }) {
-    super.where = where?.call(Category.t);
+    super.where = where?.call(Customer.t);
   }
 
   @override
   Map<String, _i1.Include?> get includes => include?.includes ?? {};
 
   @override
-  _i1.Table<_i1.UuidValue?> get table => Category.t;
+  _i1.Table<_i1.UuidValue?> get table => Customer.t;
 }
 
-class CategoryRepository {
-  const CategoryRepository._();
+class CustomerRepository {
+  const CustomerRepository._();
 
-  /// Returns a list of [Category]s matching the given query parameters.
+  /// Returns a list of [Customer]s matching the given query parameters.
   ///
   /// Use [where] to specify which items to include in the return value.
   /// If none is specified, all items will be returned.
@@ -294,20 +333,20 @@ class CategoryRepository {
   ///   limit: 100,
   /// );
   /// ```
-  Future<List<Category>> find(
+  Future<List<Customer>> find(
     _i1.Session session, {
-    _i1.WhereExpressionBuilder<CategoryTable>? where,
+    _i1.WhereExpressionBuilder<CustomerTable>? where,
     int? limit,
     int? offset,
-    _i1.OrderByBuilder<CategoryTable>? orderBy,
+    _i1.OrderByBuilder<CustomerTable>? orderBy,
     bool orderDescending = false,
-    _i1.OrderByListBuilder<CategoryTable>? orderByList,
+    _i1.OrderByListBuilder<CustomerTable>? orderByList,
     _i1.Transaction? transaction,
   }) async {
-    return session.db.find<Category>(
-      where: where?.call(Category.t),
-      orderBy: orderBy?.call(Category.t),
-      orderByList: orderByList?.call(Category.t),
+    return session.db.find<Customer>(
+      where: where?.call(Customer.t),
+      orderBy: orderBy?.call(Customer.t),
+      orderByList: orderByList?.call(Customer.t),
       orderDescending: orderDescending,
       limit: limit,
       offset: offset,
@@ -315,7 +354,7 @@ class CategoryRepository {
     );
   }
 
-  /// Returns the first matching [Category] matching the given query parameters.
+  /// Returns the first matching [Customer] matching the given query parameters.
   ///
   /// Use [where] to specify which items to include in the return value.
   /// If none is specified, all items will be returned.
@@ -332,136 +371,136 @@ class CategoryRepository {
   ///   orderBy: (t) => t.age,
   /// );
   /// ```
-  Future<Category?> findFirstRow(
+  Future<Customer?> findFirstRow(
     _i1.Session session, {
-    _i1.WhereExpressionBuilder<CategoryTable>? where,
+    _i1.WhereExpressionBuilder<CustomerTable>? where,
     int? offset,
-    _i1.OrderByBuilder<CategoryTable>? orderBy,
+    _i1.OrderByBuilder<CustomerTable>? orderBy,
     bool orderDescending = false,
-    _i1.OrderByListBuilder<CategoryTable>? orderByList,
+    _i1.OrderByListBuilder<CustomerTable>? orderByList,
     _i1.Transaction? transaction,
   }) async {
-    return session.db.findFirstRow<Category>(
-      where: where?.call(Category.t),
-      orderBy: orderBy?.call(Category.t),
-      orderByList: orderByList?.call(Category.t),
+    return session.db.findFirstRow<Customer>(
+      where: where?.call(Customer.t),
+      orderBy: orderBy?.call(Customer.t),
+      orderByList: orderByList?.call(Customer.t),
       orderDescending: orderDescending,
       offset: offset,
       transaction: transaction,
     );
   }
 
-  /// Finds a single [Category] by its [id] or null if no such row exists.
-  Future<Category?> findById(
+  /// Finds a single [Customer] by its [id] or null if no such row exists.
+  Future<Customer?> findById(
     _i1.Session session,
     _i1.UuidValue id, {
     _i1.Transaction? transaction,
   }) async {
-    return session.db.findById<Category>(
+    return session.db.findById<Customer>(
       id,
       transaction: transaction,
     );
   }
 
-  /// Inserts all [Category]s in the list and returns the inserted rows.
+  /// Inserts all [Customer]s in the list and returns the inserted rows.
   ///
-  /// The returned [Category]s will have their `id` fields set.
+  /// The returned [Customer]s will have their `id` fields set.
   ///
   /// This is an atomic operation, meaning that if one of the rows fails to
   /// insert, none of the rows will be inserted.
-  Future<List<Category>> insert(
+  Future<List<Customer>> insert(
     _i1.Session session,
-    List<Category> rows, {
+    List<Customer> rows, {
     _i1.Transaction? transaction,
   }) async {
-    return session.db.insert<Category>(
+    return session.db.insert<Customer>(
       rows,
       transaction: transaction,
     );
   }
 
-  /// Inserts a single [Category] and returns the inserted row.
+  /// Inserts a single [Customer] and returns the inserted row.
   ///
-  /// The returned [Category] will have its `id` field set.
-  Future<Category> insertRow(
+  /// The returned [Customer] will have its `id` field set.
+  Future<Customer> insertRow(
     _i1.Session session,
-    Category row, {
+    Customer row, {
     _i1.Transaction? transaction,
   }) async {
-    return session.db.insertRow<Category>(
+    return session.db.insertRow<Customer>(
       row,
       transaction: transaction,
     );
   }
 
-  /// Updates all [Category]s in the list and returns the updated rows. If
+  /// Updates all [Customer]s in the list and returns the updated rows. If
   /// [columns] is provided, only those columns will be updated. Defaults to
   /// all columns.
   /// This is an atomic operation, meaning that if one of the rows fails to
   /// update, none of the rows will be updated.
-  Future<List<Category>> update(
+  Future<List<Customer>> update(
     _i1.Session session,
-    List<Category> rows, {
-    _i1.ColumnSelections<CategoryTable>? columns,
+    List<Customer> rows, {
+    _i1.ColumnSelections<CustomerTable>? columns,
     _i1.Transaction? transaction,
   }) async {
-    return session.db.update<Category>(
+    return session.db.update<Customer>(
       rows,
-      columns: columns?.call(Category.t),
+      columns: columns?.call(Customer.t),
       transaction: transaction,
     );
   }
 
-  /// Updates a single [Category]. The row needs to have its id set.
+  /// Updates a single [Customer]. The row needs to have its id set.
   /// Optionally, a list of [columns] can be provided to only update those
   /// columns. Defaults to all columns.
-  Future<Category> updateRow(
+  Future<Customer> updateRow(
     _i1.Session session,
-    Category row, {
-    _i1.ColumnSelections<CategoryTable>? columns,
+    Customer row, {
+    _i1.ColumnSelections<CustomerTable>? columns,
     _i1.Transaction? transaction,
   }) async {
-    return session.db.updateRow<Category>(
+    return session.db.updateRow<Customer>(
       row,
-      columns: columns?.call(Category.t),
+      columns: columns?.call(Customer.t),
       transaction: transaction,
     );
   }
 
-  /// Deletes all [Category]s in the list and returns the deleted rows.
+  /// Deletes all [Customer]s in the list and returns the deleted rows.
   /// This is an atomic operation, meaning that if one of the rows fail to
   /// be deleted, none of the rows will be deleted.
-  Future<List<Category>> delete(
+  Future<List<Customer>> delete(
     _i1.Session session,
-    List<Category> rows, {
+    List<Customer> rows, {
     _i1.Transaction? transaction,
   }) async {
-    return session.db.delete<Category>(
+    return session.db.delete<Customer>(
       rows,
       transaction: transaction,
     );
   }
 
-  /// Deletes a single [Category].
-  Future<Category> deleteRow(
+  /// Deletes a single [Customer].
+  Future<Customer> deleteRow(
     _i1.Session session,
-    Category row, {
+    Customer row, {
     _i1.Transaction? transaction,
   }) async {
-    return session.db.deleteRow<Category>(
+    return session.db.deleteRow<Customer>(
       row,
       transaction: transaction,
     );
   }
 
   /// Deletes all rows matching the [where] expression.
-  Future<List<Category>> deleteWhere(
+  Future<List<Customer>> deleteWhere(
     _i1.Session session, {
-    required _i1.WhereExpressionBuilder<CategoryTable> where,
+    required _i1.WhereExpressionBuilder<CustomerTable> where,
     _i1.Transaction? transaction,
   }) async {
-    return session.db.deleteWhere<Category>(
-      where: where(Category.t),
+    return session.db.deleteWhere<Customer>(
+      where: where(Customer.t),
       transaction: transaction,
     );
   }
@@ -470,12 +509,12 @@ class CategoryRepository {
   /// will return the count of all rows in the table.
   Future<int> count(
     _i1.Session session, {
-    _i1.WhereExpressionBuilder<CategoryTable>? where,
+    _i1.WhereExpressionBuilder<CustomerTable>? where,
     int? limit,
     _i1.Transaction? transaction,
   }) async {
-    return session.db.count<Category>(
-      where: where?.call(Category.t),
+    return session.db.count<Customer>(
+      where: where?.call(Customer.t),
       limit: limit,
       transaction: transaction,
     );

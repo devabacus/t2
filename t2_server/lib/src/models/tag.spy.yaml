@@ -2,8 +2,10 @@ class: Tag
 table: tag
 fields:
   id: UuidValue?, defaultPersist=random_v7
-  isDeleted: bool, default=false
-  lastModified: DateTime?
   userId: int
+  customerId: UuidValue, relation(parent=customer, onDelete=Cascade)
+  createdAt: DateTime
+  lastModified: DateTime
+  isDeleted: bool, default=false
   title: String
   taskTagMaps: List<TaskTagMap>?, relation

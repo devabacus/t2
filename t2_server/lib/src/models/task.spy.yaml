@@ -2,9 +2,11 @@ class: Task
 table: task
 fields:
   id: UuidValue?, defaultPersist=random_v7
-  isDeleted: bool, default=false
-  lastModified: DateTime?
   userId: int
+  customerId: UuidValue, relation(parent=customer, onDelete=Cascade)
+  createdAt: DateTime
+  lastModified: DateTime
+  isDeleted: bool, default=false
   title: String
   categoryId: UuidValue?, relation(parent=category, onDelete=SetNull)
   category: Category?, scope=serverOnly
