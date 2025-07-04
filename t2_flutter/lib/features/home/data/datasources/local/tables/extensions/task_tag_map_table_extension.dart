@@ -19,7 +19,7 @@ extension ServerpodTaskTagMapTableExtensions on serverpod.TaskTagMap {
   TaskTagMapTableCompanion toCompanion(SyncStatus status) =>
       TaskTagMapTableCompanion(
         id: Value(id.toString()),
-        lastModified: Value(lastModified ?? DateTime.now().toUtc()),
+        lastModified: Value(lastModified),
         userId: Value(userId),
         syncStatus: Value(status),
         taskId: Value(taskId.toString()), tagId: Value(tagId.toString())

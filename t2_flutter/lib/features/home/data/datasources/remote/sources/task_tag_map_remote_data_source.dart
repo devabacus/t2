@@ -43,7 +43,7 @@ class TaskTagMapRemoteDataSource implements ITaskTagMapRemoteDataSource {
   Future<TaskTagMap> createTaskTagMap(TaskTagMap taskTagMap) async {
     try {
       print('🚀 Remote: Отправляем на сервер создание связи Task-Tag');
-      final result = await _client.taskTagMap.createTaskTagMap(taskId, tagId);
+      final result = await _client.taskTagMap.createTaskTagMap(taskTagMap);
       print('✅ Remote: Связь Task-Tag успешно создана на сервере');
       return result;
     } catch (e) {

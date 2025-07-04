@@ -19,7 +19,7 @@ extension ServerpodTaskTableExtensions on serverpod.Task {
   TaskTableCompanion toCompanion(SyncStatus status) =>
       TaskTableCompanion(
         id: Value(id.toString()),
-        lastModified: Value(lastModified ?? DateTime.now().toUtc()),
+        lastModified: Value(lastModified),
         userId: Value(userId),
         syncStatus: Value(status),
         title: Value(title), categoryId: Value(categoryId.toString())

@@ -19,7 +19,7 @@ extension ServerpodTagTableExtensions on serverpod.Tag {
   TagTableCompanion toCompanion(SyncStatus status) =>
       TagTableCompanion(
         id: Value(id.toString()),
-        lastModified: Value(lastModified ?? DateTime.now().toUtc()),
+        lastModified: Value(lastModified),
         userId: Value(userId),
         syncStatus: Value(status),
         title: Value(title)

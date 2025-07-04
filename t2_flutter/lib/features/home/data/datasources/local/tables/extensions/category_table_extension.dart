@@ -19,7 +19,7 @@ extension ServerpodCategoryTableExtensions on serverpod.Category {
   CategoryTableCompanion toCompanion(SyncStatus status) =>
       CategoryTableCompanion(
         id: Value(id.toString()),
-        lastModified: Value(lastModified ?? DateTime.now().toUtc()),
+        lastModified: Value(lastModified),
         userId: Value(userId),
         syncStatus: Value(status),
         title: Value(title)
