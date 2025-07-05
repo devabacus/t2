@@ -1,8 +1,6 @@
-
 import 'package:drift/drift.dart';
-import '../../../../../../../core/database/local/interface/i_database_service.dart';
 import '../../../../../../../core/database/local/database.dart';
-import '../../../../../../../core/database/local/database_types.dart';
+import '../../../../../../../core/database/local/interface/i_database_service.dart';
 import '../../tables/category_table.dart';
 
 part 'category_dao.g.dart';
@@ -15,16 +13,16 @@ class CategoryDao extends DatabaseAccessor<AppDatabase>
 
   AppDatabase get db => attachedDatabase;
 
-  Future<List<CategoryTableData>> getCategories({int? userId}) =>
+  Future<List<CategoryTableData>> getCategories({required int userId, required String customerId}) =>
     (select(categoryTable)
-      ..where((t) => t.syncStatus.equals(SyncStatus.deleted.name).not())
-      ..where((t) => userId != null ? t.userId.equals(userId) : const Constant(true)))
+      ..where((t) => t.isDeleted.equals(false))
+      ..where((t) => t.userId.equals(userId) & t.customerId.equals(customerId)))
     .get();     
 
-  Stream<List<CategoryTableData>> watchCategories({int? userId}) =>
+  Stream<List<CategoryTableData>> watchCategories({required int userId, required String customerId}) =>
     (select(categoryTable)
-      ..where((t) => t.syncStatus.equals(SyncStatus.deleted.name).not())
-      ..where((t) => userId != null ? t.userId.equals(userId) : const Constant(true)))
+      ..where((t) => t.isDeleted.equals(false))
+      ..where((t) => t.userId.equals(userId) & t.customerId.equals(customerId)))
     .watch();
 
   Future<CategoryTableData?> getCategoryById(String id, {required int userId, required String customerId}) =>
@@ -32,12 +30,12 @@ class CategoryDao extends DatabaseAccessor<AppDatabase>
         ..where((t) => t.id.equals(id) & t.userId.equals(userId) & t.customerId.equals(customerId)))
       .getSingleOrNull();
 
-  Future<List<CategoryTableData>> getCategoriesByIds(List<String> ids, {required int userId}) {
+  Future<List<CategoryTableData>> getCategoriesByIds(List<String> ids, {required int userId, required String customerId}) {
     if (ids.isEmpty) {
-      return Future.value([]); // Возвращаем пустой список, если нет ID
+      return Future.value([]); 
     }
     return (select(categoryTable)
-          ..where((t) => t.id.isIn(ids) & t.userId.equals(userId) & t.syncStatus.equals(SyncStatus.deleted.name).not()))
+          ..where((t) => t.id.isIn(ids) & t.userId.equals(userId) & t.customerId.equals(customerId) & t.isDeleted.equals(false)))
         .get();
   }
 
@@ -46,7 +44,7 @@ class CategoryDao extends DatabaseAccessor<AppDatabase>
     try {
       final existingCategory =
           await (select(categoryTable)
-            ..where((t) => t.id.equals(id))).getSingleOrNull();
+            ..where((t) => t.id.equals(id) & t.userId.equals(companion.userId.value) & t.customerId.equals(companion.customerId.value))).getSingleOrNull();
 
       if (existingCategory != null) {
         throw StateError('category with ID $id exists');
@@ -60,48 +58,48 @@ class CategoryDao extends DatabaseAccessor<AppDatabase>
     }
   }
 
-Future<bool> updateCategory(CategoryTableCompanion companion, {required int userId}) async {    
+Future<bool> updateCategory(CategoryTableCompanion companion, {required int userId, required String customerId}) async {    
     final idToUpdate = companion.id.value;
     final updatedRows = await (update(categoryTable)
-      ..where((t) => t.id.equals(idToUpdate) & t.userId.equals(userId))) 
+      ..where((t) => t.id.equals(idToUpdate) & t.userId.equals(userId) & t.customerId.equals(customerId))) 
       .write(companion); 
     return updatedRows > 0;
 }
 
-  Future<bool> softDeleteCategory(String id, {required int userId}) async {
+  Future<bool> softDeleteCategory(String id, {required int userId, required String customerId}) async {
     
     final companion = CategoryTableCompanion(
-      syncStatus: Value(SyncStatus.deleted),
+      isDeleted: Value(true),
       lastModified: Value(DateTime.now()), 
     );
     
     final updatedRows = await (update(categoryTable)
-      ..where((t) => t.id.equals(id) & t.userId.equals(userId)))
+      ..where((t) => t.id.equals(id) & t.userId.equals(userId) & t.customerId.equals(customerId)))
       .write(companion);
     
     return updatedRows > 0;
   }
 
-  Future<int> physicallyDeleteCategory(String id, {required int userId}) async {
+  Future<int> physicallyDeleteCategory(String id, {required int userId, required String customerId}) async {
     return (delete(categoryTable)
-      ..where((t) => t.id.equals(id) & t.userId.equals(userId)))
+      ..where((t) => t.id.equals(id) & t.userId.equals(userId) & t.customerId.equals(customerId)))
       .go();
   }
 
-  Future<bool> categoryExists(String id) async {
+  Future<bool> categoryExists(String id, {required int userId, required String customerId}) async {
     if (id.isEmpty) return false;
 
     final category =
         await (select(categoryTable)
-          ..where((t) => t.id.equals(id))).getSingleOrNull();
+          ..where((t) => t.id.equals(id) & t.userId.equals(userId) & t.customerId.equals(customerId))).getSingleOrNull();
 
     return category != null;
   }
 
-  Future<int> getCategoriesCount({int? userId}) async {
+  Future<int> getCategoriesCount({required int userId, required String customerId}) async {
     final countQuery = selectOnly(categoryTable)
       ..addColumns([categoryTable.id.count()])
-      ..where(userId != null ? categoryTable.userId.equals(userId) : const Constant(true));
+      ..where(categoryTable.userId.equals(userId) & categoryTable.customerId.equals(customerId));
 
     final result = await countQuery.getSingle();
     return result.read(categoryTable.id.count()) ?? 0;
@@ -113,12 +111,8 @@ Future<bool> updateCategory(CategoryTableCompanion companion, {required int user
     });
   }
 
-  Future<int> deleteAllCategories({int? userId}) {
-    if (userId != null) {
-      return (delete(categoryTable)..where((t) => t.userId.equals(userId))).go();
-    } else {
-      return delete(categoryTable).go();
+  Future<int> deleteAllCategories({required int userId, required String customerId}) {
+    return (delete(categoryTable)..where((t) => t.userId.equals(userId) & t.customerId.equals(customerId))).go();
     }
-  }
   
 }

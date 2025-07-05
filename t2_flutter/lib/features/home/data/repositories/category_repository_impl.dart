@@ -129,7 +129,7 @@ class CategoryRepositoryImpl extends BaseSyncRepository
           .then((models) => models.toEntities());
 
   @override
-  Future<CategoryEntity?> getCategoryById(String id, String customerId) async {
+  Future<CategoryEntity?> getCategoryById(String id) async {
     final model = await _localDataSource.getCategoryById(id, userId: userId, customerId: customerId);
     return model?.toEntity();
   }

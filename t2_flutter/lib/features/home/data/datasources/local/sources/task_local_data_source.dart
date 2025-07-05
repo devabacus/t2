@@ -151,8 +151,9 @@ class TaskLocalDataSource implements ITaskLocalDataSource {
     await _taskDao.db.transaction(() async {
       for (final serverChange in serverChanges as List<serverpod.Task>) {
         if (serverChange.userId != userId ||
-            serverChange.customerId.toString() != customerId)
+            serverChange.customerId.toString() != customerId){
           continue;
+        }
 
         final localRecord =
             await (_taskDao.select(_taskDao.taskTable)..where(
@@ -191,8 +192,7 @@ class TaskLocalDataSource implements ITaskLocalDataSource {
             localChangesMap.remove(localRecord.id);
           }
         } else {
-          if (localRecord.syncStatus == SyncStatus.local ||
-              localRecord.syncStatus == SyncStatus.deleted) {
+          if (localRecord.syncStatus == SyncStatus.local || localRecord.isDeleted) {
             if (serverTime.isAfter(localTime)) {
               print(
                 '    -> КОНФЛИКТ: Сервер новее для "${serverChange.title}". Применяем серверные изменения.',

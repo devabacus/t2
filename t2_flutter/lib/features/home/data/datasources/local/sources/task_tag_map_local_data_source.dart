@@ -164,7 +164,7 @@ Future<TaskTagMapModel?> getRelationByTaskAndTag(String taskId, String tagId, {r
               localChangesMap.remove(localRecord.id);
            }
         } else {
-          if (localRecord.syncStatus == SyncStatus.local || localRecord.syncStatus == SyncStatus.deleted) {
+          if (localRecord.syncStatus == SyncStatus.local || localRecord.isDeleted) {
             if (serverTime.isAfter(localTime)) {
               print('    -> КОНФЛИКТ: Сервер новее для связи ID ${serverChange.id}. Применяем серверные изменения.');
               await insertOrUpdateFromServer(serverChange, SyncStatus.synced);

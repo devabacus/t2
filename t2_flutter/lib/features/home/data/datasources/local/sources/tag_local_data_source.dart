@@ -192,8 +192,7 @@ class TagLocalDataSource implements ITagLocalDataSource {
             localChangesMap.remove(localRecord.id);
           }
         } else {
-          if (localRecord.syncStatus == SyncStatus.local ||
-              localRecord.isDeleted) {
+          if (localRecord.syncStatus == SyncStatus.local || localRecord.isDeleted) {
             if (serverTime.isAfter(localTime)) {
               print(
                 '    -> КОНФЛИКТ: Сервер новее для "${serverChange.title}". Применяем серверные изменения.',

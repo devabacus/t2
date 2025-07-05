@@ -1,8 +1,6 @@
-
 import 'package:drift/drift.dart';
-import '../../../../../../../core/database/local/interface/i_database_service.dart';
 import '../../../../../../../core/database/local/database.dart';
-import '../../../../../../../core/database/local/database_types.dart';
+import '../../../../../../../core/database/local/interface/i_database_service.dart';
 import '../../tables/task_table.dart';
 
 part 'task_dao.g.dart';
@@ -15,16 +13,16 @@ class TaskDao extends DatabaseAccessor<AppDatabase>
 
   AppDatabase get db => attachedDatabase;
 
-  Future<List<TaskTableData>> getTasks({int? userId}) =>
+  Future<List<TaskTableData>> getTasks({required int userId, required String customerId}) =>
     (select(taskTable)
-      ..where((t) => t.syncStatus.equals(SyncStatus.deleted.name).not())
-      ..where((t) => userId != null ? t.userId.equals(userId) : const Constant(true)))
+      ..where((t) => t.isDeleted.equals(false))
+      ..where((t) => t.userId.equals(userId) & t.customerId.equals(customerId)))
     .get();     
 
-  Stream<List<TaskTableData>> watchTasks({int? userId}) =>
+  Stream<List<TaskTableData>> watchTasks({required int userId, required String customerId}) =>
     (select(taskTable)
-      ..where((t) => t.syncStatus.equals(SyncStatus.deleted.name).not())
-      ..where((t) => userId != null ? t.userId.equals(userId) : const Constant(true)))
+      ..where((t) => t.isDeleted.equals(false))
+      ..where((t) => t.userId.equals(userId) & t.customerId.equals(customerId)))
     .watch();
 
   Future<TaskTableData?> getTaskById(String id, {required int userId, required String customerId}) =>
@@ -32,12 +30,12 @@ class TaskDao extends DatabaseAccessor<AppDatabase>
         ..where((t) => t.id.equals(id) & t.userId.equals(userId) & t.customerId.equals(customerId)))
       .getSingleOrNull();
 
-  Future<List<TaskTableData>> getTasksByIds(List<String> ids, {required int userId}) {
+  Future<List<TaskTableData>> getTasksByIds(List<String> ids, {required int userId, required String customerId}) {
     if (ids.isEmpty) {
-      return Future.value([]); // Возвращаем пустой список, если нет ID
+      return Future.value([]); 
     }
     return (select(taskTable)
-          ..where((t) => t.id.isIn(ids) & t.userId.equals(userId) & t.syncStatus.equals(SyncStatus.deleted.name).not()))
+          ..where((t) => t.id.isIn(ids) & t.userId.equals(userId) & t.customerId.equals(customerId) & t.isDeleted.equals(false)))
         .get();
   }
 
@@ -46,7 +44,7 @@ class TaskDao extends DatabaseAccessor<AppDatabase>
     try {
       final existingTask =
           await (select(taskTable)
-            ..where((t) => t.id.equals(id))).getSingleOrNull();
+            ..where((t) => t.id.equals(id) & t.userId.equals(companion.userId.value) & t.customerId.equals(companion.customerId.value))).getSingleOrNull();
 
       if (existingTask != null) {
         throw StateError('task with ID $id exists');
@@ -60,48 +58,48 @@ class TaskDao extends DatabaseAccessor<AppDatabase>
     }
   }
 
-Future<bool> updateTask(TaskTableCompanion companion, {required int userId}) async {    
+Future<bool> updateTask(TaskTableCompanion companion, {required int userId, required String customerId}) async {    
     final idToUpdate = companion.id.value;
     final updatedRows = await (update(taskTable)
-      ..where((t) => t.id.equals(idToUpdate) & t.userId.equals(userId))) 
+      ..where((t) => t.id.equals(idToUpdate) & t.userId.equals(userId) & t.customerId.equals(customerId))) 
       .write(companion); 
     return updatedRows > 0;
 }
 
-  Future<bool> softDeleteTask(String id, {required int userId}) async {
+  Future<bool> softDeleteTask(String id, {required int userId, required String customerId}) async {
     
     final companion = TaskTableCompanion(
-      syncStatus: Value(SyncStatus.deleted),
+      isDeleted: Value(true),
       lastModified: Value(DateTime.now()), 
     );
     
     final updatedRows = await (update(taskTable)
-      ..where((t) => t.id.equals(id) & t.userId.equals(userId)))
+      ..where((t) => t.id.equals(id) & t.userId.equals(userId) & t.customerId.equals(customerId)))
       .write(companion);
     
     return updatedRows > 0;
   }
 
-  Future<int> physicallyDeleteTask(String id, {required int userId}) async {
+  Future<int> physicallyDeleteTask(String id, {required int userId, required String customerId}) async {
     return (delete(taskTable)
-      ..where((t) => t.id.equals(id) & t.userId.equals(userId)))
+      ..where((t) => t.id.equals(id) & t.userId.equals(userId) & t.customerId.equals(customerId)))
       .go();
   }
 
-  Future<bool> taskExists(String id) async {
+  Future<bool> taskExists(String id, {required int userId, required String customerId}) async {
     if (id.isEmpty) return false;
 
     final task =
         await (select(taskTable)
-          ..where((t) => t.id.equals(id))).getSingleOrNull();
+          ..where((t) => t.id.equals(id) & t.userId.equals(userId) & t.customerId.equals(customerId))).getSingleOrNull();
 
     return task != null;
   }
 
-  Future<int> getTasksCount({int? userId}) async {
+  Future<int> getTasksCount({required int userId, required String customerId}) async {
     final countQuery = selectOnly(taskTable)
       ..addColumns([taskTable.id.count()])
-      ..where(userId != null ? taskTable.userId.equals(userId) : const Constant(true));
+      ..where(taskTable.userId.equals(userId) & taskTable.customerId.equals(customerId));
 
     final result = await countQuery.getSingle();
     return result.read(taskTable.id.count()) ?? 0;
@@ -113,16 +111,12 @@ Future<bool> updateTask(TaskTableCompanion companion, {required int userId}) asy
     });
   }
 
-  Future<int> deleteAllTasks({int? userId}) {
-    if (userId != null) {
-      return (delete(taskTable)..where((t) => t.userId.equals(userId))).go();
-    } else {
-      return delete(taskTable).go();
+  Future<int> deleteAllTasks({required int userId, required String customerId}) {
+    return (delete(taskTable)..where((t) => t.userId.equals(userId) & t.customerId.equals(customerId))).go();
     }
-  }
   
-  Future<List<TaskTableData>> getTasksByCategoryId(String categoryId, {required int userId}) =>
+  Future<List<TaskTableData>> getTasksByCategoryId(String categoryId, {required int userId, required String customerId}) =>
     (select(taskTable)
-      ..where((t) => t.categoryId.equals(categoryId) & t.userId.equals(userId) & t.syncStatus.equals(SyncStatus.deleted.name).not()))
+      ..where((t) => t.categoryId.equals(categoryId) & t.userId.equals(userId) & t.customerId.equals(customerId) & t.isDeleted.equals(false)))
     .get();
 }
