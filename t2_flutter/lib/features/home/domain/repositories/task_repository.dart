@@ -3,7 +3,7 @@ import '../entities/task/task_entity.dart';
 abstract class ITaskRepository {
   Future<List<TaskEntity>> getTasks();
   Stream<List<TaskEntity>> watchTasks();
-  Future<TaskEntity?> getTaskById(String id, String customerId);
+  Future<TaskEntity?> getTaskById(String id);
   Future<List<TaskEntity>> getTasksByIds(List<String> ids);
   Future<String> createTask(TaskEntity task);
   Future<bool> updateTask(TaskEntity task);

@@ -1,5 +1,4 @@
-
-    import 'package:t2/features/home/data/datasources/local/tables/extensions/task_tag_map_table_extension.dart';
+import 'package:t2/features/home/data/datasources/local/tables/extensions/task_tag_map_table_extension.dart';
 import 'package:t2/features/home/domain/entities/extensions/task_tag_map_entity_extension.dart';
 import 'package:t2_client/t2_client.dart' as serverpod;
 import 'package:uuid/uuid.dart';
@@ -34,8 +33,9 @@ class TaskTagMapRepositoryImpl extends BaseSyncRepository
     this._remoteDataSource,
     ISyncMetadataLocalDataSource syncMetadataDataSource,
     int userId,
+    String customerId,
     this._tagRepository,
-  ) : super(userId, syncMetadataDataSource: syncMetadataDataSource) {
+  ) : super(userId, customerId, syncMetadataDataSource: syncMetadataDataSource) {
     print('✅ TaskTagMapRepositoryImpl: Создан экземпляр для userId: $userId');
     initEventBasedSync();
   }
@@ -43,7 +43,7 @@ class TaskTagMapRepositoryImpl extends BaseSyncRepository
   @override
   Stream<List<TaskTagMapEntity>> watchTaskTagMaps() {
     return _localDataSource
-        .watchAllRelations(userId: userId)
+        .watchAllRelations(userId: userId, customerId: customerId)
         .map((models) => models.toEntities());
   }
 
@@ -62,6 +62,7 @@ class TaskTagMapRepositoryImpl extends BaseSyncRepository
     final result = await _localDataSource.softDeleteTaskTagMapById(
       id,
       userId: userId,
+      customerId: customerId,
     );
     syncWithServer().catchError(
       (e) =>
@@ -98,6 +99,7 @@ class TaskTagMapRepositoryImpl extends BaseSyncRepository
         taskId,
         tagId,
         userId: userId,
+        customerId: customerId,
       );
 
       if (relation != null) {
@@ -119,6 +121,7 @@ class TaskTagMapRepositoryImpl extends BaseSyncRepository
       await _localDataSource.softDeleteRelationsByTaskId(
         taskId,
         userId: userId,
+        customerId: customerId,
       );
       print('✅ Все связи для источника $taskId помечены для удаления локально.');
       // Запускаем фоновую синхронизацию, чтобы сервер узнал об удалениях
@@ -136,7 +139,7 @@ class TaskTagMapRepositoryImpl extends BaseSyncRepository
   @override
   Future<List<TagEntity>> getTagsForTask(String taskId) async {
     final allRelations =
-        await _localDataSource.watchAllRelations(userId: userId).first;
+        await _localDataSource.watchAllRelations(userId: userId, customerId: customerId).first;
 
     final tagIdsForTask =
         allRelations
@@ -165,19 +168,20 @@ class TaskTagMapRepositoryImpl extends BaseSyncRepository
 
   @override
   Future<List<dynamic>> reconcileChanges(List<dynamic> serverChanges) {
-    return _localDataSource.reconcileServerChanges(serverChanges, userId);
+    return _localDataSource.reconcileServerChanges(serverChanges, userId: userId, customerId: customerId);
   }
 
   @override
   Future<void> pushLocalChanges(List<dynamic> localChangesToPush) async {
     for (final localChange in localChangesToPush as List<TaskTagMapTableData>) {
-      if (localChange.syncStatus == SyncStatus.deleted) {
+      if (localChange.isDeleted) {
         try {
           // Вместо удаления по локальному ID, удаляем по бизнес-ключу
           await _syncDeleteByTaskAndTag(localChange.taskId, localChange.tagId);
           await _localDataSource.physicallyDeleteTaskTagMap(
             localChange.id,
             userId: userId,
+            customerId: customerId,
           );
           print(
             '    -> ✅ Удаление связи для Task ${localChange.taskId.substring(0, 8)}... синхронизировано с сервером.',
@@ -227,7 +231,7 @@ class TaskTagMapRepositoryImpl extends BaseSyncRepository
 
   @override
   Future<void> handleSyncEvent(dynamic event) async {
-    await _localDataSource.handleSyncEvent(event, userId);
+    await _localDataSource.handleSyncEvent(event, userId: userId, customerId: customerId);
   }
 
   @override

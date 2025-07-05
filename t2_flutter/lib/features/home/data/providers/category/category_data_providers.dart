@@ -43,31 +43,38 @@ ISyncMetadataLocalDataSource syncMetadataLocalDataSource(Ref ref) {
 /// Семейный провайдер репозитория для конкретного пользователя
 /// Каждый userId получает свой изолированный экземпляр репозитория
 @riverpod
-ICategoryRepository categoryRepository(Ref ref, int userId) {
+ICategoryRepository categoryRepository(
+  Ref ref, {
+  required int userId,
+  required String customerId,
+}) {
   // ref.keepAlive();
-  
+
   // Получаем все зависимости
   final localDataSource = ref.watch(categoryLocalDataSourceProvider);
   final remoteDataSource = ref.watch(categoryRemoteDataSourceProvider);
-  final syncMetadataLocalDataSource = ref.watch(syncMetadataLocalDataSourceProvider);
+  final syncMetadataLocalDataSource = ref.watch(
+    syncMetadataLocalDataSourceProvider,
+  );
 
   // Создаем репозиторий с фиксированным userId
   final repository = CategoryRepositoryImpl(
-    localDataSource, 
-    remoteDataSource, 
+    localDataSource,
+    remoteDataSource,
     syncMetadataLocalDataSource,
-    userId, // Передаем userId в конструктор
+    userId,
+    customerId,
   );
 
   // Автоматически регистрируем в реестре
   final registry = ref.read(syncRegistryProvider);
-  registry.registerRepository('categories_$userId', repository);
-  
+  registry.registerRepository('categories_${userId}_$customerId', repository);
+
   ref.onDispose(() {
-    registry.unregisterRepository('categories_$userId');
+    registry.unregisterRepository('categories_${userId}_$customerId');
     repository.dispose();
   });
-  
+
   return repository;
 }
 
@@ -76,12 +83,12 @@ ICategoryRepository categoryRepository(Ref ref, int userId) {
 @riverpod
 ICategoryRepository? currentUserCategoryRepository(Ref ref) {
   final currentUser = ref.watch(currentUserProvider);
-  
+
   if (currentUser?.id == null) {
     // Если пользователь не авторизован, возвращаем null
     return null;
   }
-  
+
   // Возвращаем репозиторий для текущего пользователя
   return ref.watch(categoryRepositoryProvider(currentUser!.id!));
 }
