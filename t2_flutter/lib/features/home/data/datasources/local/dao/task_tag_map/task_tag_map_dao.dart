@@ -137,3 +137,4 @@ class TaskTagMapDao extends DatabaseAccessor<AppDatabase>
     )).watch();
   }
 }
+
