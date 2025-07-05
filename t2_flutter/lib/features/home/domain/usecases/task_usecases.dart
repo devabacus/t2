@@ -1,5 +1,5 @@
 import '../repositories/task_repository.dart';
-import '../entities/task/task.dart';
+import '../entities/task/task_entity.dart';
 
 class CreateTaskUseCase {
   final ITaskRepository _repository;
@@ -46,8 +46,8 @@ class GetTaskByIdUseCase {
 
   GetTaskByIdUseCase(this._repository);
 
-  Future<TaskEntity?> call(String id) {
-    return _repository.getTaskById(id);
+  Future<TaskEntity?> call(String id, String customerId) {
+    return _repository.getTaskById(id, customerId);
   }
 }
 

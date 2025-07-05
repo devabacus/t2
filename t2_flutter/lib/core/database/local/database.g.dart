@@ -1437,43 +1437,6 @@ class $TaskTableTable extends TaskTable
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $TaskTableTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idMeta = const VerificationMeta('id');
-  @override
-  late final GeneratedColumn<String> id = GeneratedColumn<String>(
-    'id',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-    clientDefault: () => Uuid().v7(),
-  );
-  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
-  @override
-  late final GeneratedColumn<int> userId = GeneratedColumn<int>(
-    'user_id',
-    aliasedName,
-    false,
-    type: DriftSqlType.int,
-    requiredDuringInsert: true,
-  );
-  @override
-  late final GeneratedColumnWithTypeConverter<DateTime, int> lastModified =
-      GeneratedColumn<int>(
-        'last_modified',
-        aliasedName,
-        false,
-        type: DriftSqlType.int,
-        requiredDuringInsert: true,
-      ).withConverter<DateTime>($TaskTableTable.$converterlastModified);
-  @override
-  late final GeneratedColumnWithTypeConverter<SyncStatus, String> syncStatus =
-      GeneratedColumn<String>(
-        'sync_status',
-        aliasedName,
-        false,
-        type: DriftSqlType.string,
-        requiredDuringInsert: true,
-      ).withConverter<SyncStatus>($TaskTableTable.$convertersyncStatus);
   static const VerificationMeta _titleMeta = const VerificationMeta('title');
   @override
   late final GeneratedColumn<String> title = GeneratedColumn<String>(
@@ -1508,15 +1471,93 @@ class $TaskTableTable extends TaskTable
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    clientDefault: () => Uuid().v7(),
+  );
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<int> userId = GeneratedColumn<int>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _customerIdMeta = const VerificationMeta(
+    'customerId',
+  );
+  @override
+  late final GeneratedColumn<String> customerId = GeneratedColumn<String>(
+    'customer_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    clientDefault: () => DateTime.now().toUtc(),
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<DateTime, int> lastModified =
+      GeneratedColumn<int>(
+        'last_modified',
+        aliasedName,
+        false,
+        type: DriftSqlType.int,
+        requiredDuringInsert: true,
+      ).withConverter<DateTime>($TaskTableTable.$converterlastModified);
+  @override
+  late final GeneratedColumnWithTypeConverter<SyncStatus, String> syncStatus =
+      GeneratedColumn<String>(
+        'sync_status',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<SyncStatus>($TaskTableTable.$convertersyncStatus);
+  static const VerificationMeta _isDeletedMeta = const VerificationMeta(
+    'isDeleted',
+  );
+  @override
+  late final GeneratedColumn<bool> isDeleted = GeneratedColumn<bool>(
+    'is_deleted',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_deleted" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
   @override
   List<GeneratedColumn> get $columns => [
-    id,
-    userId,
-    lastModified,
-    syncStatus,
     title,
     categoryId,
     category,
+    id,
+    userId,
+    customerId,
+    createdAt,
+    lastModified,
+    syncStatus,
+    isDeleted,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -1530,17 +1571,6 @@ class $TaskTableTable extends TaskTable
   }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
-    if (data.containsKey('user_id')) {
-      context.handle(
-        _userIdMeta,
-        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_userIdMeta);
-    }
     if (data.containsKey('title')) {
       context.handle(
         _titleMeta,
@@ -1561,6 +1591,37 @@ class $TaskTableTable extends TaskTable
         category.isAcceptableOrUnknown(data['category']!, _categoryMeta),
       );
     }
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('customer_id')) {
+      context.handle(
+        _customerIdMeta,
+        customerId.isAcceptableOrUnknown(data['customer_id']!, _customerIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_customerIdMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    }
+    if (data.containsKey('is_deleted')) {
+      context.handle(
+        _isDeletedMeta,
+        isDeleted.isAcceptableOrUnknown(data['is_deleted']!, _isDeletedMeta),
+      );
+    }
     return context;
   }
 
@@ -1570,28 +1631,6 @@ class $TaskTableTable extends TaskTable
   TaskTableData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return TaskTableData(
-      id:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.string,
-            data['${effectivePrefix}id'],
-          )!,
-      userId:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.int,
-            data['${effectivePrefix}user_id'],
-          )!,
-      lastModified: $TaskTableTable.$converterlastModified.fromSql(
-        attachedDatabase.typeMapping.read(
-          DriftSqlType.int,
-          data['${effectivePrefix}last_modified'],
-        )!,
-      ),
-      syncStatus: $TaskTableTable.$convertersyncStatus.fromSql(
-        attachedDatabase.typeMapping.read(
-          DriftSqlType.string,
-          data['${effectivePrefix}sync_status'],
-        )!,
-      ),
       title:
           attachedDatabase.typeMapping.read(
             DriftSqlType.string,
@@ -1605,6 +1644,43 @@ class $TaskTableTable extends TaskTable
         DriftSqlType.string,
         data['${effectivePrefix}category'],
       ),
+      id:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.string,
+            data['${effectivePrefix}id'],
+          )!,
+      userId:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.int,
+            data['${effectivePrefix}user_id'],
+          )!,
+      customerId:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.string,
+            data['${effectivePrefix}customer_id'],
+          )!,
+      createdAt:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.dateTime,
+            data['${effectivePrefix}created_at'],
+          )!,
+      lastModified: $TaskTableTable.$converterlastModified.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}last_modified'],
+        )!,
+      ),
+      syncStatus: $TaskTableTable.$convertersyncStatus.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}sync_status'],
+        )!,
+      ),
+      isDeleted:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.bool,
+            data['${effectivePrefix}is_deleted'],
+          )!,
     );
   }
 
@@ -1620,27 +1696,42 @@ class $TaskTableTable extends TaskTable
 }
 
 class TaskTableData extends DataClass implements Insertable<TaskTableData> {
-  final String id;
-  final int userId;
-  final DateTime lastModified;
-  final SyncStatus syncStatus;
   final String title;
   final String? categoryId;
   final String? category;
+  final String id;
+  final int userId;
+  final String customerId;
+  final DateTime createdAt;
+  final DateTime lastModified;
+  final SyncStatus syncStatus;
+  final bool isDeleted;
   const TaskTableData({
-    required this.id,
-    required this.userId,
-    required this.lastModified,
-    required this.syncStatus,
     required this.title,
     this.categoryId,
     this.category,
+    required this.id,
+    required this.userId,
+    required this.customerId,
+    required this.createdAt,
+    required this.lastModified,
+    required this.syncStatus,
+    required this.isDeleted,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
+    map['title'] = Variable<String>(title);
+    if (!nullToAbsent || categoryId != null) {
+      map['category_id'] = Variable<String>(categoryId);
+    }
+    if (!nullToAbsent || category != null) {
+      map['category'] = Variable<String>(category);
+    }
     map['id'] = Variable<String>(id);
     map['user_id'] = Variable<int>(userId);
+    map['customer_id'] = Variable<String>(customerId);
+    map['created_at'] = Variable<DateTime>(createdAt);
     {
       map['last_modified'] = Variable<int>(
         $TaskTableTable.$converterlastModified.toSql(lastModified),
@@ -1651,22 +1742,12 @@ class TaskTableData extends DataClass implements Insertable<TaskTableData> {
         $TaskTableTable.$convertersyncStatus.toSql(syncStatus),
       );
     }
-    map['title'] = Variable<String>(title);
-    if (!nullToAbsent || categoryId != null) {
-      map['category_id'] = Variable<String>(categoryId);
-    }
-    if (!nullToAbsent || category != null) {
-      map['category'] = Variable<String>(category);
-    }
+    map['is_deleted'] = Variable<bool>(isDeleted);
     return map;
   }
 
   TaskTableCompanion toCompanion(bool nullToAbsent) {
     return TaskTableCompanion(
-      id: Value(id),
-      userId: Value(userId),
-      lastModified: Value(lastModified),
-      syncStatus: Value(syncStatus),
       title: Value(title),
       categoryId:
           categoryId == null && nullToAbsent
@@ -1676,6 +1757,13 @@ class TaskTableData extends DataClass implements Insertable<TaskTableData> {
           category == null && nullToAbsent
               ? const Value.absent()
               : Value(category),
+      id: Value(id),
+      userId: Value(userId),
+      customerId: Value(customerId),
+      createdAt: Value(createdAt),
+      lastModified: Value(lastModified),
+      syncStatus: Value(syncStatus),
+      isDeleted: Value(isDeleted),
     );
   }
 
@@ -1685,172 +1773,219 @@ class TaskTableData extends DataClass implements Insertable<TaskTableData> {
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return TaskTableData(
-      id: serializer.fromJson<String>(json['id']),
-      userId: serializer.fromJson<int>(json['userId']),
-      lastModified: serializer.fromJson<DateTime>(json['lastModified']),
-      syncStatus: serializer.fromJson<SyncStatus>(json['syncStatus']),
       title: serializer.fromJson<String>(json['title']),
       categoryId: serializer.fromJson<String?>(json['categoryId']),
       category: serializer.fromJson<String?>(json['category']),
+      id: serializer.fromJson<String>(json['id']),
+      userId: serializer.fromJson<int>(json['userId']),
+      customerId: serializer.fromJson<String>(json['customerId']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      lastModified: serializer.fromJson<DateTime>(json['lastModified']),
+      syncStatus: serializer.fromJson<SyncStatus>(json['syncStatus']),
+      isDeleted: serializer.fromJson<bool>(json['isDeleted']),
     );
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'id': serializer.toJson<String>(id),
-      'userId': serializer.toJson<int>(userId),
-      'lastModified': serializer.toJson<DateTime>(lastModified),
-      'syncStatus': serializer.toJson<SyncStatus>(syncStatus),
       'title': serializer.toJson<String>(title),
       'categoryId': serializer.toJson<String?>(categoryId),
       'category': serializer.toJson<String?>(category),
+      'id': serializer.toJson<String>(id),
+      'userId': serializer.toJson<int>(userId),
+      'customerId': serializer.toJson<String>(customerId),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'lastModified': serializer.toJson<DateTime>(lastModified),
+      'syncStatus': serializer.toJson<SyncStatus>(syncStatus),
+      'isDeleted': serializer.toJson<bool>(isDeleted),
     };
   }
 
   TaskTableData copyWith({
-    String? id,
-    int? userId,
-    DateTime? lastModified,
-    SyncStatus? syncStatus,
     String? title,
     Value<String?> categoryId = const Value.absent(),
     Value<String?> category = const Value.absent(),
+    String? id,
+    int? userId,
+    String? customerId,
+    DateTime? createdAt,
+    DateTime? lastModified,
+    SyncStatus? syncStatus,
+    bool? isDeleted,
   }) => TaskTableData(
-    id: id ?? this.id,
-    userId: userId ?? this.userId,
-    lastModified: lastModified ?? this.lastModified,
-    syncStatus: syncStatus ?? this.syncStatus,
     title: title ?? this.title,
     categoryId: categoryId.present ? categoryId.value : this.categoryId,
     category: category.present ? category.value : this.category,
+    id: id ?? this.id,
+    userId: userId ?? this.userId,
+    customerId: customerId ?? this.customerId,
+    createdAt: createdAt ?? this.createdAt,
+    lastModified: lastModified ?? this.lastModified,
+    syncStatus: syncStatus ?? this.syncStatus,
+    isDeleted: isDeleted ?? this.isDeleted,
   );
   TaskTableData copyWithCompanion(TaskTableCompanion data) {
     return TaskTableData(
+      title: data.title.present ? data.title.value : this.title,
+      categoryId:
+          data.categoryId.present ? data.categoryId.value : this.categoryId,
+      category: data.category.present ? data.category.value : this.category,
       id: data.id.present ? data.id.value : this.id,
       userId: data.userId.present ? data.userId.value : this.userId,
+      customerId:
+          data.customerId.present ? data.customerId.value : this.customerId,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       lastModified:
           data.lastModified.present
               ? data.lastModified.value
               : this.lastModified,
       syncStatus:
           data.syncStatus.present ? data.syncStatus.value : this.syncStatus,
-      title: data.title.present ? data.title.value : this.title,
-      categoryId:
-          data.categoryId.present ? data.categoryId.value : this.categoryId,
-      category: data.category.present ? data.category.value : this.category,
+      isDeleted: data.isDeleted.present ? data.isDeleted.value : this.isDeleted,
     );
   }
 
   @override
   String toString() {
     return (StringBuffer('TaskTableData(')
-          ..write('id: $id, ')
-          ..write('userId: $userId, ')
-          ..write('lastModified: $lastModified, ')
-          ..write('syncStatus: $syncStatus, ')
           ..write('title: $title, ')
           ..write('categoryId: $categoryId, ')
-          ..write('category: $category')
+          ..write('category: $category, ')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('customerId: $customerId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('lastModified: $lastModified, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('isDeleted: $isDeleted')
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode => Object.hash(
-    id,
-    userId,
-    lastModified,
-    syncStatus,
     title,
     categoryId,
     category,
+    id,
+    userId,
+    customerId,
+    createdAt,
+    lastModified,
+    syncStatus,
+    isDeleted,
   );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is TaskTableData &&
-          other.id == this.id &&
-          other.userId == this.userId &&
-          other.lastModified == this.lastModified &&
-          other.syncStatus == this.syncStatus &&
           other.title == this.title &&
           other.categoryId == this.categoryId &&
-          other.category == this.category);
+          other.category == this.category &&
+          other.id == this.id &&
+          other.userId == this.userId &&
+          other.customerId == this.customerId &&
+          other.createdAt == this.createdAt &&
+          other.lastModified == this.lastModified &&
+          other.syncStatus == this.syncStatus &&
+          other.isDeleted == this.isDeleted);
 }
 
 class TaskTableCompanion extends UpdateCompanion<TaskTableData> {
-  final Value<String> id;
-  final Value<int> userId;
-  final Value<DateTime> lastModified;
-  final Value<SyncStatus> syncStatus;
   final Value<String> title;
   final Value<String?> categoryId;
   final Value<String?> category;
+  final Value<String> id;
+  final Value<int> userId;
+  final Value<String> customerId;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> lastModified;
+  final Value<SyncStatus> syncStatus;
+  final Value<bool> isDeleted;
   final Value<int> rowid;
   const TaskTableCompanion({
-    this.id = const Value.absent(),
-    this.userId = const Value.absent(),
-    this.lastModified = const Value.absent(),
-    this.syncStatus = const Value.absent(),
     this.title = const Value.absent(),
     this.categoryId = const Value.absent(),
     this.category = const Value.absent(),
+    this.id = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.customerId = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.lastModified = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.isDeleted = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   TaskTableCompanion.insert({
-    this.id = const Value.absent(),
-    required int userId,
-    required DateTime lastModified,
-    required SyncStatus syncStatus,
     required String title,
     this.categoryId = const Value.absent(),
     this.category = const Value.absent(),
+    this.id = const Value.absent(),
+    required int userId,
+    required String customerId,
+    this.createdAt = const Value.absent(),
+    required DateTime lastModified,
+    required SyncStatus syncStatus,
+    this.isDeleted = const Value.absent(),
     this.rowid = const Value.absent(),
-  }) : userId = Value(userId),
+  }) : title = Value(title),
+       userId = Value(userId),
+       customerId = Value(customerId),
        lastModified = Value(lastModified),
-       syncStatus = Value(syncStatus),
-       title = Value(title);
+       syncStatus = Value(syncStatus);
   static Insertable<TaskTableData> custom({
-    Expression<String>? id,
-    Expression<int>? userId,
-    Expression<int>? lastModified,
-    Expression<String>? syncStatus,
     Expression<String>? title,
     Expression<String>? categoryId,
     Expression<String>? category,
+    Expression<String>? id,
+    Expression<int>? userId,
+    Expression<String>? customerId,
+    Expression<DateTime>? createdAt,
+    Expression<int>? lastModified,
+    Expression<String>? syncStatus,
+    Expression<bool>? isDeleted,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
-      if (id != null) 'id': id,
-      if (userId != null) 'user_id': userId,
-      if (lastModified != null) 'last_modified': lastModified,
-      if (syncStatus != null) 'sync_status': syncStatus,
       if (title != null) 'title': title,
       if (categoryId != null) 'category_id': categoryId,
       if (category != null) 'category': category,
+      if (id != null) 'id': id,
+      if (userId != null) 'user_id': userId,
+      if (customerId != null) 'customer_id': customerId,
+      if (createdAt != null) 'created_at': createdAt,
+      if (lastModified != null) 'last_modified': lastModified,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (isDeleted != null) 'is_deleted': isDeleted,
       if (rowid != null) 'rowid': rowid,
     });
   }
 
   TaskTableCompanion copyWith({
-    Value<String>? id,
-    Value<int>? userId,
-    Value<DateTime>? lastModified,
-    Value<SyncStatus>? syncStatus,
     Value<String>? title,
     Value<String?>? categoryId,
     Value<String?>? category,
+    Value<String>? id,
+    Value<int>? userId,
+    Value<String>? customerId,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? lastModified,
+    Value<SyncStatus>? syncStatus,
+    Value<bool>? isDeleted,
     Value<int>? rowid,
   }) {
     return TaskTableCompanion(
-      id: id ?? this.id,
-      userId: userId ?? this.userId,
-      lastModified: lastModified ?? this.lastModified,
-      syncStatus: syncStatus ?? this.syncStatus,
       title: title ?? this.title,
       categoryId: categoryId ?? this.categoryId,
       category: category ?? this.category,
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      customerId: customerId ?? this.customerId,
+      createdAt: createdAt ?? this.createdAt,
+      lastModified: lastModified ?? this.lastModified,
+      syncStatus: syncStatus ?? this.syncStatus,
+      isDeleted: isDeleted ?? this.isDeleted,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -1858,11 +1993,26 @@ class TaskTableCompanion extends UpdateCompanion<TaskTableData> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
+    if (title.present) {
+      map['title'] = Variable<String>(title.value);
+    }
+    if (categoryId.present) {
+      map['category_id'] = Variable<String>(categoryId.value);
+    }
+    if (category.present) {
+      map['category'] = Variable<String>(category.value);
+    }
     if (id.present) {
       map['id'] = Variable<String>(id.value);
     }
     if (userId.present) {
       map['user_id'] = Variable<int>(userId.value);
+    }
+    if (customerId.present) {
+      map['customer_id'] = Variable<String>(customerId.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
     }
     if (lastModified.present) {
       map['last_modified'] = Variable<int>(
@@ -1874,14 +2024,8 @@ class TaskTableCompanion extends UpdateCompanion<TaskTableData> {
         $TaskTableTable.$convertersyncStatus.toSql(syncStatus.value),
       );
     }
-    if (title.present) {
-      map['title'] = Variable<String>(title.value);
-    }
-    if (categoryId.present) {
-      map['category_id'] = Variable<String>(categoryId.value);
-    }
-    if (category.present) {
-      map['category'] = Variable<String>(category.value);
+    if (isDeleted.present) {
+      map['is_deleted'] = Variable<bool>(isDeleted.value);
     }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
@@ -1892,13 +2036,16 @@ class TaskTableCompanion extends UpdateCompanion<TaskTableData> {
   @override
   String toString() {
     return (StringBuffer('TaskTableCompanion(')
-          ..write('id: $id, ')
-          ..write('userId: $userId, ')
-          ..write('lastModified: $lastModified, ')
-          ..write('syncStatus: $syncStatus, ')
           ..write('title: $title, ')
           ..write('categoryId: $categoryId, ')
           ..write('category: $category, ')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('customerId: $customerId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('lastModified: $lastModified, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('isDeleted: $isDeleted, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -1930,6 +2077,29 @@ class $TaskTagMapTableTable extends TaskTagMapTable
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _customerIdMeta = const VerificationMeta(
+    'customerId',
+  );
+  @override
+  late final GeneratedColumn<String> customerId = GeneratedColumn<String>(
+    'customer_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    clientDefault: () => DateTime.now().toUtc(),
+  );
   @override
   late final GeneratedColumnWithTypeConverter<DateTime, int> lastModified =
       GeneratedColumn<int>(
@@ -1948,6 +2118,21 @@ class $TaskTagMapTableTable extends TaskTagMapTable
         type: DriftSqlType.string,
         requiredDuringInsert: true,
       ).withConverter<SyncStatus>($TaskTagMapTableTable.$convertersyncStatus);
+  static const VerificationMeta _isDeletedMeta = const VerificationMeta(
+    'isDeleted',
+  );
+  @override
+  late final GeneratedColumn<bool> isDeleted = GeneratedColumn<bool>(
+    'is_deleted',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_deleted" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
   static const VerificationMeta _taskIdMeta = const VerificationMeta('taskId');
   @override
   late final GeneratedColumn<String> taskId = GeneratedColumn<String>(
@@ -1976,8 +2161,11 @@ class $TaskTagMapTableTable extends TaskTagMapTable
   List<GeneratedColumn> get $columns => [
     id,
     userId,
+    customerId,
+    createdAt,
     lastModified,
     syncStatus,
+    isDeleted,
     taskId,
     tagId,
   ];
@@ -2003,6 +2191,26 @@ class $TaskTagMapTableTable extends TaskTagMapTable
       );
     } else if (isInserting) {
       context.missing(_userIdMeta);
+    }
+    if (data.containsKey('customer_id')) {
+      context.handle(
+        _customerIdMeta,
+        customerId.isAcceptableOrUnknown(data['customer_id']!, _customerIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_customerIdMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    }
+    if (data.containsKey('is_deleted')) {
+      context.handle(
+        _isDeletedMeta,
+        isDeleted.isAcceptableOrUnknown(data['is_deleted']!, _isDeletedMeta),
+      );
     }
     if (data.containsKey('task_id')) {
       context.handle(
@@ -2039,6 +2247,16 @@ class $TaskTagMapTableTable extends TaskTagMapTable
             DriftSqlType.int,
             data['${effectivePrefix}user_id'],
           )!,
+      customerId:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.string,
+            data['${effectivePrefix}customer_id'],
+          )!,
+      createdAt:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.dateTime,
+            data['${effectivePrefix}created_at'],
+          )!,
       lastModified: $TaskTagMapTableTable.$converterlastModified.fromSql(
         attachedDatabase.typeMapping.read(
           DriftSqlType.int,
@@ -2051,6 +2269,11 @@ class $TaskTagMapTableTable extends TaskTagMapTable
           data['${effectivePrefix}sync_status'],
         )!,
       ),
+      isDeleted:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.bool,
+            data['${effectivePrefix}is_deleted'],
+          )!,
       taskId:
           attachedDatabase.typeMapping.read(
             DriftSqlType.string,
@@ -2079,15 +2302,21 @@ class TaskTagMapTableData extends DataClass
     implements Insertable<TaskTagMapTableData> {
   final String id;
   final int userId;
+  final String customerId;
+  final DateTime createdAt;
   final DateTime lastModified;
   final SyncStatus syncStatus;
+  final bool isDeleted;
   final String taskId;
   final String tagId;
   const TaskTagMapTableData({
     required this.id,
     required this.userId,
+    required this.customerId,
+    required this.createdAt,
     required this.lastModified,
     required this.syncStatus,
+    required this.isDeleted,
     required this.taskId,
     required this.tagId,
   });
@@ -2096,6 +2325,8 @@ class TaskTagMapTableData extends DataClass
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
     map['user_id'] = Variable<int>(userId);
+    map['customer_id'] = Variable<String>(customerId);
+    map['created_at'] = Variable<DateTime>(createdAt);
     {
       map['last_modified'] = Variable<int>(
         $TaskTagMapTableTable.$converterlastModified.toSql(lastModified),
@@ -2106,6 +2337,7 @@ class TaskTagMapTableData extends DataClass
         $TaskTagMapTableTable.$convertersyncStatus.toSql(syncStatus),
       );
     }
+    map['is_deleted'] = Variable<bool>(isDeleted);
     map['task_id'] = Variable<String>(taskId);
     map['tag_id'] = Variable<String>(tagId);
     return map;
@@ -2115,8 +2347,11 @@ class TaskTagMapTableData extends DataClass
     return TaskTagMapTableCompanion(
       id: Value(id),
       userId: Value(userId),
+      customerId: Value(customerId),
+      createdAt: Value(createdAt),
       lastModified: Value(lastModified),
       syncStatus: Value(syncStatus),
+      isDeleted: Value(isDeleted),
       taskId: Value(taskId),
       tagId: Value(tagId),
     );
@@ -2130,8 +2365,11 @@ class TaskTagMapTableData extends DataClass
     return TaskTagMapTableData(
       id: serializer.fromJson<String>(json['id']),
       userId: serializer.fromJson<int>(json['userId']),
+      customerId: serializer.fromJson<String>(json['customerId']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       lastModified: serializer.fromJson<DateTime>(json['lastModified']),
       syncStatus: serializer.fromJson<SyncStatus>(json['syncStatus']),
+      isDeleted: serializer.fromJson<bool>(json['isDeleted']),
       taskId: serializer.fromJson<String>(json['taskId']),
       tagId: serializer.fromJson<String>(json['tagId']),
     );
@@ -2142,8 +2380,11 @@ class TaskTagMapTableData extends DataClass
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
       'userId': serializer.toJson<int>(userId),
+      'customerId': serializer.toJson<String>(customerId),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
       'lastModified': serializer.toJson<DateTime>(lastModified),
       'syncStatus': serializer.toJson<SyncStatus>(syncStatus),
+      'isDeleted': serializer.toJson<bool>(isDeleted),
       'taskId': serializer.toJson<String>(taskId),
       'tagId': serializer.toJson<String>(tagId),
     };
@@ -2152,15 +2393,21 @@ class TaskTagMapTableData extends DataClass
   TaskTagMapTableData copyWith({
     String? id,
     int? userId,
+    String? customerId,
+    DateTime? createdAt,
     DateTime? lastModified,
     SyncStatus? syncStatus,
+    bool? isDeleted,
     String? taskId,
     String? tagId,
   }) => TaskTagMapTableData(
     id: id ?? this.id,
     userId: userId ?? this.userId,
+    customerId: customerId ?? this.customerId,
+    createdAt: createdAt ?? this.createdAt,
     lastModified: lastModified ?? this.lastModified,
     syncStatus: syncStatus ?? this.syncStatus,
+    isDeleted: isDeleted ?? this.isDeleted,
     taskId: taskId ?? this.taskId,
     tagId: tagId ?? this.tagId,
   );
@@ -2168,12 +2415,16 @@ class TaskTagMapTableData extends DataClass
     return TaskTagMapTableData(
       id: data.id.present ? data.id.value : this.id,
       userId: data.userId.present ? data.userId.value : this.userId,
+      customerId:
+          data.customerId.present ? data.customerId.value : this.customerId,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       lastModified:
           data.lastModified.present
               ? data.lastModified.value
               : this.lastModified,
       syncStatus:
           data.syncStatus.present ? data.syncStatus.value : this.syncStatus,
+      isDeleted: data.isDeleted.present ? data.isDeleted.value : this.isDeleted,
       taskId: data.taskId.present ? data.taskId.value : this.taskId,
       tagId: data.tagId.present ? data.tagId.value : this.tagId,
     );
@@ -2184,8 +2435,11 @@ class TaskTagMapTableData extends DataClass
     return (StringBuffer('TaskTagMapTableData(')
           ..write('id: $id, ')
           ..write('userId: $userId, ')
+          ..write('customerId: $customerId, ')
+          ..write('createdAt: $createdAt, ')
           ..write('lastModified: $lastModified, ')
           ..write('syncStatus: $syncStatus, ')
+          ..write('isDeleted: $isDeleted, ')
           ..write('taskId: $taskId, ')
           ..write('tagId: $tagId')
           ..write(')'))
@@ -2193,16 +2447,28 @@ class TaskTagMapTableData extends DataClass
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, userId, lastModified, syncStatus, taskId, tagId);
+  int get hashCode => Object.hash(
+    id,
+    userId,
+    customerId,
+    createdAt,
+    lastModified,
+    syncStatus,
+    isDeleted,
+    taskId,
+    tagId,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is TaskTagMapTableData &&
           other.id == this.id &&
           other.userId == this.userId &&
+          other.customerId == this.customerId &&
+          other.createdAt == this.createdAt &&
           other.lastModified == this.lastModified &&
           other.syncStatus == this.syncStatus &&
+          other.isDeleted == this.isDeleted &&
           other.taskId == this.taskId &&
           other.tagId == this.tagId);
 }
@@ -2210,16 +2476,22 @@ class TaskTagMapTableData extends DataClass
 class TaskTagMapTableCompanion extends UpdateCompanion<TaskTagMapTableData> {
   final Value<String> id;
   final Value<int> userId;
+  final Value<String> customerId;
+  final Value<DateTime> createdAt;
   final Value<DateTime> lastModified;
   final Value<SyncStatus> syncStatus;
+  final Value<bool> isDeleted;
   final Value<String> taskId;
   final Value<String> tagId;
   final Value<int> rowid;
   const TaskTagMapTableCompanion({
     this.id = const Value.absent(),
     this.userId = const Value.absent(),
+    this.customerId = const Value.absent(),
+    this.createdAt = const Value.absent(),
     this.lastModified = const Value.absent(),
     this.syncStatus = const Value.absent(),
+    this.isDeleted = const Value.absent(),
     this.taskId = const Value.absent(),
     this.tagId = const Value.absent(),
     this.rowid = const Value.absent(),
@@ -2227,12 +2499,16 @@ class TaskTagMapTableCompanion extends UpdateCompanion<TaskTagMapTableData> {
   TaskTagMapTableCompanion.insert({
     this.id = const Value.absent(),
     required int userId,
+    required String customerId,
+    this.createdAt = const Value.absent(),
     required DateTime lastModified,
     required SyncStatus syncStatus,
+    this.isDeleted = const Value.absent(),
     required String taskId,
     required String tagId,
     this.rowid = const Value.absent(),
   }) : userId = Value(userId),
+       customerId = Value(customerId),
        lastModified = Value(lastModified),
        syncStatus = Value(syncStatus),
        taskId = Value(taskId),
@@ -2240,8 +2516,11 @@ class TaskTagMapTableCompanion extends UpdateCompanion<TaskTagMapTableData> {
   static Insertable<TaskTagMapTableData> custom({
     Expression<String>? id,
     Expression<int>? userId,
+    Expression<String>? customerId,
+    Expression<DateTime>? createdAt,
     Expression<int>? lastModified,
     Expression<String>? syncStatus,
+    Expression<bool>? isDeleted,
     Expression<String>? taskId,
     Expression<String>? tagId,
     Expression<int>? rowid,
@@ -2249,8 +2528,11 @@ class TaskTagMapTableCompanion extends UpdateCompanion<TaskTagMapTableData> {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (userId != null) 'user_id': userId,
+      if (customerId != null) 'customer_id': customerId,
+      if (createdAt != null) 'created_at': createdAt,
       if (lastModified != null) 'last_modified': lastModified,
       if (syncStatus != null) 'sync_status': syncStatus,
+      if (isDeleted != null) 'is_deleted': isDeleted,
       if (taskId != null) 'task_id': taskId,
       if (tagId != null) 'tag_id': tagId,
       if (rowid != null) 'rowid': rowid,
@@ -2260,8 +2542,11 @@ class TaskTagMapTableCompanion extends UpdateCompanion<TaskTagMapTableData> {
   TaskTagMapTableCompanion copyWith({
     Value<String>? id,
     Value<int>? userId,
+    Value<String>? customerId,
+    Value<DateTime>? createdAt,
     Value<DateTime>? lastModified,
     Value<SyncStatus>? syncStatus,
+    Value<bool>? isDeleted,
     Value<String>? taskId,
     Value<String>? tagId,
     Value<int>? rowid,
@@ -2269,8 +2554,11 @@ class TaskTagMapTableCompanion extends UpdateCompanion<TaskTagMapTableData> {
     return TaskTagMapTableCompanion(
       id: id ?? this.id,
       userId: userId ?? this.userId,
+      customerId: customerId ?? this.customerId,
+      createdAt: createdAt ?? this.createdAt,
       lastModified: lastModified ?? this.lastModified,
       syncStatus: syncStatus ?? this.syncStatus,
+      isDeleted: isDeleted ?? this.isDeleted,
       taskId: taskId ?? this.taskId,
       tagId: tagId ?? this.tagId,
       rowid: rowid ?? this.rowid,
@@ -2286,6 +2574,12 @@ class TaskTagMapTableCompanion extends UpdateCompanion<TaskTagMapTableData> {
     if (userId.present) {
       map['user_id'] = Variable<int>(userId.value);
     }
+    if (customerId.present) {
+      map['customer_id'] = Variable<String>(customerId.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
     if (lastModified.present) {
       map['last_modified'] = Variable<int>(
         $TaskTagMapTableTable.$converterlastModified.toSql(lastModified.value),
@@ -2295,6 +2589,9 @@ class TaskTagMapTableCompanion extends UpdateCompanion<TaskTagMapTableData> {
       map['sync_status'] = Variable<String>(
         $TaskTagMapTableTable.$convertersyncStatus.toSql(syncStatus.value),
       );
+    }
+    if (isDeleted.present) {
+      map['is_deleted'] = Variable<bool>(isDeleted.value);
     }
     if (taskId.present) {
       map['task_id'] = Variable<String>(taskId.value);
@@ -2313,8 +2610,11 @@ class TaskTagMapTableCompanion extends UpdateCompanion<TaskTagMapTableData> {
     return (StringBuffer('TaskTagMapTableCompanion(')
           ..write('id: $id, ')
           ..write('userId: $userId, ')
+          ..write('customerId: $customerId, ')
+          ..write('createdAt: $createdAt, ')
           ..write('lastModified: $lastModified, ')
           ..write('syncStatus: $syncStatus, ')
+          ..write('isDeleted: $isDeleted, ')
           ..write('taskId: $taskId, ')
           ..write('tagId: $tagId, ')
           ..write('rowid: $rowid')
@@ -3337,24 +3637,30 @@ typedef $$TagTableTableProcessedTableManager =
     >;
 typedef $$TaskTableTableCreateCompanionBuilder =
     TaskTableCompanion Function({
-      Value<String> id,
-      required int userId,
-      required DateTime lastModified,
-      required SyncStatus syncStatus,
       required String title,
       Value<String?> categoryId,
       Value<String?> category,
+      Value<String> id,
+      required int userId,
+      required String customerId,
+      Value<DateTime> createdAt,
+      required DateTime lastModified,
+      required SyncStatus syncStatus,
+      Value<bool> isDeleted,
       Value<int> rowid,
     });
 typedef $$TaskTableTableUpdateCompanionBuilder =
     TaskTableCompanion Function({
-      Value<String> id,
-      Value<int> userId,
-      Value<DateTime> lastModified,
-      Value<SyncStatus> syncStatus,
       Value<String> title,
       Value<String?> categoryId,
       Value<String?> category,
+      Value<String> id,
+      Value<int> userId,
+      Value<String> customerId,
+      Value<DateTime> createdAt,
+      Value<DateTime> lastModified,
+      Value<SyncStatus> syncStatus,
+      Value<bool> isDeleted,
       Value<int> rowid,
     });
 
@@ -3411,6 +3717,16 @@ class $$TaskTableTableFilterComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
+  ColumnFilters<String> get title => $composableBuilder(
+    column: $table.title,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get category => $composableBuilder(
+    column: $table.category,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<String> get id => $composableBuilder(
     column: $table.id,
     builder: (column) => ColumnFilters(column),
@@ -3418,6 +3734,16 @@ class $$TaskTableTableFilterComposer
 
   ColumnFilters<int> get userId => $composableBuilder(
     column: $table.userId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get customerId => $composableBuilder(
+    column: $table.customerId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -3433,13 +3759,8 @@ class $$TaskTableTableFilterComposer
     builder: (column) => ColumnWithTypeConverterFilters(column),
   );
 
-  ColumnFilters<String> get title => $composableBuilder(
-    column: $table.title,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get category => $composableBuilder(
-    column: $table.category,
+  ColumnFilters<bool> get isDeleted => $composableBuilder(
+    column: $table.isDeleted,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -3501,6 +3822,16 @@ class $$TaskTableTableOrderingComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
+  ColumnOrderings<String> get title => $composableBuilder(
+    column: $table.title,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get category => $composableBuilder(
+    column: $table.category,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get id => $composableBuilder(
     column: $table.id,
     builder: (column) => ColumnOrderings(column),
@@ -3508,6 +3839,16 @@ class $$TaskTableTableOrderingComposer
 
   ColumnOrderings<int> get userId => $composableBuilder(
     column: $table.userId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get customerId => $composableBuilder(
+    column: $table.customerId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -3521,13 +3862,8 @@ class $$TaskTableTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get title => $composableBuilder(
-    column: $table.title,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get category => $composableBuilder(
-    column: $table.category,
+  ColumnOrderings<bool> get isDeleted => $composableBuilder(
+    column: $table.isDeleted,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -3564,11 +3900,25 @@ class $$TaskTableTableAnnotationComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
+  GeneratedColumn<String> get title =>
+      $composableBuilder(column: $table.title, builder: (column) => column);
+
+  GeneratedColumn<String> get category =>
+      $composableBuilder(column: $table.category, builder: (column) => column);
+
   GeneratedColumn<String> get id =>
       $composableBuilder(column: $table.id, builder: (column) => column);
 
   GeneratedColumn<int> get userId =>
       $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<String> get customerId => $composableBuilder(
+    column: $table.customerId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
 
   GeneratedColumnWithTypeConverter<DateTime, int> get lastModified =>
       $composableBuilder(
@@ -3582,11 +3932,8 @@ class $$TaskTableTableAnnotationComposer
         builder: (column) => column,
       );
 
-  GeneratedColumn<String> get title =>
-      $composableBuilder(column: $table.title, builder: (column) => column);
-
-  GeneratedColumn<String> get category =>
-      $composableBuilder(column: $table.category, builder: (column) => column);
+  GeneratedColumn<bool> get isDeleted =>
+      $composableBuilder(column: $table.isDeleted, builder: (column) => column);
 
   $$CategoryTableTableAnnotationComposer get categoryId {
     final $$CategoryTableTableAnnotationComposer composer = $composerBuilder(
@@ -3665,42 +4012,54 @@ class $$TaskTableTableTableManager
               () => $$TaskTableTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
-                Value<String> id = const Value.absent(),
-                Value<int> userId = const Value.absent(),
-                Value<DateTime> lastModified = const Value.absent(),
-                Value<SyncStatus> syncStatus = const Value.absent(),
                 Value<String> title = const Value.absent(),
                 Value<String?> categoryId = const Value.absent(),
                 Value<String?> category = const Value.absent(),
+                Value<String> id = const Value.absent(),
+                Value<int> userId = const Value.absent(),
+                Value<String> customerId = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> lastModified = const Value.absent(),
+                Value<SyncStatus> syncStatus = const Value.absent(),
+                Value<bool> isDeleted = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => TaskTableCompanion(
-                id: id,
-                userId: userId,
-                lastModified: lastModified,
-                syncStatus: syncStatus,
                 title: title,
                 categoryId: categoryId,
                 category: category,
+                id: id,
+                userId: userId,
+                customerId: customerId,
+                createdAt: createdAt,
+                lastModified: lastModified,
+                syncStatus: syncStatus,
+                isDeleted: isDeleted,
                 rowid: rowid,
               ),
           createCompanionCallback:
               ({
-                Value<String> id = const Value.absent(),
-                required int userId,
-                required DateTime lastModified,
-                required SyncStatus syncStatus,
                 required String title,
                 Value<String?> categoryId = const Value.absent(),
                 Value<String?> category = const Value.absent(),
+                Value<String> id = const Value.absent(),
+                required int userId,
+                required String customerId,
+                Value<DateTime> createdAt = const Value.absent(),
+                required DateTime lastModified,
+                required SyncStatus syncStatus,
+                Value<bool> isDeleted = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => TaskTableCompanion.insert(
-                id: id,
-                userId: userId,
-                lastModified: lastModified,
-                syncStatus: syncStatus,
                 title: title,
                 categoryId: categoryId,
                 category: category,
+                id: id,
+                userId: userId,
+                customerId: customerId,
+                createdAt: createdAt,
+                lastModified: lastModified,
+                syncStatus: syncStatus,
+                isDeleted: isDeleted,
                 rowid: rowid,
               ),
           withReferenceMapper:
@@ -3803,8 +4162,11 @@ typedef $$TaskTagMapTableTableCreateCompanionBuilder =
     TaskTagMapTableCompanion Function({
       Value<String> id,
       required int userId,
+      required String customerId,
+      Value<DateTime> createdAt,
       required DateTime lastModified,
       required SyncStatus syncStatus,
+      Value<bool> isDeleted,
       required String taskId,
       required String tagId,
       Value<int> rowid,
@@ -3813,8 +4175,11 @@ typedef $$TaskTagMapTableTableUpdateCompanionBuilder =
     TaskTagMapTableCompanion Function({
       Value<String> id,
       Value<int> userId,
+      Value<String> customerId,
+      Value<DateTime> createdAt,
       Value<DateTime> lastModified,
       Value<SyncStatus> syncStatus,
+      Value<bool> isDeleted,
       Value<String> taskId,
       Value<String> tagId,
       Value<int> rowid,
@@ -3891,6 +4256,16 @@ class $$TaskTagMapTableTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<String> get customerId => $composableBuilder(
+    column: $table.customerId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnWithTypeConverterFilters<DateTime, DateTime, int> get lastModified =>
       $composableBuilder(
         column: $table.lastModified,
@@ -3901,6 +4276,11 @@ class $$TaskTagMapTableTableFilterComposer
   get syncStatus => $composableBuilder(
     column: $table.syncStatus,
     builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnFilters<bool> get isDeleted => $composableBuilder(
+    column: $table.isDeleted,
+    builder: (column) => ColumnFilters(column),
   );
 
   $$TaskTableTableFilterComposer get taskId {
@@ -3969,6 +4349,16 @@ class $$TaskTagMapTableTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get customerId => $composableBuilder(
+    column: $table.customerId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<int> get lastModified => $composableBuilder(
     column: $table.lastModified,
     builder: (column) => ColumnOrderings(column),
@@ -3976,6 +4366,11 @@ class $$TaskTagMapTableTableOrderingComposer
 
   ColumnOrderings<String> get syncStatus => $composableBuilder(
     column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isDeleted => $composableBuilder(
+    column: $table.isDeleted,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -4041,6 +4436,14 @@ class $$TaskTagMapTableTableAnnotationComposer
   GeneratedColumn<int> get userId =>
       $composableBuilder(column: $table.userId, builder: (column) => column);
 
+  GeneratedColumn<String> get customerId => $composableBuilder(
+    column: $table.customerId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
   GeneratedColumnWithTypeConverter<DateTime, int> get lastModified =>
       $composableBuilder(
         column: $table.lastModified,
@@ -4052,6 +4455,9 @@ class $$TaskTagMapTableTableAnnotationComposer
         column: $table.syncStatus,
         builder: (column) => column,
       );
+
+  GeneratedColumn<bool> get isDeleted =>
+      $composableBuilder(column: $table.isDeleted, builder: (column) => column);
 
   $$TaskTableTableAnnotationComposer get taskId {
     final $$TaskTableTableAnnotationComposer composer = $composerBuilder(
@@ -4139,16 +4545,22 @@ class $$TaskTagMapTableTableTableManager
               ({
                 Value<String> id = const Value.absent(),
                 Value<int> userId = const Value.absent(),
+                Value<String> customerId = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> lastModified = const Value.absent(),
                 Value<SyncStatus> syncStatus = const Value.absent(),
+                Value<bool> isDeleted = const Value.absent(),
                 Value<String> taskId = const Value.absent(),
                 Value<String> tagId = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => TaskTagMapTableCompanion(
                 id: id,
                 userId: userId,
+                customerId: customerId,
+                createdAt: createdAt,
                 lastModified: lastModified,
                 syncStatus: syncStatus,
+                isDeleted: isDeleted,
                 taskId: taskId,
                 tagId: tagId,
                 rowid: rowid,
@@ -4157,16 +4569,22 @@ class $$TaskTagMapTableTableTableManager
               ({
                 Value<String> id = const Value.absent(),
                 required int userId,
+                required String customerId,
+                Value<DateTime> createdAt = const Value.absent(),
                 required DateTime lastModified,
                 required SyncStatus syncStatus,
+                Value<bool> isDeleted = const Value.absent(),
                 required String taskId,
                 required String tagId,
                 Value<int> rowid = const Value.absent(),
               }) => TaskTagMapTableCompanion.insert(
                 id: id,
                 userId: userId,
+                customerId: customerId,
+                createdAt: createdAt,
                 lastModified: lastModified,
                 syncStatus: syncStatus,
+                isDeleted: isDeleted,
                 taskId: taskId,
                 tagId: tagId,
                 rowid: rowid,

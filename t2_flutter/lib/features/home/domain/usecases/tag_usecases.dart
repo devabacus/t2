@@ -60,3 +60,4 @@ class WatchTagsUseCase {
     return _repository.watchTags();
   }
 }
+

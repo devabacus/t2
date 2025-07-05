@@ -5,24 +5,18 @@ import '../../../models/tag/tag_model.dart';
 import '../../../../../../core/database/local/database_types.dart';
 
 abstract class ITagLocalDataSource {
-  Future<List<TagModel>> getTags({int? userId});
-  Stream<List<TagModel>> watchTags({int? userId});
+  Future<List<TagModel>> getTags({required int userId, required String customerId});
+  Stream<List<TagModel>> watchTags({required int userId, required String customerId});
   Future<TagModel?> getTagById(String id, {required int userId, required String customerId});
-  Future<List<TagModel>> getTagsByIds(List<String> ids, {required int userId});
+  Future<List<TagModel>> getTagsByIds(List<String> ids, {required int userId, required String customerId});
   Future<String> createTag(TagModel tag);
   Future<bool> updateTag(TagModel tag);
-  Future<bool> deleteTag(String id, {required int userId});
-  Future<List<TagTableData>> getAllLocalChanges(int userId);
-  Future<List<TagTableData>> reconcileServerChanges(
-    List<dynamic> serverChanges,
-    int userId,
-  );
-  Future<void> physicallyDeleteTag(String id, {required int userId});
-  Future<void> insertOrUpdateFromServer(
-    dynamic serverChange,
-    SyncStatus status,
-  );
-  Future<void> handleSyncEvent(dynamic event, int userId);
+  Future<bool> deleteTag(String id, {required int userId, required String customerId});
+  Future<List<TagTableData>> getAllLocalChanges({required int userId, required String customerId});
+  Future<List<TagTableData>> reconcileServerChanges(List<dynamic> serverChanges, {required int userId, required String customerId});
+  Future<void> physicallyDeleteTag(String id, {required int userId, required String customerId});
+  Future<void> insertOrUpdateFromServer(dynamic serverChange, SyncStatus status);
+  Future<void> handleSyncEvent(dynamic event, {required int userId, required String customerId});
 
 }
 

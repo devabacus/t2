@@ -7,8 +7,11 @@ part 'task_tag_map_model.g.dart';
 abstract class TaskTagMapModel with _$TaskTagMapModel {
   const factory TaskTagMapModel({
     required String id,
-    required DateTime lastModified,
     required int userId,
+    required String customerId,
+    required DateTime createdAt,
+    required DateTime lastModified,
+    @Default(false) bool isDeleted,
     required String taskId,
     required String tagId,
   }) = _TaskTagMapModel;

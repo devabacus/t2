@@ -8,9 +8,9 @@ import '../../../../core/database/local/database.dart';
 import '../../../../core/database/local/database_types.dart';
 import '../../../../core/database/local/interface/sync_metadata_local_datasource_service.dart';
 import '../../../../core/sync/base_sync_repository.dart';
-import '../../domain/entities/tag/tag.dart';
-import '../../domain/entities/task/task.dart';
-import '../../domain/entities/task_tag_map/task_tag_map.dart';
+import '../../domain/entities/tag/tag_entity.dart';
+import '../../domain/entities/task/task_entity.dart';
+import '../../domain/entities/task_tag_map/task_tag_map_entity.dart';
 import '../../domain/repositories/tag_repository.dart';
 import '../../domain/repositories/task_tag_map_repository.dart';
 import '../datasources/local/interfaces/task_tag_map_local_datasource_service.dart';
@@ -78,6 +78,8 @@ class TaskTagMapRepositoryImpl extends BaseSyncRepository
     final newRelation = TaskTagMapEntity(
       id: const Uuid().v7(),
       userId: userId,
+      customerId: customerId,
+      createdAt: DateTime.now().toUtc(),
       lastModified: DateTime.now().toUtc(),
       taskId: taskId,
       tagId: tagId,
@@ -217,11 +219,8 @@ class TaskTagMapRepositoryImpl extends BaseSyncRepository
   Future<serverpod.TaskTagMap> _syncCreateToServer(
     TaskTagMapEntity entity,
   ) async {
-    return await _remoteDataSource.createTaskTagMap(
-      taskId: serverpod.UuidValue.fromString(entity.taskId),
-      tagId: serverpod.UuidValue.fromString(entity.tagId),
-    );
-  }
+    return await _remoteDataSource.createTaskTagMap(entity.toServerpodTaskTagMap());
+  }  
 
   @override
   Stream<dynamic> watchEvents() => _remoteDataSource.watchEvents();
@@ -233,7 +232,7 @@ class TaskTagMapRepositoryImpl extends BaseSyncRepository
 
   @override
   Future<TaskTagMapEntity?> getTaskTagMapById(String id) async {
-    final model = await _localDataSource.getRelationById(id, userId: userId);
+    final model = await _localDataSource.getRelationById(id, userId: userId, customerId: customerId);
     return model?.toEntity();
   }
 
@@ -250,5 +249,3 @@ class TaskTagMapRepositoryImpl extends BaseSyncRepository
     return result;
   }
 }
-
-    

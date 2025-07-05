@@ -6,7 +6,7 @@ part of 'task_get_by_id_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getTaskByIdHash() => r'a3a9fdf592aa93debf4bac17c024cf1334fcf886';
+String _$getTaskByIdHash() => r'a9d98a78b66d5d7c181bb1813be7c8f9f537d0e2';
 
 /// Copied from Dart SDK
 class _SystemHash {

@@ -3,23 +3,29 @@ import 'package:drift/drift.dart';
 
 import '../../../../../../../core/database/local/database.dart';
 import 'package:t2_client/t2_client.dart' as serverpod;
-import '../../../domain/entities/task_tag_map/task_tag_map.dart';
+import '../../../domain/entities/task_tag_map/task_tag_map_entity.dart';
 import '../../../../../core/database/local/database_types.dart';
 import '../task_tag_map/task_tag_map_model.dart';
 
 extension TaskTagMapModelExtension on TaskTagMapModel {
   TaskTagMapEntity toEntity() => TaskTagMapEntity(
         id: id,
-        lastModified: lastModified,
         userId: userId,
+        customerId: customerId,
+        createdAt: createdAt,
+        lastModified: lastModified,
+        isDeleted: isDeleted,
          taskId: taskId, tagId: tagId
       );
 
   TaskTagMapTableCompanion toCompanion() => TaskTagMapTableCompanion(
         id: Value(id),
-        lastModified: Value(lastModified), 
         userId: Value(userId),
-        syncStatus: Value(SyncStatus.local), // По умолчанию новые записи требуют синхронизации
+        customerId: Value(customerId),
+        createdAt: Value(createdAt),
+        lastModified: Value(lastModified),
+        isDeleted: Value(isDeleted),
+        syncStatus: Value(SyncStatus.local),
         taskId: Value(taskId), tagId: Value(tagId)
 
       );
@@ -35,12 +41,14 @@ extension TaskTagMapModelListExtension on List<TaskTagMapModel> {
 extension ServerpodTaskTagMapToModelExtension on serverpod.TaskTagMap {
   TaskTagMapModel toModel() => TaskTagMapModel(
         id: id.toString(),
-        lastModified: lastModified ?? DateTime.now().toUtc(),
         userId: userId,
+        customerId: customerId.toString(),
+        createdAt: createdAt,
+        lastModified: lastModified,
+        isDeleted: isDeleted,
         taskId: taskId.toString(), tagId: tagId.toString()
       );
 }
-
 
 extension ServerpodTaskTagMapListToModelListExtension on List<serverpod.TaskTagMap> {
   List<TaskTagMapModel> toModels() =>

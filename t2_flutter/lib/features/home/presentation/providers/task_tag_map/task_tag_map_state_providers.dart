@@ -1,5 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import '../../../domain/entities/tag/tag.dart';
+import '../../../domain/entities/tag/tag_entity.dart';
 import '../../../domain/providers/task_tag_map/task_tag_map_usecase_providers.dart';
 
 part 'task_tag_map_state_providers.g.dart';

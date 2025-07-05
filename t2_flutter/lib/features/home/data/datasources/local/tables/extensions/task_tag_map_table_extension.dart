@@ -1,5 +1,3 @@
-
-
 import 'package:drift/drift.dart';
 import 'package:t2_client/t2_client.dart' as serverpod;
 
@@ -8,7 +6,7 @@ import '../../../../models/task_tag_map/task_tag_map_model.dart';
 import '../../../../../../../core/database/local/database_types.dart';
 
 extension TaskTagMapTableDataExtensions on TaskTagMapTableData {
-  TaskTagMapModel toModel() => TaskTagMapModel(id: id, lastModified: lastModified, userId: userId, taskId: taskId, tagId: tagId);
+  TaskTagMapModel toModel() => TaskTagMapModel(id: id, userId: userId, customerId: customerId, createdAt: createdAt, lastModified: lastModified, isDeleted: isDeleted, taskId: taskId, tagId: tagId);
 }
 
 extension TaskTagMapTableDataListExtensions on List<TaskTagMapTableData> {
@@ -19,8 +17,11 @@ extension ServerpodTaskTagMapTableExtensions on serverpod.TaskTagMap {
   TaskTagMapTableCompanion toCompanion(SyncStatus status) =>
       TaskTagMapTableCompanion(
         id: Value(id.toString()),
-        lastModified: Value(lastModified),
         userId: Value(userId),
+        customerId: Value(customerId.toString()),
+        createdAt: Value(createdAt),
+        lastModified: Value(lastModified),
+        isDeleted: Value(isDeleted),
         syncStatus: Value(status),
         taskId: Value(taskId.toString()), tagId: Value(tagId.toString())
   );

@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'task_model.dart';
+part of 'task_entity.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_TaskModel _$TaskModelFromJson(Map<String, dynamic> json) => _TaskModel(
+_TaskEntity _$TaskEntityFromJson(Map<String, dynamic> json) => _TaskEntity(
   id: json['id'] as String,
   userId: (json['userId'] as num).toInt(),
   customerId: json['customerId'] as String,
@@ -17,7 +17,7 @@ _TaskModel _$TaskModelFromJson(Map<String, dynamic> json) => _TaskModel(
   categoryId: json['categoryId'] as String?,
 );
 
-Map<String, dynamic> _$TaskModelToJson(_TaskModel instance) =>
+Map<String, dynamic> _$TaskEntityToJson(_TaskEntity instance) =>
     <String, dynamic>{
       'id': instance.id,
       'userId': instance.userId,

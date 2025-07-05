@@ -6,16 +6,16 @@ abstract class ITaskTagMapLocalDataSource {
   // === Основные CRUD-операции ===
   Future<String> createTaskTagMap(TaskTagMapModel model);
   Future<bool> updateTaskTagMap(TaskTagMapModel model);
-  Future<bool> softDeleteTaskTagMapById(String id, {required int userId});
-  Future<int> softDeleteRelationsByTaskId(String taskId, {required int userId});
+  Future<bool> softDeleteTaskTagMapById(String id, {required int userId, required String customerId});
+  Future<int> softDeleteRelationsByTaskId(String taskId, {required int userId, required String customerId});
 
-  Future<TaskTagMapModel?> getRelationById(String id, {required int userId});
-  Future<TaskTagMapModel?> getRelationByTaskAndTag(String taskId, String tagId, {required int userId});
-  Stream<List<TaskTagMapModel>> watchAllRelations({required int userId});
+  Future<TaskTagMapModel?> getRelationById(String id, {required int userId, required String customerId});
+  Future<TaskTagMapModel?> getRelationByTaskAndTag(String taskId, String tagId, {required int userId, required String customerId});
+  Stream<List<TaskTagMapModel>> watchAllRelations({required int userId, required String customerId});
 
-  Future<List<TaskTagMapTableData>> getAllLocalChanges(int userId);
-  Future<List<TaskTagMapTableData>> reconcileServerChanges(List<dynamic> serverChanges, int userId);
-  Future<int> physicallyDeleteTaskTagMap(String id, {required int userId});
+  Future<List<TaskTagMapTableData>> getAllLocalChanges({required int userId, required String customerId});
+  Future<List<TaskTagMapTableData>> reconcileServerChanges(List<dynamic> serverChanges, {required int userId, required String customerId});
+  Future<int> physicallyDeleteTaskTagMap(String id, {required int userId, required String customerId});
   Future<void> insertOrUpdateFromServer(dynamic serverChange, SyncStatus status);
-  Future<void> handleSyncEvent(dynamic event, int userId);
+  Future<void> handleSyncEvent(dynamic event, {required int userId, required String customerId});
 }

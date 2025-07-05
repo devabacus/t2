@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$TaskTagMapModel {
 
- String get id; DateTime get lastModified; int get userId; String get taskId; String get tagId;
+ String get id; int get userId; String get customerId; DateTime get createdAt; DateTime get lastModified; bool get isDeleted; String get taskId; String get tagId;
 /// Create a copy of TaskTagMapModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $TaskTagMapModelCopyWith<TaskTagMapModel> get copyWith => _$TaskTagMapModelCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TaskTagMapModel&&(identical(other.id, id) || other.id == id)&&(identical(other.lastModified, lastModified) || other.lastModified == lastModified)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.taskId, taskId) || other.taskId == taskId)&&(identical(other.tagId, tagId) || other.tagId == tagId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TaskTagMapModel&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.customerId, customerId) || other.customerId == customerId)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.lastModified, lastModified) || other.lastModified == lastModified)&&(identical(other.isDeleted, isDeleted) || other.isDeleted == isDeleted)&&(identical(other.taskId, taskId) || other.taskId == taskId)&&(identical(other.tagId, tagId) || other.tagId == tagId));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,lastModified,userId,taskId,tagId);
+int get hashCode => Object.hash(runtimeType,id,userId,customerId,createdAt,lastModified,isDeleted,taskId,tagId);
 
 @override
 String toString() {
-  return 'TaskTagMapModel(id: $id, lastModified: $lastModified, userId: $userId, taskId: $taskId, tagId: $tagId)';
+  return 'TaskTagMapModel(id: $id, userId: $userId, customerId: $customerId, createdAt: $createdAt, lastModified: $lastModified, isDeleted: $isDeleted, taskId: $taskId, tagId: $tagId)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $TaskTagMapModelCopyWith<$Res>  {
   factory $TaskTagMapModelCopyWith(TaskTagMapModel value, $Res Function(TaskTagMapModel) _then) = _$TaskTagMapModelCopyWithImpl;
 @useResult
 $Res call({
- String id, DateTime lastModified, int userId, String taskId, String tagId
+ String id, int userId, String customerId, DateTime createdAt, DateTime lastModified, bool isDeleted, String taskId, String tagId
 });
 
 
@@ -65,12 +65,15 @@ class _$TaskTagMapModelCopyWithImpl<$Res>
 
 /// Create a copy of TaskTagMapModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? lastModified = null,Object? userId = null,Object? taskId = null,Object? tagId = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? userId = null,Object? customerId = null,Object? createdAt = null,Object? lastModified = null,Object? isDeleted = null,Object? taskId = null,Object? tagId = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,lastModified: null == lastModified ? _self.lastModified : lastModified // ignore: cast_nullable_to_non_nullable
-as DateTime,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
-as int,taskId: null == taskId ? _self.taskId : taskId // ignore: cast_nullable_to_non_nullable
+as String,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+as int,customerId: null == customerId ? _self.customerId : customerId // ignore: cast_nullable_to_non_nullable
+as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime,lastModified: null == lastModified ? _self.lastModified : lastModified // ignore: cast_nullable_to_non_nullable
+as DateTime,isDeleted: null == isDeleted ? _self.isDeleted : isDeleted // ignore: cast_nullable_to_non_nullable
+as bool,taskId: null == taskId ? _self.taskId : taskId // ignore: cast_nullable_to_non_nullable
 as String,tagId: null == tagId ? _self.tagId : tagId // ignore: cast_nullable_to_non_nullable
 as String,
   ));
@@ -157,10 +160,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  DateTime lastModified,  int userId,  String taskId,  String tagId)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  int userId,  String customerId,  DateTime createdAt,  DateTime lastModified,  bool isDeleted,  String taskId,  String tagId)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TaskTagMapModel() when $default != null:
-return $default(_that.id,_that.lastModified,_that.userId,_that.taskId,_that.tagId);case _:
+return $default(_that.id,_that.userId,_that.customerId,_that.createdAt,_that.lastModified,_that.isDeleted,_that.taskId,_that.tagId);case _:
   return orElse();
 
 }
@@ -178,10 +181,10 @@ return $default(_that.id,_that.lastModified,_that.userId,_that.taskId,_that.tagI
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  DateTime lastModified,  int userId,  String taskId,  String tagId)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  int userId,  String customerId,  DateTime createdAt,  DateTime lastModified,  bool isDeleted,  String taskId,  String tagId)  $default,) {final _that = this;
 switch (_that) {
 case _TaskTagMapModel():
-return $default(_that.id,_that.lastModified,_that.userId,_that.taskId,_that.tagId);case _:
+return $default(_that.id,_that.userId,_that.customerId,_that.createdAt,_that.lastModified,_that.isDeleted,_that.taskId,_that.tagId);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -198,10 +201,10 @@ return $default(_that.id,_that.lastModified,_that.userId,_that.taskId,_that.tagI
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  DateTime lastModified,  int userId,  String taskId,  String tagId)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  int userId,  String customerId,  DateTime createdAt,  DateTime lastModified,  bool isDeleted,  String taskId,  String tagId)?  $default,) {final _that = this;
 switch (_that) {
 case _TaskTagMapModel() when $default != null:
-return $default(_that.id,_that.lastModified,_that.userId,_that.taskId,_that.tagId);case _:
+return $default(_that.id,_that.userId,_that.customerId,_that.createdAt,_that.lastModified,_that.isDeleted,_that.taskId,_that.tagId);case _:
   return null;
 
 }
@@ -213,12 +216,15 @@ return $default(_that.id,_that.lastModified,_that.userId,_that.taskId,_that.tagI
 @JsonSerializable()
 
 class _TaskTagMapModel implements TaskTagMapModel {
-  const _TaskTagMapModel({required this.id, required this.lastModified, required this.userId, required this.taskId, required this.tagId});
+  const _TaskTagMapModel({required this.id, required this.userId, required this.customerId, required this.createdAt, required this.lastModified, this.isDeleted = false, required this.taskId, required this.tagId});
   factory _TaskTagMapModel.fromJson(Map<String, dynamic> json) => _$TaskTagMapModelFromJson(json);
 
 @override final  String id;
-@override final  DateTime lastModified;
 @override final  int userId;
+@override final  String customerId;
+@override final  DateTime createdAt;
+@override final  DateTime lastModified;
+@override@JsonKey() final  bool isDeleted;
 @override final  String taskId;
 @override final  String tagId;
 
@@ -235,16 +241,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TaskTagMapModel&&(identical(other.id, id) || other.id == id)&&(identical(other.lastModified, lastModified) || other.lastModified == lastModified)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.taskId, taskId) || other.taskId == taskId)&&(identical(other.tagId, tagId) || other.tagId == tagId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TaskTagMapModel&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.customerId, customerId) || other.customerId == customerId)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.lastModified, lastModified) || other.lastModified == lastModified)&&(identical(other.isDeleted, isDeleted) || other.isDeleted == isDeleted)&&(identical(other.taskId, taskId) || other.taskId == taskId)&&(identical(other.tagId, tagId) || other.tagId == tagId));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,lastModified,userId,taskId,tagId);
+int get hashCode => Object.hash(runtimeType,id,userId,customerId,createdAt,lastModified,isDeleted,taskId,tagId);
 
 @override
 String toString() {
-  return 'TaskTagMapModel(id: $id, lastModified: $lastModified, userId: $userId, taskId: $taskId, tagId: $tagId)';
+  return 'TaskTagMapModel(id: $id, userId: $userId, customerId: $customerId, createdAt: $createdAt, lastModified: $lastModified, isDeleted: $isDeleted, taskId: $taskId, tagId: $tagId)';
 }
 
 
@@ -255,7 +261,7 @@ abstract mixin class _$TaskTagMapModelCopyWith<$Res> implements $TaskTagMapModel
   factory _$TaskTagMapModelCopyWith(_TaskTagMapModel value, $Res Function(_TaskTagMapModel) _then) = __$TaskTagMapModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, DateTime lastModified, int userId, String taskId, String tagId
+ String id, int userId, String customerId, DateTime createdAt, DateTime lastModified, bool isDeleted, String taskId, String tagId
 });
 
 
@@ -272,12 +278,15 @@ class __$TaskTagMapModelCopyWithImpl<$Res>
 
 /// Create a copy of TaskTagMapModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? lastModified = null,Object? userId = null,Object? taskId = null,Object? tagId = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? userId = null,Object? customerId = null,Object? createdAt = null,Object? lastModified = null,Object? isDeleted = null,Object? taskId = null,Object? tagId = null,}) {
   return _then(_TaskTagMapModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,lastModified: null == lastModified ? _self.lastModified : lastModified // ignore: cast_nullable_to_non_nullable
-as DateTime,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
-as int,taskId: null == taskId ? _self.taskId : taskId // ignore: cast_nullable_to_non_nullable
+as String,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+as int,customerId: null == customerId ? _self.customerId : customerId // ignore: cast_nullable_to_non_nullable
+as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime,lastModified: null == lastModified ? _self.lastModified : lastModified // ignore: cast_nullable_to_non_nullable
+as DateTime,isDeleted: null == isDeleted ? _self.isDeleted : isDeleted // ignore: cast_nullable_to_non_nullable
+as bool,taskId: null == taskId ? _self.taskId : taskId // ignore: cast_nullable_to_non_nullable
 as String,tagId: null == tagId ? _self.tagId : tagId // ignore: cast_nullable_to_non_nullable
 as String,
   ));

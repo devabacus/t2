@@ -178,5 +178,6 @@ class TagEndpoint extends Endpoint {
       session.log('🔴 Клиент (user: $userId, customer: ${customerId.uuid}) отписался от канала "$channel"');
     }
   }
-  
-}
+
+    
+}          

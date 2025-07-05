@@ -27,10 +27,10 @@ class TaskDao extends DatabaseAccessor<AppDatabase>
       ..where((t) => userId != null ? t.userId.equals(userId) : const Constant(true)))
     .watch();
 
-  Future<TaskTableData> getTaskById(String id, {required int userId}) =>
+  Future<TaskTableData?> getTaskById(String id, {required int userId, required String customerId}) =>
       (select(taskTable)
-        ..where((t) => t.id.equals(id) & t.userId.equals(userId)))
-      .getSingle();
+        ..where((t) => t.id.equals(id) & t.userId.equals(userId) & t.customerId.equals(customerId)))
+      .getSingleOrNull();
 
   Future<List<TaskTableData>> getTasksByIds(List<String> ids, {required int userId}) {
     if (ids.isEmpty) {

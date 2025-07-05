@@ -1,8 +1,6 @@
-
 import 'package:drift/drift.dart';
-import '../../../../../../../core/database/local/interface/i_database_service.dart';
 import '../../../../../../../core/database/local/database.dart';
-import '../../../../../../../core/database/local/database_types.dart';
+import '../../../../../../../core/database/local/interface/i_database_service.dart';
 import '../../tables/tag_table.dart';
 
 part 'tag_dao.g.dart';
@@ -15,16 +13,16 @@ class TagDao extends DatabaseAccessor<AppDatabase>
 
   AppDatabase get db => attachedDatabase;
 
-  Future<List<TagTableData>> getTags({int? userId}) =>
+  Future<List<TagTableData>> getTags({required int userId, required String customerId}) =>
     (select(tagTable)
-      ..where((t) => t.syncStatus.equals(SyncStatus.deleted.name).not())
-      ..where((t) => userId != null ? t.userId.equals(userId) : const Constant(true)))
+      ..where((t) => t.isDeleted.equals(false))
+      ..where((t) => t.userId.equals(userId) & t.customerId.equals(customerId)))
     .get();     
 
-  Stream<List<TagTableData>> watchTags({int? userId}) =>
+  Stream<List<TagTableData>> watchTags({required int userId, required String customerId}) =>
     (select(tagTable)
-      ..where((t) => t.syncStatus.equals(SyncStatus.deleted.name).not())
-      ..where((t) => userId != null ? t.userId.equals(userId) : const Constant(true)))
+      ..where((t) => t.isDeleted.equals(false))
+      ..where((t) => t.userId.equals(userId) & t.customerId.equals(customerId)))
     .watch();
 
   Future<TagTableData?> getTagById(String id, {required int userId, required String customerId}) =>
@@ -32,12 +30,12 @@ class TagDao extends DatabaseAccessor<AppDatabase>
         ..where((t) => t.id.equals(id) & t.userId.equals(userId) & t.customerId.equals(customerId)))
       .getSingleOrNull();
 
-  Future<List<TagTableData>> getTagsByIds(List<String> ids, {required int userId}) {
+  Future<List<TagTableData>> getTagsByIds(List<String> ids, {required int userId, required String customerId}) {
     if (ids.isEmpty) {
-      return Future.value([]);
+      return Future.value([]); 
     }
     return (select(tagTable)
-          ..where((t) => t.id.isIn(ids) & t.userId.equals(userId) & t.syncStatus.equals(SyncStatus.deleted.name).not()))
+          ..where((t) => t.id.isIn(ids) & t.userId.equals(userId) & t.customerId.equals(customerId) & t.isDeleted.equals(false)))
         .get();
   }
 
@@ -46,7 +44,7 @@ class TagDao extends DatabaseAccessor<AppDatabase>
     try {
       final existingTag =
           await (select(tagTable)
-            ..where((t) => t.id.equals(id))).getSingleOrNull();
+            ..where((t) => t.id.equals(id) & t.userId.equals(companion.userId.value) & t.customerId.equals(companion.customerId.value))).getSingleOrNull();
 
       if (existingTag != null) {
         throw StateError('tag with ID $id exists');
@@ -60,48 +58,48 @@ class TagDao extends DatabaseAccessor<AppDatabase>
     }
   }
 
-Future<bool> updateTag(TagTableCompanion companion, {required int userId}) async {    
+Future<bool> updateTag(TagTableCompanion companion, {required int userId, required String customerId}) async {    
     final idToUpdate = companion.id.value;
     final updatedRows = await (update(tagTable)
-      ..where((t) => t.id.equals(idToUpdate) & t.userId.equals(userId))) 
+      ..where((t) => t.id.equals(idToUpdate) & t.userId.equals(userId) & t.customerId.equals(customerId))) 
       .write(companion); 
     return updatedRows > 0;
 }
 
-  Future<bool> softDeleteTag(String id, {required int userId}) async {
+  Future<bool> softDeleteTag(String id, {required int userId, required String customerId}) async {
     
     final companion = TagTableCompanion(
-      syncStatus: Value(SyncStatus.deleted),
+      isDeleted: Value(true),
       lastModified: Value(DateTime.now()), 
     );
     
     final updatedRows = await (update(tagTable)
-      ..where((t) => t.id.equals(id) & t.userId.equals(userId)))
+      ..where((t) => t.id.equals(id) & t.userId.equals(userId) & t.customerId.equals(customerId)))
       .write(companion);
     
     return updatedRows > 0;
   }
 
-  Future<int> physicallyDeleteTag(String id, {required int userId}) async {
+  Future<int> physicallyDeleteTag(String id, {required int userId, required String customerId}) async {
     return (delete(tagTable)
-      ..where((t) => t.id.equals(id) & t.userId.equals(userId)))
+      ..where((t) => t.id.equals(id) & t.userId.equals(userId) & t.customerId.equals(customerId)))
       .go();
   }
 
-  Future<bool> tagExists(String id) async {
+  Future<bool> tagExists(String id, {required int userId, required String customerId}) async {
     if (id.isEmpty) return false;
 
     final tag =
         await (select(tagTable)
-          ..where((t) => t.id.equals(id))).getSingleOrNull();
+          ..where((t) => t.id.equals(id) & t.userId.equals(userId) & t.customerId.equals(customerId))).getSingleOrNull();
 
     return tag != null;
   }
 
-  Future<int> getTagsCount({int? userId}) async {
+  Future<int> getTagsCount({required int userId, required String customerId}) async {
     final countQuery = selectOnly(tagTable)
       ..addColumns([tagTable.id.count()])
-      ..where(userId != null ? tagTable.userId.equals(userId) : const Constant(true));
+      ..where(tagTable.userId.equals(userId) & tagTable.customerId.equals(customerId));
 
     final result = await countQuery.getSingle();
     return result.read(tagTable.id.count()) ?? 0;
@@ -113,12 +111,8 @@ Future<bool> updateTag(TagTableCompanion companion, {required int userId}) async
     });
   }
 
-  Future<int> deleteAllTags({int? userId}) {
-    if (userId != null) {
-      return (delete(tagTable)..where((t) => t.userId.equals(userId))).go();
-    } else {
-      return delete(tagTable).go();
+  Future<int> deleteAllTags({required int userId, required String customerId}) {
+    return (delete(tagTable)..where((t) => t.userId.equals(userId) & t.customerId.equals(customerId))).go();
     }
-  }
- 
+  
 }

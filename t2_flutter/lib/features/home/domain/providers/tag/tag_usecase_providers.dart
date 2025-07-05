@@ -47,7 +47,7 @@ UpdateTagUseCase? updateTagUseCase(Ref ref) {
   final repository = ref.watch(currentUserTagRepositoryProvider);
   if (repository == null) {
     return null;
-}
+  }
   return UpdateTagUseCase(repository);
 }
 
@@ -60,6 +60,5 @@ GetTagByIdUseCase? getTagByIdUseCase(Ref ref) {
   return GetTagByIdUseCase(repository);
 }
   
-
 
     

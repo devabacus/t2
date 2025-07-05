@@ -1,6 +1,6 @@
 import '../repositories/task_tag_map_repository.dart';
-import '../entities/task/task.dart';
-import '../entities/tag/tag.dart';
+import '../entities/task/task_entity.dart';
+import '../entities/tag/tag_entity.dart';
 
 class AddTagToTaskUseCase {
   final ITaskTagMapRepository _repository;

@@ -1,11 +1,11 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'task_model.freezed.dart';
-part 'task_model.g.dart';
+part 'task_entity.freezed.dart';
+part 'task_entity.g.dart';
 
 @freezed
-abstract class TaskModel with _$TaskModel {
-  const factory TaskModel({
+abstract class TaskEntity with _$TaskEntity {
+  const factory TaskEntity({
     required String id,
     required int userId,
     required String customerId,
@@ -14,7 +14,7 @@ abstract class TaskModel with _$TaskModel {
     @Default(false) bool isDeleted,
     required String title,
     String? categoryId,
-  }) = _TaskModel;
+  }) = _TaskEntity;
 
-  factory TaskModel.fromJson(Map<String, dynamic> json) => _$TaskModelFromJson(json);
+  factory TaskEntity.fromJson(Map<String, dynamic> json) => _$TaskEntityFromJson(json);
 }
