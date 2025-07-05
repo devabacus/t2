@@ -83,7 +83,7 @@ final syncMetadataLocalDataSourceProvider =
 typedef SyncMetadataLocalDataSourceRef =
     AutoDisposeProviderRef<ISyncMetadataLocalDataSource>;
 String _$categoryRepositoryHash() =>
-    r'bc41380405bf4db3b7d73861d5a5f2a11fed5c77';
+    r'2254eaeac6d6519548767df9dea1636558b4702a';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -128,15 +128,18 @@ class CategoryRepositoryFamily extends Family<ICategoryRepository> {
   /// Каждый userId получает свой изолированный экземпляр репозитория
   ///
   /// Copied from [categoryRepository].
-  CategoryRepositoryProvider call(int userId) {
-    return CategoryRepositoryProvider(userId);
+  CategoryRepositoryProvider call({
+    required int userId,
+    required String customerId,
+  }) {
+    return CategoryRepositoryProvider(userId: userId, customerId: customerId);
   }
 
   @override
   CategoryRepositoryProvider getProviderOverride(
     covariant CategoryRepositoryProvider provider,
   ) {
-    return call(provider.userId);
+    return call(userId: provider.userId, customerId: provider.customerId);
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -164,9 +167,13 @@ class CategoryRepositoryProvider
   /// Каждый userId получает свой изолированный экземпляр репозитория
   ///
   /// Copied from [categoryRepository].
-  CategoryRepositoryProvider(int userId)
+  CategoryRepositoryProvider({required int userId, required String customerId})
     : this._internal(
-        (ref) => categoryRepository(ref as CategoryRepositoryRef, userId),
+        (ref) => categoryRepository(
+          ref as CategoryRepositoryRef,
+          userId: userId,
+          customerId: customerId,
+        ),
         from: categoryRepositoryProvider,
         name: r'categoryRepositoryProvider',
         debugGetCreateSourceHash:
@@ -177,6 +184,7 @@ class CategoryRepositoryProvider
         allTransitiveDependencies:
             CategoryRepositoryFamily._allTransitiveDependencies,
         userId: userId,
+        customerId: customerId,
       );
 
   CategoryRepositoryProvider._internal(
@@ -187,9 +195,11 @@ class CategoryRepositoryProvider
     required super.debugGetCreateSourceHash,
     required super.from,
     required this.userId,
+    required this.customerId,
   }) : super.internal();
 
   final int userId;
+  final String customerId;
 
   @override
   Override overrideWith(
@@ -205,6 +215,7 @@ class CategoryRepositoryProvider
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
         userId: userId,
+        customerId: customerId,
       ),
     );
   }
@@ -216,13 +227,16 @@ class CategoryRepositoryProvider
 
   @override
   bool operator ==(Object other) {
-    return other is CategoryRepositoryProvider && other.userId == userId;
+    return other is CategoryRepositoryProvider &&
+        other.userId == userId &&
+        other.customerId == customerId;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, userId.hashCode);
+    hash = _SystemHash.combine(hash, customerId.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -233,6 +247,9 @@ class CategoryRepositoryProvider
 mixin CategoryRepositoryRef on AutoDisposeProviderRef<ICategoryRepository> {
   /// The parameter `userId` of this provider.
   int get userId;
+
+  /// The parameter `customerId` of this provider.
+  String get customerId;
 }
 
 class _CategoryRepositoryProviderElement
@@ -242,10 +259,12 @@ class _CategoryRepositoryProviderElement
 
   @override
   int get userId => (origin as CategoryRepositoryProvider).userId;
+  @override
+  String get customerId => (origin as CategoryRepositoryProvider).customerId;
 }
 
 String _$currentUserCategoryRepositoryHash() =>
-    r'286251522e5da6cf288751ee76f4b3a740ce795d';
+    r'3bcff8da0f9ce6889ba1f91fcb8ac17f3b44109e';
 
 /// Удобный провайдер для получения репозитория текущего пользователя
 /// Автоматически следит за сменой пользователя и предоставляет соответствующий репозиторий

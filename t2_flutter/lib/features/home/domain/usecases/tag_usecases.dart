@@ -46,8 +46,8 @@ class GetTagByIdUseCase {
 
   GetTagByIdUseCase(this._repository);
 
-  Future<TagEntity?> call(String id, String customerId) {
-    return _repository.getTagById(id, customerId);
+  Future<TagEntity?> call(String id) {
+    return _repository.getTagById(id);
   }
 }
 

@@ -81,7 +81,7 @@ final syncMetadataLocalDataSourceProvider =
 // ignore: unused_element
 typedef SyncMetadataLocalDataSourceRef =
     AutoDisposeProviderRef<ISyncMetadataLocalDataSource>;
-String _$taskRepositoryHash() => r'11777fe2e72146bafee9ecc9a44415af5ff4c248';
+String _$taskRepositoryHash() => r'544f9447f4ddb3eb8c9dd2491575ab1e8295ee17';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -126,15 +126,18 @@ class TaskRepositoryFamily extends Family<ITaskRepository> {
   /// Каждый userId получает свой изолированный экземпляр репозитория
   ///
   /// Copied from [taskRepository].
-  TaskRepositoryProvider call(int userId) {
-    return TaskRepositoryProvider(userId);
+  TaskRepositoryProvider call({
+    required int userId,
+    required String customerId,
+  }) {
+    return TaskRepositoryProvider(userId: userId, customerId: customerId);
   }
 
   @override
   TaskRepositoryProvider getProviderOverride(
     covariant TaskRepositoryProvider provider,
   ) {
-    return call(provider.userId);
+    return call(userId: provider.userId, customerId: provider.customerId);
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -161,9 +164,13 @@ class TaskRepositoryProvider extends AutoDisposeProvider<ITaskRepository> {
   /// Каждый userId получает свой изолированный экземпляр репозитория
   ///
   /// Copied from [taskRepository].
-  TaskRepositoryProvider(int userId)
+  TaskRepositoryProvider({required int userId, required String customerId})
     : this._internal(
-        (ref) => taskRepository(ref as TaskRepositoryRef, userId),
+        (ref) => taskRepository(
+          ref as TaskRepositoryRef,
+          userId: userId,
+          customerId: customerId,
+        ),
         from: taskRepositoryProvider,
         name: r'taskRepositoryProvider',
         debugGetCreateSourceHash:
@@ -174,6 +181,7 @@ class TaskRepositoryProvider extends AutoDisposeProvider<ITaskRepository> {
         allTransitiveDependencies:
             TaskRepositoryFamily._allTransitiveDependencies,
         userId: userId,
+        customerId: customerId,
       );
 
   TaskRepositoryProvider._internal(
@@ -184,9 +192,11 @@ class TaskRepositoryProvider extends AutoDisposeProvider<ITaskRepository> {
     required super.debugGetCreateSourceHash,
     required super.from,
     required this.userId,
+    required this.customerId,
   }) : super.internal();
 
   final int userId;
+  final String customerId;
 
   @override
   Override overrideWith(
@@ -202,6 +212,7 @@ class TaskRepositoryProvider extends AutoDisposeProvider<ITaskRepository> {
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
         userId: userId,
+        customerId: customerId,
       ),
     );
   }
@@ -213,13 +224,16 @@ class TaskRepositoryProvider extends AutoDisposeProvider<ITaskRepository> {
 
   @override
   bool operator ==(Object other) {
-    return other is TaskRepositoryProvider && other.userId == userId;
+    return other is TaskRepositoryProvider &&
+        other.userId == userId &&
+        other.customerId == customerId;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, userId.hashCode);
+    hash = _SystemHash.combine(hash, customerId.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -230,6 +244,9 @@ class TaskRepositoryProvider extends AutoDisposeProvider<ITaskRepository> {
 mixin TaskRepositoryRef on AutoDisposeProviderRef<ITaskRepository> {
   /// The parameter `userId` of this provider.
   int get userId;
+
+  /// The parameter `customerId` of this provider.
+  String get customerId;
 }
 
 class _TaskRepositoryProviderElement
@@ -239,10 +256,12 @@ class _TaskRepositoryProviderElement
 
   @override
   int get userId => (origin as TaskRepositoryProvider).userId;
+  @override
+  String get customerId => (origin as TaskRepositoryProvider).customerId;
 }
 
 String _$currentUserTaskRepositoryHash() =>
-    r'6d7d9fe63441a4196eca668b9a5fdb3a8520f1cd';
+    r'ed01d1bcf4bdbc5320a1999bbc4d92e14ee4cffc';
 
 /// Удобный провайдер для получения репозитория текущего пользователя
 /// Автоматически следит за сменой пользователя и предоставляет соответствующий репозиторий

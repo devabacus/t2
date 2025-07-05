@@ -46,8 +46,8 @@ class GetCategoryByIdUseCase {
 
   GetCategoryByIdUseCase(this._repository);
 
-  Future<CategoryEntity?> call(String id, String customerId) {
-    return _repository.getCategoryById(id, customerId);
+  Future<CategoryEntity?> call(String id) {
+    return _repository.getCategoryById(id);
   }
 }
 

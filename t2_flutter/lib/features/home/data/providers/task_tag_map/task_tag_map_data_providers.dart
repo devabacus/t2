@@ -1,5 +1,4 @@
-
-    import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../datasources/remote/interfaces/task_tag_map_remote_datasource_service.dart';
 import '../../datasources/remote/sources/task_tag_map_remote_data_source.dart';
@@ -51,14 +50,14 @@ SyncMetadataDao syncMetadataDao(Ref ref) {
 
 /// Семейный провайдер репозитория для конкретного пользователя
 @riverpod
-ITaskTagMapRepository taskTagMapRepository(Ref ref, int userId) {
+ITaskTagMapRepository taskTagMapRepository(Ref ref, {required int userId, required String customerId}) {
   // Получаем все зависимости
   final localDataSource = ref.watch(taskTagMapLocalDataSourceProvider);
   final remoteDataSource = ref.watch(taskTagMapRemoteDataSourceProvider);
   final syncMetadataLocalDataSource = ref.watch(
     syncMetadataLocalDataSourceProvider,
   );
-  final tagRepository = ref.watch(tagRepositoryProvider(userId));
+  final tagRepository = ref.watch(tagRepositoryProvider(userId: userId, customerId: customerId));
 
   // Создаем репозиторий с фиксированным userId
   final repository = TaskTagMapRepositoryImpl(
@@ -66,6 +65,7 @@ ITaskTagMapRepository taskTagMapRepository(Ref ref, int userId) {
     remoteDataSource,
     syncMetadataLocalDataSource,
     userId,
+    customerId,
     tagRepository, //нужно для удаления task_tag_map при удалении task
   );
 
@@ -86,10 +86,11 @@ ITaskTagMapRepository taskTagMapRepository(Ref ref, int userId) {
 @riverpod
 ITaskTagMapRepository? currentUserTaskTagMapRepository(Ref ref) {
   final currentUser = ref.watch(currentUserProvider);
+  final currentCustomerId = ref.watch(currentCustomerIdProvider);
 
   if (currentUser?.id == null) {
     return null;
   }
 
-  return ref.watch(taskTagMapRepositoryProvider(currentUser!.id!));
+  return ref.watch(taskTagMapRepositoryProvider(userId: currentUser!.id!, customerId: currentCustomerId.toString()));
 }

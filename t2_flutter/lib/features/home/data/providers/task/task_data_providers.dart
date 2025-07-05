@@ -43,7 +43,7 @@ ISyncMetadataLocalDataSource syncMetadataLocalDataSource(Ref ref) {
 /// Семейный провайдер репозитория для конкретного пользователя
 /// Каждый userId получает свой изолированный экземпляр репозитория
 @riverpod
-ITaskRepository taskRepository(Ref ref, int userId) {
+ITaskRepository taskRepository(Ref ref, {required int userId, required String customerId}) {
   // ref.keepAlive();
   
   // Получаем все зависимости
@@ -56,15 +56,16 @@ ITaskRepository taskRepository(Ref ref, int userId) {
     localDataSource, 
     remoteDataSource, 
     syncMetadataLocalDataSource,
-    userId, // Передаем userId в конструктор
+    userId,
+    customerId,
   );
 
   // Автоматически регистрируем в реестре
   final registry = ref.read(syncRegistryProvider);
-  registry.registerRepository('tasks_$userId', repository);
+  registry.registerRepository('tasks_${userId}_$customerId', repository);
   
   ref.onDispose(() {
-    registry.unregisterRepository('tasks_$userId');
+    registry.unregisterRepository('tasks_${userId}_$customerId');
     repository.dispose();
   });
   
@@ -76,12 +77,13 @@ ITaskRepository taskRepository(Ref ref, int userId) {
 @riverpod
 ITaskRepository? currentUserTaskRepository(Ref ref) {
   final currentUser = ref.watch(currentUserProvider);
+  final currentCustomerId = ref.watch(currentCustomerIdProvider);
   
-  if (currentUser?.id == null) {
+  if (currentUser?.id == null || currentCustomerId == null) {
     // Если пользователь не авторизован, возвращаем null
     return null;
   }
   
   // Возвращаем репозиторий для текущего пользователя
-  return ref.watch(taskRepositoryProvider(currentUser!.id!));
+  return ref.watch(taskRepositoryProvider(userId: currentUser!.id!, customerId: currentCustomerId.toString()));
 }

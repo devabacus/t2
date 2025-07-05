@@ -81,7 +81,7 @@ final syncMetadataLocalDataSourceProvider =
 // ignore: unused_element
 typedef SyncMetadataLocalDataSourceRef =
     AutoDisposeProviderRef<ISyncMetadataLocalDataSource>;
-String _$tagRepositoryHash() => r'50aee92ecaa7270a253db655043651621b0eecbb';
+String _$tagRepositoryHash() => r'2c6e903ad07787d6ce7a9c8491f3a7853632345a';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -126,15 +126,18 @@ class TagRepositoryFamily extends Family<ITagRepository> {
   /// Каждый userId получает свой изолированный экземпляр репозитория
   ///
   /// Copied from [tagRepository].
-  TagRepositoryProvider call(int userId) {
-    return TagRepositoryProvider(userId);
+  TagRepositoryProvider call({
+    required int userId,
+    required String customerId,
+  }) {
+    return TagRepositoryProvider(userId: userId, customerId: customerId);
   }
 
   @override
   TagRepositoryProvider getProviderOverride(
     covariant TagRepositoryProvider provider,
   ) {
-    return call(provider.userId);
+    return call(userId: provider.userId, customerId: provider.customerId);
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -161,9 +164,13 @@ class TagRepositoryProvider extends AutoDisposeProvider<ITagRepository> {
   /// Каждый userId получает свой изолированный экземпляр репозитория
   ///
   /// Copied from [tagRepository].
-  TagRepositoryProvider(int userId)
+  TagRepositoryProvider({required int userId, required String customerId})
     : this._internal(
-        (ref) => tagRepository(ref as TagRepositoryRef, userId),
+        (ref) => tagRepository(
+          ref as TagRepositoryRef,
+          userId: userId,
+          customerId: customerId,
+        ),
         from: tagRepositoryProvider,
         name: r'tagRepositoryProvider',
         debugGetCreateSourceHash:
@@ -174,6 +181,7 @@ class TagRepositoryProvider extends AutoDisposeProvider<ITagRepository> {
         allTransitiveDependencies:
             TagRepositoryFamily._allTransitiveDependencies,
         userId: userId,
+        customerId: customerId,
       );
 
   TagRepositoryProvider._internal(
@@ -184,9 +192,11 @@ class TagRepositoryProvider extends AutoDisposeProvider<ITagRepository> {
     required super.debugGetCreateSourceHash,
     required super.from,
     required this.userId,
+    required this.customerId,
   }) : super.internal();
 
   final int userId;
+  final String customerId;
 
   @override
   Override overrideWith(
@@ -202,6 +212,7 @@ class TagRepositoryProvider extends AutoDisposeProvider<ITagRepository> {
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
         userId: userId,
+        customerId: customerId,
       ),
     );
   }
@@ -213,13 +224,16 @@ class TagRepositoryProvider extends AutoDisposeProvider<ITagRepository> {
 
   @override
   bool operator ==(Object other) {
-    return other is TagRepositoryProvider && other.userId == userId;
+    return other is TagRepositoryProvider &&
+        other.userId == userId &&
+        other.customerId == customerId;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, userId.hashCode);
+    hash = _SystemHash.combine(hash, customerId.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -230,6 +244,9 @@ class TagRepositoryProvider extends AutoDisposeProvider<ITagRepository> {
 mixin TagRepositoryRef on AutoDisposeProviderRef<ITagRepository> {
   /// The parameter `userId` of this provider.
   int get userId;
+
+  /// The parameter `customerId` of this provider.
+  String get customerId;
 }
 
 class _TagRepositoryProviderElement
@@ -239,10 +256,12 @@ class _TagRepositoryProviderElement
 
   @override
   int get userId => (origin as TagRepositoryProvider).userId;
+  @override
+  String get customerId => (origin as TagRepositoryProvider).customerId;
 }
 
 String _$currentUserTagRepositoryHash() =>
-    r'd8014fe12b47e753eadce6432aec91481015fbca';
+    r'ba976c23935123e6cc5d5ea148a362b856d7c4a2';
 
 /// Удобный провайдер для получения репозитория текущего пользователя
 /// Автоматически следит за сменой пользователя и предоставляет соответствующий репозиторий

@@ -106,7 +106,7 @@ final syncMetadataDaoProvider = AutoDisposeProvider<SyncMetadataDao>.internal(
 // ignore: unused_element
 typedef SyncMetadataDaoRef = AutoDisposeProviderRef<SyncMetadataDao>;
 String _$taskTagMapRepositoryHash() =>
-    r'10a4e1eaca8ebcefdb6b074d76e8a80ae023bddc';
+    r'9b526836b93eeb0037efe0df5dd11d2a1513319c';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -147,15 +147,18 @@ class TaskTagMapRepositoryFamily extends Family<ITaskTagMapRepository> {
   /// Семейный провайдер репозитория для конкретного пользователя
   ///
   /// Copied from [taskTagMapRepository].
-  TaskTagMapRepositoryProvider call(int userId) {
-    return TaskTagMapRepositoryProvider(userId);
+  TaskTagMapRepositoryProvider call({
+    required int userId,
+    required String customerId,
+  }) {
+    return TaskTagMapRepositoryProvider(userId: userId, customerId: customerId);
   }
 
   @override
   TaskTagMapRepositoryProvider getProviderOverride(
     covariant TaskTagMapRepositoryProvider provider,
   ) {
-    return call(provider.userId);
+    return call(userId: provider.userId, customerId: provider.customerId);
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -181,20 +184,27 @@ class TaskTagMapRepositoryProvider
   /// Семейный провайдер репозитория для конкретного пользователя
   ///
   /// Copied from [taskTagMapRepository].
-  TaskTagMapRepositoryProvider(int userId)
-    : this._internal(
-        (ref) => taskTagMapRepository(ref as TaskTagMapRepositoryRef, userId),
-        from: taskTagMapRepositoryProvider,
-        name: r'taskTagMapRepositoryProvider',
-        debugGetCreateSourceHash:
-            const bool.fromEnvironment('dart.vm.product')
-                ? null
-                : _$taskTagMapRepositoryHash,
-        dependencies: TaskTagMapRepositoryFamily._dependencies,
-        allTransitiveDependencies:
-            TaskTagMapRepositoryFamily._allTransitiveDependencies,
-        userId: userId,
-      );
+  TaskTagMapRepositoryProvider({
+    required int userId,
+    required String customerId,
+  }) : this._internal(
+         (ref) => taskTagMapRepository(
+           ref as TaskTagMapRepositoryRef,
+           userId: userId,
+           customerId: customerId,
+         ),
+         from: taskTagMapRepositoryProvider,
+         name: r'taskTagMapRepositoryProvider',
+         debugGetCreateSourceHash:
+             const bool.fromEnvironment('dart.vm.product')
+                 ? null
+                 : _$taskTagMapRepositoryHash,
+         dependencies: TaskTagMapRepositoryFamily._dependencies,
+         allTransitiveDependencies:
+             TaskTagMapRepositoryFamily._allTransitiveDependencies,
+         userId: userId,
+         customerId: customerId,
+       );
 
   TaskTagMapRepositoryProvider._internal(
     super._createNotifier, {
@@ -204,9 +214,11 @@ class TaskTagMapRepositoryProvider
     required super.debugGetCreateSourceHash,
     required super.from,
     required this.userId,
+    required this.customerId,
   }) : super.internal();
 
   final int userId;
+  final String customerId;
 
   @override
   Override overrideWith(
@@ -222,6 +234,7 @@ class TaskTagMapRepositoryProvider
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
         userId: userId,
+        customerId: customerId,
       ),
     );
   }
@@ -233,13 +246,16 @@ class TaskTagMapRepositoryProvider
 
   @override
   bool operator ==(Object other) {
-    return other is TaskTagMapRepositoryProvider && other.userId == userId;
+    return other is TaskTagMapRepositoryProvider &&
+        other.userId == userId &&
+        other.customerId == customerId;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, userId.hashCode);
+    hash = _SystemHash.combine(hash, customerId.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -250,6 +266,9 @@ class TaskTagMapRepositoryProvider
 mixin TaskTagMapRepositoryRef on AutoDisposeProviderRef<ITaskTagMapRepository> {
   /// The parameter `userId` of this provider.
   int get userId;
+
+  /// The parameter `customerId` of this provider.
+  String get customerId;
 }
 
 class _TaskTagMapRepositoryProviderElement
@@ -259,10 +278,12 @@ class _TaskTagMapRepositoryProviderElement
 
   @override
   int get userId => (origin as TaskTagMapRepositoryProvider).userId;
+  @override
+  String get customerId => (origin as TaskTagMapRepositoryProvider).customerId;
 }
 
 String _$currentUserTaskTagMapRepositoryHash() =>
-    r'83f5e540eaba26a055b99f652f79b37e200720f2';
+    r'1f195724ea56146723071cc574c9eca166ace554';
 
 /// See also [currentUserTaskTagMapRepository].
 @ProviderFor(currentUserTaskTagMapRepository)

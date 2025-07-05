@@ -43,24 +43,18 @@ ISyncMetadataLocalDataSource syncMetadataLocalDataSource(Ref ref) {
 /// Семейный провайдер репозитория для конкретного пользователя
 /// Каждый userId получает свой изолированный экземпляр репозитория
 @riverpod
-ICategoryRepository categoryRepository(
-  Ref ref, {
-  required int userId,
-  required String customerId,
-}) {
+ICategoryRepository categoryRepository(Ref ref, {required int userId, required String customerId}) {
   // ref.keepAlive();
-
+  
   // Получаем все зависимости
   final localDataSource = ref.watch(categoryLocalDataSourceProvider);
   final remoteDataSource = ref.watch(categoryRemoteDataSourceProvider);
-  final syncMetadataLocalDataSource = ref.watch(
-    syncMetadataLocalDataSourceProvider,
-  );
+  final syncMetadataLocalDataSource = ref.watch(syncMetadataLocalDataSourceProvider);
 
   // Создаем репозиторий с фиксированным userId
   final repository = CategoryRepositoryImpl(
-    localDataSource,
-    remoteDataSource,
+    localDataSource, 
+    remoteDataSource, 
     syncMetadataLocalDataSource,
     userId,
     customerId,
@@ -69,12 +63,12 @@ ICategoryRepository categoryRepository(
   // Автоматически регистрируем в реестре
   final registry = ref.read(syncRegistryProvider);
   registry.registerRepository('categories_${userId}_$customerId', repository);
-
+  
   ref.onDispose(() {
     registry.unregisterRepository('categories_${userId}_$customerId');
     repository.dispose();
   });
-
+  
   return repository;
 }
 
@@ -83,12 +77,13 @@ ICategoryRepository categoryRepository(
 @riverpod
 ICategoryRepository? currentUserCategoryRepository(Ref ref) {
   final currentUser = ref.watch(currentUserProvider);
-
-  if (currentUser?.id == null) {
+  final currentCustomerId = ref.watch(currentCustomerIdProvider);
+  
+  if (currentUser?.id == null || currentCustomerId == null) {
     // Если пользователь не авторизован, возвращаем null
     return null;
   }
-
+  
   // Возвращаем репозиторий для текущего пользователя
-  return ref.watch(categoryRepositoryProvider(currentUser!.id!));
+  return ref.watch(categoryRepositoryProvider(userId: currentUser!.id!, customerId: currentCustomerId.toString()));
 }

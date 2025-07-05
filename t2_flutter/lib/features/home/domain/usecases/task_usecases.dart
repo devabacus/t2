@@ -46,8 +46,8 @@ class GetTaskByIdUseCase {
 
   GetTaskByIdUseCase(this._repository);
 
-  Future<TaskEntity?> call(String id, String customerId) {
-    return _repository.getTaskById(id, customerId);
+  Future<TaskEntity?> call(String id) {
+    return _repository.getTaskById(id);
   }
 }
 
