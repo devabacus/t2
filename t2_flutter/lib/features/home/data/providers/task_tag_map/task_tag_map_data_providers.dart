@@ -71,7 +71,7 @@ ITaskTagMapRepository taskTagMapRepository(Ref ref, {required int userId, requir
 
   // Регистрируем в реестре для автоматической синхронизации
   final registry = ref.read(syncRegistryProvider);
-  final repoKey = 'task_tag_maps_$userId';
+  final repoKey = 'task_tag_maps__${userId}_$customerId';
   registry.registerRepository(repoKey, repository);
 
   // При уничтожении провайдера удаляем репозиторий из реестра

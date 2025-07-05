@@ -46,7 +46,7 @@ extension ServerpodTaskToModelExtension on serverpod.Task {
         createdAt: createdAt,
         lastModified: lastModified,
         isDeleted: isDeleted,
-        title: title, categoryId: categoryId.toString()
+        title: title, categoryId: categoryId?.toString()
       );
 }
 

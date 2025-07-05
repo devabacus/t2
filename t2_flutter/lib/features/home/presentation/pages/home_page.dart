@@ -4,9 +4,9 @@ import 'package:uuid/uuid.dart';
 
 import '../../../../core/providers/session_manager_provider.dart';
 import '../../data/providers/task_tag_map/task_tag_map_data_providers.dart';
-import '../../domain/entities/category/category.dart';
-import '../../domain/entities/task/task.dart';
-import '../../domain/entities/tag/tag.dart';
+import '../../domain/entities/category/category_entity.dart';
+import '../../domain/entities/task/task_entity.dart';
+import '../../domain/entities/tag/tag_entity.dart';
 import '../../domain/providers/category/category_usecase_providers.dart';
 import '../../domain/providers/task/task_usecase_providers.dart';
 import '../../domain/providers/tag/tag_usecase_providers.dart';
@@ -70,7 +70,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               await sessionManager.signOutDevice();
             },
           ),
-        ],
+        ],  
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -684,7 +684,9 @@ class _HomePageState extends ConsumerState<HomePage> {
     if (_categoryController.text.trim().isEmpty) return;
 
     final currentUser = ref.read(currentUserProvider);
-    if (currentUser?.id == null) return;
+    final currentCustomerId = ref.read(currentCustomerIdProvider);
+
+    if (currentUser?.id == null || currentCustomerId == null) return;
 
     try {
       // вызываем usecase который дергаем метод в репозитории категорий
@@ -692,10 +694,12 @@ class _HomePageState extends ConsumerState<HomePage> {
       if (useCase == null) return;
 
       final category = CategoryEntity(
-        id: const Uuid().v7(),
-        title: _categoryController.text.trim(),
-        lastModified: DateTime.now(),
+        id: const Uuid().v7(),        
         userId: currentUser!.id!,
+        customerId: currentCustomerId,
+        createdAt: DateTime.now(),
+        lastModified: DateTime.now(),
+        title: _categoryController.text.trim(),
       );
 
       await useCase(category);
@@ -711,7 +715,9 @@ class _HomePageState extends ConsumerState<HomePage> {
     if (_taskController.text.trim().isEmpty) return;
 
     final currentUser = ref.read(currentUserProvider);
-    if (currentUser?.id == null) return;
+final currentCustomerId = ref.read(currentCustomerIdProvider);
+
+    if (currentUser?.id == null || currentCustomerId == null) return;
 
     try {
       final useCase = ref.read(createTaskUseCaseProvider);
@@ -719,10 +725,12 @@ class _HomePageState extends ConsumerState<HomePage> {
 
       final task = TaskEntity(
         id: const Uuid().v7(),
+        userId: currentUser!.id!,
+        customerId: currentCustomerId,
+        createdAt: DateTime.now(),
+        lastModified: DateTime.now(),
         title: _taskController.text.trim(),
         categoryId: _selectedCategoryId,
-        lastModified: DateTime.now(),
-        userId: currentUser!.id!,
       );
 
       await useCase(task);
@@ -738,7 +746,10 @@ class _HomePageState extends ConsumerState<HomePage> {
     if (_tagController.text.trim().isEmpty) return;
 
     final currentUser = ref.read(currentUserProvider);
-    if (currentUser?.id == null) return;
+final currentCustomerId = ref.read(currentCustomerIdProvider);
+
+    if (currentUser?.id == null || currentCustomerId == null) return;
+
 
     try {
       final useCase = ref.read(createTagUseCaseProvider);
@@ -746,9 +757,11 @@ class _HomePageState extends ConsumerState<HomePage> {
 
       final tag = TagEntity(
         id: const Uuid().v7(),
-        title: _tagController.text.trim(),
-        lastModified: DateTime.now(),
         userId: currentUser!.id!,
+        customerId: currentCustomerId,
+        createdAt: DateTime.now(),
+        lastModified: DateTime.now(),
+        title: _tagController.text.trim(),
       );
 
       await useCase(tag);

@@ -52,7 +52,7 @@ Future<TaskEntity?> getTaskById(Ref ref, String id) async {
     return null;
   }
 
-  final taskFromDb = await getTaskByIdUseCase(id, customerId);
+  final taskFromDb = await getTaskByIdUseCase(id);
   return taskFromDb;
 }
   

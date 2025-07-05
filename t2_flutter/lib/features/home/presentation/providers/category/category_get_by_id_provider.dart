@@ -52,7 +52,7 @@ Future<CategoryEntity?> getCategoryById(Ref ref, String id) async {
     return null;
   }
 
-  final categoryFromDb = await getCategoryByIdUseCase(id, customerId);
+  final categoryFromDb = await getCategoryByIdUseCase(id);
   return categoryFromDb;
 }
   

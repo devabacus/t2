@@ -181,10 +181,12 @@ class TaskEndpoint extends Endpoint {
 
     
 Future<List<Task>> getTasksByCategoryId(Session session, UuidValue categoryId) async {
+    final authContext = await _getAuthenticatedUserContext(session);
+    final userId = authContext.userId;
+    final customerId = authContext.customerId;
     return await Task.db.find(
       session,
-      where: (t) => t.categoryId.equals(categoryId),
-      orderBy: (t) => t.title,
+      where: (t) => t.categoryId.equals(categoryId) & t.userId.equals(userId) & t.customerId.equals(customerId),
     );
   }
 }          

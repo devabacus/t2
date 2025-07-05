@@ -8,7 +8,6 @@ class TaskTable extends Table {
 
     TextColumn get title => text()();
   TextColumn get categoryId => text().nullable().references(CategoryTable, #id, onDelete: KeyAction.setNull)();
-  TextColumn get category => text().nullable()();
   
   TextColumn get id => text().clientDefault(() => Uuid().v7())();
   IntColumn get userId => integer()();

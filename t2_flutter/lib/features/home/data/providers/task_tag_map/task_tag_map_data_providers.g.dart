@@ -106,7 +106,7 @@ final syncMetadataDaoProvider = AutoDisposeProvider<SyncMetadataDao>.internal(
 // ignore: unused_element
 typedef SyncMetadataDaoRef = AutoDisposeProviderRef<SyncMetadataDao>;
 String _$taskTagMapRepositoryHash() =>
-    r'9b526836b93eeb0037efe0df5dd11d2a1513319c';
+    r'1dd4faccd7aa9ea352d21ac0ca6fa12e70b9b673';
 
 /// Copied from Dart SDK
 class _SystemHash {

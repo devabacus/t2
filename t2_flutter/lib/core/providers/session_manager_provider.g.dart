@@ -96,11 +96,11 @@ final currentUserSessionDataProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef CurrentUserSessionDataRef = AutoDisposeProviderRef<UserSessionData?>;
-String _$currentCustomerIdHash() => r'5eba09eb73ab8adc7d6c10d7b397da5c5b4e86cf';
+String _$currentCustomerIdHash() => r'cf23458d8b99f8801ba6db3d9136c1d4805549a2';
 
 /// See also [currentCustomerId].
 @ProviderFor(currentCustomerId)
-final currentCustomerIdProvider = AutoDisposeProvider<UuidValue?>.internal(
+final currentCustomerIdProvider = AutoDisposeProvider<String?>.internal(
   currentCustomerId,
   name: r'currentCustomerIdProvider',
   debugGetCreateSourceHash:
@@ -113,7 +113,7 @@ final currentCustomerIdProvider = AutoDisposeProvider<UuidValue?>.internal(
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef CurrentCustomerIdRef = AutoDisposeProviderRef<UuidValue?>;
+typedef CurrentCustomerIdRef = AutoDisposeProviderRef<String?>;
 String _$currentRoleIdHash() => r'be77b5e33fdfd7e2c63b5b59ae6eeb9165cb66cb';
 
 /// See also [currentRoleId].

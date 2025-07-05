@@ -52,7 +52,7 @@ Future<TagEntity?> getTagById(Ref ref, String id) async {
     return null;
   }
 
-  final tagFromDb = await getTagByIdUseCase(id, customerId);
+  final tagFromDb = await getTagByIdUseCase(id);
   return tagFromDb;
 }
   
