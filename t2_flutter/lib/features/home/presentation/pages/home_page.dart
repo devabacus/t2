@@ -42,6 +42,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
     final currentUser = ref.watch(currentUserProvider);
+    final customerId = ref.watch(currentCustomerIdProvider);
 
     if (currentUser == null) {
       return Scaffold(
@@ -49,6 +50,23 @@ class _HomePageState extends ConsumerState<HomePage> {
         body: const Center(child: Text('Войдите в систему')),
       );
     }
+
+    // if (customerId == null) {
+    //   return Scaffold(
+    //     appBar: AppBar(title: const Text('Тест синхронизации')),
+    //     body: const Center(
+    //       child: Column(
+    //         mainAxisAlignment: MainAxisAlignment.center,
+    //         children: [
+    //           CircularProgressIndicator(),
+    //           SizedBox(height: 16),
+    //           Text('Получение данных сессии...'),
+    //         ],
+    //       ),
+    //     ),
+    //   );
+    // }
+
     //  подписываемся на стримы
     final categoriesAsync = ref.watch(categoriesStreamProvider);
     final tasksAsync = ref.watch(tasksStreamProvider);

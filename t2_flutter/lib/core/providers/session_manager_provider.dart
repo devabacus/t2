@@ -62,17 +62,24 @@ bool isAuthenticated(Ref ref) {
   return user != null;
 }
 
+// lib/core/providers/session_manager_provider.dart
+
 @riverpod
 class UserSessionDataNotifier extends _$UserSessionDataNotifier {
   @override
   UserSessionData? build() {
     // Слушаем изменения статуса аутентификации пользователя
     ref.listen(userInfoStreamProvider, (previous, next) async {
-      if (next.hasValue && next.value != null && previous?.value == null) {
-        // Пользователь только что вошел в систему
+      final newUserId = next.valueOrNull?.id;
+      final oldUserId = previous?.valueOrNull?.id;
+      await _fetchUserContext();
+      // Основное условие: ID нового пользователя существует и не совпадает со старым.
+      // Это покрывает все сценарии: первый вход, запуск с активной сессией и смену пользователя.
+      if (newUserId != null && newUserId != oldUserId) {
         await _fetchUserContext();
-      } else if (next.value == null && previous?.value != null) {
-        // Пользователь вышел из системы
+      } 
+      // Условие выхода: ID нового пользователя - null, а старый ID был.
+      else if (newUserId == null && oldUserId != null) {
         state = null;
       }
     });

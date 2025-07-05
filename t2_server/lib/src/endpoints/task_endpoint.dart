@@ -1,29 +1,11 @@
 import 'package:serverpod/serverpod.dart';
 import 'package:t2_server/src/generated/protocol.dart';
+import 'shared/auth_context_mixin.dart';
 import 'user_manager_endpoint.dart';
 
 const _taskChannelBase = 't2_task_events_for_user_';
 
-class TaskEndpoint extends Endpoint {
-  
-  Future<AuthenticatedUserContext> _getAuthenticatedUserContext(Session session) async {
-    final authInfo = await session.authenticated;
-    final userId = authInfo?.userId;
-
-    if (userId == null) {
-      throw Exception('Пользователь не авторизован.');
-    }
-
-    final customerUser = await CustomerUser.db.findFirstRow(
-      session,
-      where: (cu) => cu.userId.equals(userId),
-    );
-
-    if (customerUser == null) {
-      throw Exception('Пользователь $userId не привязан к клиенту (Customer).');
-    }
-    return (userId: userId, customerId: customerUser.customerId);
-  }
+class TaskEndpoint extends Endpoint with AuthContextMixin {
 
   Future<void> _notifyChange(Session session, TaskSyncEvent event, AuthenticatedUserContext authContext) async { 
     final channel = '$_taskChannelBase${authContext.userId}-${authContext.customerId.uuid}'; 
@@ -32,7 +14,7 @@ class TaskEndpoint extends Endpoint {
   }
 
   Future<Task> createTask(Session session, Task task) async {
-    final authContext = await _getAuthenticatedUserContext(session);
+    final authContext = await getAuthenticatedUserContext(session);
     final userId = authContext.userId;
     final customerId = authContext.customerId;
 
@@ -69,7 +51,7 @@ class TaskEndpoint extends Endpoint {
   }
 
   Future<List<Task>> getTasks(Session session, {int? limit}) async {
-    final authContext = await _getAuthenticatedUserContext(session);
+    final authContext = await getAuthenticatedUserContext(session);
     final userId = authContext.userId;
     final customerId = authContext.customerId;
 
@@ -81,7 +63,7 @@ class TaskEndpoint extends Endpoint {
   }     
 
   Future<Task?> getTaskById(Session session, UuidValue id) async {
-    final authContext = await _getAuthenticatedUserContext(session);
+    final authContext = await getAuthenticatedUserContext(session);
     final userId = authContext.userId;
     final customerId = authContext.customerId;
     
@@ -92,7 +74,7 @@ class TaskEndpoint extends Endpoint {
   }
 
   Future<List<Task>> getTasksSince(Session session, DateTime? since) async {
-    final authContext = await _getAuthenticatedUserContext(session);
+    final authContext = await getAuthenticatedUserContext(session);
     final userId = authContext.userId;
     final customerId = authContext.customerId;
 
@@ -107,7 +89,7 @@ class TaskEndpoint extends Endpoint {
   }
 
   Future<bool> updateTask(Session session, Task task) async {
-    final authContext = await _getAuthenticatedUserContext(session);
+    final authContext = await getAuthenticatedUserContext(session);
     final userId = authContext.userId;
     final customerId = authContext.customerId;
 
@@ -136,7 +118,7 @@ class TaskEndpoint extends Endpoint {
   }
 
   Future<bool> deleteTask(Session session, UuidValue id) async {
-    final authContext = await _getAuthenticatedUserContext(session);
+    final authContext = await getAuthenticatedUserContext(session);
     final userId = authContext.userId;
     final customerId = authContext.customerId;
 
@@ -163,7 +145,7 @@ class TaskEndpoint extends Endpoint {
   }
 
   Stream<TaskSyncEvent> watchEvents(Session session) async* {
-    final authContext = await _getAuthenticatedUserContext(session);
+    final authContext = await getAuthenticatedUserContext(session);
     final userId = authContext.userId;
     final customerId = authContext.customerId;
 
@@ -181,7 +163,7 @@ class TaskEndpoint extends Endpoint {
 
     
 Future<List<Task>> getTasksByCategoryId(Session session, UuidValue categoryId) async {
-    final authContext = await _getAuthenticatedUserContext(session);
+    final authContext = await getAuthenticatedUserContext(session);
     final userId = authContext.userId;
     final customerId = authContext.customerId;
     return await Task.db.find(

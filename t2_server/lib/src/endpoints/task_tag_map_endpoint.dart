@@ -1,29 +1,12 @@
 import 'package:serverpod/serverpod.dart';
 import 'package:t2_server/src/generated/protocol.dart';
 
+import 'shared/auth_context_mixin.dart';
 import 'user_manager_endpoint.dart';
 
 const _taskTagMapChannelBase = 't2_task_tag_map_events_for_user_';
 
-class TaskTagMapEndpoint extends Endpoint {
-  Future<AuthenticatedUserContext> _getAuthenticatedUserContext(Session session) async {
-    final authInfo = await session.authenticated;
-    final userId = authInfo?.userId;
-
-    if (userId == null) {
-      throw Exception('Пользователь не авторизован.');
-    }
-
-    final customerUser = await CustomerUser.db.findFirstRow(
-      session,
-      where: (cu) => cu.userId.equals(userId),
-    );
-
-    if (customerUser == null) {
-      throw Exception('Пользователь $userId не привязан к клиенту (Customer).');
-    }
-    return (userId: userId, customerId: customerUser.customerId);
-  }
+class TaskTagMapEndpoint extends Endpoint with AuthContextMixin {
 
   Future<void> _notifyChange(Session session, TaskTagMapSyncEvent event, AuthenticatedUserContext authContext) async {
     final channel = '$_taskTagMapChannelBase${authContext.userId}-${authContext.customerId.uuid}';
@@ -63,7 +46,7 @@ class TaskTagMapEndpoint extends Endpoint {
 
   Future<TaskTagMap> createTaskTagMap(
       Session session, TaskTagMap taskTagMap) async {
-    final authContext = await _getAuthenticatedUserContext(session);
+    final authContext = await getAuthenticatedUserContext(session);
     final userId = authContext.userId;
     final customerId = authContext.customerId;
 
@@ -142,7 +125,7 @@ class TaskTagMapEndpoint extends Endpoint {
   }
   
   Future<bool> deleteTaskTagMapById(Session session, UuidValue id) async {
-    final authContext = await _getAuthenticatedUserContext(session);
+    final authContext = await getAuthenticatedUserContext(session);
     final userId = authContext.userId;
     final customerId = authContext.customerId;
 
@@ -178,7 +161,7 @@ class TaskTagMapEndpoint extends Endpoint {
   }
 
   Future<List<Tag>> getTagsForTask(Session session, UuidValue taskId) async {
-    final authContext = await _getAuthenticatedUserContext(session);
+    final authContext = await getAuthenticatedUserContext(session);
     final userId = authContext.userId;
     final customerId = authContext.customerId;
 
@@ -220,7 +203,7 @@ class TaskTagMapEndpoint extends Endpoint {
   }
 
   Future<List<Task>> getTasksForTag(Session session, UuidValue tagId) async {
-    final authContext = await _getAuthenticatedUserContext(session);
+    final authContext = await getAuthenticatedUserContext(session);
     final userId = authContext.userId;
     final customerId = authContext.customerId;
 
@@ -261,7 +244,7 @@ class TaskTagMapEndpoint extends Endpoint {
   }
 
   Future<List<TaskTagMap>> getTaskTagMapsSince(Session session, DateTime? since) async {
-    final authContext = await _getAuthenticatedUserContext(session);
+    final authContext = await getAuthenticatedUserContext(session);
     final userId = authContext.userId;
     final customerId = authContext.customerId;
     
@@ -274,7 +257,7 @@ class TaskTagMapEndpoint extends Endpoint {
   }
 
   Stream<TaskTagMapSyncEvent> watchEvents(Session session) async* {
-    final authContext = await _getAuthenticatedUserContext(session);
+    final authContext = await getAuthenticatedUserContext(session);
   final userId = authContext.userId;
   final customerId = authContext.customerId;
     
@@ -293,7 +276,7 @@ class TaskTagMapEndpoint extends Endpoint {
   }
 
 Future<bool> deleteTaskTagMapByTaskAndTag(Session session, UuidValue taskId, UuidValue tagId) async {
-    final authContext = await _getAuthenticatedUserContext(session);
+    final authContext = await getAuthenticatedUserContext(session);
     final userId = authContext.userId;
     final customerId = authContext.customerId;
 

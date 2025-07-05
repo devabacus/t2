@@ -45,9 +45,9 @@ class SyncRegistry {
         // Мы не вызываем initEventBasedSync здесь, так как он вызывается
         // внутри syncWithServer или при создании самого репозитория.
         await repository.syncWithServer();
-      } catch (e) {
+      } catch (e, stackTrace) {
         print(
-            '❌ Реестр: Ошибка синхронизации для "${repository.entityTypeName}": $e');
+            '❌ Реестр: Ошибка синхронизации для "${repository.entityTypeName}": $e, StackTrace: $stackTrace');
       }
     }
   }

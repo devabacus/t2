@@ -14,24 +14,24 @@ import 'package:serverpod_client/serverpod_client.dart' as _i1;
 abstract class TaskTagMap implements _i1.SerializableModel {
   TaskTagMap._({
     this.id,
+    required this.taskId,
+    required this.tagId,
     required this.userId,
     required this.customerId,
     required this.createdAt,
     required this.lastModified,
     bool? isDeleted,
-    required this.taskId,
-    required this.tagId,
   }) : isDeleted = isDeleted ?? false;
 
   factory TaskTagMap({
     _i1.UuidValue? id,
+    required _i1.UuidValue taskId,
+    required _i1.UuidValue tagId,
     required int userId,
     required _i1.UuidValue customerId,
     required DateTime createdAt,
     required DateTime lastModified,
     bool? isDeleted,
-    required _i1.UuidValue taskId,
-    required _i1.UuidValue tagId,
   }) = _TaskTagMapImpl;
 
   factory TaskTagMap.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -39,6 +39,8 @@ abstract class TaskTagMap implements _i1.SerializableModel {
       id: jsonSerialization['id'] == null
           ? null
           : _i1.UuidValueJsonExtension.fromJson(jsonSerialization['id']),
+      taskId: _i1.UuidValueJsonExtension.fromJson(jsonSerialization['taskId']),
+      tagId: _i1.UuidValueJsonExtension.fromJson(jsonSerialization['tagId']),
       userId: jsonSerialization['userId'] as int,
       customerId:
           _i1.UuidValueJsonExtension.fromJson(jsonSerialization['customerId']),
@@ -47,8 +49,6 @@ abstract class TaskTagMap implements _i1.SerializableModel {
       lastModified:
           _i1.DateTimeJsonExtension.fromJson(jsonSerialization['lastModified']),
       isDeleted: jsonSerialization['isDeleted'] as bool,
-      taskId: _i1.UuidValueJsonExtension.fromJson(jsonSerialization['taskId']),
-      tagId: _i1.UuidValueJsonExtension.fromJson(jsonSerialization['tagId']),
     );
   }
 
@@ -56,6 +56,10 @@ abstract class TaskTagMap implements _i1.SerializableModel {
   /// database or if it has been fetched from the database. Otherwise,
   /// the id will be null.
   _i1.UuidValue? id;
+
+  _i1.UuidValue taskId;
+
+  _i1.UuidValue tagId;
 
   int userId;
 
@@ -67,34 +71,30 @@ abstract class TaskTagMap implements _i1.SerializableModel {
 
   bool isDeleted;
 
-  _i1.UuidValue taskId;
-
-  _i1.UuidValue tagId;
-
   /// Returns a shallow copy of this [TaskTagMap]
   /// with some or all fields replaced by the given arguments.
   @_i1.useResult
   TaskTagMap copyWith({
     _i1.UuidValue? id,
+    _i1.UuidValue? taskId,
+    _i1.UuidValue? tagId,
     int? userId,
     _i1.UuidValue? customerId,
     DateTime? createdAt,
     DateTime? lastModified,
     bool? isDeleted,
-    _i1.UuidValue? taskId,
-    _i1.UuidValue? tagId,
   });
   @override
   Map<String, dynamic> toJson() {
     return {
       if (id != null) 'id': id?.toJson(),
+      'taskId': taskId.toJson(),
+      'tagId': tagId.toJson(),
       'userId': userId,
       'customerId': customerId.toJson(),
       'createdAt': createdAt.toJson(),
       'lastModified': lastModified.toJson(),
       'isDeleted': isDeleted,
-      'taskId': taskId.toJson(),
-      'tagId': tagId.toJson(),
     };
   }
 
@@ -109,22 +109,22 @@ class _Undefined {}
 class _TaskTagMapImpl extends TaskTagMap {
   _TaskTagMapImpl({
     _i1.UuidValue? id,
+    required _i1.UuidValue taskId,
+    required _i1.UuidValue tagId,
     required int userId,
     required _i1.UuidValue customerId,
     required DateTime createdAt,
     required DateTime lastModified,
     bool? isDeleted,
-    required _i1.UuidValue taskId,
-    required _i1.UuidValue tagId,
   }) : super._(
           id: id,
+          taskId: taskId,
+          tagId: tagId,
           userId: userId,
           customerId: customerId,
           createdAt: createdAt,
           lastModified: lastModified,
           isDeleted: isDeleted,
-          taskId: taskId,
-          tagId: tagId,
         );
 
   /// Returns a shallow copy of this [TaskTagMap]
@@ -133,23 +133,23 @@ class _TaskTagMapImpl extends TaskTagMap {
   @override
   TaskTagMap copyWith({
     Object? id = _Undefined,
+    _i1.UuidValue? taskId,
+    _i1.UuidValue? tagId,
     int? userId,
     _i1.UuidValue? customerId,
     DateTime? createdAt,
     DateTime? lastModified,
     bool? isDeleted,
-    _i1.UuidValue? taskId,
-    _i1.UuidValue? tagId,
   }) {
     return TaskTagMap(
       id: id is _i1.UuidValue? ? id : this.id,
+      taskId: taskId ?? this.taskId,
+      tagId: tagId ?? this.tagId,
       userId: userId ?? this.userId,
       customerId: customerId ?? this.customerId,
       createdAt: createdAt ?? this.createdAt,
       lastModified: lastModified ?? this.lastModified,
       isDeleted: isDeleted ?? this.isDeleted,
-      taskId: taskId ?? this.taskId,
-      tagId: tagId ?? this.tagId,
     );
   }
 }

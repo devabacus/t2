@@ -24,9 +24,21 @@ class UserManagementEndpoint extends Endpoint {
         where: (cu) => cu.userId.equals(userId),
       );
     
-      if (customerUser == null) {
-        session.log('User $userId is not associated with any customer.');
-        return null;
+         if (customerUser == null) {
+        session.log('⚠️ ЗАГЛУШКА: User $userId не привязан к customer. Возвращаем тестовые данные.');
+
+        // Создаем временные ID для customer и role.
+        // Используйте валидные UUID v4 или v7 для тестов.
+        final tempCustomerId = UuidValue.fromString('00000000-0000-0000-0000-000000000001');
+        final tempRoleId = UuidValue.fromString('00000000-0000-0000-0000-000000000001');
+
+        // Возвращаем полный объект UserSessionData с временными данными
+        return UserSessionData(
+          userId: userId,
+          customerId: tempCustomerId,
+          roleId: tempRoleId,
+          activePermissions: [], // Пока оставляем пустым
+        );
       }
 
       // Находим права доступа для роли пользователя

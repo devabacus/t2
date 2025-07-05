@@ -682,6 +682,18 @@ class Protocol extends _i1.SerializationManagerServer {
           columnDefault: 'gen_random_uuid_v7()',
         ),
         _i2.ColumnDefinition(
+          name: 'taskId',
+          columnType: _i2.ColumnType.uuid,
+          isNullable: false,
+          dartType: 'UuidValue',
+        ),
+        _i2.ColumnDefinition(
+          name: 'tagId',
+          columnType: _i2.ColumnType.uuid,
+          isNullable: false,
+          dartType: 'UuidValue',
+        ),
+        _i2.ColumnDefinition(
           name: 'userId',
           columnType: _i2.ColumnType.bigint,
           isNullable: false,
@@ -713,18 +725,6 @@ class Protocol extends _i1.SerializationManagerServer {
           columnDefault: 'false',
         ),
         _i2.ColumnDefinition(
-          name: 'taskId',
-          columnType: _i2.ColumnType.uuid,
-          isNullable: false,
-          dartType: 'UuidValue',
-        ),
-        _i2.ColumnDefinition(
-          name: 'tagId',
-          columnType: _i2.ColumnType.uuid,
-          isNullable: false,
-          dartType: 'UuidValue',
-        ),
-        _i2.ColumnDefinition(
           name: '_tagTasktagmapsTagId',
           columnType: _i2.ColumnType.uuid,
           isNullable: true,
@@ -740,16 +740,6 @@ class Protocol extends _i1.SerializationManagerServer {
       foreignKeys: [
         _i2.ForeignKeyDefinition(
           constraintName: 'task_tag_map_fk_0',
-          columns: ['customerId'],
-          referenceTable: 'customer',
-          referenceTableSchema: 'public',
-          referenceColumns: ['id'],
-          onUpdate: _i2.ForeignKeyAction.noAction,
-          onDelete: _i2.ForeignKeyAction.cascade,
-          matchType: null,
-        ),
-        _i2.ForeignKeyDefinition(
-          constraintName: 'task_tag_map_fk_1',
           columns: ['taskId'],
           referenceTable: 'task',
           referenceTableSchema: 'public',
@@ -759,9 +749,19 @@ class Protocol extends _i1.SerializationManagerServer {
           matchType: null,
         ),
         _i2.ForeignKeyDefinition(
-          constraintName: 'task_tag_map_fk_2',
+          constraintName: 'task_tag_map_fk_1',
           columns: ['tagId'],
           referenceTable: 'tag',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _i2.ForeignKeyAction.noAction,
+          onDelete: _i2.ForeignKeyAction.cascade,
+          matchType: null,
+        ),
+        _i2.ForeignKeyDefinition(
+          constraintName: 'task_tag_map_fk_2',
+          columns: ['customerId'],
+          referenceTable: 'customer',
           referenceTableSchema: 'public',
           referenceColumns: ['id'],
           onUpdate: _i2.ForeignKeyAction.noAction,
