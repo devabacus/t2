@@ -1,5 +1,6 @@
 import 'package:drift/drift.dart';
 import '../../../../../../../core/database/local/database.dart';
+import '../../../../../../../core/database/local/database_types.dart';
 import '../../../../../../../core/database/local/interface/i_database_service.dart';
 import '../../tables/category_table.dart';
 
@@ -71,6 +72,7 @@ Future<bool> updateCategory(CategoryTableCompanion companion, {required int user
     final companion = CategoryTableCompanion(
       isDeleted: Value(true),
       lastModified: Value(DateTime.now()), 
+      syncStatus: Value(SyncStatus.local),
     );
     
     final updatedRows = await (update(categoryTable)

@@ -71,7 +71,7 @@ abstract class BaseSyncRepository implements ISyncableRepository {
     } finally {
       _isSyncing = false;
     }
-  }
+        }
 
   @override
   void initEventBasedSync() {

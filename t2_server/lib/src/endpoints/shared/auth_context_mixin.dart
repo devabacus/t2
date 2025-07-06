@@ -1,3 +1,5 @@
+// lib/src/endpoints/shared/auth_context_mixin.dart
+
 import 'package:serverpod/serverpod.dart';
 import '../../generated/protocol.dart';
 
@@ -17,14 +19,9 @@ mixin AuthContextMixin on Endpoint {
       where: (cu) => cu.userId.equals(userId),
     );
 
+    // Теперь это настоящая ошибка, а не повод для заглушки
     if (customerUser == null) {
-      session.log(
-        '⚠️ ЗАГЛУШКА: User $userId не привязан к customer. Возвращаем тестовые данные.',
-      );
-      return (
-        userId: userId,
-        customerId: UuidValue.fromString('00000000-0000-0000-0000-000000000001'),
-      );
+      throw Exception('Пользователь $userId не привязан ни к одному клиенту (customer).');
     }
 
     return (

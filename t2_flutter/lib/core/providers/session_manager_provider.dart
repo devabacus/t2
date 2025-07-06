@@ -72,7 +72,7 @@ class UserSessionDataNotifier extends _$UserSessionDataNotifier {
     ref.listen(userInfoStreamProvider, (previous, next) async {
       final newUserId = next.valueOrNull?.id;
       final oldUserId = previous?.valueOrNull?.id;
-      await _fetchUserContext();
+    await _fetchUserContext();
       // Основное условие: ID нового пользователя существует и не совпадает со старым.
       // Это покрывает все сценарии: первый вход, запуск с активной сессией и смену пользователя.
       if (newUserId != null && newUserId != oldUserId) {
