@@ -40,16 +40,12 @@ class TaskTagMapDao extends DatabaseAccessor<AppDatabase>
     return updatedRows > 0;
   }
 
-   Future<int> softDeleteRelationsByTaskId(
-    String taskId, {
+  Future<int> updateRelationsByTaskId(
+    String taskId,
+    TaskTagMapTableCompanion companion, {
     required int userId,
     required String customerId,
   }) async {
-    final companion = TaskTagMapTableCompanion(
-      isDeleted: Value(true),
-      lastModified: Value(DateTime.now().toUtc()),
-    );
-    // Обновляем все записи, где taskId и userId совпадают
     final updatedRows = await (update(taskTagMapTable)..where(
       (t) =>
           t.taskId.equals(taskId) &
@@ -57,7 +53,7 @@ class TaskTagMapDao extends DatabaseAccessor<AppDatabase>
           t.customerId.equals(customerId),
     )).write(companion);
 
-    print('DAO: Мягко удалено $updatedRows связей для задачи $taskId');
+    print('DAO: Массово обновлено $updatedRows связей для задачи $taskId');
     return updatedRows;
   }
 
@@ -118,4 +114,3 @@ class TaskTagMapDao extends DatabaseAccessor<AppDatabase>
     )).watch();
   }
 }
-

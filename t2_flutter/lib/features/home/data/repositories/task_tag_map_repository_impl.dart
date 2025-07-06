@@ -1,3 +1,4 @@
+import 'package:drift/drift.dart';
 import 'package:t2/features/home/data/datasources/local/tables/extensions/task_tag_map_table_extension.dart';
 import 'package:t2/features/home/domain/entities/extensions/task_tag_map_entity_extension.dart';
 import 'package:t2_client/t2_client.dart' as serverpod;
@@ -114,8 +115,15 @@ class TaskTagMapRepositoryImpl extends BaseSyncRepository
   @override
   Future<void> removeAllTagsFromTask(String taskId) async {
     try {
-      await _localDataSource.softDeleteRelationsByTaskId(
+       final companion = TaskTagMapTableCompanion(
+      isDeleted: const Value(true),
+      lastModified: Value(DateTime.now().toUtc()),
+      syncStatus: const Value(SyncStatus.local),
+    );
+
+      await _localDataSource.updateRelationsByTaskId(
         taskId,
+        companion,
         userId: userId,
         customerId: customerId,
       );

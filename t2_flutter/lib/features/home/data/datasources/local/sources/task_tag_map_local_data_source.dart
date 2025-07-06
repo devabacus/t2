@@ -1,4 +1,3 @@
-
 import 'package:drift/drift.dart';
 import 'package:t2_client/t2_client.dart' as serverpod;
 
@@ -17,71 +16,134 @@ class TaskTagMapLocalDataSource implements ITaskTagMapLocalDataSource {
 
   @override
   Future<String> createTaskTagMap(TaskTagMapModel model) {
-    return _dao.createTaskTagMap(model.toCompanion().copyWith(syncStatus: const Value(SyncStatus.local)));
+    return _dao.createTaskTagMap(
+      model.toCompanion().copyWith(syncStatus: const Value(SyncStatus.local)),
+    );
   }
 
   @override
   Future<bool> updateTaskTagMap(TaskTagMapModel model) {
-    return _dao.updateTaskTagMap(model.toCompanionWithId().copyWith(syncStatus: const Value(SyncStatus.local)), userId: model.userId, customerId: model.customerId);
+    return _dao.updateTaskTagMap(
+      model.toCompanionWithId().copyWith(
+        syncStatus: const Value(SyncStatus.local),
+      ),
+      userId: model.userId,
+      customerId: model.customerId,
+    );
   }
 
   @override
-  Future<int> softDeleteRelationsByTaskId(String taskId, {required int userId, required String customerId}) {
-    return _dao.softDeleteRelationsByTaskId(taskId, userId: userId, customerId: customerId);
+  Future<int> updateRelationsByTaskId(
+    String taskId,
+    TaskTagMapTableCompanion companion, {
+    required int userId,
+    required String customerId,
+  }) {
+    return _dao.updateRelationsByTaskId(
+      taskId,
+      companion,
+      userId: userId,
+      customerId: customerId,
+    );
   }
 
   @override
-  Future<TaskTagMapModel?> getRelationById(String id, {required int userId, required String customerId}) async {
-    final result = await _dao.getRelationById(id, userId: userId, customerId: customerId);
+  Future<TaskTagMapModel?> getRelationById(
+    String id, {
+    required int userId,
+    required String customerId,
+  }) async {
+    final result = await _dao.getRelationById(
+      id,
+      userId: userId,
+      customerId: customerId,
+    );
     return result?.toModel();
   }
-  
-@override
-Future<TaskTagMapModel?> getRelationByTaskAndTag(String taskId, String tagId, {required int userId, required String customerId}) async {
-  final result = await _dao.getRelationByTaskAndTag(taskId, tagId, userId: userId, customerId: customerId);
-  return result?.toModel();
-}
 
   @override
-  Stream<List<TaskTagMapModel>> watchAllRelations({required int userId, required String customerId}) {
-    return _dao.watchAllRelations(userId: userId, customerId: customerId).map((list) => list.toModels());
-  }
-  
-  @override
-  Future<List<TaskTagMapTableData>> getAllLocalChanges({required int userId, required String customerId}) {
-    return (_dao.select(_dao.taskTagMapTable)
-          ..where((t) =>
-              (t.syncStatus.equals(SyncStatus.synced.name)).not() &
-              t.userId.equals(userId) &
-              t.customerId.equals(customerId)))
-        .get();
+  Future<TaskTagMapModel?> getRelationByTaskAndTag(
+    String taskId,
+    String tagId, {
+    required int userId,
+    required String customerId,
+  }) async {
+    final result = await _dao.getRelationByTaskAndTag(
+      taskId,
+      tagId,
+      userId: userId,
+      customerId: customerId,
+    );
+    return result?.toModel();
   }
 
   @override
-  Future<int> physicallyDeleteTaskTagMap(String id, {required int userId, required String customerId}) {
-    return _dao.physicallyDeleteTaskTagMap(id, userId: userId, customerId: customerId);
+  Stream<List<TaskTagMapModel>> watchAllRelations({
+    required int userId,
+    required String customerId,
+  }) {
+    return _dao
+        .watchAllRelations(userId: userId, customerId: customerId)
+        .map((list) => list.toModels());
   }
- @override
-  Future<void> insertOrUpdateFromServer(dynamic serverChange, SyncStatus status) async {
+
+  @override
+  Future<List<TaskTagMapTableData>> getAllLocalChanges({
+    required int userId,
+    required String customerId,
+  }) {
+    return (_dao.select(_dao.taskTagMapTable)..where(
+      (t) =>
+          (t.syncStatus.equals(SyncStatus.synced.name)).not() &
+          t.userId.equals(userId) &
+          t.customerId.equals(customerId),
+    )).get();
+  }
+
+  @override
+  Future<int> physicallyDeleteTaskTagMap(
+    String id, {
+    required int userId,
+    required String customerId,
+  }) {
+    return _dao.physicallyDeleteTaskTagMap(
+      id,
+      userId: userId,
+      customerId: customerId,
+    );
+  }
+
+  @override
+  Future<void> insertOrUpdateFromServer(
+    dynamic serverChange,
+    SyncStatus status,
+  ) async {
     final serverTaskTagMap = serverChange as serverpod.TaskTagMap;
 
     // Оборачиваем в транзакцию для атомарности
     await _dao.db.transaction(() async {
       // 1. Ищем, существует ли локальная запись для этой *связи* (по taskId и tagId).
       //    У нее может быть другой, "неправильный" ID.
-      final existingRecord = await (_dao.select(_dao.taskTagMapTable)
-            ..where((t) =>
+      final existingRecord =
+          await (_dao.select(_dao.taskTagMapTable)..where(
+            (t) =>
                 t.taskId.equals(serverTaskTagMap.taskId.toString()) &
                 t.tagId.equals(serverTaskTagMap.tagId.toString()) &
-                t.userId.equals(serverTaskTagMap.userId) & 
-                t.customerId.equals(serverTaskTagMap.customerId.toString())))
-          .getSingleOrNull();
+                t.userId.equals(serverTaskTagMap.userId) &
+                t.customerId.equals(serverTaskTagMap.customerId.toString()),
+          )).getSingleOrNull();
 
       // 2. Если такая запись существует, мы должны ее физически удалить,
       //    чтобы избежать конфликта уникальности и освободить место для авторитетной записи с сервера.
       if (existingRecord != null) {
-        await _dao.physicallyDeleteTaskTagMap(existingRecord.id, userId: existingRecord.userId, customerId: existingRecord.customerId);
-        print('    -> Удалена устаревшая локальная связь: ${existingRecord.id}');
+        await _dao.physicallyDeleteTaskTagMap(
+          existingRecord.id,
+          userId: existingRecord.userId,
+          customerId: existingRecord.customerId,
+        );
+        print(
+          '    -> Удалена устаревшая локальная связь: ${existingRecord.id}',
+        );
       }
 
       // 3. Вставляем новую, авторитетную запись с сервера с правильным ID.
@@ -93,37 +155,57 @@ Future<TaskTagMapModel?> getRelationByTaskAndTag(String taskId, String tagId, {r
   }
 
   @override
-  Future<void> handleSyncEvent(dynamic event, {required int userId, required String customerId}) async {
+  Future<void> handleSyncEvent(
+    dynamic event, {
+    required int userId,
+    required String customerId,
+  }) async {
     if (event is! serverpod.TaskTagMapSyncEvent) return;
-        final taskTagMap = event.taskTagMap;
+    final taskTagMap = event.taskTagMap;
 
     switch (event.type) {
       case serverpod.SyncEventType.create:
       case serverpod.SyncEventType.update:
-        if (taskTagMap != null && taskTagMap.userId == userId && taskTagMap.customerId.toString() == customerId) {
+        if (taskTagMap != null &&
+            taskTagMap.userId == userId &&
+            taskTagMap.customerId.toString() == customerId) {
           await insertOrUpdateFromServer(taskTagMap, SyncStatus.synced);
 
-        if (taskTagMap.isDeleted) {
-          print('  -> (Real-time) ОБРАБОТАНО "мягкое" удаление с сервера: ID ${taskTagMap.id}');
-        } else {
-          print('  -> (Real-time) ОБРАБОТАНО создание/обновление с сервера: ID ${taskTagMap.id}');
-        }
+          if (taskTagMap.isDeleted) {
+            print(
+              '  -> (Real-time) ОБРАБОТАНО "мягкое" удаление с сервера: ID ${taskTagMap.id}',
+            );
+          } else {
+            print(
+              '  -> (Real-time) ОБРАБОТАНО создание/обновление с сервера: ID ${taskTagMap.id}',
+            );
+          }
         }
     }
   }
 
   @override
-  Future<List<TaskTagMapTableData>> reconcileServerChanges(List<dynamic> serverChanges, {required int userId, required String customerId}) async {
-    final localChanges = await getAllLocalChanges(userId: userId, customerId: customerId);
+  Future<List<TaskTagMapTableData>> reconcileServerChanges(
+    List<dynamic> serverChanges, {
+    required int userId,
+    required String customerId,
+  }) async {
+    final localChanges = await getAllLocalChanges(
+      userId: userId,
+      customerId: customerId,
+    );
     final localChangesMap = {for (var c in localChanges) c.id: c};
 
     await _dao.db.transaction(() async {
       for (final serverChange in serverChanges as List<serverpod.TaskTagMap>) {
-        if (serverChange.userId != userId && serverChange.customerId.toString() != customerId) continue;
-        
-        final localRecord = await (_dao.select(_dao.taskTagMapTable)
-              ..where((t) => t.id.equals(serverChange.id.toString())))
-            .getSingleOrNull();
+        if (serverChange.userId != userId &&
+            serverChange.customerId.toString() != customerId)
+          continue;
+
+        final localRecord =
+            await (_dao.select(_dao.taskTagMapTable)..where(
+              (t) => t.id.equals(serverChange.id.toString()),
+            )).getSingleOrNull();
 
         final serverTime = serverChange.lastModified;
 
@@ -138,21 +220,35 @@ Future<TaskTagMapModel?> getRelationByTaskAndTag(String taskId, String tagId, {r
         final localTime = localRecord.lastModified;
 
         if (serverChange.isDeleted) {
-           if (localTime.isAfter(serverTime) && localRecord.syncStatus == SyncStatus.local) {
-              print('    -> КОНФЛИКТ: Локальная версия связи ID ${localRecord.id} новее серверного "надгробия". Локальное изменение побеждает.');
-           } else {
-              print('    -> ✅ Серверное "надгробие" новее или нет локального конфликта. Удаляем локальную запись: ID=${localRecord.id}.');
-              await physicallyDeleteTaskTagMap(localRecord.id, userId: userId, customerId: customerId);
-              localChangesMap.remove(localRecord.id);
-           }
+          if (localTime.isAfter(serverTime) &&
+              localRecord.syncStatus == SyncStatus.local) {
+            print(
+              '    -> КОНФЛИКТ: Локальная версия связи ID ${localRecord.id} новее серверного "надгробия". Локальное изменение побеждает.',
+            );
+          } else {
+            print(
+              '    -> ✅ Серверное "надгробие" новее или нет локального конфликта. Удаляем локальную запись: ID=${localRecord.id}.',
+            );
+            await physicallyDeleteTaskTagMap(
+              localRecord.id,
+              userId: userId,
+              customerId: customerId,
+            );
+            localChangesMap.remove(localRecord.id);
+          }
         } else {
-          if (localRecord.syncStatus == SyncStatus.local || localRecord.isDeleted) {
+          if (localRecord.syncStatus == SyncStatus.local ||
+              localRecord.isDeleted) {
             if (serverTime.isAfter(localTime)) {
-              print('    -> КОНФЛИКТ: Сервер новее для связи ID ${serverChange.id}. Применяем серверные изменения.');
+              print(
+                '    -> КОНФЛИКТ: Сервер новее для связи ID ${serverChange.id}. Применяем серверные изменения.',
+              );
               await insertOrUpdateFromServer(serverChange, SyncStatus.synced);
               localChangesMap.remove(localRecord.id);
             } else {
-              print('    -> КОНФЛИКТ: Локальная версия связи ID ${localRecord.id} новее. Она будет отправлена на сервер.');
+              print(
+                '    -> КОНФЛИКТ: Локальная версия связи ID ${localRecord.id} новее. Она будет отправлена на сервер.',
+              );
             }
           } else {
             await insertOrUpdateFromServer(serverChange, SyncStatus.synced);
