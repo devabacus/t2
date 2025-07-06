@@ -61,12 +61,12 @@ class TagLocalDataSource implements ITagLocalDataSource {
     required int userId,
     required String customerId,
   }) async {
-    final tagsData = await _tagDao.getTagsByIds(
+    final categoriesData = await _tagDao.getTagsByIds(
       ids,
       userId: userId,
       customerId: customerId,
     );
-    return tagsData.toModels();
+    return categoriesData.toModels();
   }
 
   @override
@@ -82,7 +82,8 @@ class TagLocalDataSource implements ITagLocalDataSource {
     final companion = tag.toCompanionWithId().copyWith(
       syncStatus: const Value(SyncStatus.local),
     );
-    return _tagDao.updateTag(
+    return _tagDao.updateTagById(
+      tag.id,
       companion,
       userId: tag.userId,
       customerId: tag.customerId,
@@ -95,7 +96,18 @@ class TagLocalDataSource implements ITagLocalDataSource {
     required int userId,
     required String customerId,
   }) async {
-    return _tagDao.softDeleteTag(id, userId: userId, customerId: customerId);
+    final companion = TagTableCompanion(
+      isDeleted: Value(true),
+      lastModified: Value(DateTime.now()),
+      syncStatus: Value(SyncStatus.local),
+    );
+    final result = await _tagDao.updateTagById(
+      id,
+      companion,
+      userId: userId,
+      customerId: customerId,
+    );
+    return result;
   }
 
   @override
@@ -151,7 +163,7 @@ class TagLocalDataSource implements ITagLocalDataSource {
     await _tagDao.db.transaction(() async {
       for (final serverChange in serverChanges as List<serverpod.Tag>) {
         if (serverChange.userId != userId ||
-            serverChange.customerId.toString() != customerId){
+            serverChange.customerId.toString() != customerId) {
           continue;
         }
 
@@ -192,7 +204,8 @@ class TagLocalDataSource implements ITagLocalDataSource {
             localChangesMap.remove(localRecord.id);
           }
         } else {
-          if (localRecord.syncStatus == SyncStatus.local || localRecord.isDeleted) {
+          if (localRecord.syncStatus == SyncStatus.local ||
+              localRecord.isDeleted) {
             if (serverTime.isAfter(localTime)) {
               print(
                 '    -> КОНФЛИКТ: Сервер новее для "${serverChange.title}". Применяем серверные изменения.',
@@ -229,26 +242,11 @@ class TagLocalDataSource implements ITagLocalDataSource {
             event.tag!.userId == userId &&
             event.tag!.customerId == UuidValue.fromString(customerId)) {
           await insertOrUpdateFromServer(event.tag!, SyncStatus.synced);
-          print('  -> (Real-time) СОЗДАНА/ОБНОВЛЕНА: "${event.tag!.title}"');
+          print(
+            '  -> (Real-time) СОЗДАНА/ОБНОВЛЕНА: "${event.tag!.title}"',
+          );
         }
-        break;
-      case serverpod.SyncEventType.delete:
-        if (event.id != null) {
-          final localRecord =
-              await (_tagDao.select(_tagDao.tagTable)..where(
-                (t) => t.id.equals(event.id!.toString()),
-              )).getSingleOrNull();
-          if (localRecord?.userId == userId &&
-              localRecord?.customerId == customerId) {
-            await physicallyDeleteTag(
-              event.id!.toString(),
-              userId: userId,
-              customerId: customerId,
-            );
-            print('  -> (Real-time) УДАЛЕНА ID: "${event.id}"');
-          }
-        }
-        break;
+        break;      
     }
   }
   

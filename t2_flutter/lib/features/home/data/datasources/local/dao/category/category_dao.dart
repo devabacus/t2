@@ -164,4 +164,5 @@ class CategoryDao extends DatabaseAccessor<AppDatabase>
       (t) => t.userId.equals(userId) & t.customerId.equals(customerId),
     )).go();
   }
+  
 }

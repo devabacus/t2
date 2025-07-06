@@ -66,17 +66,6 @@ class TaskRemoteDataSource implements ITaskRemoteDataSource {
   }
 
   @override
-  Future<bool> deleteTask(UuidValue id) async {
-    try {
-      final result = await _client.task.deleteTask(id);
-      return result;
-    } catch (e) {
-      print('Ошибка удаления $id: $e');
-      rethrow;
-    }
-  }
-
-  @override
   Stream<TaskSyncEvent> watchEvents() {
     try {
       return _client.task.watchEvents();

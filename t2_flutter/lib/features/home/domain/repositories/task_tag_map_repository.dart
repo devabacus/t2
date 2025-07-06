@@ -8,7 +8,7 @@ abstract class ITaskTagMapRepository implements ISyncableRepository {
   Stream<List<TaskTagMapEntity>> watchTaskTagMaps();
   Future<String> createTaskTagMap(TaskTagMapEntity taskTagMap);
   Future<bool> updateTaskTagMap(TaskTagMapEntity taskTagMap);
-  Future<bool> deleteTaskTagMap(String id);
+  Future<bool> deleteTaskTagMap(TaskTagMapEntity taskTagMap);
   Future<TaskTagMapEntity?> getTaskTagMapById(String id);
   Future<void> addTagToTask({required String taskId, required String tagId});
   Future<void> removeTagFromTask({

@@ -6,7 +6,6 @@ abstract class ITaskTagMapRemoteDataSource {
   Stream<TaskTagMapSyncEvent> watchEvents();
   Future<bool> checkConnection();
   Future<TaskTagMap> createTaskTagMap(taskTagMap);
-  Future<bool> deleteTaskTagMapById(UuidValue id);
   Future<bool> deleteTaskTagMapByTaskAndTag(UuidValue taskId, UuidValue tagId);
   Future<List<Tag>> getTagsForTask(UuidValue taskId);
   Future<List<Task>> getTasksForTag(UuidValue tagId);

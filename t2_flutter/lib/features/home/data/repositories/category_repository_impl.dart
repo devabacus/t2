@@ -55,7 +55,7 @@ class CategoryRepositoryImpl extends BaseSyncRepository implements ICategoryRepo
     for (final localChange in localChangesToPush as List<CategoryTableData>) {
       if (localChange.isDeleted) {
         try {
-          await _syncDeleteToServer(localChange.id);
+          await _syncUpdateToServer(localChange.toModel().toEntity());
           await _localDataSource.physicallyDeleteCategory(
             localChange.id,
             userId: userId,
@@ -203,16 +203,7 @@ class CategoryRepositoryImpl extends BaseSyncRepository implements ICategoryRepo
     } catch (e) {
       rethrow;
     }
-  }
-
-  Future<void> _syncDeleteToServer(String id) async {
-    try {
-      await _remoteDataSource.deleteCategory(serverpod.UuidValue.fromString(id));
-    } catch (e) {
-      rethrow;
-    }
-  }
-    
+  }    
 }
 
 

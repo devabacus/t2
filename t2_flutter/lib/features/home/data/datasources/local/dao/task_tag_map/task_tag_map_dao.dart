@@ -40,26 +40,7 @@ class TaskTagMapDao extends DatabaseAccessor<AppDatabase>
     return updatedRows > 0;
   }
 
-  /// "Мягко" удаляет связь по ее ID, помечая ее как удаленную.
-  Future<bool> softDeleteTaskTagMapById(
-    String id, {
-    required int userId,
-    required String customerId,
-  }) async {
-    final companion = TaskTagMapTableCompanion(
-      isDeleted: Value(true),
-      lastModified: Value(DateTime.now().toUtc()),
-    );
-    final updatedRows = await (update(taskTagMapTable)..where(
-      (t) =>
-          t.id.equals(id) &
-          t.userId.equals(userId) &
-          t.customerId.equals(customerId),
-    )).write(companion);
-    return updatedRows > 0;
-  }
-
-  Future<int> softDeleteRelationsByTaskId(
+   Future<int> softDeleteRelationsByTaskId(
     String taskId, {
     required int userId,
     required String customerId,

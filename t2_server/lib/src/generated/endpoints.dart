@@ -167,24 +167,6 @@ class Endpoints extends _i1.EndpointDispatch {
             params['category'],
           ),
         ),
-        'deleteCategory': _i1.MethodConnector(
-          name: 'deleteCategory',
-          params: {
-            'id': _i1.ParameterDescription(
-              name: 'id',
-              type: _i1.getType<_i10.UuidValue>(),
-              nullable: false,
-            )
-          },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['category'] as _i2.CategoryEndpoint).deleteCategory(
-            session,
-            params['id'],
-          ),
-        ),
         'watchEvents': _i1.MethodStreamConnector(
           name: 'watchEvents',
           params: {},
@@ -292,24 +274,6 @@ class Endpoints extends _i1.EndpointDispatch {
               (endpoints['tag'] as _i3.TagEndpoint).updateTag(
             session,
             params['tag'],
-          ),
-        ),
-        'deleteTag': _i1.MethodConnector(
-          name: 'deleteTag',
-          params: {
-            'id': _i1.ParameterDescription(
-              name: 'id',
-              type: _i1.getType<_i10.UuidValue>(),
-              nullable: false,
-            )
-          },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['tag'] as _i3.TagEndpoint).deleteTag(
-            session,
-            params['id'],
           ),
         ),
         'watchEvents': _i1.MethodStreamConnector(
@@ -420,24 +384,6 @@ class Endpoints extends _i1.EndpointDispatch {
             params['task'],
           ),
         ),
-        'deleteTask': _i1.MethodConnector(
-          name: 'deleteTask',
-          params: {
-            'id': _i1.ParameterDescription(
-              name: 'id',
-              type: _i1.getType<_i10.UuidValue>(),
-              nullable: false,
-            )
-          },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['task'] as _i4.TaskEndpoint).deleteTask(
-            session,
-            params['id'],
-          ),
-        ),
         'getTasksByCategoryId': _i1.MethodConnector(
           name: 'getTasksByCategoryId',
           params: {
@@ -491,25 +437,6 @@ class Endpoints extends _i1.EndpointDispatch {
                   .createTaskTagMap(
             session,
             params['taskTagMap'],
-          ),
-        ),
-        'deleteTaskTagMapById': _i1.MethodConnector(
-          name: 'deleteTaskTagMapById',
-          params: {
-            'id': _i1.ParameterDescription(
-              name: 'id',
-              type: _i1.getType<_i10.UuidValue>(),
-              nullable: false,
-            )
-          },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['taskTagMap'] as _i5.TaskTagMapEndpoint)
-                  .deleteTaskTagMapById(
-            session,
-            params['id'],
           ),
         ),
         'getTagsForTask': _i1.MethodConnector(

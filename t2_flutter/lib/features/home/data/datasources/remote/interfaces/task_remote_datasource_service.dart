@@ -9,7 +9,6 @@ abstract class ITaskRemoteDataSource {
   Future<Task?> getTaskById(UuidValue id);
   Future<Task> createTask(Task task);
   Future<bool> updateTask(Task task);
-  Future<bool> deleteTask(UuidValue id);
   Future<bool> checkConnection();
 
   Future<List<Task>> getTasksByCategoryId(UuidValue categoryId);

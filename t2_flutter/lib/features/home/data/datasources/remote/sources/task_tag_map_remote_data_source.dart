@@ -52,15 +52,6 @@ class TaskTagMapRemoteDataSource implements ITaskTagMapRemoteDataSource {
     }
   }
   
-  @override
-  Future<bool> deleteTaskTagMapById(UuidValue id) async {
-    try {
-      return await _client.taskTagMap.deleteTaskTagMapById(id);
-    } catch (e) {
-      print('❌ Remote: Ошибка удаления связи Task-Tag по ID $id: $e');
-      rethrow;
-    }
-  }
 
   @override
   Future<List<Tag>> getTagsForTask(UuidValue taskId) async {

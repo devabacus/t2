@@ -4,7 +4,6 @@ category:
   - getCategoryById:
   - getCategoriesSince:
   - updateCategory:
-  - deleteCategory:
   - watchEvents:
 tag:
   - createTag:
@@ -12,7 +11,6 @@ tag:
   - getTagById:
   - getTagsSince:
   - updateTag:
-  - deleteTag:
   - watchEvents:
 task:
   - createTask:
@@ -20,12 +18,10 @@ task:
   - getTaskById:
   - getTasksSince:
   - updateTask:
-  - deleteTask:
   - watchEvents:
   - getTasksByCategoryId:
 taskTagMap:
   - createTaskTagMap:
-  - deleteTaskTagMapById:
   - getTagsForTask:
   - getTasksForTag:
   - getTaskTagMapsSince:

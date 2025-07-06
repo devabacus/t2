@@ -1,12 +1,30 @@
 import 'package:serverpod/serverpod.dart';
 import 'package:t2_server/src/generated/protocol.dart';
-import 'shared/auth_context_mixin.dart';
 import 'user_manager_endpoint.dart';
 
 const _categoryChannelBase = 't2_category_events_for_user_';
 
-class CategoryEndpoint extends Endpoint with AuthContextMixin {
+class CategoryEndpoint extends Endpoint {
   
+  Future<AuthenticatedUserContext> _getAuthenticatedUserContext(Session session) async {
+    final authInfo = await session.authenticated;
+    final userId = authInfo?.userId;
+
+    if (userId == null) {
+      throw Exception('Пользователь не авторизован.');
+    }
+
+    final customerUser = await CustomerUser.db.findFirstRow(
+      session,
+      where: (cu) => cu.userId.equals(userId),
+    );
+
+    if (customerUser == null) {
+      throw Exception('Пользователь $userId не привязан к клиенту (Customer).');
+    }
+    return (userId: userId, customerId: customerUser.customerId);
+  }
+
   Future<void> _notifyChange(Session session, CategorySyncEvent event, AuthenticatedUserContext authContext) async { 
     final channel = '$_categoryChannelBase${authContext.userId}-${authContext.customerId.uuid}'; 
     await session.messages.postMessage(channel, event);
@@ -14,7 +32,7 @@ class CategoryEndpoint extends Endpoint with AuthContextMixin {
   }
 
   Future<Category> createCategory(Session session, Category category) async {
-    final authContext = await getAuthenticatedUserContext(session);
+    final authContext = await _getAuthenticatedUserContext(session);
     final userId = authContext.userId;
     final customerId = authContext.customerId;
 
@@ -51,7 +69,7 @@ class CategoryEndpoint extends Endpoint with AuthContextMixin {
   }
 
   Future<List<Category>> getCategories(Session session, {int? limit}) async {
-    final authContext = await getAuthenticatedUserContext(session);
+    final authContext = await _getAuthenticatedUserContext(session);
     final userId = authContext.userId;
     final customerId = authContext.customerId;
 
@@ -63,7 +81,7 @@ class CategoryEndpoint extends Endpoint with AuthContextMixin {
   }     
 
   Future<Category?> getCategoryById(Session session, UuidValue id) async {
-    final authContext = await getAuthenticatedUserContext(session);
+    final authContext = await _getAuthenticatedUserContext(session);
     final userId = authContext.userId;
     final customerId = authContext.customerId;
     
@@ -74,7 +92,7 @@ class CategoryEndpoint extends Endpoint with AuthContextMixin {
   }
 
   Future<List<Category>> getCategoriesSince(Session session, DateTime? since) async {
-    final authContext = await getAuthenticatedUserContext(session);
+    final authContext = await _getAuthenticatedUserContext(session);
     final userId = authContext.userId;
     final customerId = authContext.customerId;
 
@@ -89,7 +107,7 @@ class CategoryEndpoint extends Endpoint with AuthContextMixin {
   }
 
   Future<bool> updateCategory(Session session, Category category) async {
-    final authContext = await getAuthenticatedUserContext(session);
+    final authContext = await _getAuthenticatedUserContext(session);
     final userId = authContext.userId;
     final customerId = authContext.customerId;
 
@@ -116,36 +134,9 @@ class CategoryEndpoint extends Endpoint with AuthContextMixin {
       return false;
     }
   }
-
-  Future<bool> deleteCategory(Session session, UuidValue id) async {
-    final authContext = await getAuthenticatedUserContext(session);
-    final userId = authContext.userId;
-    final customerId = authContext.customerId;
-
-    final originalCategory = await Category.db.findFirstRow(
-      session,
-      where: (c) => c.id.equals(id) & c.userId.equals(userId) & c.customerId.equals(customerId),
-    );
-
-    if (originalCategory == null) return false;
-    final tombstone = originalCategory.copyWith(
-      isDeleted: true,
-      lastModified: DateTime.now().toUtc(),
-    );
-
-    final result = await Category.db.updateRow(session, tombstone);
-
-    await _notifyChange(session, CategorySyncEvent(
-      type: SyncEventType.delete,
-      category: result, 
-      id: id,
-    ), authContext);
-
-    return true;
-  }
-
+  
   Stream<CategorySyncEvent> watchEvents(Session session) async* {
-    final authContext = await getAuthenticatedUserContext(session);
+    final authContext = await _getAuthenticatedUserContext(session);
     final userId = authContext.userId;
     final customerId = authContext.customerId;
 

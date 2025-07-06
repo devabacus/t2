@@ -9,7 +9,6 @@ abstract class ICategoryRemoteDataSource {
   Future<Category?> getCategoryById(UuidValue id);
   Future<Category> createCategory(Category category);
   Future<bool> updateCategory(Category category);
-  Future<bool> deleteCategory(UuidValue id);
   Future<bool> checkConnection();
 
 }

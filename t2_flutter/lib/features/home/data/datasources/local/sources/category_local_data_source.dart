@@ -246,24 +246,9 @@ class CategoryLocalDataSource implements ICategoryLocalDataSource {
             '  -> (Real-time) СОЗДАНА/ОБНОВЛЕНА: "${event.category!.title}"',
           );
         }
-        break;
-      case serverpod.SyncEventType.delete:
-        if (event.id != null) {
-          final localRecord =
-              await (_categoryDao.select(_categoryDao.categoryTable)..where(
-                (t) => t.id.equals(event.id!.toString()),
-              )).getSingleOrNull();
-          if (localRecord?.userId == userId &&
-              localRecord?.customerId == customerId) {
-            await physicallyDeleteCategory(
-              event.id!.toString(),
-              userId: userId,
-              customerId: customerId,
-            );
-            print('  -> (Real-time) УДАЛЕНА ID: "${event.id}"');
-          }
-        }
-        break;
+        break;      
     }
   }
+  
 }
+  

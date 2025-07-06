@@ -66,17 +66,6 @@ class TagRemoteDataSource implements ITagRemoteDataSource {
   }
 
   @override
-  Future<bool> deleteTag(UuidValue id) async {
-    try {
-      final result = await _client.tag.deleteTag(id);
-      return result;
-    } catch (e) {
-      print('Ошибка удаления $id: $e');
-      rethrow;
-    }
-  }
-
-  @override
   Stream<TagSyncEvent> watchEvents() {
     try {
       return _client.tag.watchEvents();

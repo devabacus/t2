@@ -65,17 +65,7 @@ class CategoryRemoteDataSource implements ICategoryRemoteDataSource {
     }
   }
 
-  @override
-  Future<bool> deleteCategory(UuidValue id) async {
-    try {
-      final result = await _client.category.deleteCategory(id);
-      return result;
-    } catch (e) {
-      print('Ошибка удаления $id: $e');
-      rethrow;
-    }
-  }
-
+  
   @override
   Stream<CategorySyncEvent> watchEvents() {
     try {

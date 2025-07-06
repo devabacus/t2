@@ -55,7 +55,7 @@ class TaskRepositoryImpl extends BaseSyncRepository implements ITaskRepository {
     for (final localChange in localChangesToPush as List<TaskTableData>) {
       if (localChange.isDeleted) {
         try {
-          await _syncDeleteToServer(localChange.id);
+          await _syncUpdateToServer(localChange.toModel().toEntity());
           await _localDataSource.physicallyDeleteTask(
             localChange.id,
             userId: userId,
@@ -203,15 +203,7 @@ class TaskRepositoryImpl extends BaseSyncRepository implements ITaskRepository {
     } catch (e) {
       rethrow;
     }
-  }
-
-  Future<void> _syncDeleteToServer(String id) async {
-    try {
-      await _remoteDataSource.deleteTask(serverpod.UuidValue.fromString(id));
-    } catch (e) {
-      rethrow;
-    }
-  }
+  }  
     
   @override
   Future<List<TaskEntity>> getTasksByCategoryId(String categoryId) async {

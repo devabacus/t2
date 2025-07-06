@@ -9,7 +9,6 @@ abstract class ITagRemoteDataSource {
   Future<Tag?> getTagById(UuidValue id);
   Future<Tag> createTag(Tag tag);
   Future<bool> updateTag(Tag tag);
-  Future<bool> deleteTag(UuidValue id);
   Future<bool> checkConnection();
 
 }

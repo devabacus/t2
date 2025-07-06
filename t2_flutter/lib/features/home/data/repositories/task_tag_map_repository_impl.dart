@@ -58,12 +58,8 @@ class TaskTagMapRepositoryImpl extends BaseSyncRepository
   }
 
   @override
-  Future<bool> deleteTaskTagMap(String id) async {
-    final result = await _localDataSource.softDeleteTaskTagMapById(
-      id,
-      userId: userId,
-      customerId: customerId,
-    );
+  Future<bool> deleteTaskTagMap(TaskTagMapEntity taskTagMap) async {
+    final result = await _localDataSource.updateTaskTagMap(taskTagMap.toModel());
     syncWithServer().catchError(
       (e) =>
           print('⚠️ Фоновая синхронизация после удаления связи не удалась: $e'),
@@ -98,13 +94,13 @@ class TaskTagMapRepositoryImpl extends BaseSyncRepository
       final relation = await _localDataSource.getRelationByTaskAndTag(
         taskId,
         tagId,
-        userId: userId,
+        userId: userId,        
         customerId: customerId,
       );
 
       if (relation != null) {
         // Удаляем связь по найденному ID
-        await deleteTaskTagMap(relation.id);
+        await deleteTaskTagMap(relation.copyWith(isDeleted: true).toEntity());
         print('✅ Связь найдена и удалена: Task($taskId) ↔ Tag($tagId)');
       } else {
         print('⚠️ Связь не найдена: Task($taskId) ↔ Tag($tagId)');

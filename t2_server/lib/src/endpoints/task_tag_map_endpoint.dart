@@ -124,42 +124,7 @@ class TaskTagMapEndpoint extends Endpoint with AuthContextMixin {
     });
   }
   
-  Future<bool> deleteTaskTagMapById(Session session, UuidValue id) async {
-    final authContext = await getAuthenticatedUserContext(session);
-    final userId = authContext.userId;
-    final customerId = authContext.customerId;
-
-    return await session.db.transaction((transaction) async {
-        final relation = await TaskTagMap.db.findFirstRow(
-            session,
-            where: (r) => r.id.equals(id) & r.userId.equals(userId) & r.customerId.equals(customerId) & r.isDeleted.equals(false),
-            transaction: transaction,
-        );
-
-        if (relation == null) {
-            session.log('⚠️ Попытка удалить несуществующую или уже удаленную связь TaskTagMap с ID: $id');
-            return false;
-        }
-
-        // "Мягкое" удаление найденной связи
-        final tombstone = relation.copyWith(
-            isDeleted: true,
-            lastModified: DateTime.now().toUtc(),
-        );
-
-        final result = await TaskTagMap.db.updateRow(session, tombstone, transaction: transaction);
-
-        await _notifyChange(session, TaskTagMapSyncEvent(
-            type: SyncEventType.delete,
-            taskTagMap: result,
-            id: id,
-        ), authContext);
-
-        session.log('✅ Удалена связь TaskTagMap с ID: $id для пользователя $userId');
-        return true;
-    });
-  }
-
+  
   Future<List<Tag>> getTagsForTask(Session session, UuidValue taskId) async {
     final authContext = await getAuthenticatedUserContext(session);
     final userId = authContext.userId;
@@ -303,7 +268,7 @@ Future<bool> deleteTaskTagMapByTaskAndTag(Session session, UuidValue taskId, Uui
 
         // Уведомляем клиентов об удалении, используя серверный ID, который они знают (или получат)
         await _notifyChange(session, TaskTagMapSyncEvent(
-            type: SyncEventType.delete,
+            type: SyncEventType.update,
             id: result.id, // Отправляем ID удаленной записи
             taskTagMap: result,
         ), authContext);

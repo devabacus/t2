@@ -13,8 +13,7 @@ import 'package:serverpod_client/serverpod_client.dart' as _i1;
 
 enum SyncEventType implements _i1.SerializableModel {
   create,
-  update,
-  delete;
+  update;
 
   static SyncEventType fromJson(int index) {
     switch (index) {
@@ -22,8 +21,6 @@ enum SyncEventType implements _i1.SerializableModel {
         return SyncEventType.create;
       case 1:
         return SyncEventType.update;
-      case 2:
-        return SyncEventType.delete;
       default:
         throw ArgumentError(
             'Value "$index" cannot be converted to "SyncEventType"');

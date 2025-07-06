@@ -26,11 +26,6 @@ class TaskTagMapLocalDataSource implements ITaskTagMapLocalDataSource {
   }
 
   @override
-  Future<bool> softDeleteTaskTagMapById(String id, {required int userId, required String customerId}) {
-    return _dao.softDeleteTaskTagMapById(id, userId: userId, customerId: customerId);
-  }
-
-  @override
   Future<int> softDeleteRelationsByTaskId(String taskId, {required int userId, required String customerId}) {
     return _dao.softDeleteRelationsByTaskId(taskId, userId: userId, customerId: customerId);
   }
@@ -100,33 +95,20 @@ Future<TaskTagMapModel?> getRelationByTaskAndTag(String taskId, String tagId, {r
   @override
   Future<void> handleSyncEvent(dynamic event, {required int userId, required String customerId}) async {
     if (event is! serverpod.TaskTagMapSyncEvent) return;
+        final taskTagMap = event.taskTagMap;
 
     switch (event.type) {
       case serverpod.SyncEventType.create:
       case serverpod.SyncEventType.update:
-        final taskTagMap = event.taskTagMap;
         if (taskTagMap != null && taskTagMap.userId == userId && taskTagMap.customerId.toString() == customerId) {
-          // Сервер сообщает нам об удалении, присылая запись с флагом isDeleted = true.
-          // Мы обрабатываем это как "мягкое" удаление.
-          if (taskTagMap.isDeleted) {
-            print('  -> (Real-time) Получено событие мягкого удаления для ID: ${taskTagMap.id}');
-            await softDeleteTaskTagMapById(taskTagMap.id.toString(), userId: userId, customerId: customerId);
-          } else {
-            // В противном случае это обычное создание/обновление.
-            print('  -> (Real-time) Получено событие создания/обновления для ID: ${taskTagMap.id}');
-            await insertOrUpdateFromServer(taskTagMap, SyncStatus.synced);
-          }
+          await insertOrUpdateFromServer(taskTagMap, SyncStatus.synced);
+
+        if (taskTagMap.isDeleted) {
+          print('  -> (Real-time) ОБРАБОТАНО "мягкое" удаление с сервера: ID ${taskTagMap.id}');
+        } else {
+          print('  -> (Real-time) ОБРАБОТАНО создание/обновление с сервера: ID ${taskTagMap.id}');
         }
-        break;
-      
-      // Этот кейс обрабатывает "жесткое" удаление. Наша логика теперь его не использует,
-      // но для надежности оставим обработчик, который тоже будет делать "мягкое" удаление.
-      case serverpod.SyncEventType.delete:
-        if (event.id != null) {
-          print('  -> (Real-time) Получено событие жесткого удаления для ID: ${event.id}');
-          await softDeleteTaskTagMapById(event.id.toString(), userId: userId, customerId: customerId);
         }
-        break;
     }
   }
 

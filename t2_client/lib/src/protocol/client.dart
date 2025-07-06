@@ -68,13 +68,6 @@ class EndpointCategory extends _i1.EndpointRef {
         {'category': category},
       );
 
-  _i2.Future<bool> deleteCategory(_i4.UuidValue id) =>
-      caller.callServerEndpoint<bool>(
-        'category',
-        'deleteCategory',
-        {'id': id},
-      );
-
   _i2.Stream<_i5.CategorySyncEvent> watchEvents() =>
       caller.callStreamingServerEndpoint<_i2.Stream<_i5.CategorySyncEvent>,
           _i5.CategorySyncEvent>(
@@ -124,13 +117,6 @@ class EndpointTag extends _i1.EndpointRef {
         'tag',
         'updateTag',
         {'tag': tag},
-      );
-
-  _i2.Future<bool> deleteTag(_i4.UuidValue id) =>
-      caller.callServerEndpoint<bool>(
-        'tag',
-        'deleteTag',
-        {'id': id},
       );
 
   _i2.Stream<_i7.TagSyncEvent> watchEvents() =>
@@ -184,13 +170,6 @@ class EndpointTask extends _i1.EndpointRef {
         {'task': task},
       );
 
-  _i2.Future<bool> deleteTask(_i4.UuidValue id) =>
-      caller.callServerEndpoint<bool>(
-        'task',
-        'deleteTask',
-        {'id': id},
-      );
-
   _i2.Stream<_i9.TaskSyncEvent> watchEvents() =>
       caller.callStreamingServerEndpoint<_i2.Stream<_i9.TaskSyncEvent>,
           _i9.TaskSyncEvent>(
@@ -220,13 +199,6 @@ class EndpointTaskTagMap extends _i1.EndpointRef {
         'taskTagMap',
         'createTaskTagMap',
         {'taskTagMap': taskTagMap},
-      );
-
-  _i2.Future<bool> deleteTaskTagMapById(_i4.UuidValue id) =>
-      caller.callServerEndpoint<bool>(
-        'taskTagMap',
-        'deleteTaskTagMapById',
-        {'id': id},
       );
 
   _i2.Future<List<_i6.Tag>> getTagsForTask(_i4.UuidValue taskId) =>
@@ -320,9 +292,6 @@ class EndpointUserManagement extends _i1.EndpointRef {
   @override
   String get name => 'userManagement';
 
-  /// Возвращает данные о клиенте (customer) и правах доступа
-  /// для текущего аутентифицированного пользователя.
-  /// Клиент должен вызывать этот метод сразу после входа.
   _i2.Future<_i13.UserSessionData?> getMyUserContext() =>
       caller.callServerEndpoint<_i13.UserSessionData?>(
         'userManagement',

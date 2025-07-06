@@ -61,12 +61,12 @@ class TaskLocalDataSource implements ITaskLocalDataSource {
     required int userId,
     required String customerId,
   }) async {
-    final tasksData = await _taskDao.getTasksByIds(
+    final categoriesData = await _taskDao.getTasksByIds(
       ids,
       userId: userId,
       customerId: customerId,
     );
-    return tasksData.toModels();
+    return categoriesData.toModels();
   }
 
   @override
@@ -82,7 +82,8 @@ class TaskLocalDataSource implements ITaskLocalDataSource {
     final companion = task.toCompanionWithId().copyWith(
       syncStatus: const Value(SyncStatus.local),
     );
-    return _taskDao.updateTask(
+    return _taskDao.updateTaskById(
+      task.id,
       companion,
       userId: task.userId,
       customerId: task.customerId,
@@ -95,7 +96,18 @@ class TaskLocalDataSource implements ITaskLocalDataSource {
     required int userId,
     required String customerId,
   }) async {
-    return _taskDao.softDeleteTask(id, userId: userId, customerId: customerId);
+    final companion = TaskTableCompanion(
+      isDeleted: Value(true),
+      lastModified: Value(DateTime.now()),
+      syncStatus: Value(SyncStatus.local),
+    );
+    final result = await _taskDao.updateTaskById(
+      id,
+      companion,
+      userId: userId,
+      customerId: customerId,
+    );
+    return result;
   }
 
   @override
@@ -151,7 +163,7 @@ class TaskLocalDataSource implements ITaskLocalDataSource {
     await _taskDao.db.transaction(() async {
       for (final serverChange in serverChanges as List<serverpod.Task>) {
         if (serverChange.userId != userId ||
-            serverChange.customerId.toString() != customerId){
+            serverChange.customerId.toString() != customerId) {
           continue;
         }
 
@@ -192,7 +204,8 @@ class TaskLocalDataSource implements ITaskLocalDataSource {
             localChangesMap.remove(localRecord.id);
           }
         } else {
-          if (localRecord.syncStatus == SyncStatus.local || localRecord.isDeleted) {
+          if (localRecord.syncStatus == SyncStatus.local ||
+              localRecord.isDeleted) {
             if (serverTime.isAfter(localTime)) {
               print(
                 '    -> КОНФЛИКТ: Сервер новее для "${serverChange.title}". Применяем серверные изменения.',
@@ -229,26 +242,11 @@ class TaskLocalDataSource implements ITaskLocalDataSource {
             event.task!.userId == userId &&
             event.task!.customerId == UuidValue.fromString(customerId)) {
           await insertOrUpdateFromServer(event.task!, SyncStatus.synced);
-          print('  -> (Real-time) СОЗДАНА/ОБНОВЛЕНА: "${event.task!.title}"');
+          print(
+            '  -> (Real-time) СОЗДАНА/ОБНОВЛЕНА: "${event.task!.title}"',
+          );
         }
-        break;
-      case serverpod.SyncEventType.delete:
-        if (event.id != null) {
-          final localRecord =
-              await (_taskDao.select(_taskDao.taskTable)..where(
-                (t) => t.id.equals(event.id!.toString()),
-              )).getSingleOrNull();
-          if (localRecord?.userId == userId &&
-              localRecord?.customerId == customerId) {
-            await physicallyDeleteTask(
-              event.id!.toString(),
-              userId: userId,
-              customerId: customerId,
-            );
-            print('  -> (Real-time) УДАЛЕНА ID: "${event.id}"');
-          }
-        }
-        break;
+        break;      
     }
   }
   

@@ -55,7 +55,7 @@ class TagRepositoryImpl extends BaseSyncRepository implements ITagRepository {
     for (final localChange in localChangesToPush as List<TagTableData>) {
       if (localChange.isDeleted) {
         try {
-          await _syncDeleteToServer(localChange.id);
+          await _syncUpdateToServer(localChange.toModel().toEntity());
           await _localDataSource.physicallyDeleteTag(
             localChange.id,
             userId: userId,
@@ -203,16 +203,7 @@ class TagRepositoryImpl extends BaseSyncRepository implements ITagRepository {
     } catch (e) {
       rethrow;
     }
-  }
-
-  Future<void> _syncDeleteToServer(String id) async {
-    try {
-      await _remoteDataSource.deleteTag(serverpod.UuidValue.fromString(id));
-    } catch (e) {
-      rethrow;
-    }
-  }
-    
+  }    
 }
 
 
