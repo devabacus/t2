@@ -82,7 +82,8 @@ class CategoryLocalDataSource implements ICategoryLocalDataSource {
     final companion = category.toCompanionWithId().copyWith(
       syncStatus: const Value(SyncStatus.local),
     );
-    return _categoryDao.updateCategory(
+    return _categoryDao.updateCategoryById(
+      category.id,
       companion,
       userId: category.userId,
       customerId: category.customerId,
@@ -95,7 +96,18 @@ class CategoryLocalDataSource implements ICategoryLocalDataSource {
     required int userId,
     required String customerId,
   }) async {
-    return _categoryDao.softDeleteCategory(id, userId: userId, customerId: customerId);
+    final companion = CategoryTableCompanion(
+      isDeleted: Value(true),
+      lastModified: Value(DateTime.now()),
+      syncStatus: Value(SyncStatus.local),
+    );
+    final result = await _categoryDao.updateCategoryById(
+      id,
+      companion,
+      userId: userId,
+      customerId: customerId,
+    );
+    return result;
   }
 
   @override
@@ -151,7 +163,7 @@ class CategoryLocalDataSource implements ICategoryLocalDataSource {
     await _categoryDao.db.transaction(() async {
       for (final serverChange in serverChanges as List<serverpod.Category>) {
         if (serverChange.userId != userId ||
-            serverChange.customerId.toString() != customerId){
+            serverChange.customerId.toString() != customerId) {
           continue;
         }
 
@@ -192,7 +204,8 @@ class CategoryLocalDataSource implements ICategoryLocalDataSource {
             localChangesMap.remove(localRecord.id);
           }
         } else {
-          if (localRecord.syncStatus == SyncStatus.local || localRecord.isDeleted) {
+          if (localRecord.syncStatus == SyncStatus.local ||
+              localRecord.isDeleted) {
             if (serverTime.isAfter(localTime)) {
               print(
                 '    -> КОНФЛИКТ: Сервер новее для "${serverChange.title}". Применяем серверные изменения.',
@@ -229,7 +242,9 @@ class CategoryLocalDataSource implements ICategoryLocalDataSource {
             event.category!.userId == userId &&
             event.category!.customerId == UuidValue.fromString(customerId)) {
           await insertOrUpdateFromServer(event.category!, SyncStatus.synced);
-          print('  -> (Real-time) СОЗДАНА/ОБНОВЛЕНА: "${event.category!.title}"');
+          print(
+            '  -> (Real-time) СОЗДАНА/ОБНОВЛЕНА: "${event.category!.title}"',
+          );
         }
         break;
       case serverpod.SyncEventType.delete:
@@ -251,6 +266,4 @@ class CategoryLocalDataSource implements ICategoryLocalDataSource {
         break;
     }
   }
-  
 }
-  

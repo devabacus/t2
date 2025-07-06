@@ -1,6 +1,5 @@
 import 'package:drift/drift.dart';
 import '../../../../../../../core/database/local/database.dart';
-import '../../../../../../../core/database/local/database_types.dart';
 import '../../../../../../../core/database/local/interface/i_database_service.dart';
 import '../../tables/category_table.dart';
 
@@ -14,38 +13,67 @@ class CategoryDao extends DatabaseAccessor<AppDatabase>
 
   AppDatabase get db => attachedDatabase;
 
-  Future<List<CategoryTableData>> getCategories({required int userId, required String customerId}) =>
-    (select(categoryTable)
-      ..where((t) => t.isDeleted.equals(false))
-      ..where((t) => t.userId.equals(userId) & t.customerId.equals(customerId)))
-    .get();     
-
-  Stream<List<CategoryTableData>> watchCategories({required int userId, required String customerId}) =>
-    (select(categoryTable)
-      ..where((t) => t.isDeleted.equals(false))
-      ..where((t) => t.userId.equals(userId) & t.customerId.equals(customerId)))
-    .watch();
-
-  Future<CategoryTableData?> getCategoryById(String id, {required int userId, required String customerId}) =>
+  Future<List<CategoryTableData>> getCategories({
+    required int userId,
+    required String customerId,
+  }) =>
       (select(categoryTable)
-        ..where((t) => t.id.equals(id) & t.userId.equals(userId) & t.customerId.equals(customerId)))
-      .getSingleOrNull();
+            ..where((t) => t.isDeleted.equals(false))
+            ..where(
+              (t) => t.userId.equals(userId) & t.customerId.equals(customerId),
+            ))
+          .get();
 
-  Future<List<CategoryTableData>> getCategoriesByIds(List<String> ids, {required int userId, required String customerId}) {
+  Stream<List<CategoryTableData>> watchCategories({
+    required int userId,
+    required String customerId,
+  }) =>
+      (select(categoryTable)
+            ..where((t) => t.isDeleted.equals(false))
+            ..where(
+              (t) => t.userId.equals(userId) & t.customerId.equals(customerId),
+            ))
+          .watch();
+
+  Future<CategoryTableData?> getCategoryById(
+    String id, {
+    required int userId,
+    required String customerId,
+  }) =>
+      (select(categoryTable)..where(
+        (t) =>
+            t.id.equals(id) &
+            t.userId.equals(userId) &
+            t.customerId.equals(customerId),
+      )).getSingleOrNull();
+
+  Future<List<CategoryTableData>> getCategoriesByIds(
+    List<String> ids, {
+    required int userId,
+    required String customerId,
+  }) {
     if (ids.isEmpty) {
-      return Future.value([]); 
+      return Future.value([]);
     }
-    return (select(categoryTable)
-          ..where((t) => t.id.isIn(ids) & t.userId.equals(userId) & t.customerId.equals(customerId) & t.isDeleted.equals(false)))
-        .get();
+    return (select(categoryTable)..where(
+      (t) =>
+          t.id.isIn(ids) &
+          t.userId.equals(userId) &
+          t.customerId.equals(customerId) &
+          t.isDeleted.equals(false),
+    )).get();
   }
 
   Future<String> createCategory(CategoryTableCompanion companion) async {
     final id = companion.id.value;
     try {
       final existingCategory =
-          await (select(categoryTable)
-            ..where((t) => t.id.equals(id) & t.userId.equals(companion.userId.value) & t.customerId.equals(companion.customerId.value))).getSingleOrNull();
+          await (select(categoryTable)..where(
+            (t) =>
+                t.id.equals(id) &
+                t.userId.equals(companion.userId.value) &
+                t.customerId.equals(companion.customerId.value),
+          )).getSingleOrNull();
 
       if (existingCategory != null) {
         throw StateError('category with ID $id exists');
@@ -59,49 +87,64 @@ class CategoryDao extends DatabaseAccessor<AppDatabase>
     }
   }
 
-Future<bool> updateCategory(CategoryTableCompanion companion, {required int userId, required String customerId}) async {    
-    final idToUpdate = companion.id.value;
-    final updatedRows = await (update(categoryTable)
-      ..where((t) => t.id.equals(idToUpdate) & t.userId.equals(userId) & t.customerId.equals(customerId))) 
-      .write(companion); 
-    return updatedRows > 0;
-}
-
-  Future<bool> softDeleteCategory(String id, {required int userId, required String customerId}) async {
-    
-    final companion = CategoryTableCompanion(
-      isDeleted: Value(true),
-      lastModified: Value(DateTime.now()), 
-      syncStatus: Value(SyncStatus.local),
-    );
-    
-    final updatedRows = await (update(categoryTable)
-      ..where((t) => t.id.equals(id) & t.userId.equals(userId) & t.customerId.equals(customerId)))
-      .write(companion);
-    
+  Future<bool> updateCategoryById(
+    String id,
+    CategoryTableCompanion companion, {
+    required int userId,
+    required String customerId,
+  }) async {
+    // final idToUpdate = companion.id.value;
+    final updatedRows = await (update(categoryTable)..where(
+      (t) =>
+          t.id.equals(id) &
+          t.userId.equals(userId) &
+          t.customerId.equals(customerId),
+    )).write(companion);
     return updatedRows > 0;
   }
 
-  Future<int> physicallyDeleteCategory(String id, {required int userId, required String customerId}) async {
-    return (delete(categoryTable)
-      ..where((t) => t.id.equals(id) & t.userId.equals(userId) & t.customerId.equals(customerId)))
-      .go();
+  Future<int> physicallyDeleteCategory(
+    String id, {
+    required int userId,
+    required String customerId,
+  }) async {
+    return (delete(categoryTable)..where(
+      (t) =>
+          t.id.equals(id) &
+          t.userId.equals(userId) &
+          t.customerId.equals(customerId),
+    )).go();
   }
 
-  Future<bool> categoryExists(String id, {required int userId, required String customerId}) async {
+  Future<bool> categoryExists(
+    String id, {
+    required int userId,
+    required String customerId,
+  }) async {
     if (id.isEmpty) return false;
 
     final category =
-        await (select(categoryTable)
-          ..where((t) => t.id.equals(id) & t.userId.equals(userId) & t.customerId.equals(customerId))).getSingleOrNull();
+        await (select(categoryTable)..where(
+          (t) =>
+              t.id.equals(id) &
+              t.userId.equals(userId) &
+              t.customerId.equals(customerId),
+        )).getSingleOrNull();
 
     return category != null;
   }
 
-  Future<int> getCategoriesCount({required int userId, required String customerId}) async {
-    final countQuery = selectOnly(categoryTable)
-      ..addColumns([categoryTable.id.count()])
-      ..where(categoryTable.userId.equals(userId) & categoryTable.customerId.equals(customerId));
+  Future<int> getCategoriesCount({
+    required int userId,
+    required String customerId,
+  }) async {
+    final countQuery =
+        selectOnly(categoryTable)
+          ..addColumns([categoryTable.id.count()])
+          ..where(
+            categoryTable.userId.equals(userId) &
+                categoryTable.customerId.equals(customerId),
+          );
 
     final result = await countQuery.getSingle();
     return result.read(categoryTable.id.count()) ?? 0;
@@ -113,8 +156,12 @@ Future<bool> updateCategory(CategoryTableCompanion companion, {required int user
     });
   }
 
-  Future<int> deleteAllCategories({required int userId, required String customerId}) {
-    return (delete(categoryTable)..where((t) => t.userId.equals(userId) & t.customerId.equals(customerId))).go();
-    }
-  
+  Future<int> deleteAllCategories({
+    required int userId,
+    required String customerId,
+  }) {
+    return (delete(categoryTable)..where(
+      (t) => t.userId.equals(userId) & t.customerId.equals(customerId),
+    )).go();
+  }
 }
