@@ -65,7 +65,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     //       ),
     //     ),
     //   );
-    // }
+    // }a
 
     //  подписываемся на стримы
     final categoriesAsync = ref.watch(categoriesStreamProvider);
@@ -88,7 +88,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               await sessionManager.signOutDevice();
             },
           ),
-        ],  
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -712,7 +712,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       if (useCase == null) return;
 
       final category = CategoryEntity(
-        id: const Uuid().v7(),        
+        id: const Uuid().v7(),
         userId: currentUser!.id!,
         customerId: currentCustomerId,
         createdAt: DateTime.now(),
@@ -733,7 +733,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     if (_taskController.text.trim().isEmpty) return;
 
     final currentUser = ref.read(currentUserProvider);
-final currentCustomerId = ref.read(currentCustomerIdProvider);
+    final currentCustomerId = ref.read(currentCustomerIdProvider);
 
     if (currentUser?.id == null || currentCustomerId == null) return;
 
@@ -764,10 +764,9 @@ final currentCustomerId = ref.read(currentCustomerIdProvider);
     if (_tagController.text.trim().isEmpty) return;
 
     final currentUser = ref.read(currentUserProvider);
-final currentCustomerId = ref.read(currentCustomerIdProvider);
+    final currentCustomerId = ref.read(currentCustomerIdProvider);
 
     if (currentUser?.id == null || currentCustomerId == null) return;
-
 
     try {
       final useCase = ref.read(createTagUseCaseProvider);

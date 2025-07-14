@@ -203,7 +203,8 @@ class TaskRepositoryImpl extends BaseSyncRepository implements ITaskRepository {
     } catch (e) {
       rethrow;
     }
-  }  
+  }
+  
     
   @override
   Future<List<TaskEntity>> getTasksByCategoryId(String categoryId) async {

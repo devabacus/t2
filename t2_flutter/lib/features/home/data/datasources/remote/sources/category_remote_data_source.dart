@@ -65,7 +65,6 @@ class CategoryRemoteDataSource implements ICategoryRemoteDataSource {
     }
   }
 
-  
   @override
   Stream<CategorySyncEvent> watchEvents() {
     try {

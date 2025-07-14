@@ -51,8 +51,7 @@ class TaskTagMapRemoteDataSource implements ITaskTagMapRemoteDataSource {
       rethrow;
     }
   }
-  
-
+    
   @override
   Future<List<Tag>> getTagsForTask(UuidValue taskId) async {
     try {

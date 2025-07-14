@@ -1,13 +1,12 @@
 import 'package:serverpod/serverpod.dart';
 import 'package:t2_server/src/generated/protocol.dart';
-
 import 'shared/auth_context_mixin.dart';
 import 'user_manager_endpoint.dart';
 
 const _taskTagMapChannelBase = 't2_task_tag_map_events_for_user_';
 
 class TaskTagMapEndpoint extends Endpoint with AuthContextMixin {
-
+  
   Future<void> _notifyChange(Session session, TaskTagMapSyncEvent event, AuthenticatedUserContext authContext) async {
     final channel = '$_taskTagMapChannelBase${authContext.userId}-${authContext.customerId.uuid}';
     await session.messages.postMessage(channel, event);
@@ -123,8 +122,7 @@ class TaskTagMapEndpoint extends Endpoint with AuthContextMixin {
       return result;
     });
   }
-  
-  
+    
   Future<List<Tag>> getTagsForTask(Session session, UuidValue taskId) async {
     final authContext = await getAuthenticatedUserContext(session);
     final userId = authContext.userId;

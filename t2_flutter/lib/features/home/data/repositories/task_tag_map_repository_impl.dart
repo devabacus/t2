@@ -60,7 +60,7 @@ class TaskTagMapRepositoryImpl extends BaseSyncRepository
 
   @override
   Future<bool> deleteTaskTagMap(TaskTagMapEntity taskTagMap) async {
-    final result = await _localDataSource.updateTaskTagMap(taskTagMap.toModel());
+   final result = await _localDataSource.updateTaskTagMap(taskTagMap.toModel());
     syncWithServer().catchError(
       (e) =>
           print('⚠️ Фоновая синхронизация после удаления связи не удалась: $e'),
@@ -95,7 +95,7 @@ class TaskTagMapRepositoryImpl extends BaseSyncRepository
       final relation = await _localDataSource.getRelationByTaskAndTag(
         taskId,
         tagId,
-        userId: userId,        
+        userId: userId,
         customerId: customerId,
       );
 
@@ -115,11 +115,11 @@ class TaskTagMapRepositoryImpl extends BaseSyncRepository
   @override
   Future<void> removeAllTagsFromTask(String taskId) async {
     try {
-       final companion = TaskTagMapTableCompanion(
+      final companion = TaskTagMapTableCompanion(
       isDeleted: const Value(true),
       lastModified: Value(DateTime.now().toUtc()),
       syncStatus: const Value(SyncStatus.local),
-    );
+  );
 
       await _localDataSource.updateRelationsByTaskId(
         taskId,

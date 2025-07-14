@@ -20,7 +20,7 @@ class TaskTagMapTable extends Table {
   
   @override
   List<String> get customConstraints => [
-    'UNIQUE(task_id, tag_id, user_id)',
+    'UNIQUE(task_id, tag_id, user_id, customer_id)',
   ];
   
   @override

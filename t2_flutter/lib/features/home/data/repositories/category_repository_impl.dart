@@ -203,7 +203,9 @@ class CategoryRepositoryImpl extends BaseSyncRepository implements ICategoryRepo
     } catch (e) {
       rethrow;
     }
-  }    
+  }
+  
+    
 }
 
 

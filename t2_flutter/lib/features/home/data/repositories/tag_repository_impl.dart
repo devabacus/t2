@@ -203,7 +203,9 @@ class TagRepositoryImpl extends BaseSyncRepository implements ITagRepository {
     } catch (e) {
       rethrow;
     }
-  }    
+  }
+  
+    
 }
 
 
