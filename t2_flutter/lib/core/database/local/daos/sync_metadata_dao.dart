@@ -1,8 +1,6 @@
 import 'package:drift/drift.dart';
-
 import '../database.dart';
 import '../tables/sync_metadata_table.dart';
-
 part 'sync_metadata_dao.g.dart';
 
 /// Data Access Object для работы с таблицей SyncMetadata.

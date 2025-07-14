@@ -3,6 +3,7 @@ import '../../../../../../core/database/local/database_types.dart';
 import '../../../models/task_tag_map/task_tag_map_model.dart';
 
 abstract class ITaskTagMapLocalDataSource {
+  // === Основные CRUD-операции ===
   Future<String> createTaskTagMap(TaskTagMapModel model);
   Future<bool> updateTaskTagMap(TaskTagMapModel model);
   Future<int> updateRelationsByTaskId(String taskId, TaskTagMapTableCompanion companion, {required int userId, required String customerId});

@@ -11,5 +11,4 @@ class DriftDatabaseService implements IDatabaseService {
 
   @override
   Future<void> close() => _database.close();
-  
 }

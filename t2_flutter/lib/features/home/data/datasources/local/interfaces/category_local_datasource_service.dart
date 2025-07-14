@@ -17,6 +17,5 @@ abstract class ICategoryLocalDataSource {
   Future<void> physicallyDeleteCategory(String id, {required int userId, required String customerId});
   Future<void> insertOrUpdateFromServer(dynamic serverChange, SyncStatus status);
   Future<void> handleSyncEvent(dynamic event, {required int userId, required String customerId});
-
 }
 
