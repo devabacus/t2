@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
-import '../../../../../../../core/database/local/database.dart';
-import '../../../../../../../core/database/local/interface/i_database_service.dart';
+import '../../../../../../../core/data/datasources/local/database.dart';
+import '../../../../../../../core/data/datasources/local/interface/i_database_service.dart';
 import '../../tables/category_table.dart';
 
 part 'category_dao.g.dart';

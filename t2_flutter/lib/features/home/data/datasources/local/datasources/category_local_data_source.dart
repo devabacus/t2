@@ -2,25 +2,25 @@ import 'package:drift/drift.dart';
 import 'package:t2_client/t2_client.dart' as serverpod;
 import 'package:uuid/uuid_value.dart';
 
-import '../../../../../../core/database/local/database.dart';
-import '../../../datasources/local/tables/extensions/task_table_extension.dart';
-import '../../../models/task/task_model.dart';
-import '../../../models/extensions/task_model_extension.dart';
-import '../../../../../../core/database/local/database_types.dart';
-import '../dao/task/task_dao.dart';
-import '../interfaces/task_local_datasource_service.dart';
+import '../../../../../../core/data/datasources/local/database.dart';
+import '../tables/extensions/category_table_extension.dart';
+import '../../../models/category/category_model.dart';
+import '../../../models/extensions/category_model_extension.dart';
+import '../../../../../../core/data/datasources/local/database_types.dart';
+import '../dao/category/category_dao.dart';
+import '../interfaces/category_local_datasource_service.dart';
 
-class TaskLocalDataSource implements ITaskLocalDataSource {
-  final TaskDao _taskDao;
+class CategoryLocalDataSource implements ICategoryLocalDataSource {
+  final CategoryDao _categoryDao;
 
-  TaskLocalDataSource(this._taskDao);
+  CategoryLocalDataSource(this._categoryDao);
 
   @override
-  Future<List<TaskModel>> getTasks({
+  Future<List<CategoryModel>> getCategories({
     required int userId,
     required String customerId,
   }) async {
-    final categories = await _taskDao.getTasks(
+    final categories = await _categoryDao.getCategories(
       userId: userId,
       customerId: customerId,
     );
@@ -28,40 +28,40 @@ class TaskLocalDataSource implements ITaskLocalDataSource {
   }
 
   @override
-  Stream<List<TaskModel>> watchTasks({
+  Stream<List<CategoryModel>> watchCategories({
     required int userId,
     required String customerId,
   }) {
-    return _taskDao
-        .watchTasks(userId: userId, customerId: customerId)
+    return _categoryDao
+        .watchCategories(userId: userId, customerId: customerId)
         .map((list) => list.toModels());
   }
 
   @override
-  Future<TaskModel?> getTaskById(
+  Future<CategoryModel?> getCategoryById(
     String id, {
     required int userId,
     required String customerId,
   }) async {
     try {
-      final task = await _taskDao.getTaskById(
+      final category = await _categoryDao.getCategoryById(
         id,
         userId: userId,
         customerId: customerId,
       );
-      return task?.toModel();
+      return category?.toModel();
     } catch (e) {
       return null;
     }
   }
 
   @override
-  Future<List<TaskModel>> getTasksByIds(
+  Future<List<CategoryModel>> getCategoriesByIds(
     List<String> ids, {
     required int userId,
     required String customerId,
   }) async {
-    final categoriesData = await _taskDao.getTasksByIds(
+    final categoriesData = await _categoryDao.getCategoriesByIds(
       ids,
       userId: userId,
       customerId: customerId,
@@ -70,38 +70,38 @@ class TaskLocalDataSource implements ITaskLocalDataSource {
   }
 
   @override
-  Future<String> createTask(TaskModel task) {
-    final companion = task.toCompanion().copyWith(
+  Future<String> createCategory(CategoryModel category) {
+    final companion = category.toCompanion().copyWith(
       syncStatus: const Value(SyncStatus.local),
     );
-    return _taskDao.createTask(companion);
+    return _categoryDao.createCategory(companion);
   }
 
   @override
-  Future<bool> updateTask(TaskModel task) {
-    final companion = task.toCompanionWithId().copyWith(
+  Future<bool> updateCategory(CategoryModel category) {
+    final companion = category.toCompanionWithId().copyWith(
       syncStatus: const Value(SyncStatus.local),
     );
-    return _taskDao.updateTaskById(
-      task.id,
+    return _categoryDao.updateCategoryById(
+      category.id,
       companion,
-      userId: task.userId,
-      customerId: task.customerId,
+      userId: category.userId,
+      customerId: category.customerId,
     );
   }
 
   @override
-  Future<bool> deleteTask(
+  Future<bool> deleteCategory(
     String id, {
     required int userId,
     required String customerId,
   }) async {
-    final companion = TaskTableCompanion(
+    final companion = CategoryTableCompanion(
       isDeleted: Value(true),
       lastModified: Value(DateTime.now()),
       syncStatus: Value(SyncStatus.local),
     );
-    final result = await _taskDao.updateTaskById(
+    final result = await _categoryDao.updateCategoryById(
       id,
       companion,
       userId: userId,
@@ -111,11 +111,11 @@ class TaskLocalDataSource implements ITaskLocalDataSource {
   }
 
   @override
-  Future<List<TaskTableData>> getAllLocalChanges({
+  Future<List<CategoryTableData>> getAllLocalChanges({
     required int userId,
     required String customerId,
   }) {
-    return (_taskDao.select(_taskDao.taskTable)..where(
+    return (_categoryDao.select(_categoryDao.categoryTable)..where(
       (t) =>
           (t.syncStatus.equals(SyncStatus.synced.name)).not() &
           t.userId.equals(userId) &
@@ -124,12 +124,12 @@ class TaskLocalDataSource implements ITaskLocalDataSource {
   }
 
   @override
-  Future<void> physicallyDeleteTask(
+  Future<void> physicallyDeleteCategory(
     String id, {
     required int userId,
     required String customerId,
   }) async {
-    await _taskDao.physicallyDeleteTask(
+    await _categoryDao.physicallyDeleteCategory(
       id,
       userId: userId,
       customerId: customerId,
@@ -141,15 +141,15 @@ class TaskLocalDataSource implements ITaskLocalDataSource {
     dynamic serverChange,
     SyncStatus status,
   ) async {
-    await _taskDao.db
-        .into(_taskDao.taskTable)
+    await _categoryDao.db
+        .into(_categoryDao.categoryTable)
         .insertOnConflictUpdate(
-          (serverChange as serverpod.Task).toCompanion(status),
+          (serverChange as serverpod.Category).toCompanion(status),
         );
   }
 
   @override
-  Future<List<TaskTableData>> reconcileServerChanges(
+  Future<List<CategoryTableData>> reconcileServerChanges(
     List<dynamic> serverChanges, {
     required int userId,
     required String customerId,
@@ -160,15 +160,15 @@ class TaskLocalDataSource implements ITaskLocalDataSource {
     );
     final localChangesMap = {for (var c in allLocalChanges) c.id: c};
 
-    await _taskDao.db.transaction(() async {
-      for (final serverChange in serverChanges as List<serverpod.Task>) {
+    await _categoryDao.db.transaction(() async {
+      for (final serverChange in serverChanges as List<serverpod.Category>) {
         if (serverChange.userId != userId ||
             serverChange.customerId.toString() != customerId) {
           continue;
         }
 
         final localRecord =
-            await (_taskDao.select(_taskDao.taskTable)..where(
+            await (_categoryDao.select(_categoryDao.categoryTable)..where(
               (t) =>
                   t.id.equals(serverChange.id.toString()) &
                   t.userId.equals(userId) &
@@ -196,7 +196,7 @@ class TaskLocalDataSource implements ITaskLocalDataSource {
             print(
               '    -> ✅ Серверное "надгробие" новее или нет локального конфликта. Удаляем локальную запись: ID=${localRecord.id}, Title="${localRecord.title}".',
             );
-            await physicallyDeleteTask(
+            await physicallyDeleteCategory(
               localRecord.id,
               userId: userId,
               customerId: customerId,
@@ -233,27 +233,22 @@ class TaskLocalDataSource implements ITaskLocalDataSource {
     required int userId,
     required String customerId,
   }) async {
-    if (event is! serverpod.TaskSyncEvent) return;
+    if (event is! serverpod.CategorySyncEvent) return;
 
     switch (event.type) {
       case serverpod.SyncEventType.create:
       case serverpod.SyncEventType.update:
-        if (event.task != null &&
-            event.task!.userId == userId &&
-            event.task!.customerId == UuidValue.fromString(customerId)) {
-          await insertOrUpdateFromServer(event.task!, SyncStatus.synced);
+        if (event.category != null &&
+            event.category!.userId == userId &&
+            event.category!.customerId == UuidValue.fromString(customerId)) {
+          await insertOrUpdateFromServer(event.category!, SyncStatus.synced);
           print(
-            '  -> (Real-time) СОЗДАНА/ОБНОВЛЕНА: "${event.task!.title}"',
+            '  -> (Real-time) СОЗДАНА/ОБНОВЛЕНА: "${event.category!.title}"',
           );
         }
         break;      
     }
   }
   
-  @override
-  Future<List<TaskModel>> getTasksByCategoryId(String categoryId, {required int userId, required String customerId}) async {
-    final tasks = await _taskDao.getTasksByCategoryId(categoryId, userId: userId, customerId: customerId);
-    return tasks.toModels();
-  }
 }
   

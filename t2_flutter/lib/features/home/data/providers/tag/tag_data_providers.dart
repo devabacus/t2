@@ -1,16 +1,16 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../../core/database/local/provider/database_provider.dart';
+import '../../../../../core/data/datasources/local/provider/database_provider.dart';
 import '../../../../../core/providers/session_manager_provider.dart';
 import '../../../../../core/sync/sync_registry.dart';
 import '../../../domain/repositories/tag_repository.dart';
 import '../../datasources/local/dao/tag/tag_dao.dart';
-import '../../../../../core/database/local/daos/sync_metadata_dao.dart';
+import '../../../../../core/data/datasources/local/daos/sync_metadata_dao.dart';
 import '../../datasources/local/interfaces/tag_local_datasource_service.dart';
-import '../../../../../core/database/local/interface/sync_metadata_local_datasource_service.dart';
-import '../../datasources/local/sources/tag_local_data_source.dart';
-import '../../../../../core/database/local/sources/sync_metadata_local_data_source.dart';
+import '../../../../../core/data/datasources/local/interface/sync_metadata_local_datasource_service.dart';
+import '../../datasources/local/datasources/tag_local_data_source.dart';
+import '../../../../../core/data/datasources/local/datasources/sync_metadata_local_data_source.dart';
 import '../../repositories/tag_repository_impl.dart';
 import 'tag_remote_data_providers.dart';
 

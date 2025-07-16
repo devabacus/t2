@@ -4,9 +4,9 @@ import 'package:t2/features/home/domain/entities/extensions/task_tag_map_entity_
 import 'package:t2_client/t2_client.dart' as serverpod;
 import 'package:uuid/uuid.dart';
 
-import '../../../../core/database/local/database.dart';
-import '../../../../core/database/local/database_types.dart';
-import '../../../../core/database/local/interface/sync_metadata_local_datasource_service.dart';
+import '../../../../core/data/datasources/local/database.dart';
+import '../../../../core/data/datasources/local/database_types.dart';
+import '../../../../core/data/datasources/local/interface/sync_metadata_local_datasource_service.dart';
 import '../../../../core/sync/base_sync_repository.dart';
 import '../../domain/entities/tag/tag_entity.dart';
 import '../../domain/entities/task/task_entity.dart';

@@ -1,7 +1,7 @@
 
 import 'package:drift/drift.dart';
 import 'package:uuid/uuid.dart';
-import '../../../../../../core/database/local/database_types.dart';
+import '../../../../../../core/data/datasources/local/database_types.dart';
 import 'task_table.dart';
 import 'tag_table.dart';
 

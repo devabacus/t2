@@ -1,10 +1,10 @@
 
 import 'package:drift/drift.dart';
 
-import '../../../../../../../core/database/local/database.dart';
+import '../../../../../core/data/datasources/local/database.dart';
 import 'package:t2_client/t2_client.dart' as serverpod;
 import '../../../domain/entities/category/category_entity.dart';
-import '../../../../../core/database/local/database_types.dart';
+import '../../../../../core/data/datasources/local/database_types.dart';
 import '../category/category_model.dart';
 
 extension CategoryModelExtension on CategoryModel {

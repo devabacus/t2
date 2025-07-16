@@ -1,10 +1,10 @@
 
 import 'package:drift/drift.dart';
 
-import '../../../../../../../core/database/local/database.dart';
+import '../../../../../core/data/datasources/local/database.dart';
 import 'package:t2_client/t2_client.dart' as serverpod;
 import '../../../domain/entities/tag/tag_entity.dart';
-import '../../../../../core/database/local/database_types.dart';
+import '../../../../../core/data/datasources/local/database_types.dart';
 import '../tag/tag_model.dart';
 
 extension TagModelExtension on TagModel {

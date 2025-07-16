@@ -3,7 +3,7 @@
 part of 'database.dart';
 
 // ignore_for_file: type=lint
-class $SyncMetadataTable extends SyncMetadata
+class $SyncMetadataTable extends SyncMetadataTable
     with TableInfo<$SyncMetadataTable, SyncMetadataEntry> {
   @override
   final GeneratedDatabase attachedDatabase;

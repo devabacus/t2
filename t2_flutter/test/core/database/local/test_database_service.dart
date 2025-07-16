@@ -1,5 +1,5 @@
-import 'package:t2/core/database/local/database.dart';
-import 'package:t2/core/database/local/interface/i_database_service.dart';
+import 'package:t2/core/data/datasources/local/database.dart';
+import 'package:t2/core/data/datasources/local/interface/i_database_service.dart';
 import 'package:drift/native.dart';
 
 class TestDatabaseService implements IDatabaseService {

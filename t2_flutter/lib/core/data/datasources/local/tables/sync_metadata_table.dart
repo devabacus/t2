@@ -1,8 +1,8 @@
 import 'package:drift/drift.dart';
 
 @DataClassName('SyncMetadataEntry')
-class SyncMetadata extends Table {
-
+class SyncMetadataTable extends Table {
+  
   TextColumn get entityType => text()();
   IntColumn get userId => integer()();
   DateTimeColumn get lastSyncTimestamp => dateTime().nullable()();

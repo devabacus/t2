@@ -2,13 +2,13 @@ import 'package:t2/features/home/domain/entities/extensions/task_entity_extensio
 import 'package:t2/features/home/data/datasources/local/tables/extensions/task_table_extension.dart';
 import 'package:t2_client/t2_client.dart' as serverpod;
 
-import '../../../../core/database/local/database.dart';
+import '../../../../core/data/datasources/local/database.dart';
 import '../../../../core/sync/base_sync_repository.dart';
 import '../../domain/entities/task/task_entity.dart';
 import '../../domain/repositories/task_repository.dart';
-import '../../../../core/database/local/database_types.dart';
+import '../../../../core/data/datasources/local/database_types.dart';
 import '../datasources/local/interfaces/task_local_datasource_service.dart';
-import '../../../../core/database/local/interface/sync_metadata_local_datasource_service.dart';
+import '../../../../core/data/datasources/local/interface/sync_metadata_local_datasource_service.dart';
 import '../datasources/remote/interfaces/task_remote_datasource_service.dart';
 import '../models/extensions/task_model_extension.dart';
 

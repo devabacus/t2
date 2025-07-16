@@ -1,8 +1,8 @@
 
-import 'package:t2/core/database/local/database.dart';
+import 'package:t2/core/data/datasources/local/database.dart';
 
 import '../../../models/category/category_model.dart';
-import '../../../../../../core/database/local/database_types.dart';
+import '../../../../../../core/data/datasources/local/database_types.dart';
 
 abstract class ICategoryLocalDataSource {
   Future<List<CategoryModel>> getCategories({required int userId, required String customerId});
