@@ -1,4 +1,4 @@
-
+// manifest: entity
 import 'package:drift/drift.dart';
 
 import '../../../../../core/data/datasources/local/database.dart';
@@ -9,27 +9,31 @@ import '../category/category_model.dart';
 
 extension CategoryModelExtension on CategoryModel {
   CategoryEntity toEntity() => CategoryEntity(
-        id: id,
-        userId: userId,
-        customerId: customerId,
-        createdAt: createdAt,
-        lastModified: lastModified,
-        isDeleted: isDeleted,
-         title: title
-      );
+    id: id,
+    userId: userId,
+    customerId: customerId,
+    createdAt: createdAt,
+    lastModified: lastModified,
+    isDeleted: isDeleted,
+    // === generated_start:simpleFields ===
+    title: title,
+    // === generated_end:simpleFields ===
+  );
 
   CategoryTableCompanion toCompanion() => CategoryTableCompanion(
-        id: Value(id),
-        userId: Value(userId),
-        customerId: Value(customerId),
-        createdAt: Value(createdAt),
-        lastModified: Value(lastModified),
-        isDeleted: Value(isDeleted),
-        syncStatus: Value(SyncStatus.local),
-        title: Value(title)
+    id: Value(id),
+    userId: Value(userId),
+    customerId: Value(customerId),
+    createdAt: Value(createdAt),
+    lastModified: Value(lastModified),
+    isDeleted: Value(isDeleted),
+    syncStatus: Value(SyncStatus.local),
 
-      );
-  
+    // === generated_start:valueWrappedFields ===
+    title: Value(title),
+    // === generated_end:valueWrappedFields ===
+  );
+
   CategoryTableCompanion toCompanionWithId() => toCompanion();
 }
 
@@ -40,19 +44,20 @@ extension CategoryModelListExtension on List<CategoryModel> {
 
 extension ServerpodCategoryToModelExtension on serverpod.Category {
   CategoryModel toModel() => CategoryModel(
-        id: id.toString(),
-        userId: userId,
-        customerId: customerId.toString(),
-        createdAt: createdAt,
-        lastModified: lastModified,
-        isDeleted: isDeleted,
-        title: title
-      );
+    id: id.toString(),
+    userId: userId,
+    customerId: customerId.toString(),
+    createdAt: createdAt,
+    lastModified: lastModified,
+    isDeleted: isDeleted,
+    // === generated_start:serverpodToModelParams ===
+    title: title,
+    // === generated_end:serverpodToModelParams ===
+  );
 }
 
-extension ServerpodCategoryListToModelListExtension on List<serverpod.Category> {
+extension ServerpodCategoryListToModelListExtension
+    on List<serverpod.Category> {
   List<CategoryModel> toModels() =>
       map((serverpodModel) => serverpodModel.toModel()).toList();
 }
-
-  

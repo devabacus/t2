@@ -1,15 +1,16 @@
+// manifest: manyToMany
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../datasources/remote/interfaces/task_tag_map_remote_datasource_service.dart';
 import '../../datasources/remote/sources/task_tag_map_remote_data_source.dart';
-import '../../../../../core/data/datasources/local/interface/sync_metadata_local_datasource_service.dart';
-import '../../../../../core/data/datasources/local/provider/database_provider.dart';
+import '../../../../../core/data/datasources/local/interfaces/sync_metadata_local_datasource_service.dart';
+import '../../../../../core/data/datasources/local/providers/database_provider.dart';
 import '../../../../../core/data/datasources/local/datasources/sync_metadata_local_data_source.dart';
 import '../../../../../core/providers/serverpod_client_provider.dart';
 import '../../../../../core/providers/session_manager_provider.dart';
 import '../../../../../core/sync/sync_registry.dart';
 import '../../../domain/repositories/task_tag_map_repository.dart';
-import '../../datasources/local/dao/task_tag_map/task_tag_map_dao.dart';
+import '../../datasources/local/daos/task_tag_map/task_tag_map_dao.dart';
 import '../../datasources/local/interfaces/task_tag_map_local_datasource_service.dart';
 import '../../datasources/local/datasources/task_tag_map_local_data_source.dart';
 import '../../repositories/task_tag_map_repository_impl.dart';

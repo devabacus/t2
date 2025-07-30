@@ -8,7 +8,7 @@ import '../../domain/entities/task/task_entity.dart';
 import '../../domain/repositories/task_repository.dart';
 import '../../../../core/data/datasources/local/database_types.dart';
 import '../datasources/local/interfaces/task_local_datasource_service.dart';
-import '../../../../core/data/datasources/local/interface/sync_metadata_local_datasource_service.dart';
+import '../../../../core/data/datasources/local/interfaces/sync_metadata_local_datasource_service.dart';
 import '../datasources/remote/interfaces/task_remote_datasource_service.dart';
 import '../models/extensions/task_model_extension.dart';
 

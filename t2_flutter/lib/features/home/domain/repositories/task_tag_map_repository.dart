@@ -1,3 +1,4 @@
+// manifest: manyToMany
 import '../../../../core/sync/sync_registry.dart';
 import '../entities/tag/tag_entity.dart';
 import '../entities/task/task_entity.dart';

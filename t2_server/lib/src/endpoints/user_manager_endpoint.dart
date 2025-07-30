@@ -1,7 +1,5 @@
-// lib/src/endpoints/user_manager_endpoint.dart
-
 import 'package:serverpod/serverpod.dart';
-import 'package:t2_server/src/generated/protocol.dart';
+import '../generated/protocol.dart';
 import 'shared/auth_context_mixin.dart'; // Убедитесь, что импорт есть
 
 typedef AuthenticatedUserContext = ({int userId, UuidValue customerId});

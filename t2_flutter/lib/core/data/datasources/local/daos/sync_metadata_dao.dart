@@ -1,3 +1,5 @@
+// manifest: startProject
+
 import 'package:drift/drift.dart';
 import '../database.dart';
 import '../tables/sync_metadata_table.dart';

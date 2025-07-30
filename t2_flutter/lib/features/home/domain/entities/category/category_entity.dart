@@ -12,7 +12,11 @@ abstract class CategoryEntity with _$CategoryEntity {
     required DateTime createdAt,
     required DateTime lastModified,
     @Default(false) bool isDeleted,
+
+    // === GENERATED_START_0 ===
     required String title,
+    // === GENERATED_END_0 ===
+    
   }) = _CategoryEntity;
 
   factory CategoryEntity.fromJson(Map<String, dynamic> json) => _$CategoryEntityFromJson(json);

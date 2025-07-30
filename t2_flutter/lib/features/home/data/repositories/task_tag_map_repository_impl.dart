@@ -1,3 +1,4 @@
+// manifest: manyToMany
 import 'package:drift/drift.dart';
 import 'package:t2/features/home/data/datasources/local/tables/extensions/task_tag_map_table_extension.dart';
 import 'package:t2/features/home/domain/entities/extensions/task_tag_map_entity_extension.dart';
@@ -6,7 +7,7 @@ import 'package:uuid/uuid.dart';
 
 import '../../../../core/data/datasources/local/database.dart';
 import '../../../../core/data/datasources/local/database_types.dart';
-import '../../../../core/data/datasources/local/interface/sync_metadata_local_datasource_service.dart';
+import '../../../../core/data/datasources/local/interfaces/sync_metadata_local_datasource_service.dart';
 import '../../../../core/sync/base_sync_repository.dart';
 import '../../domain/entities/tag/tag_entity.dart';
 import '../../domain/entities/task/task_entity.dart';

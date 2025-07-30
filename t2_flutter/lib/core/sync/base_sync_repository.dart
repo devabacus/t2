@@ -1,7 +1,8 @@
+// manifest: startProject
 import 'dart:async';
 import 'dart:math';
 
-import '../data/datasources/local/interface/sync_metadata_local_datasource_service.dart';
+import '../data/datasources/local/interfaces/sync_metadata_local_datasource_service.dart';
 import 'sync_registry.dart';
 
 abstract class BaseSyncRepository implements ISyncableRepository {

@@ -1,3 +1,4 @@
+// manifest: entity
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'category_model.freezed.dart';
@@ -12,7 +13,11 @@ abstract class CategoryModel with _$CategoryModel {
     required DateTime createdAt,
     required DateTime lastModified,
     @Default(false) bool isDeleted,
+
+// === generated_start:freezedConstructor ===
     required String title,
+// === generated_end:freezedConstructor ===
+    
   }) = _CategoryModel;
 
   factory CategoryModel.fromJson(Map<String, dynamic> json) => _$CategoryModelFromJson(json);

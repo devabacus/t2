@@ -1,3 +1,4 @@
+// manifest: manyToMany
 import '../../../../../../core/data/datasources/local/database.dart';
 import '../../../../../../core/data/datasources/local/database_types.dart';
 import '../../../models/task_tag_map/task_tag_map_model.dart';

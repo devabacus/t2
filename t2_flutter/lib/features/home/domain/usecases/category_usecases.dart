@@ -61,3 +61,6 @@ class WatchCategoriesUseCase {
   }
 }
 
+// === GENERATED_START_0 ===
+
+// === GENERATED_END_0 ===

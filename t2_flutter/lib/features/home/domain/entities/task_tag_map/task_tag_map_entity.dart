@@ -1,3 +1,4 @@
+// manifest: manyToMany
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'task_tag_map_entity.freezed.dart';

@@ -7,7 +7,7 @@ import '../tables/extensions/task_table_extension.dart';
 import '../../../models/task/task_model.dart';
 import '../../../models/extensions/task_model_extension.dart';
 import '../../../../../../core/data/datasources/local/database_types.dart';
-import '../dao/task/task_dao.dart';
+import '../daos/task/task_dao.dart';
 import '../interfaces/task_local_datasource_service.dart';
 
 class TaskLocalDataSource implements ITaskLocalDataSource {

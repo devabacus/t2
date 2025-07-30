@@ -1,4 +1,4 @@
-
+// manifest: manyToMany
 import 'package:drift/drift.dart';
 import 'package:uuid/uuid.dart';
 import '../../../../../../core/data/datasources/local/database_types.dart';

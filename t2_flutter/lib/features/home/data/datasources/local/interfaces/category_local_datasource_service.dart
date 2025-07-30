@@ -1,4 +1,4 @@
-
+// manifest: entity
 import 'package:t2/core/data/datasources/local/database.dart';
 
 import '../../../models/category/category_model.dart';
@@ -17,5 +17,7 @@ abstract class ICategoryLocalDataSource {
   Future<void> physicallyDeleteCategory(String id, {required int userId, required String customerId});
   Future<void> insertOrUpdateFromServer(dynamic serverChange, SyncStatus status);
   Future<void> handleSyncEvent(dynamic event, {required int userId, required String customerId});
+  // === GENERATED_START_0 ===  
+  // === GENERATED_END_0 ===
 }
 

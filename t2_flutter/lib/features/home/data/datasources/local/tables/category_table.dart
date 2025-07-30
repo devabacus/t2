@@ -1,12 +1,16 @@
-
+// manifest: entity
 import 'package:drift/drift.dart';
 import 'package:uuid/uuid.dart';
 import '../../../../../../core/data/datasources/local/database_types.dart';
+// === generated_start:driftTableImports ===
+// === generated_end:driftTableImports ===
 
 class CategoryTable extends Table {
 
-    TextColumn get title => text()();
-  
+  // === generated_start:driftTableColumns ===
+  TextColumn get title => text()();
+  // === generated_end:driftTableColumns ===
+
   TextColumn get id => text().clientDefault(() => Uuid().v7())();
   IntColumn get userId => integer()();
   TextColumn get customerId => text()();

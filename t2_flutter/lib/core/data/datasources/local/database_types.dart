@@ -1,3 +1,4 @@
+// manifest: startProject
 
 import 'package:drift/drift.dart';
 

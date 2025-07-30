@@ -7,7 +7,7 @@ import '../tables/extensions/tag_table_extension.dart';
 import '../../../models/tag/tag_model.dart';
 import '../../../models/extensions/tag_model_extension.dart';
 import '../../../../../../core/data/datasources/local/database_types.dart';
-import '../dao/tag/tag_dao.dart';
+import '../daos/tag/tag_dao.dart';
 import '../interfaces/tag_local_datasource_service.dart';
 
 class TagLocalDataSource implements ITagLocalDataSource {

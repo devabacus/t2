@@ -1,4 +1,4 @@
-
+// manifest: entity
 import 'package:t2_client/t2_client.dart';
 
 abstract class ICategoryRemoteDataSource {
@@ -10,6 +10,7 @@ abstract class ICategoryRemoteDataSource {
   Future<Category> createCategory(Category category);
   Future<bool> updateCategory(Category category);
   Future<bool> checkConnection();
-
+// === generated_start:remoteDatasourceServiceRelationMethods ===
+// === generated_end:remoteDatasourceServiceRelationMethods ===
 }
 

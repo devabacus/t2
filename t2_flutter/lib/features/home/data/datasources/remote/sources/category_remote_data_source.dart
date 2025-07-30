@@ -1,3 +1,4 @@
+// manifest: entity
 import 'dart:async';
 import 'package:t2_client/t2_client.dart';
 import '../interfaces/category_remote_datasource_service.dart';
@@ -100,7 +101,8 @@ class CategoryRemoteDataSource implements ICategoryRemoteDataSource {
       return localCategories;
     }
   }
-
+// === generated_start:remoteDatasourceRelationMethods ===
+// === generated_end:remoteDatasourceRelationMethods ===
 
 }
 

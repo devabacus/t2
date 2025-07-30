@@ -1,3 +1,5 @@
+// manifest: startProject
+
 import '../database.dart';
 
 abstract class IDatabaseService{

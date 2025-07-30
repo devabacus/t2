@@ -60,5 +60,6 @@ GetCategoryByIdUseCase? getCategoryByIdUseCase(Ref ref) {
   return GetCategoryByIdUseCase(repository);
 }
   
-
+// === GENERATED_START_0 ===
+// === GENERATED_END_0 ===
     

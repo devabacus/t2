@@ -1,53 +1,53 @@
 import 'package:drift/drift.dart';
 import '../../../../../../../core/data/datasources/local/database.dart';
-import '../../../../../../../core/data/datasources/local/interface/i_database_service.dart';
-import '../../tables/category_table.dart';
+import '../../../../../../../core/data/datasources/local/interfaces/i_database_service.dart';
+import '../../tables/task_table.dart';
 
-part 'category_dao.g.dart';
+part 'task_dao.g.dart';
 
-@DriftAccessor(tables: [CategoryTable])
-class CategoryDao extends DatabaseAccessor<AppDatabase>
-    with _$CategoryDaoMixin {
-  CategoryDao(IDatabaseService databaseService)
+@DriftAccessor(tables: [TaskTable])
+class TaskDao extends DatabaseAccessor<AppDatabase>
+    with _$TaskDaoMixin {
+  TaskDao(IDatabaseService databaseService)
     : super(databaseService.database);
 
   AppDatabase get db => attachedDatabase;
 
-  Future<List<CategoryTableData>> getCategories({
+  Future<List<TaskTableData>> getTasks({
     required int userId,
     required String customerId,
   }) =>
-      (select(categoryTable)
+      (select(taskTable)
             ..where((t) => t.isDeleted.equals(false))
             ..where(
               (t) => t.userId.equals(userId) & t.customerId.equals(customerId),
             ))
           .get();
 
-  Stream<List<CategoryTableData>> watchCategories({
+  Stream<List<TaskTableData>> watchTasks({
     required int userId,
     required String customerId,
   }) =>
-      (select(categoryTable)
+      (select(taskTable)
             ..where((t) => t.isDeleted.equals(false))
             ..where(
               (t) => t.userId.equals(userId) & t.customerId.equals(customerId),
             ))
           .watch();
 
-  Future<CategoryTableData?> getCategoryById(
+  Future<TaskTableData?> getTaskById(
     String id, {
     required int userId,
     required String customerId,
   }) =>
-      (select(categoryTable)..where(
+      (select(taskTable)..where(
         (t) =>
             t.id.equals(id) &
             t.userId.equals(userId) &
             t.customerId.equals(customerId),
       )).getSingleOrNull();
 
-  Future<List<CategoryTableData>> getCategoriesByIds(
+  Future<List<TaskTableData>> getTasksByIds(
     List<String> ids, {
     required int userId,
     required String customerId,
@@ -55,7 +55,7 @@ class CategoryDao extends DatabaseAccessor<AppDatabase>
     if (ids.isEmpty) {
       return Future.value([]);
     }
-    return (select(categoryTable)..where(
+    return (select(taskTable)..where(
       (t) =>
           t.id.isIn(ids) &
           t.userId.equals(userId) &
@@ -64,37 +64,37 @@ class CategoryDao extends DatabaseAccessor<AppDatabase>
     )).get();
   }
 
-  Future<String> createCategory(CategoryTableCompanion companion) async {
+  Future<String> createTask(TaskTableCompanion companion) async {
     final id = companion.id.value;
     try {
-      final existingCategory =
-          await (select(categoryTable)..where(
+      final existingTask =
+          await (select(taskTable)..where(
             (t) =>
                 t.id.equals(id) &
                 t.userId.equals(companion.userId.value) &
                 t.customerId.equals(companion.customerId.value),
           )).getSingleOrNull();
 
-      if (existingCategory != null) {
-        throw StateError('category with ID $id exists');
+      if (existingTask != null) {
+        throw StateError('task with ID $id exists');
       }
 
-      await into(categoryTable).insert(companion);
+      await into(taskTable).insert(companion);
       return id;
     } catch (e) {
-      print('fail of creating category: $e');
+      print('fail of creating task: $e');
       rethrow;
     }
   }
 
-  Future<bool> updateCategoryById(
+  Future<bool> updateTaskById(
     String id,
-    CategoryTableCompanion companion, {
+    TaskTableCompanion companion, {
     required int userId,
     required String customerId,
   }) async {
     // final idToUpdate = companion.id.value;
-    final updatedRows = await (update(categoryTable)..where(
+    final updatedRows = await (update(taskTable)..where(
       (t) =>
           t.id.equals(id) &
           t.userId.equals(userId) &
@@ -103,12 +103,12 @@ class CategoryDao extends DatabaseAccessor<AppDatabase>
     return updatedRows > 0;
   }
 
-  Future<int> physicallyDeleteCategory(
+  Future<int> physicallyDeleteTask(
     String id, {
     required int userId,
     required String customerId,
   }) async {
-    return (delete(categoryTable)..where(
+    return (delete(taskTable)..where(
       (t) =>
           t.id.equals(id) &
           t.userId.equals(userId) &
@@ -116,53 +116,57 @@ class CategoryDao extends DatabaseAccessor<AppDatabase>
     )).go();
   }
 
-  Future<bool> categoryExists(
+  Future<bool> taskExists(
     String id, {
     required int userId,
     required String customerId,
   }) async {
     if (id.isEmpty) return false;
 
-    final category =
-        await (select(categoryTable)..where(
+    final task =
+        await (select(taskTable)..where(
           (t) =>
               t.id.equals(id) &
               t.userId.equals(userId) &
               t.customerId.equals(customerId),
         )).getSingleOrNull();
 
-    return category != null;
+    return task != null;
   }
 
-  Future<int> getCategoriesCount({
+  Future<int> getTasksCount({
     required int userId,
     required String customerId,
   }) async {
     final countQuery =
-        selectOnly(categoryTable)
-          ..addColumns([categoryTable.id.count()])
+        selectOnly(taskTable)
+          ..addColumns([taskTable.id.count()])
           ..where(
-            categoryTable.userId.equals(userId) &
-                categoryTable.customerId.equals(customerId),
+            taskTable.userId.equals(userId) &
+                taskTable.customerId.equals(customerId),
           );
 
     final result = await countQuery.getSingle();
-    return result.read(categoryTable.id.count()) ?? 0;
+    return result.read(taskTable.id.count()) ?? 0;
   }
 
-  Future<void> insertCategories(List<CategoryTableCompanion> companions) async {
+  Future<void> insertTasks(List<TaskTableCompanion> companions) async {
     await batch((batch) {
-      batch.insertAll(categoryTable, companions);
+      batch.insertAll(taskTable, companions);
     });
   }
 
-  Future<int> deleteAllCategories({
+  Future<int> deleteAllTasks({
     required int userId,
     required String customerId,
   }) {
-    return (delete(categoryTable)..where(
+    return (delete(taskTable)..where(
       (t) => t.userId.equals(userId) & t.customerId.equals(customerId),
     )).go();
   }
   
+  Future<List<TaskTableData>> getTasksByCategoryId(String categoryId, {required int userId, required String customerId}) =>
+    (select(taskTable)
+      ..where((t) => t.categoryId.equals(categoryId) & t.userId.equals(userId) & t.customerId.equals(customerId) & t.isDeleted.equals(false)))
+    .get();
 }

@@ -1,3 +1,4 @@
+// manifest: manyToMany
 import '../../entities/task_tag_map/task_tag_map_entity.dart';
 import '../../../data/models/task_tag_map/task_tag_map_model.dart';
 import 'package:t2_client/t2_client.dart' as serverpod;

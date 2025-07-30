@@ -8,7 +8,7 @@ import '../../domain/entities/category/category_entity.dart';
 import '../../domain/repositories/category_repository.dart';
 import '../../../../core/data/datasources/local/database_types.dart';
 import '../datasources/local/interfaces/category_local_datasource_service.dart';
-import '../../../../core/data/datasources/local/interface/sync_metadata_local_datasource_service.dart';
+import '../../../../core/data/datasources/local/interfaces/sync_metadata_local_datasource_service.dart';
 import '../datasources/remote/interfaces/category_remote_datasource_service.dart';
 import '../models/extensions/category_model_extension.dart';
 
@@ -205,6 +205,8 @@ class CategoryRepositoryImpl extends BaseSyncRepository implements ICategoryRepo
     }
   }
   
+  // === GENERATED_START_0 ===
+  // === GENERATED_END_0 ===
     
 }
 

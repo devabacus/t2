@@ -1,3 +1,4 @@
+// manifest: startProject
 import '../../features/home/presentation/routing/home_router_config.dart';
 
 // ignore_for_file: unused_import

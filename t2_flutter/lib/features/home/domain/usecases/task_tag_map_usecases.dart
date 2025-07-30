@@ -1,3 +1,4 @@
+// manifest: manyToMany
 import '../repositories/task_tag_map_repository.dart';
 import '../entities/task/task_entity.dart';
 import '../entities/tag/tag_entity.dart';

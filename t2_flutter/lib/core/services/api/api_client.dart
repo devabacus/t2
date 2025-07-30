@@ -1,4 +1,4 @@
-
+// manifest: startProject
 // ignore_for_file: unused_field
 import 'package:chopper/chopper.dart';
 

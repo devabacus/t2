@@ -1,17 +1,20 @@
+// manifest: entity
 import '../../entities/category/category_entity.dart';
 import '../../../data/models/category/category_model.dart';
 import 'package:t2_client/t2_client.dart' as serverpod;
 
 extension CategoryEntityExtension on CategoryEntity {
   CategoryModel toModel() => CategoryModel(
-        id: id,
-        userId: userId,
-        customerId: customerId,
-        createdAt: createdAt,
-        lastModified: lastModified,
-        isDeleted: isDeleted,
-        title: title
-      );
+    id: id,
+    userId: userId,
+    customerId: customerId,
+    createdAt: createdAt,
+    lastModified: lastModified,
+    isDeleted: isDeleted,
+    // === generated_start:simpleFields ===
+    title: title,
+    // === generated_end:simpleFields ===
+  );
 }
 
 extension CategoryEntityListExtension on List<CategoryEntity> {
@@ -26,6 +29,8 @@ extension ServerpodCategoryEntityExtensions on CategoryEntity {
     createdAt: createdAt,
     lastModified: lastModified,
     isDeleted: isDeleted,
-    title: title
+    // === generated_start:serverpodToModelParams ===
+    title: title,
+    // === generated_end:serverpodToModelParams ===
   );
-  }
+}

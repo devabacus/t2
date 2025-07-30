@@ -1,3 +1,4 @@
+// manifest: entity
 import 'package:drift/drift.dart';
 import 'package:t2_client/t2_client.dart' as serverpod;
 
@@ -6,11 +7,22 @@ import '../../../../models/category/category_model.dart';
 import '../../../../../../../core/data/datasources/local/database_types.dart';
 
 extension CategoryTableDataExtensions on CategoryTableData {
-  CategoryModel toModel() => CategoryModel(id: id, userId: userId, customerId: customerId, createdAt: createdAt, lastModified: lastModified, isDeleted: isDeleted, title: title);
+  CategoryModel toModel() => CategoryModel(
+    id: id,
+    userId: userId,
+    customerId: customerId,
+    createdAt: createdAt,
+    lastModified: lastModified,
+    isDeleted: isDeleted,
+
+// === generated_start:simpleFields ===
+    title: title,
+// === generated_end:simpleFields ===
+  );
 }
 
 extension CategoryTableDataListExtensions on List<CategoryTableData> {
-  List<CategoryModel> toModels() => map((data)=> data.toModel()).toList();
+  List<CategoryModel> toModels() => map((data) => data.toModel()).toList();
 }
 
 extension ServerpodCategoryTableExtensions on serverpod.Category {
@@ -23,7 +35,9 @@ extension ServerpodCategoryTableExtensions on serverpod.Category {
         lastModified: Value(lastModified),
         isDeleted: Value(isDeleted),
         syncStatus: Value(status),
-        title: Value(title)
-  );
-}
 
+// === generated_start:valueWrappedFields ===
+        title: Value(title),
+// === generated_end:valueWrappedFields ===
+      );
+}

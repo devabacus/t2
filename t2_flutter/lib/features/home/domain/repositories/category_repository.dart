@@ -12,5 +12,7 @@ abstract class ICategoryRepository {
   void initEventBasedSync();
   void dispose();
   
+  // === GENERATED_START_0 ===
+  // === GENERATED_END_0 ===
 }
 
