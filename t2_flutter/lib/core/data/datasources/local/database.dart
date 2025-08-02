@@ -7,7 +7,6 @@ import 'database_types.dart';
 // === GENERATED_IMPORTS_START ===
 import 'tables/sync_metadata_table.dart';
 import '../../../../features/home/data/datasources/local/tables/category_table.dart';
-import '../../../../features/home/data/datasources/local/tables/configuration_table.dart';
 import '../../../../features/home/data/datasources/local/tables/tag_table.dart';
 import '../../../../features/home/data/datasources/local/tables/task_table.dart';
 import '../../../../features/home/data/datasources/local/tables/task_tag_map_table.dart';
@@ -19,7 +18,6 @@ part 'database.g.dart';
 // === GENERATED_TABLES_START ===
 SyncMetadataTable,
     CategoryTable,
-    ConfigurationTable,
     TagTable,
     TaskTable,
     TaskTagMapTable,

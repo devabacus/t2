@@ -153,7 +153,7 @@ final currentUserPermissionsProvider =
 // ignore: unused_element
 typedef CurrentUserPermissionsRef = AutoDisposeProviderRef<List<String>>;
 String _$userSessionDataNotifierHash() =>
-    r'73ccf7897a0c9f612f19ea3bffbd3f53baa5dde3';
+    r'ed616f969ed8eec13011963f29cea6020801e022';
 
 /// See also [UserSessionDataNotifier].
 @ProviderFor(UserSessionDataNotifier)

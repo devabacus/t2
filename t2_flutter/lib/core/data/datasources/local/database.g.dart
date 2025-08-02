@@ -3,12 +3,12 @@
 part of 'database.dart';
 
 // ignore_for_file: type=lint
-class $SyncMetadataTable extends SyncMetadataTable
-    with TableInfo<$SyncMetadataTable, SyncMetadataEntry> {
+class $SyncMetadataTableTable extends SyncMetadataTable
+    with TableInfo<$SyncMetadataTableTable, SyncMetadataEntry> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $SyncMetadataTable(this.attachedDatabase, [this._alias]);
+  $SyncMetadataTableTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _entityTypeMeta = const VerificationMeta(
     'entityType',
   );
@@ -76,7 +76,7 @@ class $SyncMetadataTable extends SyncMetadataTable
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'sync_metadata';
+  static const String $name = 'sync_metadata_table';
   @override
   VerificationContext validateIntegrity(
     Insertable<SyncMetadataEntry> instance, {
@@ -163,8 +163,8 @@ class $SyncMetadataTable extends SyncMetadataTable
   }
 
   @override
-  $SyncMetadataTable createAlias(String alias) {
-    return $SyncMetadataTable(attachedDatabase, alias);
+  $SyncMetadataTableTable createAlias(String alias) {
+    return $SyncMetadataTableTable(attachedDatabase, alias);
   }
 }
 
@@ -195,8 +195,8 @@ class SyncMetadataEntry extends DataClass
     return map;
   }
 
-  SyncMetadataCompanion toCompanion(bool nullToAbsent) {
-    return SyncMetadataCompanion(
+  SyncMetadataTableCompanion toCompanion(bool nullToAbsent) {
+    return SyncMetadataTableCompanion(
       entityType: Value(entityType),
       userId: Value(userId),
       lastSyncTimestamp:
@@ -251,7 +251,7 @@ class SyncMetadataEntry extends DataClass
     syncVersion: syncVersion ?? this.syncVersion,
     updatedAt: updatedAt ?? this.updatedAt,
   );
-  SyncMetadataEntry copyWithCompanion(SyncMetadataCompanion data) {
+  SyncMetadataEntry copyWithCompanion(SyncMetadataTableCompanion data) {
     return SyncMetadataEntry(
       entityType:
           data.entityType.present ? data.entityType.value : this.entityType,
@@ -297,14 +297,14 @@ class SyncMetadataEntry extends DataClass
           other.updatedAt == this.updatedAt);
 }
 
-class SyncMetadataCompanion extends UpdateCompanion<SyncMetadataEntry> {
+class SyncMetadataTableCompanion extends UpdateCompanion<SyncMetadataEntry> {
   final Value<String> entityType;
   final Value<int> userId;
   final Value<DateTime?> lastSyncTimestamp;
   final Value<int> syncVersion;
   final Value<DateTime> updatedAt;
   final Value<int> rowid;
-  const SyncMetadataCompanion({
+  const SyncMetadataTableCompanion({
     this.entityType = const Value.absent(),
     this.userId = const Value.absent(),
     this.lastSyncTimestamp = const Value.absent(),
@@ -312,7 +312,7 @@ class SyncMetadataCompanion extends UpdateCompanion<SyncMetadataEntry> {
     this.updatedAt = const Value.absent(),
     this.rowid = const Value.absent(),
   });
-  SyncMetadataCompanion.insert({
+  SyncMetadataTableCompanion.insert({
     required String entityType,
     required int userId,
     this.lastSyncTimestamp = const Value.absent(),
@@ -340,7 +340,7 @@ class SyncMetadataCompanion extends UpdateCompanion<SyncMetadataEntry> {
     });
   }
 
-  SyncMetadataCompanion copyWith({
+  SyncMetadataTableCompanion copyWith({
     Value<String>? entityType,
     Value<int>? userId,
     Value<DateTime?>? lastSyncTimestamp,
@@ -348,7 +348,7 @@ class SyncMetadataCompanion extends UpdateCompanion<SyncMetadataEntry> {
     Value<DateTime>? updatedAt,
     Value<int>? rowid,
   }) {
-    return SyncMetadataCompanion(
+    return SyncMetadataTableCompanion(
       entityType: entityType ?? this.entityType,
       userId: userId ?? this.userId,
       lastSyncTimestamp: lastSyncTimestamp ?? this.lastSyncTimestamp,
@@ -384,7 +384,7 @@ class SyncMetadataCompanion extends UpdateCompanion<SyncMetadataEntry> {
 
   @override
   String toString() {
-    return (StringBuffer('SyncMetadataCompanion(')
+    return (StringBuffer('SyncMetadataTableCompanion(')
           ..write('entityType: $entityType, ')
           ..write('userId: $userId, ')
           ..write('lastSyncTimestamp: $lastSyncTimestamp, ')
@@ -1460,17 +1460,6 @@ class $TaskTableTable extends TaskTable
       'REFERENCES category_table (id) ON DELETE SET NULL',
     ),
   );
-  static const VerificationMeta _categoryMeta = const VerificationMeta(
-    'category',
-  );
-  @override
-  late final GeneratedColumn<String> category = GeneratedColumn<String>(
-    'category',
-    aliasedName,
-    true,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-  );
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<String> id = GeneratedColumn<String>(
@@ -1550,7 +1539,6 @@ class $TaskTableTable extends TaskTable
   List<GeneratedColumn> get $columns => [
     title,
     categoryId,
-    category,
     id,
     userId,
     customerId,
@@ -1583,12 +1571,6 @@ class $TaskTableTable extends TaskTable
       context.handle(
         _categoryIdMeta,
         categoryId.isAcceptableOrUnknown(data['category_id']!, _categoryIdMeta),
-      );
-    }
-    if (data.containsKey('category')) {
-      context.handle(
-        _categoryMeta,
-        category.isAcceptableOrUnknown(data['category']!, _categoryMeta),
       );
     }
     if (data.containsKey('id')) {
@@ -1639,10 +1621,6 @@ class $TaskTableTable extends TaskTable
       categoryId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}category_id'],
-      ),
-      category: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}category'],
       ),
       id:
           attachedDatabase.typeMapping.read(
@@ -1698,7 +1676,6 @@ class $TaskTableTable extends TaskTable
 class TaskTableData extends DataClass implements Insertable<TaskTableData> {
   final String title;
   final String? categoryId;
-  final String? category;
   final String id;
   final int userId;
   final String customerId;
@@ -1709,7 +1686,6 @@ class TaskTableData extends DataClass implements Insertable<TaskTableData> {
   const TaskTableData({
     required this.title,
     this.categoryId,
-    this.category,
     required this.id,
     required this.userId,
     required this.customerId,
@@ -1724,9 +1700,6 @@ class TaskTableData extends DataClass implements Insertable<TaskTableData> {
     map['title'] = Variable<String>(title);
     if (!nullToAbsent || categoryId != null) {
       map['category_id'] = Variable<String>(categoryId);
-    }
-    if (!nullToAbsent || category != null) {
-      map['category'] = Variable<String>(category);
     }
     map['id'] = Variable<String>(id);
     map['user_id'] = Variable<int>(userId);
@@ -1753,10 +1726,6 @@ class TaskTableData extends DataClass implements Insertable<TaskTableData> {
           categoryId == null && nullToAbsent
               ? const Value.absent()
               : Value(categoryId),
-      category:
-          category == null && nullToAbsent
-              ? const Value.absent()
-              : Value(category),
       id: Value(id),
       userId: Value(userId),
       customerId: Value(customerId),
@@ -1775,7 +1744,6 @@ class TaskTableData extends DataClass implements Insertable<TaskTableData> {
     return TaskTableData(
       title: serializer.fromJson<String>(json['title']),
       categoryId: serializer.fromJson<String?>(json['categoryId']),
-      category: serializer.fromJson<String?>(json['category']),
       id: serializer.fromJson<String>(json['id']),
       userId: serializer.fromJson<int>(json['userId']),
       customerId: serializer.fromJson<String>(json['customerId']),
@@ -1791,7 +1759,6 @@ class TaskTableData extends DataClass implements Insertable<TaskTableData> {
     return <String, dynamic>{
       'title': serializer.toJson<String>(title),
       'categoryId': serializer.toJson<String?>(categoryId),
-      'category': serializer.toJson<String?>(category),
       'id': serializer.toJson<String>(id),
       'userId': serializer.toJson<int>(userId),
       'customerId': serializer.toJson<String>(customerId),
@@ -1805,7 +1772,6 @@ class TaskTableData extends DataClass implements Insertable<TaskTableData> {
   TaskTableData copyWith({
     String? title,
     Value<String?> categoryId = const Value.absent(),
-    Value<String?> category = const Value.absent(),
     String? id,
     int? userId,
     String? customerId,
@@ -1816,7 +1782,6 @@ class TaskTableData extends DataClass implements Insertable<TaskTableData> {
   }) => TaskTableData(
     title: title ?? this.title,
     categoryId: categoryId.present ? categoryId.value : this.categoryId,
-    category: category.present ? category.value : this.category,
     id: id ?? this.id,
     userId: userId ?? this.userId,
     customerId: customerId ?? this.customerId,
@@ -1830,7 +1795,6 @@ class TaskTableData extends DataClass implements Insertable<TaskTableData> {
       title: data.title.present ? data.title.value : this.title,
       categoryId:
           data.categoryId.present ? data.categoryId.value : this.categoryId,
-      category: data.category.present ? data.category.value : this.category,
       id: data.id.present ? data.id.value : this.id,
       userId: data.userId.present ? data.userId.value : this.userId,
       customerId:
@@ -1851,7 +1815,6 @@ class TaskTableData extends DataClass implements Insertable<TaskTableData> {
     return (StringBuffer('TaskTableData(')
           ..write('title: $title, ')
           ..write('categoryId: $categoryId, ')
-          ..write('category: $category, ')
           ..write('id: $id, ')
           ..write('userId: $userId, ')
           ..write('customerId: $customerId, ')
@@ -1867,7 +1830,6 @@ class TaskTableData extends DataClass implements Insertable<TaskTableData> {
   int get hashCode => Object.hash(
     title,
     categoryId,
-    category,
     id,
     userId,
     customerId,
@@ -1882,7 +1844,6 @@ class TaskTableData extends DataClass implements Insertable<TaskTableData> {
       (other is TaskTableData &&
           other.title == this.title &&
           other.categoryId == this.categoryId &&
-          other.category == this.category &&
           other.id == this.id &&
           other.userId == this.userId &&
           other.customerId == this.customerId &&
@@ -1895,7 +1856,6 @@ class TaskTableData extends DataClass implements Insertable<TaskTableData> {
 class TaskTableCompanion extends UpdateCompanion<TaskTableData> {
   final Value<String> title;
   final Value<String?> categoryId;
-  final Value<String?> category;
   final Value<String> id;
   final Value<int> userId;
   final Value<String> customerId;
@@ -1907,7 +1867,6 @@ class TaskTableCompanion extends UpdateCompanion<TaskTableData> {
   const TaskTableCompanion({
     this.title = const Value.absent(),
     this.categoryId = const Value.absent(),
-    this.category = const Value.absent(),
     this.id = const Value.absent(),
     this.userId = const Value.absent(),
     this.customerId = const Value.absent(),
@@ -1920,7 +1879,6 @@ class TaskTableCompanion extends UpdateCompanion<TaskTableData> {
   TaskTableCompanion.insert({
     required String title,
     this.categoryId = const Value.absent(),
-    this.category = const Value.absent(),
     this.id = const Value.absent(),
     required int userId,
     required String customerId,
@@ -1937,7 +1895,6 @@ class TaskTableCompanion extends UpdateCompanion<TaskTableData> {
   static Insertable<TaskTableData> custom({
     Expression<String>? title,
     Expression<String>? categoryId,
-    Expression<String>? category,
     Expression<String>? id,
     Expression<int>? userId,
     Expression<String>? customerId,
@@ -1950,7 +1907,6 @@ class TaskTableCompanion extends UpdateCompanion<TaskTableData> {
     return RawValuesInsertable({
       if (title != null) 'title': title,
       if (categoryId != null) 'category_id': categoryId,
-      if (category != null) 'category': category,
       if (id != null) 'id': id,
       if (userId != null) 'user_id': userId,
       if (customerId != null) 'customer_id': customerId,
@@ -1965,7 +1921,6 @@ class TaskTableCompanion extends UpdateCompanion<TaskTableData> {
   TaskTableCompanion copyWith({
     Value<String>? title,
     Value<String?>? categoryId,
-    Value<String?>? category,
     Value<String>? id,
     Value<int>? userId,
     Value<String>? customerId,
@@ -1978,7 +1933,6 @@ class TaskTableCompanion extends UpdateCompanion<TaskTableData> {
     return TaskTableCompanion(
       title: title ?? this.title,
       categoryId: categoryId ?? this.categoryId,
-      category: category ?? this.category,
       id: id ?? this.id,
       userId: userId ?? this.userId,
       customerId: customerId ?? this.customerId,
@@ -1998,9 +1952,6 @@ class TaskTableCompanion extends UpdateCompanion<TaskTableData> {
     }
     if (categoryId.present) {
       map['category_id'] = Variable<String>(categoryId.value);
-    }
-    if (category.present) {
-      map['category'] = Variable<String>(category.value);
     }
     if (id.present) {
       map['id'] = Variable<String>(id.value);
@@ -2038,7 +1989,6 @@ class TaskTableCompanion extends UpdateCompanion<TaskTableData> {
     return (StringBuffer('TaskTableCompanion(')
           ..write('title: $title, ')
           ..write('categoryId: $categoryId, ')
-          ..write('category: $category, ')
           ..write('id: $id, ')
           ..write('userId: $userId, ')
           ..write('customerId: $customerId, ')
@@ -2626,7 +2576,8 @@ class TaskTagMapTableCompanion extends UpdateCompanion<TaskTagMapTableData> {
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
-  late final $SyncMetadataTable syncMetadata = $SyncMetadataTable(this);
+  late final $SyncMetadataTableTable syncMetadataTable =
+      $SyncMetadataTableTable(this);
   late final $CategoryTableTable categoryTable = $CategoryTableTable(this);
   late final $TagTableTable tagTable = $TagTableTable(this);
   late final $TaskTableTable taskTable = $TaskTableTable(this);
@@ -2638,7 +2589,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities => [
-    syncMetadata,
+    syncMetadataTable,
     categoryTable,
     tagTable,
     taskTable,
@@ -2656,8 +2607,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   ]);
 }
 
-typedef $$SyncMetadataTableCreateCompanionBuilder =
-    SyncMetadataCompanion Function({
+typedef $$SyncMetadataTableTableCreateCompanionBuilder =
+    SyncMetadataTableCompanion Function({
       required String entityType,
       required int userId,
       Value<DateTime?> lastSyncTimestamp,
@@ -2665,8 +2616,8 @@ typedef $$SyncMetadataTableCreateCompanionBuilder =
       required DateTime updatedAt,
       Value<int> rowid,
     });
-typedef $$SyncMetadataTableUpdateCompanionBuilder =
-    SyncMetadataCompanion Function({
+typedef $$SyncMetadataTableTableUpdateCompanionBuilder =
+    SyncMetadataTableCompanion Function({
       Value<String> entityType,
       Value<int> userId,
       Value<DateTime?> lastSyncTimestamp,
@@ -2675,9 +2626,9 @@ typedef $$SyncMetadataTableUpdateCompanionBuilder =
       Value<int> rowid,
     });
 
-class $$SyncMetadataTableFilterComposer
-    extends Composer<_$AppDatabase, $SyncMetadataTable> {
-  $$SyncMetadataTableFilterComposer({
+class $$SyncMetadataTableTableFilterComposer
+    extends Composer<_$AppDatabase, $SyncMetadataTableTable> {
+  $$SyncMetadataTableTableFilterComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -2710,9 +2661,9 @@ class $$SyncMetadataTableFilterComposer
   );
 }
 
-class $$SyncMetadataTableOrderingComposer
-    extends Composer<_$AppDatabase, $SyncMetadataTable> {
-  $$SyncMetadataTableOrderingComposer({
+class $$SyncMetadataTableTableOrderingComposer
+    extends Composer<_$AppDatabase, $SyncMetadataTableTable> {
+  $$SyncMetadataTableTableOrderingComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -2745,9 +2696,9 @@ class $$SyncMetadataTableOrderingComposer
   );
 }
 
-class $$SyncMetadataTableAnnotationComposer
-    extends Composer<_$AppDatabase, $SyncMetadataTable> {
-  $$SyncMetadataTableAnnotationComposer({
+class $$SyncMetadataTableTableAnnotationComposer
+    extends Composer<_$AppDatabase, $SyncMetadataTableTable> {
+  $$SyncMetadataTableTableAnnotationComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -2776,40 +2727,50 @@ class $$SyncMetadataTableAnnotationComposer
       $composableBuilder(column: $table.updatedAt, builder: (column) => column);
 }
 
-class $$SyncMetadataTableTableManager
+class $$SyncMetadataTableTableTableManager
     extends
         RootTableManager<
           _$AppDatabase,
-          $SyncMetadataTable,
+          $SyncMetadataTableTable,
           SyncMetadataEntry,
-          $$SyncMetadataTableFilterComposer,
-          $$SyncMetadataTableOrderingComposer,
-          $$SyncMetadataTableAnnotationComposer,
-          $$SyncMetadataTableCreateCompanionBuilder,
-          $$SyncMetadataTableUpdateCompanionBuilder,
+          $$SyncMetadataTableTableFilterComposer,
+          $$SyncMetadataTableTableOrderingComposer,
+          $$SyncMetadataTableTableAnnotationComposer,
+          $$SyncMetadataTableTableCreateCompanionBuilder,
+          $$SyncMetadataTableTableUpdateCompanionBuilder,
           (
             SyncMetadataEntry,
             BaseReferences<
               _$AppDatabase,
-              $SyncMetadataTable,
+              $SyncMetadataTableTable,
               SyncMetadataEntry
             >,
           ),
           SyncMetadataEntry,
           PrefetchHooks Function()
         > {
-  $$SyncMetadataTableTableManager(_$AppDatabase db, $SyncMetadataTable table)
-    : super(
+  $$SyncMetadataTableTableTableManager(
+    _$AppDatabase db,
+    $SyncMetadataTableTable table,
+  ) : super(
         TableManagerState(
           db: db,
           table: table,
           createFilteringComposer:
-              () => $$SyncMetadataTableFilterComposer($db: db, $table: table),
+              () => $$SyncMetadataTableTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
           createOrderingComposer:
-              () => $$SyncMetadataTableOrderingComposer($db: db, $table: table),
+              () => $$SyncMetadataTableTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
           createComputedFieldComposer:
-              () =>
-                  $$SyncMetadataTableAnnotationComposer($db: db, $table: table),
+              () => $$SyncMetadataTableTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
           updateCompanionCallback:
               ({
                 Value<String> entityType = const Value.absent(),
@@ -2818,7 +2779,7 @@ class $$SyncMetadataTableTableManager
                 Value<int> syncVersion = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
-              }) => SyncMetadataCompanion(
+              }) => SyncMetadataTableCompanion(
                 entityType: entityType,
                 userId: userId,
                 lastSyncTimestamp: lastSyncTimestamp,
@@ -2834,7 +2795,7 @@ class $$SyncMetadataTableTableManager
                 Value<int> syncVersion = const Value.absent(),
                 required DateTime updatedAt,
                 Value<int> rowid = const Value.absent(),
-              }) => SyncMetadataCompanion.insert(
+              }) => SyncMetadataTableCompanion.insert(
                 entityType: entityType,
                 userId: userId,
                 lastSyncTimestamp: lastSyncTimestamp,
@@ -2857,19 +2818,23 @@ class $$SyncMetadataTableTableManager
       );
 }
 
-typedef $$SyncMetadataTableProcessedTableManager =
+typedef $$SyncMetadataTableTableProcessedTableManager =
     ProcessedTableManager<
       _$AppDatabase,
-      $SyncMetadataTable,
+      $SyncMetadataTableTable,
       SyncMetadataEntry,
-      $$SyncMetadataTableFilterComposer,
-      $$SyncMetadataTableOrderingComposer,
-      $$SyncMetadataTableAnnotationComposer,
-      $$SyncMetadataTableCreateCompanionBuilder,
-      $$SyncMetadataTableUpdateCompanionBuilder,
+      $$SyncMetadataTableTableFilterComposer,
+      $$SyncMetadataTableTableOrderingComposer,
+      $$SyncMetadataTableTableAnnotationComposer,
+      $$SyncMetadataTableTableCreateCompanionBuilder,
+      $$SyncMetadataTableTableUpdateCompanionBuilder,
       (
         SyncMetadataEntry,
-        BaseReferences<_$AppDatabase, $SyncMetadataTable, SyncMetadataEntry>,
+        BaseReferences<
+          _$AppDatabase,
+          $SyncMetadataTableTable,
+          SyncMetadataEntry
+        >,
       ),
       SyncMetadataEntry,
       PrefetchHooks Function()
@@ -3639,7 +3604,6 @@ typedef $$TaskTableTableCreateCompanionBuilder =
     TaskTableCompanion Function({
       required String title,
       Value<String?> categoryId,
-      Value<String?> category,
       Value<String> id,
       required int userId,
       required String customerId,
@@ -3653,7 +3617,6 @@ typedef $$TaskTableTableUpdateCompanionBuilder =
     TaskTableCompanion Function({
       Value<String> title,
       Value<String?> categoryId,
-      Value<String?> category,
       Value<String> id,
       Value<int> userId,
       Value<String> customerId,
@@ -3719,11 +3682,6 @@ class $$TaskTableTableFilterComposer
   });
   ColumnFilters<String> get title => $composableBuilder(
     column: $table.title,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get category => $composableBuilder(
-    column: $table.category,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -3827,11 +3785,6 @@ class $$TaskTableTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get category => $composableBuilder(
-    column: $table.category,
-    builder: (column) => ColumnOrderings(column),
-  );
-
   ColumnOrderings<String> get id => $composableBuilder(
     column: $table.id,
     builder: (column) => ColumnOrderings(column),
@@ -3902,9 +3855,6 @@ class $$TaskTableTableAnnotationComposer
   });
   GeneratedColumn<String> get title =>
       $composableBuilder(column: $table.title, builder: (column) => column);
-
-  GeneratedColumn<String> get category =>
-      $composableBuilder(column: $table.category, builder: (column) => column);
 
   GeneratedColumn<String> get id =>
       $composableBuilder(column: $table.id, builder: (column) => column);
@@ -4014,7 +3964,6 @@ class $$TaskTableTableTableManager
               ({
                 Value<String> title = const Value.absent(),
                 Value<String?> categoryId = const Value.absent(),
-                Value<String?> category = const Value.absent(),
                 Value<String> id = const Value.absent(),
                 Value<int> userId = const Value.absent(),
                 Value<String> customerId = const Value.absent(),
@@ -4026,7 +3975,6 @@ class $$TaskTableTableTableManager
               }) => TaskTableCompanion(
                 title: title,
                 categoryId: categoryId,
-                category: category,
                 id: id,
                 userId: userId,
                 customerId: customerId,
@@ -4040,7 +3988,6 @@ class $$TaskTableTableTableManager
               ({
                 required String title,
                 Value<String?> categoryId = const Value.absent(),
-                Value<String?> category = const Value.absent(),
                 Value<String> id = const Value.absent(),
                 required int userId,
                 required String customerId,
@@ -4052,7 +3999,6 @@ class $$TaskTableTableTableManager
               }) => TaskTableCompanion.insert(
                 title: title,
                 categoryId: categoryId,
-                category: category,
                 id: id,
                 userId: userId,
                 customerId: customerId,
@@ -4676,8 +4622,8 @@ typedef $$TaskTagMapTableTableProcessedTableManager =
 class $AppDatabaseManager {
   final _$AppDatabase _db;
   $AppDatabaseManager(this._db);
-  $$SyncMetadataTableTableManager get syncMetadata =>
-      $$SyncMetadataTableTableManager(_db, _db.syncMetadata);
+  $$SyncMetadataTableTableTableManager get syncMetadataTable =>
+      $$SyncMetadataTableTableTableManager(_db, _db.syncMetadataTable);
   $$CategoryTableTableTableManager get categoryTable =>
       $$CategoryTableTableTableManager(_db, _db.categoryTable);
   $$TagTableTableTableManager get tagTable =>
