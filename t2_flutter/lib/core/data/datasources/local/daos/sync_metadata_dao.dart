@@ -18,7 +18,7 @@ class SyncMetadataDao extends DatabaseAccessor<AppDatabase>
     required int userId,
   }) async {
     final entry =
-        await (select(syncMetadata)..where(
+        await (select(syncMetadataTable)..where(
           (t) => t.entityType.equals(entityType) & t.userId.equals(userId),
         )).getSingleOrNull();
     return entry?.lastSyncTimestamp;
@@ -31,8 +31,8 @@ class SyncMetadataDao extends DatabaseAccessor<AppDatabase>
     DateTime timestamp, {
     required int userId,
   }) async {
-    await into(syncMetadata).insert(
-      SyncMetadataCompanion(
+    await into(syncMetadataTable).insert(
+      SyncMetadataTableCompanion(
         entityType: Value(entityType),
         userId: Value(userId),
         lastSyncTimestamp: Value(timestamp.toUtc()),
@@ -40,7 +40,7 @@ class SyncMetadataDao extends DatabaseAccessor<AppDatabase>
         // syncVersion будет установлен в дефолтное значение (1) при первой вставке
       ),
       onConflict: DoUpdate(
-        (old) => SyncMetadataCompanion(
+        (old) => SyncMetadataTableCompanion(
           lastSyncTimestamp: Value(
             timestamp.toUtc(),
           ), // Обновляем только timestamp
@@ -58,7 +58,7 @@ class SyncMetadataDao extends DatabaseAccessor<AppDatabase>
   /// Возвращает дефолтное значение (1), если метаданды для этой сущности еще не существуют.
   Future<int> getSyncVersion(String entityType, {required int userId}) async {
     final entry =
-        await (select(syncMetadata)..where(
+        await (select(syncMetadataTable)..where(
           (t) => t.entityType.equals(entityType) & t.userId.equals(userId),
         )).getSingleOrNull();
     // Если запись не найдена, возвращаем дефолтную версию 1.
@@ -72,15 +72,15 @@ class SyncMetadataDao extends DatabaseAccessor<AppDatabase>
     int version, {
     required int userId,
   }) async {
-    await into(syncMetadata).insert(
-      SyncMetadataCompanion(
+    await into(syncMetadataTable).insert(
+      SyncMetadataTableCompanion(
         entityType: Value(entityType),
         userId: Value(userId),
         syncVersion: Value(version),
         updatedAt: Value(DateTime.now().toUtc()), // Обновляем время изменения
       ),
       onConflict: DoUpdate(
-        (old) => SyncMetadataCompanion(
+        (old) => SyncMetadataTableCompanion(
           syncVersion: Value(version),
           updatedAt: Value(DateTime.now().toUtc()),
         ),
@@ -96,7 +96,7 @@ class SyncMetadataDao extends DatabaseAccessor<AppDatabase>
     String entityType, {
     required int userId,
   }) async {
-    await (delete(syncMetadata)..where(
+    await (delete(syncMetadataTable)..where(
       (t) => t.entityType.equals(entityType) & t.userId.equals(userId),
     )).go();
   }
