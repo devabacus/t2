@@ -82,7 +82,7 @@ class CategoryRepositoryImpl extends BaseSyncRepository implements ICategoryRepo
             await _syncCreateToServer(entity);
           }
           print(
-            '    -> ✅ Изменение "${localChange.title}" синхронизировано с сервером.',
+            '    -> ✅ Изменение "${localChange.id}" синхронизировано с сервером.',
           );
         } catch (e) {
           print(
