@@ -1,3 +1,4 @@
+// manifest: entity
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'category_entity.freezed.dart';
@@ -13,9 +14,9 @@ abstract class CategoryEntity with _$CategoryEntity {
     required DateTime lastModified,
     @Default(false) bool isDeleted,
 
-    // === GENERATED_START_0 ===
+    // === generated_start:freezedConstructor ===
     required String title,
-    // === GENERATED_END_0 ===
+    // === generated_end:freezedConstructor ===
     
   }) = _CategoryEntity;
 
