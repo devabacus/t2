@@ -179,7 +179,7 @@ class CategoryLocalDataSource implements ICategoryLocalDataSource {
         if (localRecord == null) {
           if (!serverChange.isDeleted) {
             await insertOrUpdateFromServer(serverChange, SyncStatus.synced);
-            print('    -> СОЗДАНО с сервера: "${serverChange.title}"');
+            print('    -> СОЗДАНО с сервера: "${serverChange.id}"');
           }
           continue;
         }
@@ -191,11 +191,11 @@ class CategoryLocalDataSource implements ICategoryLocalDataSource {
           if (localTime.isAfter(serverTime) &&
               localRecord.syncStatus == SyncStatus.local) {
             print(
-              '    -> КОНФЛИКТ: Локальная версия "${localRecord.title}" новее серверного "надгробия". Локальное изменение побеждает.',
+              '    -> КОНФЛИКТ: Локальная версия "${localRecord.id}" новее серверного "надгробия". Локальное изменение побеждает.',
             );
           } else {
             print(
-              '    -> ✅ Серверное "надгробие" новее или нет локального конфликта. Удаляем локальную запись: ID=${localRecord.id}, Title="${localRecord.title}".',
+              '    -> ✅ Серверное "надгробие" новее или нет локального конфликта. Удаляем локальную запись: ID=${localRecord.id}, Title="${localRecord.id}".',
             );
             await physicallyDeleteCategory(
               localRecord.id,
@@ -209,18 +209,18 @@ class CategoryLocalDataSource implements ICategoryLocalDataSource {
               localRecord.isDeleted) {
             if (serverTime.isAfter(localTime)) {
               print(
-                '    -> КОНФЛИКТ: Сервер новее для "${serverChange.title}". Применяем серверные изменения.',
+                '    -> КОНФЛИКТ: Сервер новее для "${serverChange.id}". Применяем серверные изменения.',
               );
               await insertOrUpdateFromServer(serverChange, SyncStatus.synced);
               localChangesMap.remove(localRecord.id);
             } else {
               print(
-                '    -> КОНФЛИКТ: Локальная версия новее для "${localRecord.title}". Она будет отправлена на сервер.',
+                '    -> КОНФЛИКТ: Локальная версия новее для "${localRecord.id}". Она будет отправлена на сервер.',
               );
             }
           } else {
             await insertOrUpdateFromServer(serverChange, SyncStatus.synced);
-            print('    -> ОБНОВЛЕНО с сервера: "${serverChange.title}"');
+            print('    -> ОБНОВЛЕНО с сервера: "${serverChange.id}"');
           }
         }
       }
@@ -244,7 +244,7 @@ class CategoryLocalDataSource implements ICategoryLocalDataSource {
             event.category!.customerId == UuidValue.fromString(customerId)) {
           await insertOrUpdateFromServer(event.category!, SyncStatus.synced);
           print(
-            '  -> (Real-time) СОЗДАНА/ОБНОВЛЕНА: "${event.category!.title}"',
+            '  -> (Real-time) СОЗДАНА/ОБНОВЛЕНА: "${event.category!.id}"',
           );
         }
         break;      
