@@ -1,3 +1,4 @@
+// manifest: startProject
 import 'package:serverpod/serverpod.dart';
 import '../generated/protocol.dart';
 import 'shared/auth_context_mixin.dart'; // Убедитесь, что импорт есть

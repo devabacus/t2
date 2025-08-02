@@ -1,4 +1,4 @@
-
+# manifest: startProject
 
 cd "g:\Projects\Flutter\serverpod\t2\t2_flutter";
 cd "g:\Projects\Flutter\serverpod\t2\t2_flutter"; dart run build_runner build --delete-conflicting-outputs

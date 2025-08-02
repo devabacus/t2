@@ -1,4 +1,4 @@
-
+# manifest: startProject
 # Инициализация и настройка
 git init                                             # gitinit - Инициализация нового репозитория
 git config --global user.name "Ваше Имя"            # gituser - Настройка имени пользователя

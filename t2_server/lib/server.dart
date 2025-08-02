@@ -1,4 +1,4 @@
-
+// manifest: startProject
 import 'package:serverpod/serverpod.dart';
 import 'package:t2_server/src/web/routes/root.dart';
 import 'package:serverpod_auth_server/serverpod_auth_server.dart' as auth;

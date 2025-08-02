@@ -1,4 +1,4 @@
-
+# manifest: startProject
 # после обновления пакета
 flutter pub cache clean
 flutter clean

@@ -1,5 +1,4 @@
-// lib/src/endpoints/shared/auth_context_mixin.dart
-
+// manifest: startProject
 import 'package:serverpod/serverpod.dart';
 import '../../generated/protocol.dart';
 

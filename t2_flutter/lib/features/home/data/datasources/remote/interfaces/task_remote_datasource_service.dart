@@ -1,4 +1,4 @@
-
+// manifest: entity
 import 'package:t2_client/t2_client.dart';
 
 abstract class ITaskRemoteDataSource {
@@ -10,7 +10,8 @@ abstract class ITaskRemoteDataSource {
   Future<Task> createTask(Task task);
   Future<bool> updateTask(Task task);
   Future<bool> checkConnection();
-
+// === generated_start:oneToManyMethods ===
   Future<List<Task>> getTasksByCategoryId(UuidValue categoryId);
+// === generated_end:oneToManyMethods ===
 }
 

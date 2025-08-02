@@ -1,3 +1,4 @@
+// manifest: entity
 import '../repositories/category_repository.dart';
 import '../entities/category/category_entity.dart';
 
@@ -60,7 +61,3 @@ class WatchCategoriesUseCase {
     return _repository.watchCategories();
   }
 }
-
-// === GENERATED_START_0 ===
-
-// === GENERATED_END_0 ===

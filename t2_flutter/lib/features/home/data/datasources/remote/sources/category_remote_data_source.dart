@@ -101,8 +101,6 @@ class CategoryRemoteDataSource implements ICategoryRemoteDataSource {
       return localCategories;
     }
   }
-// === generated_start:remoteDatasourceRelationMethods ===
-// === generated_end:remoteDatasourceRelationMethods ===
 
 }
 

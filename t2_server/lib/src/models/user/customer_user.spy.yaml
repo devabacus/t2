@@ -1,3 +1,4 @@
+# manifest: startProject
 class: CustomerUser
 table: customer_user
 fields:

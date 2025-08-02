@@ -1,4 +1,4 @@
-
+# manifest: startProject
 class: TestData
 table: test_data
 fields:

@@ -1,3 +1,4 @@
+# manifest: startProject
 class: UserSessionData
 fields:
   userId: int

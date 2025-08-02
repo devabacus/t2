@@ -1,3 +1,4 @@
+# manifest: startProject
 class: Role
 table: role
 fields:

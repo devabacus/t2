@@ -1,3 +1,4 @@
+// manifest: entity
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../usecases/task_usecases.dart';
@@ -59,7 +60,8 @@ GetTaskByIdUseCase? getTaskByIdUseCase(Ref ref) {
   }
   return GetTaskByIdUseCase(repository);
 }
-  
+
+// === generated_start:oneToManyMethods === 
 @riverpod
 GetTasksByCategoryIdUseCase? getTasksByCategoryIdUseCase(Ref ref) {
   final repository = ref.watch(currentUserTaskRepositoryProvider);
@@ -69,5 +71,6 @@ GetTasksByCategoryIdUseCase? getTasksByCategoryIdUseCase(Ref ref) {
   }
   return GetTasksByCategoryIdUseCase(repository);
 }
+// === generated_end:oneToManyMethods ===
 
     

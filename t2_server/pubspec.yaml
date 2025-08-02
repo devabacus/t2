@@ -1,4 +1,4 @@
-
+# manifest: startProject
 name: t2_server
 description: Starting point for a Serverpod server.
 

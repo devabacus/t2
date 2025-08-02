@@ -10,7 +10,5 @@ abstract class ICategoryRemoteDataSource {
   Future<Category> createCategory(Category category);
   Future<bool> updateCategory(Category category);
   Future<bool> checkConnection();
-// === generated_start:remoteDatasourceServiceRelationMethods ===
-// === generated_end:remoteDatasourceServiceRelationMethods ===
 }
 

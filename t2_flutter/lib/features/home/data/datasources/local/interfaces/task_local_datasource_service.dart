@@ -1,4 +1,4 @@
-
+// manifest: entity
 import 'package:t2/core/data/datasources/local/database.dart';
 
 import '../../../models/task/task_model.dart';
@@ -17,7 +17,8 @@ abstract class ITaskLocalDataSource {
   Future<void> physicallyDeleteTask(String id, {required int userId, required String customerId});
   Future<void> insertOrUpdateFromServer(dynamic serverChange, SyncStatus status);
   Future<void> handleSyncEvent(dynamic event, {required int userId, required String customerId});
-
+ // === generated_start:oneToManyMethods ===
   Future<List<TaskModel>> getTasksByCategoryId(String categoryId, {required int userId, required String customerId}); 
+ // === generated_end:oneToManyMethods ===
 }
 

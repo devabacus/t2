@@ -1,3 +1,4 @@
+// manifest: entity
 import 'package:drift/drift.dart';
 import '../../../../../../../core/data/datasources/local/database.dart';
 import '../../../../../../../core/data/datasources/local/interfaces/i_database_service.dart';
@@ -165,8 +166,11 @@ class TaskDao extends DatabaseAccessor<AppDatabase>
     )).go();
   }
   
+// === generated_start:oneToManyMethods ===
   Future<List<TaskTableData>> getTasksByCategoryId(String categoryId, {required int userId, required String customerId}) =>
     (select(taskTable)
       ..where((t) => t.categoryId.equals(categoryId) & t.userId.equals(userId) & t.customerId.equals(customerId) & t.isDeleted.equals(false)))
     .get();
+// === generated_end:oneToManyMethods ===
 }
+

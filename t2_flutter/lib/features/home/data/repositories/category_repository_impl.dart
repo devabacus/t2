@@ -1,3 +1,4 @@
+// manifest: entity
 import 'package:t2/features/home/domain/entities/extensions/category_entity_extension.dart';
 import 'package:t2/features/home/data/datasources/local/tables/extensions/category_table_extension.dart';
 import 'package:t2_client/t2_client.dart' as serverpod;
@@ -205,9 +206,6 @@ class CategoryRepositoryImpl extends BaseSyncRepository implements ICategoryRepo
     }
   }
   
-  // === GENERATED_START_0 ===
-  // === GENERATED_END_0 ===
-    
 }
 
 

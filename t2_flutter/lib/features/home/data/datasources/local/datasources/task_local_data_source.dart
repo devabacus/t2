@@ -1,3 +1,4 @@
+// manifest: entity
 import 'package:drift/drift.dart';
 import 'package:t2_client/t2_client.dart' as serverpod;
 import 'package:uuid/uuid_value.dart';
@@ -249,11 +250,12 @@ class TaskLocalDataSource implements ITaskLocalDataSource {
         break;      
     }
   }
-  
+  // === generated_start:oneToManyMethods ===
   @override
   Future<List<TaskModel>> getTasksByCategoryId(String categoryId, {required int userId, required String customerId}) async {
     final tasks = await _taskDao.getTasksByCategoryId(categoryId, userId: userId, customerId: customerId);
     return tasks.toModels();
   }
+  // === generated_end:oneToManyMethods ===
 }
   

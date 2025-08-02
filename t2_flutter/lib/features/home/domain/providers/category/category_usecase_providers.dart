@@ -1,3 +1,4 @@
+// manifest: entity
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../usecases/category_usecases.dart';
@@ -60,6 +61,4 @@ GetCategoryByIdUseCase? getCategoryByIdUseCase(Ref ref) {
   return GetCategoryByIdUseCase(repository);
 }
   
-// === GENERATED_START_0 ===
-// === GENERATED_END_0 ===
     

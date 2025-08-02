@@ -1,3 +1,4 @@
+// manifest: entity
 import 'package:t2/features/home/domain/entities/extensions/task_entity_extension.dart';
 import 'package:t2/features/home/data/datasources/local/tables/extensions/task_table_extension.dart';
 import 'package:t2_client/t2_client.dart' as serverpod;
@@ -205,12 +206,13 @@ class TaskRepositoryImpl extends BaseSyncRepository implements ITaskRepository {
     }
   }
   
-    
+// === generated_start:oneToManyMethods ===    
   @override
   Future<List<TaskEntity>> getTasksByCategoryId(String categoryId) async {
     final tasks = await _localDataSource.getTasksByCategoryId(categoryId, userId: userId, customerId: customerId);
     return tasks.map((e) => e.toEntity()).toList();
   }
+// === generated_end:oneToManyMethods ===
 }
 
 

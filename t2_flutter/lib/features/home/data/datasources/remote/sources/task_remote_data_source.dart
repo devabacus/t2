@@ -1,3 +1,4 @@
+// manifest: entity
 import 'dart:async';
 import 'package:t2_client/t2_client.dart';
 import '../interfaces/task_remote_datasource_service.dart';
@@ -101,7 +102,7 @@ class TaskRemoteDataSource implements ITaskRemoteDataSource {
     }
   }
 
-
+// === generated_start:oneToManyMethods ===
   @override
   Future<List<Task>> getTasksByCategoryId(UuidValue categoryId) async {
     try {
@@ -112,5 +113,6 @@ class TaskRemoteDataSource implements ITaskRemoteDataSource {
       rethrow;
     }
   }
+ // === generated_end:oneToManyMethods ===
 }
 

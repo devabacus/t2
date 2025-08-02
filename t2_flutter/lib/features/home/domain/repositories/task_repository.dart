@@ -11,7 +11,8 @@ abstract class ITaskRepository {
   Future<void> syncWithServer();
   void initEventBasedSync();
   void dispose();
-  
+   // === generated_start:oneToManyMethods ===
   Future<List<TaskEntity>> getTasksByCategoryId(String categoryId);
+  // === generated_end:oneToManyMethods ===
 }
-
+ 

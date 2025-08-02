@@ -250,8 +250,5 @@ class CategoryLocalDataSource implements ICategoryLocalDataSource {
         break;      
     }
   }
-  
-  // === GENERATED_START_0 ===  
-  // === GENERATED_END_0 ===
 }
   

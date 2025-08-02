@@ -6,24 +6,32 @@ import '../../../../models/task/task_model.dart';
 import '../../../../../../../core/data/datasources/local/database_types.dart';
 
 extension TaskTableDataExtensions on TaskTableData {
-  TaskModel toModel() => TaskModel(id: id, userId: userId, customerId: customerId, createdAt: createdAt, lastModified: lastModified, isDeleted: isDeleted, title: title, categoryId: categoryId);
-}
-
-extension TaskTableDataListExtensions on List<TaskTableData> {
-  List<TaskModel> toModels() => map((data)=> data.toModel()).toList();
-}
-
-extension ServerpodTaskTableExtensions on serverpod.Task {
-  TaskTableCompanion toCompanion(SyncStatus status) =>
-      TaskTableCompanion(
-        id: Value(id.toString()),
-        userId: Value(userId),
-        customerId: Value(customerId.toString()),
-        createdAt: Value(createdAt),
-        lastModified: Value(lastModified),
-        isDeleted: Value(isDeleted),
-        syncStatus: Value(status),
-        title: Value(title), categoryId: Value(categoryId.toString())
+  TaskModel toModel() => TaskModel(
+    id: id,
+    userId: userId,
+    customerId: customerId,
+    createdAt: createdAt,
+    lastModified: lastModified,
+    isDeleted: isDeleted,
+    title: title,
+    categoryId: categoryId,
   );
 }
 
+extension TaskTableDataListExtensions on List<TaskTableData> {
+  List<TaskModel> toModels() => map((data) => data.toModel()).toList();
+}
+
+extension ServerpodTaskTableExtensions on serverpod.Task {
+  TaskTableCompanion toCompanion(SyncStatus status) => TaskTableCompanion(
+    id: Value(id.toString()),
+    userId: Value(userId),
+    customerId: Value(customerId.toString()),
+    createdAt: Value(createdAt),
+    lastModified: Value(lastModified),
+    isDeleted: Value(isDeleted),
+    syncStatus: Value(status),
+    title: Value(title),
+    categoryId: Value(categoryId.toString()),
+  );
+}

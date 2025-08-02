@@ -1,3 +1,4 @@
+# manifest: startProject
 class: RolePermission
 table: role_permission
 fields:

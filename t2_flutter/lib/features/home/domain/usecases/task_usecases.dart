@@ -1,3 +1,4 @@
+// manifest: entity
 import '../repositories/task_repository.dart';
 import '../entities/task/task_entity.dart';
 
@@ -61,6 +62,7 @@ class WatchTasksUseCase {
   }
 }
 
+// === generated_start:oneToManyMethods ===
 class GetTasksByCategoryIdUseCase {
   final ITaskRepository _repository;
 
@@ -70,3 +72,4 @@ class GetTasksByCategoryIdUseCase {
     return _repository.getTasksByCategoryId(categoryId);
   }
 }
+// === generated_end:oneToManyMethods ===
