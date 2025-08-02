@@ -134,6 +134,7 @@ class TaskEndpoint extends Endpoint with AuthContextMixin {
     }
   }   
     
+// === generated_start:oneToManyMethods ===
 Future<List<Task>> getTasksByCategoryId(Session session, UuidValue categoryId) async {
     final authContext = await getAuthenticatedUserContext(session);
     final userId = authContext.userId;
@@ -143,4 +144,5 @@ Future<List<Task>> getTasksByCategoryId(Session session, UuidValue categoryId) a
       where: (t) => t.categoryId.equals(categoryId) & t.userId.equals(userId) & t.customerId.equals(customerId),
     );
   }
+// === generated_end:oneToManyMethods ===
 }          
