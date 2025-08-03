@@ -5,7 +5,7 @@ import '../../../../../../../core/data/datasources/local/interfaces/i_database_s
 import '../../tables/category_table.dart';
 
 part 'category_dao.g.dart';
-
+// === generated_start:base ===
 @DriftAccessor(tables: [CategoryTable])
 class CategoryDao extends DatabaseAccessor<AppDatabase>
     with _$CategoryDaoMixin {
@@ -166,3 +166,5 @@ class CategoryDao extends DatabaseAccessor<AppDatabase>
     )).go();
   }
 }
+
+// === generated_end:base ===
