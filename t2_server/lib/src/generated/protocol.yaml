@@ -5,6 +5,13 @@ category:
   - getCategoriesSince:
   - updateCategory:
   - watchEvents:
+configuration:
+  - createConfiguration:
+  - getConfigurations:
+  - getConfigurationById:
+  - getConfigurationsSince:
+  - updateConfiguration:
+  - watchEvents:
 tag:
   - createTag:
   - getTags:
