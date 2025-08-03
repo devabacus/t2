@@ -27,7 +27,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase([QueryExecutor? executor]) : super(executor ?? _openConnection());
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
 @override
 MigrationStrategy get migration => MigrationStrategy(
@@ -35,13 +35,16 @@ MigrationStrategy get migration => MigrationStrategy(
         return m.createAll();
       },
       onUpgrade: (Migrator m, int from, int to) async {
-            
-        if (from < 2) {
-            
-        }        
+            // === GENERATED_MIGRATION_START ===
+        if (from < 3) {
+            // Добавление новой таблицы или изменение схемы
+        }
         
-      },
+        // === GENERATED_MIGRATION_END ===
+        }        
     );
+      
+    
 
 
   static QueryExecutor _openConnection() {
@@ -50,4 +53,5 @@ MigrationStrategy get migration => MigrationStrategy(
     );
   }
 }
+
 
