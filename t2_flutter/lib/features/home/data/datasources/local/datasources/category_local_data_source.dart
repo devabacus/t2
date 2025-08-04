@@ -1,4 +1,5 @@
 // manifest: entity
+// === generated_start:base ===
 import 'package:drift/drift.dart';
 import 'package:t2_client/t2_client.dart' as serverpod;
 import 'package:uuid/uuid_value.dart';
@@ -11,7 +12,6 @@ import '../../../../../../core/data/datasources/local/database_types.dart';
 import '../daos/category/category_dao.dart';
 import '../interfaces/category_local_datasource_service.dart';
 
-// === generated_start:base ===
 class CategoryLocalDataSource implements ICategoryLocalDataSource {
   final CategoryDao _categoryDao;
 

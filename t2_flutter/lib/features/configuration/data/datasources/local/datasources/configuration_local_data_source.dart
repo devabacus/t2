@@ -253,7 +253,4 @@ class ConfigurationLocalDataSource implements IConfigurationLocalDataSource {
     }
   }
 }
-  
 // === generated_end:base ===
-
-// new method
