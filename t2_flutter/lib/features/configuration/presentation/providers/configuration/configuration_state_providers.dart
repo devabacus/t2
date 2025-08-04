@@ -2,7 +2,6 @@
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import '../../../../../core/providers/session_manager_provider.dart';
 import '../../../domain/entities/configuration/configuration_entity.dart';
 import '../../../domain/providers/configuration/configuration_usecase_providers.dart';
 
