@@ -43,9 +43,6 @@ MigrationStrategy get migration => MigrationStrategy(
         // === GENERATED_MIGRATION_END ===
         }        
     );
-      
-    
-
 
   static QueryExecutor _openConnection() {
     return driftDatabase(
