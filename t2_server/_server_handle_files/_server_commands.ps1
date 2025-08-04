@@ -3,7 +3,6 @@
 cd "g:\Projects\Flutter\serverpod\t2\t2_flutter";
 cd "g:\Projects\Flutter\serverpod\t2\t2_flutter"; dart run build_runner build --delete-conflicting-outputs
 
-
 REGISTRY_DOMAIN
 REGISTRY_USER
 REGISTRY_PASSWORD
@@ -23,9 +22,6 @@ dart bin/main.dart --apply-migrations
 
 cd "g:\Projects\Flutter\serverpod\t2\t2_server"; serverpod create-migration --experimental-features=all
 cd "g:\Projects\Flutter\serverpod\t2\t2_server"; serverpod generate --experimental-features=all
-
-
-
 
 docker compose down -v
 
