@@ -1,11 +1,13 @@
 // manifest: entity
+
+// === generated_start:base ===
 import 'package:drift/drift.dart';
 import '../../../../../../../core/data/datasources/local/database.dart';
 import '../../../../../../../core/data/datasources/local/interfaces/i_database_service.dart';
 import '../../tables/category_table.dart';
 
 part 'category_dao.g.dart';
-// === generated_start:base ===
+
 @DriftAccessor(tables: [CategoryTable])
 class CategoryDao extends DatabaseAccessor<AppDatabase>
     with _$CategoryDaoMixin {
