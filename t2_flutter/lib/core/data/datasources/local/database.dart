@@ -10,7 +10,6 @@ import '../../../../features/home/data/datasources/local/tables/tag_table.dart';
 import '../../../../features/home/data/datasources/local/tables/task_table.dart';
 import '../../../../features/home/data/datasources/local/tables/task_tag_map_table.dart';
 import 'tables/sync_metadata_table.dart';
-import '../../../../features/configuration/data/datasources/local/tables/configuration_table.dart';
 // === GENERATED_IMPORTS_END ===
 
 part 'database.g.dart';
@@ -22,7 +21,6 @@ SyncMetadataTable,
     CategoryTable,
     TaskTable,
     TaskTagMapTable,
-    ConfigurationTable,
 // === GENERATED_TABLES_END ===
 ])
 class AppDatabase extends _$AppDatabase {
