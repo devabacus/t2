@@ -168,7 +168,6 @@ class ConfigurationDao extends DatabaseAccessor<AppDatabase>
     )).go();
   }
 }
-// update method
 
 // === generated_end:base ===
 // update method

@@ -1,4 +1,6 @@
 // manifest: entity
+
+// === generated_start:base ===
 import 'package:drift/drift.dart';
 import 'package:t2_client/t2_client.dart' as serverpod;
 import 'package:uuid/uuid_value.dart';
@@ -252,3 +254,6 @@ class ConfigurationLocalDataSource implements IConfigurationLocalDataSource {
   }
 }
   
+// === generated_end:base ===
+
+// new method

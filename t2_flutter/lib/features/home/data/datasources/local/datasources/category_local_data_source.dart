@@ -11,6 +11,7 @@ import '../../../../../../core/data/datasources/local/database_types.dart';
 import '../daos/category/category_dao.dart';
 import '../interfaces/category_local_datasource_service.dart';
 
+// === generated_start:base ===
 class CategoryLocalDataSource implements ICategoryLocalDataSource {
   final CategoryDao _categoryDao;
 
@@ -251,4 +252,5 @@ class CategoryLocalDataSource implements ICategoryLocalDataSource {
     }
   }
 }
+// === generated_end:base ===
   
