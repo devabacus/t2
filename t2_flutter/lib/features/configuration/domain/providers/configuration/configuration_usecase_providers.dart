@@ -1,4 +1,5 @@
 // manifest: entity
+// === generated_start:base ===
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../usecases/configuration_usecases.dart';
@@ -60,5 +61,14 @@ GetConfigurationByIdUseCase? getConfigurationByIdUseCase(Ref ref) {
   }
   return GetConfigurationByIdUseCase(repository);
 }
-  
+
+  // === generated_end:base ===
+@riverpod
+GetConfigurationByGroupAndKeyUseCase? getConfigurationByGroupAndKeyUseCase(Ref ref) {
+  final repository = ref.watch(currentUserConfigurationRepositoryProvider);
+  if (repository == null) {
+    return null;
+  }
+  return GetConfigurationByGroupAndKeyUseCase(repository);
+}  
     

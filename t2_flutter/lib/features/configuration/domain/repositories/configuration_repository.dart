@@ -13,8 +13,7 @@ abstract class IConfigurationRepository {
   Future<void> syncWithServer();
   void initEventBasedSync();
   void dispose();
-// === generated_end:base ===
-  Future<ConfigurationEntity?> getConfigurationByGroupAndKey(String group, String key);
-  
+  // === generated_end:base ===
+  Future<ConfigurationEntity?> getConfigurationByGroupAndKey(String group, String key);  
 }
 

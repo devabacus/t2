@@ -167,7 +167,22 @@ class ConfigurationDao extends DatabaseAccessor<AppDatabase>
       (t) => t.userId.equals(userId) & t.customerId.equals(customerId),
     )).go();
   }
+// === generated_end:base ===
+
+   Future<ConfigurationTableData?> getConfigurationByGroupAndKey(
+    String group,
+    String key, {
+    required int userId,
+    required String customerId,
+  }) =>
+      (select(configurationTable)..where(
+        (t) =>
+            t.group.equals(group) &
+            t.key.equals(key) &
+            t.userId.equals(userId) &
+            t.customerId.equals(customerId) &
+            t.isDeleted.equals(false),
+      )).getSingleOrNull();
 }
 
-// === generated_end:base ===
-// update method
+

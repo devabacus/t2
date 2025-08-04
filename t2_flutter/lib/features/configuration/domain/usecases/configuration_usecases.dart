@@ -1,4 +1,5 @@
 // manifest: entity
+// === generated_start:base ===
 import '../repositories/configuration_repository.dart';
 import '../entities/configuration/configuration_entity.dart';
 
@@ -61,3 +62,15 @@ class WatchConfigurationsUseCase {
     return _repository.watchConfigurations();
   }
 }
+
+// === generated_end:base ===
+class GetConfigurationByGroupAndKeyUseCase {
+  final IConfigurationRepository _repository;
+
+  GetConfigurationByGroupAndKeyUseCase(this._repository);
+
+  Future<ConfigurationEntity?> call(String group, String key) {
+    return _repository.getConfigurationByGroupAndKey(group, key);
+  }
+}
+

@@ -132,5 +132,26 @@ final getConfigurationByIdUseCaseProvider =
 // ignore: unused_element
 typedef GetConfigurationByIdUseCaseRef =
     AutoDisposeProviderRef<GetConfigurationByIdUseCase?>;
+String _$getConfigurationByGroupAndKeyUseCaseHash() =>
+    r'7f02909f91fc6379fe689b6f757448cba352178c';
+
+/// See also [getConfigurationByGroupAndKeyUseCase].
+@ProviderFor(getConfigurationByGroupAndKeyUseCase)
+final getConfigurationByGroupAndKeyUseCaseProvider =
+    AutoDisposeProvider<GetConfigurationByGroupAndKeyUseCase?>.internal(
+      getConfigurationByGroupAndKeyUseCase,
+      name: r'getConfigurationByGroupAndKeyUseCaseProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$getConfigurationByGroupAndKeyUseCaseHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef GetConfigurationByGroupAndKeyUseCaseRef =
+    AutoDisposeProviderRef<GetConfigurationByGroupAndKeyUseCase?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

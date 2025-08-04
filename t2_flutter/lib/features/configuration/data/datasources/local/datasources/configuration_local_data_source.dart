@@ -252,5 +252,22 @@ class ConfigurationLocalDataSource implements IConfigurationLocalDataSource {
         break;      
     }
   }
-}
 // === generated_end:base ===
+
+ @override
+  Future<ConfigurationModel?> getConfigurationByGroupAndKey(
+    String group,
+    String key, {
+    required int userId,
+    required String customerId,
+  }) async {
+    final result = await _configurationDao.getConfigurationByGroupAndKey(
+      group,
+      key,
+      userId: userId,
+      customerId: customerId,
+    );
+    return result?.toModel();
+  }
+
+}

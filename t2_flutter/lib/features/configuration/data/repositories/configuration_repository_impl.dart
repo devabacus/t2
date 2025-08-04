@@ -1,4 +1,5 @@
 // manifest: entity
+// === generated_start:base ===
 import '../../domain/entities/extensions/configuration_entity_extension.dart';
 import '../../data/datasources/local/tables/extensions/configuration_table_extension.dart';
 import 'package:t2_client/t2_client.dart' as serverpod;
@@ -205,7 +206,12 @@ class ConfigurationRepositoryImpl extends BaseSyncRepository implements IConfigu
       rethrow;
     }
   }
-  
+// === generated_end:base ===
+@override
+  Future<ConfigurationEntity?> getConfigurationByGroupAndKey(String group, String key) async {
+    final model = await _localDataSource.getConfigurationByGroupAndKey(group, key, userId: userId, customerId: customerId);
+    return model?.toEntity();
+  }
 }
 
 
