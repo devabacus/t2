@@ -1,4 +1,5 @@
 // manifest: entity
+// === generated_start:base ===
 import '../entities/configuration/configuration_entity.dart';
 
 abstract class IConfigurationRepository {
@@ -12,6 +13,8 @@ abstract class IConfigurationRepository {
   Future<void> syncWithServer();
   void initEventBasedSync();
   void dispose();
+// === generated_end:base ===
+  Future<ConfigurationEntity?> getConfigurationByGroupAndKey(String group, String key);
   
 }
 

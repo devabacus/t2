@@ -1,4 +1,6 @@
 // manifest: startProject
+import 'package:t2/features/configuration/presentation/routing/configuration_router_config.dart';
+
 import '../../features/home/presentation/routing/home_router_config.dart';
 
 // ignore_for_file: unused_import
@@ -18,7 +20,7 @@ GoRouter appRouter(Ref ref) {
     initialLocation: HomeRoutes.homePath,
     routes: [
 			...getHomeRoutes(),
-        
+      ...getConfigurationRoutes()        
     ]); 
 }   
 

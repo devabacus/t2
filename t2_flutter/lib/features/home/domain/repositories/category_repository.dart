@@ -1,4 +1,5 @@
 // manifest: entity
+// === generated_start:base ===
 import '../entities/category/category_entity.dart';
 
 abstract class ICategoryRepository {
@@ -12,6 +13,6 @@ abstract class ICategoryRepository {
   Future<void> syncWithServer();
   void initEventBasedSync();
   void dispose();
-  
+  // === generated_end:base ===
 }
 
