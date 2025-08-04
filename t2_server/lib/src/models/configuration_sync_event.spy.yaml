@@ -1,3 +1,4 @@
+# manifest: startProject
 class: ConfigurationSyncEvent
 fields:
   type: SyncEventType

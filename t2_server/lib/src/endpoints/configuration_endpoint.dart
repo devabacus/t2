@@ -1,4 +1,4 @@
-// manifest: entity
+// manifest: startProject
 import 'package:serverpod/serverpod.dart';
 import 'package:t2_server/src/generated/protocol.dart';
 import 'shared/auth_context_mixin.dart';
