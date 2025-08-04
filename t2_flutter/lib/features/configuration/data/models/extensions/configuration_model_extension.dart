@@ -1,4 +1,4 @@
-// manifest: entity
+// manifest: startProject
 import 'package:drift/drift.dart';
 
 import '../../../../../core/data/datasources/local/database.dart';

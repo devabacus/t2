@@ -1,4 +1,4 @@
-// manifest: entity
+// manifest: startProject
 import 'package:drift/drift.dart';
 import 'package:t2_client/t2_client.dart' as serverpod;
 

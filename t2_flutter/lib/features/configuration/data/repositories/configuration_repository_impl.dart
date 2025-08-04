@@ -1,4 +1,4 @@
-// manifest: entity
+// manifest: startProject
 // === generated_start:base ===
 import '../../domain/entities/extensions/configuration_entity_extension.dart';
 import '../../data/datasources/local/tables/extensions/configuration_table_extension.dart';

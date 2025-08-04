@@ -1,4 +1,4 @@
-// manifest: entity
+// manifest: startProject
 import '../../entities/configuration/configuration_entity.dart';
 import '../../../data/models/configuration/configuration_model.dart';
 import 'package:t2_client/t2_client.dart' as serverpod;

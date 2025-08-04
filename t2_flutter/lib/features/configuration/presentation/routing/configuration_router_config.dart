@@ -1,4 +1,4 @@
-// lib/features/configuration/presentation/routing/configuration_router_config.dart
+// manifest: startProject
 import 'package:go_router/go_router.dart';
 import '../pages/configuration_page.dart';
 import 'configuration_routes_constants.dart';

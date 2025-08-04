@@ -1,4 +1,4 @@
-// manifest: entity
+// manifest: startProject
 import 'dart:async';
 import 'package:t2_client/t2_client.dart';
 import '../interfaces/configuration_remote_datasource_service.dart';

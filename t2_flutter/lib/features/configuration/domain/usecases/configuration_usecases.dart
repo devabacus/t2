@@ -1,4 +1,4 @@
-// manifest: entity
+// manifest: startProject
 // === generated_start:base ===
 import '../repositories/configuration_repository.dart';
 import '../entities/configuration/configuration_entity.dart';

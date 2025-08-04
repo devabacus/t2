@@ -1,3 +1,4 @@
+// manifest: startProject
 // lib/features/configuration/presentation/pages/configuration_page.dart
 
 import 'package:flutter/material.dart';

@@ -1,4 +1,4 @@
-// manifest: entity
+// manifest: startProject
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'configuration_entity.freezed.dart';

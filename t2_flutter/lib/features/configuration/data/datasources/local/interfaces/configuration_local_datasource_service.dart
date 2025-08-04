@@ -1,4 +1,4 @@
-// manifest: entity
+// manifest: startProject
 
 // === generated_start:base ===
 import 'package:t2/core/data/datasources/local/database.dart';

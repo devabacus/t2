@@ -1,4 +1,4 @@
-// manifest: entity
+// manifest: startProject
 
 // === generated_start:base ===
 import 'package:drift/drift.dart';
