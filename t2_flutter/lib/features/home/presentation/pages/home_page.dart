@@ -184,7 +184,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                 const SizedBox(width: 8),
                 ElevatedButton(
                   onPressed: _createTag,
-                  child: const Text('+ Тег'),
+                  child: const Text('+ Тег'),     
                 ),
               ],
             ),
