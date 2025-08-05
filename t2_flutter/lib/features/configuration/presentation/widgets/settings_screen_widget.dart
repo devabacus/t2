@@ -147,11 +147,133 @@ class _SettingsSectionWidget extends StatelessWidget {
         trailing: const Icon(Icons.arrow_forward_ios, size: 16),
         onTap: () => onGroupSelected?.call(key),
       ),
+
+      multiSelect: (key, displayName, group, currentValues, options) => ListTile(
+        title: Text(displayName),
+        subtitle: Text(currentValues.isEmpty ? 'Не выбрано' : currentValues.join(', ')),
+        onTap: () async {
+          // Логика для диалога с чекбоксами
+          await showDialog(
+            context: context,
+            builder: (context) {
+              // Используем StatefulWidget для управления состоянием внутри диалога
+              return MultiSelectDialog(
+                title: displayName,
+                options: options,
+                initialSelection: currentValues,
+                onConfirm: (newSelection) {
+                  // Преобразуем Set в строку "a;b;c" для сохранения
+                  onSettingChanged(key, newSelection.join(';'));
+                },
+              );
+            },
+          );
+        },
+      ),
+
+
+      number: (key, displayName, group, value) => ListTile(
+        title: Text(displayName),
+        subtitle: Text(value.toString()),
+        trailing: const Icon(Icons.edit),
+        onTap: () async {
+          // Логика для диалога с вводом числа
+          final textController = TextEditingController(text: value.toString());
+          final newValue = await showDialog<String>(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Изменить "$displayName"'),
+              content: TextField(
+                controller: textController,
+                autofocus: true,
+                keyboardType: TextInputType.number, // цифровая клавиатура
+              ),
+              actions: [
+                TextButton(onPressed: () => Navigator.pop(context), child: const Text('Отмена')),
+                ElevatedButton(onPressed: () => Navigator.pop(context, textController.text), child: const Text('Сохранить')),
+              ],
+            ),
+          );
+          if (newValue != null && num.tryParse(newValue) != null) {
+            onSettingChanged(key, newValue);
+          }
+        },
+      ),
+
+
       unsupported: (key, displayName, group) => ListTile(
         title: Text(displayName, style: TextStyle(color: Theme.of(context).disabledColor)),
         subtitle: Text('Неподдерживаемый тип: $key'),
         leading: Icon(Icons.warning_amber, color: Colors.orange.shade300),
       ),
+    );
+  }
+}
+
+
+class MultiSelectDialog extends StatefulWidget {
+  final String title;
+  final List<String> options;
+  final Set<String> initialSelection;
+  final ValueChanged<Set<String>> onConfirm;
+
+  const MultiSelectDialog({
+    super.key,
+    required this.title,
+    required this.options,
+    required this.initialSelection,
+    required this.onConfirm,
+  });
+
+  @override
+  State<MultiSelectDialog> createState() => _MultiSelectDialogState();
+}
+
+class _MultiSelectDialogState extends State<MultiSelectDialog> {
+  late Set<String> _selectedValues;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedValues = Set.from(widget.initialSelection);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(widget.title),
+      content: SingleChildScrollView(
+        child: Column(
+          children: widget.options.map((option) {
+            return CheckboxListTile(
+              title: Text(option),
+              value: _selectedValues.contains(option),
+              onChanged: (isSelected) {
+                setState(() {
+                  if (isSelected == true) {
+                    _selectedValues.add(option);
+                  } else {
+                    _selectedValues.remove(option);
+                  }
+                });
+              },
+            );
+          }).toList(),
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Отмена'),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            widget.onConfirm(_selectedValues);
+            Navigator.pop(context);
+          },
+          child: const Text('Применить'),
+        ),
+      ],
     );
   }
 }

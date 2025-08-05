@@ -13,6 +13,15 @@ List<SettingDefinition> getUiSettings() {
       optionsKey: 'themeOptions', // Указываем, где искать опции
       defaultOptions: ['system', 'light', 'dark'],
     ),
+
+    MultiSelectSettingDefinition(
+      key: 'notificationTypes',
+      group: 'UI',
+      displayName: 'Типы уведомлений',
+      defaultValue: 'news;updates', // Выбраны 2 из 3 по умолчанию
+      optionsKey: 'notificationTypesOptions',
+      defaultOptions: ['news', 'updates', 'promotions'],
+    ),
     
     // Настройка анимаций
     BooleanSettingDefinition(
@@ -27,6 +36,13 @@ List<SettingDefinition> getUiSettings() {
       group: 'UI',
       displayName: 'Новая булева настройка',
       defaultValue: false,
+    ),
+
+     NumberSettingDefinition(
+      key: 'itemsPerPage',
+      group: 'UI',
+      displayName: 'Элементов на странице',
+      defaultValue: 20,
     ),
   ];
 }

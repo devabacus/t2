@@ -88,14 +88,16 @@ extension SettingViewModelPatterns on SettingViewModel {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( BooleanSettingViewModel value)?  boolean,TResult Function( OptionsSettingViewModel value)?  options,TResult Function( StringSettingViewModel value)?  string,TResult Function( GroupSettingViewModel value)?  group,TResult Function( UnsupportedSettingViewModel value)?  unsupported,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( BooleanSettingViewModel value)?  boolean,TResult Function( OptionsSettingViewModel value)?  options,TResult Function( StringSettingViewModel value)?  string,TResult Function( GroupSettingViewModel value)?  group,TResult Function( MultiSelectSettingViewModel value)?  multiSelect,TResult Function( NumberSettingViewModel value)?  number,TResult Function( UnsupportedSettingViewModel value)?  unsupported,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case BooleanSettingViewModel() when boolean != null:
 return boolean(_that);case OptionsSettingViewModel() when options != null:
 return options(_that);case StringSettingViewModel() when string != null:
 return string(_that);case GroupSettingViewModel() when group != null:
-return group(_that);case UnsupportedSettingViewModel() when unsupported != null:
+return group(_that);case MultiSelectSettingViewModel() when multiSelect != null:
+return multiSelect(_that);case NumberSettingViewModel() when number != null:
+return number(_that);case UnsupportedSettingViewModel() when unsupported != null:
 return unsupported(_that);case _:
   return orElse();
 
@@ -114,14 +116,16 @@ return unsupported(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( BooleanSettingViewModel value)  boolean,required TResult Function( OptionsSettingViewModel value)  options,required TResult Function( StringSettingViewModel value)  string,required TResult Function( GroupSettingViewModel value)  group,required TResult Function( UnsupportedSettingViewModel value)  unsupported,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( BooleanSettingViewModel value)  boolean,required TResult Function( OptionsSettingViewModel value)  options,required TResult Function( StringSettingViewModel value)  string,required TResult Function( GroupSettingViewModel value)  group,required TResult Function( MultiSelectSettingViewModel value)  multiSelect,required TResult Function( NumberSettingViewModel value)  number,required TResult Function( UnsupportedSettingViewModel value)  unsupported,}){
 final _that = this;
 switch (_that) {
 case BooleanSettingViewModel():
 return boolean(_that);case OptionsSettingViewModel():
 return options(_that);case StringSettingViewModel():
 return string(_that);case GroupSettingViewModel():
-return group(_that);case UnsupportedSettingViewModel():
+return group(_that);case MultiSelectSettingViewModel():
+return multiSelect(_that);case NumberSettingViewModel():
+return number(_that);case UnsupportedSettingViewModel():
 return unsupported(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
@@ -136,14 +140,16 @@ return unsupported(_that);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( BooleanSettingViewModel value)?  boolean,TResult? Function( OptionsSettingViewModel value)?  options,TResult? Function( StringSettingViewModel value)?  string,TResult? Function( GroupSettingViewModel value)?  group,TResult? Function( UnsupportedSettingViewModel value)?  unsupported,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( BooleanSettingViewModel value)?  boolean,TResult? Function( OptionsSettingViewModel value)?  options,TResult? Function( StringSettingViewModel value)?  string,TResult? Function( GroupSettingViewModel value)?  group,TResult? Function( MultiSelectSettingViewModel value)?  multiSelect,TResult? Function( NumberSettingViewModel value)?  number,TResult? Function( UnsupportedSettingViewModel value)?  unsupported,}){
 final _that = this;
 switch (_that) {
 case BooleanSettingViewModel() when boolean != null:
 return boolean(_that);case OptionsSettingViewModel() when options != null:
 return options(_that);case StringSettingViewModel() when string != null:
 return string(_that);case GroupSettingViewModel() when group != null:
-return group(_that);case UnsupportedSettingViewModel() when unsupported != null:
+return group(_that);case MultiSelectSettingViewModel() when multiSelect != null:
+return multiSelect(_that);case NumberSettingViewModel() when number != null:
+return number(_that);case UnsupportedSettingViewModel() when unsupported != null:
 return unsupported(_that);case _:
   return null;
 
@@ -161,13 +167,15 @@ return unsupported(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String key,  String displayName,  String group,  bool value)?  boolean,TResult Function( String key,  String displayName,  String group,  String currentValue,  List<String> options)?  options,TResult Function( String key,  String displayName,  String group,  String value)?  string,TResult Function( String key,  String displayName,  String group)?  group,TResult Function( String key,  String displayName,  String group)?  unsupported,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String key,  String displayName,  String group,  bool value)?  boolean,TResult Function( String key,  String displayName,  String group,  String currentValue,  List<String> options)?  options,TResult Function( String key,  String displayName,  String group,  String value)?  string,TResult Function( String key,  String displayName,  String group)?  group,TResult Function( String key,  String displayName,  String group,  Set<String> currentValues,  List<String> options)?  multiSelect,TResult Function( String key,  String displayName,  String group,  num value)?  number,TResult Function( String key,  String displayName,  String group)?  unsupported,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case BooleanSettingViewModel() when boolean != null:
 return boolean(_that.key,_that.displayName,_that.group,_that.value);case OptionsSettingViewModel() when options != null:
 return options(_that.key,_that.displayName,_that.group,_that.currentValue,_that.options);case StringSettingViewModel() when string != null:
 return string(_that.key,_that.displayName,_that.group,_that.value);case GroupSettingViewModel() when group != null:
-return group(_that.key,_that.displayName,_that.group);case UnsupportedSettingViewModel() when unsupported != null:
+return group(_that.key,_that.displayName,_that.group);case MultiSelectSettingViewModel() when multiSelect != null:
+return multiSelect(_that.key,_that.displayName,_that.group,_that.currentValues,_that.options);case NumberSettingViewModel() when number != null:
+return number(_that.key,_that.displayName,_that.group,_that.value);case UnsupportedSettingViewModel() when unsupported != null:
 return unsupported(_that.key,_that.displayName,_that.group);case _:
   return orElse();
 
@@ -186,13 +194,15 @@ return unsupported(_that.key,_that.displayName,_that.group);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String key,  String displayName,  String group,  bool value)  boolean,required TResult Function( String key,  String displayName,  String group,  String currentValue,  List<String> options)  options,required TResult Function( String key,  String displayName,  String group,  String value)  string,required TResult Function( String key,  String displayName,  String group)  group,required TResult Function( String key,  String displayName,  String group)  unsupported,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String key,  String displayName,  String group,  bool value)  boolean,required TResult Function( String key,  String displayName,  String group,  String currentValue,  List<String> options)  options,required TResult Function( String key,  String displayName,  String group,  String value)  string,required TResult Function( String key,  String displayName,  String group)  group,required TResult Function( String key,  String displayName,  String group,  Set<String> currentValues,  List<String> options)  multiSelect,required TResult Function( String key,  String displayName,  String group,  num value)  number,required TResult Function( String key,  String displayName,  String group)  unsupported,}) {final _that = this;
 switch (_that) {
 case BooleanSettingViewModel():
 return boolean(_that.key,_that.displayName,_that.group,_that.value);case OptionsSettingViewModel():
 return options(_that.key,_that.displayName,_that.group,_that.currentValue,_that.options);case StringSettingViewModel():
 return string(_that.key,_that.displayName,_that.group,_that.value);case GroupSettingViewModel():
-return group(_that.key,_that.displayName,_that.group);case UnsupportedSettingViewModel():
+return group(_that.key,_that.displayName,_that.group);case MultiSelectSettingViewModel():
+return multiSelect(_that.key,_that.displayName,_that.group,_that.currentValues,_that.options);case NumberSettingViewModel():
+return number(_that.key,_that.displayName,_that.group,_that.value);case UnsupportedSettingViewModel():
 return unsupported(_that.key,_that.displayName,_that.group);}
 }
 /// A variant of `when` that fallback to returning `null`
@@ -207,13 +217,15 @@ return unsupported(_that.key,_that.displayName,_that.group);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String key,  String displayName,  String group,  bool value)?  boolean,TResult? Function( String key,  String displayName,  String group,  String currentValue,  List<String> options)?  options,TResult? Function( String key,  String displayName,  String group,  String value)?  string,TResult? Function( String key,  String displayName,  String group)?  group,TResult? Function( String key,  String displayName,  String group)?  unsupported,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String key,  String displayName,  String group,  bool value)?  boolean,TResult? Function( String key,  String displayName,  String group,  String currentValue,  List<String> options)?  options,TResult? Function( String key,  String displayName,  String group,  String value)?  string,TResult? Function( String key,  String displayName,  String group)?  group,TResult? Function( String key,  String displayName,  String group,  Set<String> currentValues,  List<String> options)?  multiSelect,TResult? Function( String key,  String displayName,  String group,  num value)?  number,TResult? Function( String key,  String displayName,  String group)?  unsupported,}) {final _that = this;
 switch (_that) {
 case BooleanSettingViewModel() when boolean != null:
 return boolean(_that.key,_that.displayName,_that.group,_that.value);case OptionsSettingViewModel() when options != null:
 return options(_that.key,_that.displayName,_that.group,_that.currentValue,_that.options);case StringSettingViewModel() when string != null:
 return string(_that.key,_that.displayName,_that.group,_that.value);case GroupSettingViewModel() when group != null:
-return group(_that.key,_that.displayName,_that.group);case UnsupportedSettingViewModel() when unsupported != null:
+return group(_that.key,_that.displayName,_that.group);case MultiSelectSettingViewModel() when multiSelect != null:
+return multiSelect(_that.key,_that.displayName,_that.group,_that.currentValues,_that.options);case NumberSettingViewModel() when number != null:
+return number(_that.key,_that.displayName,_that.group,_that.value);case UnsupportedSettingViewModel() when unsupported != null:
 return unsupported(_that.key,_that.displayName,_that.group);case _:
   return null;
 
@@ -510,6 +522,164 @@ key: null == key ? _self.key : key // ignore: cast_nullable_to_non_nullable
 as String,displayName: null == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
 as String,group: null == group ? _self.group : group // ignore: cast_nullable_to_non_nullable
 as String,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class MultiSelectSettingViewModel implements SettingViewModel {
+  const MultiSelectSettingViewModel({required this.key, required this.displayName, required this.group, required final  Set<String> currentValues, required final  List<String> options}): _currentValues = currentValues,_options = options;
+  
+
+@override final  String key;
+@override final  String displayName;
+@override final  String group;
+ final  Set<String> _currentValues;
+ Set<String> get currentValues {
+  if (_currentValues is EqualUnmodifiableSetView) return _currentValues;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableSetView(_currentValues);
+}
+
+ final  List<String> _options;
+ List<String> get options {
+  if (_options is EqualUnmodifiableListView) return _options;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_options);
+}
+
+
+/// Create a copy of SettingViewModel
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$MultiSelectSettingViewModelCopyWith<MultiSelectSettingViewModel> get copyWith => _$MultiSelectSettingViewModelCopyWithImpl<MultiSelectSettingViewModel>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MultiSelectSettingViewModel&&(identical(other.key, key) || other.key == key)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.group, group) || other.group == group)&&const DeepCollectionEquality().equals(other._currentValues, _currentValues)&&const DeepCollectionEquality().equals(other._options, _options));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,key,displayName,group,const DeepCollectionEquality().hash(_currentValues),const DeepCollectionEquality().hash(_options));
+
+@override
+String toString() {
+  return 'SettingViewModel.multiSelect(key: $key, displayName: $displayName, group: $group, currentValues: $currentValues, options: $options)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $MultiSelectSettingViewModelCopyWith<$Res> implements $SettingViewModelCopyWith<$Res> {
+  factory $MultiSelectSettingViewModelCopyWith(MultiSelectSettingViewModel value, $Res Function(MultiSelectSettingViewModel) _then) = _$MultiSelectSettingViewModelCopyWithImpl;
+@override @useResult
+$Res call({
+ String key, String displayName, String group, Set<String> currentValues, List<String> options
+});
+
+
+
+
+}
+/// @nodoc
+class _$MultiSelectSettingViewModelCopyWithImpl<$Res>
+    implements $MultiSelectSettingViewModelCopyWith<$Res> {
+  _$MultiSelectSettingViewModelCopyWithImpl(this._self, this._then);
+
+  final MultiSelectSettingViewModel _self;
+  final $Res Function(MultiSelectSettingViewModel) _then;
+
+/// Create a copy of SettingViewModel
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? key = null,Object? displayName = null,Object? group = null,Object? currentValues = null,Object? options = null,}) {
+  return _then(MultiSelectSettingViewModel(
+key: null == key ? _self.key : key // ignore: cast_nullable_to_non_nullable
+as String,displayName: null == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
+as String,group: null == group ? _self.group : group // ignore: cast_nullable_to_non_nullable
+as String,currentValues: null == currentValues ? _self._currentValues : currentValues // ignore: cast_nullable_to_non_nullable
+as Set<String>,options: null == options ? _self._options : options // ignore: cast_nullable_to_non_nullable
+as List<String>,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class NumberSettingViewModel implements SettingViewModel {
+  const NumberSettingViewModel({required this.key, required this.displayName, required this.group, required this.value});
+  
+
+@override final  String key;
+@override final  String displayName;
+@override final  String group;
+ final  num value;
+
+/// Create a copy of SettingViewModel
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$NumberSettingViewModelCopyWith<NumberSettingViewModel> get copyWith => _$NumberSettingViewModelCopyWithImpl<NumberSettingViewModel>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is NumberSettingViewModel&&(identical(other.key, key) || other.key == key)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.group, group) || other.group == group)&&(identical(other.value, value) || other.value == value));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,key,displayName,group,value);
+
+@override
+String toString() {
+  return 'SettingViewModel.number(key: $key, displayName: $displayName, group: $group, value: $value)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $NumberSettingViewModelCopyWith<$Res> implements $SettingViewModelCopyWith<$Res> {
+  factory $NumberSettingViewModelCopyWith(NumberSettingViewModel value, $Res Function(NumberSettingViewModel) _then) = _$NumberSettingViewModelCopyWithImpl;
+@override @useResult
+$Res call({
+ String key, String displayName, String group, num value
+});
+
+
+
+
+}
+/// @nodoc
+class _$NumberSettingViewModelCopyWithImpl<$Res>
+    implements $NumberSettingViewModelCopyWith<$Res> {
+  _$NumberSettingViewModelCopyWithImpl(this._self, this._then);
+
+  final NumberSettingViewModel _self;
+  final $Res Function(NumberSettingViewModel) _then;
+
+/// Create a copy of SettingViewModel
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? key = null,Object? displayName = null,Object? group = null,Object? value = null,}) {
+  return _then(NumberSettingViewModel(
+key: null == key ? _self.key : key // ignore: cast_nullable_to_non_nullable
+as String,displayName: null == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
+as String,group: null == group ? _self.group : group // ignore: cast_nullable_to_non_nullable
+as String,value: null == value ? _self.value : value // ignore: cast_nullable_to_non_nullable
+as num,
   ));
 }
 

@@ -33,6 +33,22 @@ sealed class SettingViewModel with _$SettingViewModel {
     required String group, // 'root' или другая родительская группа
   }) = GroupSettingViewModel;
  
+
+ const factory SettingViewModel.multiSelect({
+    required String key,
+    required String displayName,
+    required String group,
+    required Set<String> currentValues,
+    required List<String> options,
+  }) = MultiSelectSettingViewModel;
+
+  const factory SettingViewModel.number({
+    required String key,
+    required String displayName,
+    required String group,
+    required num value,
+  }) = NumberSettingViewModel;
+
   const factory SettingViewModel.unsupported({
     required String key,
     required String displayName,

@@ -107,3 +107,65 @@ class StringSettingDefinition extends SettingDefinition {
     );
   }
 }
+
+// --- НОВЫЙ ТИП: ВЫБОР НЕСКОЛЬКИХ ОПЦИЙ ---
+/// "Чертёж" для настройки с выбором нескольких значений.
+class MultiSelectSettingDefinition extends SettingDefinition {
+  final String optionsKey; // Ключ, где хранятся все возможные варианты
+  final List<String> defaultOptions;
+
+  MultiSelectSettingDefinition({
+    required super.key,
+    required super.group,
+    required super.displayName,
+    required super.defaultValue, // Значения по умолчанию через ";"
+    required this.optionsKey,
+    this.defaultOptions = const [],
+  });
+
+  @override
+  SettingViewModel? buildViewModel(
+    ConfigurationEntity? config,
+    Map<String, ConfigurationEntity> allConfigs,
+  ) {
+    final optionsConfig = allConfigs[optionsKey];
+    final currentValue = config?.value ?? defaultValue;
+
+    return MultiSelectSettingViewModel(
+      key: key,
+      displayName: displayName,
+      group: group,
+      // Преобразуем строку "a;b;c" в список
+      currentValues: currentValue.isEmpty ? {} : currentValue.split(';').toSet(),
+      // Получаем все возможные варианты
+      options: optionsConfig?.value.split(';') ?? defaultOptions,
+    );
+  }
+}
+
+// --- НОВЫЙ ТИП: ВВОД ЧИСЛА ---
+/// "Чертёж" для числовой настройки.
+class NumberSettingDefinition extends SettingDefinition {
+  NumberSettingDefinition({
+    required super.key,
+    required super.group,
+    required super.displayName,
+    required num defaultValue,
+  }) : super(defaultValue: defaultValue.toString());
+
+  @override
+  SettingViewModel? buildViewModel(
+    ConfigurationEntity? config,
+    Map<String, ConfigurationEntity> allConfigs,
+  ) {
+    final value = num.tryParse(config?.value ?? defaultValue);
+    if (value == null) return null; // Валидация
+
+    return NumberSettingViewModel(
+      key: key,
+      displayName: displayName,
+      group: group,
+      value: value,
+    );
+  }
+}
