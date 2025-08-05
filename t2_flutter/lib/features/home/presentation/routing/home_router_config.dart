@@ -1,4 +1,4 @@
-
+// manifest: startProject
 import '../../presentation/pages/home_page.dart';
 import 'home_routes_constants.dart';
 

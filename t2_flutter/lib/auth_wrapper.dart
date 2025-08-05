@@ -1,4 +1,4 @@
-
+// manifest: startProject
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:serverpod_auth_email_flutter/serverpod_auth_email_flutter.dart';

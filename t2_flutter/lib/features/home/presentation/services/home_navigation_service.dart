@@ -1,4 +1,4 @@
-
+// manifest: startProject
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../routing/home_routes_constants.dart';
