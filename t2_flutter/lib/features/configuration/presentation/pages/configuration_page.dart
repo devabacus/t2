@@ -1,59 +1,74 @@
 // manifest: startProject
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:uuid/uuid.dart';
 
+import '../../../../core/providers/session_manager_provider.dart';
+import '../../domain/entities/configuration/configuration_entity.dart';
 import '../../domain/providers/configuration/configuration_usecase_providers.dart';
 import '../providers/configuration/configuration_state_providers.dart';
 import '../providers/settings_mapper.dart';
+import '../registry/settings_registry.dart';
 import '../widgets/settings_screen_widget.dart';
 
 /// Страница-контейнер для отображения настроек.
-///
-/// Эта страница является "умным" компонентом, который:
-/// 1. Подписывается на поток данных о конфигурациях.
-/// 2. Использует Mapper для преобразования данных в ViewModel.
-/// 3. Передает ViewModel в "глупый" UI-компонент [SettingsScreenWidget].
-/// 4. Обрабатывает колбэки от UI-компонента для сохранения данных и навигации.
 class ConfigurationPage extends ConsumerWidget {
-  /// Ключ группы настроек для отображения.
-  /// Если null, отображается корневой экран со списком всех групп.
   final String? groupKey;
 
   const ConfigurationPage({super.key, this.groupKey});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Подписываемся на общий поток всех конфигураций
     final configurationsAsync = ref.watch(configurationsStreamProvider);
-    // Получаем экземпляр маппера
     final mapper = ref.watch(settingsMapperProvider);
 
     return configurationsAsync.when(
       data: (configs) {
-        // 1. Преобразуем сырые данные в декларативную модель экрана,
-        // передавая groupKey, чтобы маппер знал, что отображать.
         final screenModel = mapper.mapToScreen(configs, groupKey: groupKey);
 
-        // 2. Определяем колбэк для сохранения измененной настройки.
+        // --- НАЧАЛО ИЗМЕНЕНИЙ: УЛУЧШЕННЫЙ КОЛБЭК ---
         onSettingChanged(String key, dynamic value) {
-          final useCase = ref.read(updateConfigurationUseCaseProvider);
-          // Ищем оригинальную сущность, чтобы обновить ее
-          final configToUpdate = configs.firstWhere((c) => c.key == key);
+          final updateUseCase = ref.read(updateConfigurationUseCaseProvider);
+          final createUseCase = ref.read(createConfigurationUseCaseProvider);
+          final registry = ref.read(settingsRegistryProvider);
           
-          useCase?.call(configToUpdate.copyWith(value: value.toString()));
-        }
+          // Ищем существующую конфигурацию (безопасно, без ошибок)
+          final configToUpdate = configs.where((c) => c.key == key).firstOrNull;
 
-        // 3. Определяем колбэк для навигации в подгруппу.
+          if (configToUpdate != null) {
+            // --- СЦЕНАРИЙ 1: НАСТРОЙКА СУЩЕСТВУЕТ -> ОБНОВЛЯЕМ ---
+            updateUseCase?.call(configToUpdate.copyWith(value: value.toString()));
+          } else {
+            // --- СЦЕНАРИЙ 2: НАСТРОЙКИ НЕТ -> СОЗДАЕМ ---
+            final definition = registry.find(key);
+            final currentUser = ref.read(currentUserProvider);
+            final customerId = ref.read(currentCustomerIdProvider);
+
+            if (createUseCase != null && definition != null && currentUser != null && customerId != null) {
+              final newConfig = ConfigurationEntity(
+                id: const Uuid().v7(),
+                userId: currentUser.id!,
+                customerId: customerId,
+                createdAt: DateTime.now(),
+                lastModified: DateTime.now(),
+                key: definition.key,
+                group: definition.group,
+                value: value.toString(), // Используем новое значение
+              );
+              createUseCase(newConfig);
+            }
+          }
+        }
+        // --- КОНЕЦ ИЗМЕНЕНИЙ ---
+
         onGroupSelected(String key) {
           Navigator.of(context).push(
             MaterialPageRoute(
-              // Открываем новый экземпляр этой же страницы, но уже с ключом группы
               builder: (context) => ConfigurationPage(groupKey: key),
             ),
           );
         }
 
-        // 4. Отображаем универсальный виджет, передавая ему модель и колбэки.
         return SettingsScreenWidget(
           screenModel: screenModel,
           onSettingChanged: onSettingChanged,

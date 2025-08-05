@@ -1,31 +1,28 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'settings_mapper.dart';
+part of 'settings_registry.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$settingsMapperHash() => r'd7cb960c340d937ff7c4345d2d00e31b6ec3d9b5';
+String _$settingsRegistryHash() => r'8ef1470745589b0c90d13add81822239bfedc27a';
 
-/// Провайдер Riverpod для доступа к экземпляру SettingsMapper.
-/// Он зависит от реестра, поэтому получает его из [settingsRegistryProvider].
-///
-/// Copied from [settingsMapper].
-@ProviderFor(settingsMapper)
-final settingsMapperProvider = AutoDisposeProvider<SettingsMapper>.internal(
-  settingsMapper,
-  name: r'settingsMapperProvider',
+/// See also [settingsRegistry].
+@ProviderFor(settingsRegistry)
+final settingsRegistryProvider = Provider<SettingsRegistry>.internal(
+  settingsRegistry,
+  name: r'settingsRegistryProvider',
   debugGetCreateSourceHash:
       const bool.fromEnvironment('dart.vm.product')
           ? null
-          : _$settingsMapperHash,
+          : _$settingsRegistryHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef SettingsMapperRef = AutoDisposeProviderRef<SettingsMapper>;
+typedef SettingsRegistryRef = ProviderRef<SettingsRegistry>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
