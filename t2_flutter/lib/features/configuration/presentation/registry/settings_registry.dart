@@ -1,10 +1,10 @@
 // manifest: startProject
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'audio_settings.dart';
+import 'setting_groups/audio_settings.dart';
 import 'setting_definition.dart';
-import 'ui_settings.dart';
-import 'profile_settings.dart';
+import 'setting_groups/ui_settings.dart';
+import 'setting_groups/profile_settings.dart';
 
 part 'settings_registry.g.dart';
 

@@ -1,5 +1,5 @@
 // manifest: startProject
-import 'definitions.dart';
+import '../definitions.dart';
 
 /// Возвращает список всех определений настроек для группы "Audio".
 List<SettingDefinition> getAudioSettings() {
