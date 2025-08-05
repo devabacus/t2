@@ -1,3 +1,4 @@
+import '../../features/configuration/presentation/routing/configuration_routes_constants.dart';
 // manifest: startProject
 import 'package:t2/features/configuration/presentation/routing/configuration_router_config.dart';
 
@@ -17,7 +18,7 @@ part 'router_config.g.dart';
 GoRouter appRouter(Ref ref) {
   return GoRouter(
     // observers: [TalkerRouteObserver(log.talker)],
-    initialLocation: HomeRoutes.homePath,
+    initialLocation: ConfigurationRoutes.configurationPath,
     routes: [
 			...getHomeRoutes(),
       ...getConfigurationRoutes()        

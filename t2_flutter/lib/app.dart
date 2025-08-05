@@ -1,11 +1,11 @@
 // manifest: startProject
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:t2/features/configuration/presentation/pages/configuration_page.dart';
 
 import 'auth_wrapper.dart';
 import 'core/sync/sync_controller_provider.dart';
 import 'check/server_check_ui.dart';
-
 
 class App extends ConsumerWidget {
   const App({super.key});
@@ -23,6 +23,7 @@ class App extends ConsumerWidget {
       ),
       // Убираем роутинг и используем AuthWrapper для управления состоянием
       home: const AuthWrapper(),
+      // home: const ConfigurationPage(),
       // home: const ServerCheckUi(),
     );
   }

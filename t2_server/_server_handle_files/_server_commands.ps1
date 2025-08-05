@@ -15,7 +15,7 @@ KUBE_CONFIG
 # serverpod
 cd "g:\Projects\Flutter\serverpod\t2\t2_server";
 
-docker compose up -d
+cd "g:\Projects\Flutter\serverpod\t2\t2_server"; docker compose up -d
 serverpod create-migration --experimental-features=all --force
 serverpod generate --experimental-features=all
 dart bin/main.dart --apply-migrations
