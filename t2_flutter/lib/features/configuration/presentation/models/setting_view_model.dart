@@ -49,6 +49,16 @@ sealed class SettingViewModel with _$SettingViewModel {
     required num value,
   }) = NumberSettingViewModel;
 
+   const factory SettingViewModel.slider({
+    required String key,
+    required String displayName,
+    required String group,
+    required double value,
+    required double min,
+    required double max,
+    int? divisions,
+  }) = SliderSettingViewModel;
+
   const factory SettingViewModel.unsupported({
     required String key,
     required String displayName,

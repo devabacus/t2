@@ -26,9 +26,7 @@ class SettingsScreenWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(screenModel.title),
-      ),
+      appBar: AppBar(title: Text(screenModel.title)),
       body: ListView.builder(
         itemCount: screenModel.sections.length,
         itemBuilder: (context, index) {
@@ -62,7 +60,7 @@ class _SettingsSectionWidget extends StatelessWidget {
     if (section.settings.isEmpty) {
       return const SizedBox.shrink();
     }
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -71,12 +69,14 @@ class _SettingsSectionWidget extends StatelessWidget {
           child: Text(
             section.title,
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: Theme.of(context).colorScheme.primary,
-                  fontWeight: FontWeight.bold,
-                ),
+              color: Theme.of(context).colorScheme.primary,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
-        ...section.settings.map((setting) => _buildSettingTile(context, setting)),
+        ...section.settings.map(
+          (setting) => _buildSettingTile(context, setting),
+        ),
         const Divider(height: 1),
       ],
     );
@@ -86,130 +86,181 @@ class _SettingsSectionWidget extends StatelessWidget {
   /// используя паттерн-матчинг из Freezed.
   Widget _buildSettingTile(BuildContext context, SettingViewModel model) {
     return model.when(
-      boolean: (key, displayName, group, value) => SwitchListTile(
-        title: Text(displayName),
-        value: value,
-        onChanged: (newValue) => onSettingChanged(key, newValue),
-      ),
-      options: (key, displayName, group, currentValue, options) => ListTile(
-        title: Text(displayName),
-        subtitle: Text(currentValue),
-        trailing: const Icon(Icons.arrow_drop_down),
-        onTap: () async {
-          final selected = await showDialog<String>(
-            context: context,
-            builder: (BuildContext context) {
-              return SimpleDialog(
-                title: Text('Выбрать "$displayName"'),
-                children: options.map((option) {
-                  return SimpleDialogOption(
-                    onPressed: () {
-                      Navigator.pop(context, option);
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: Text(option),
-                    ),
+      boolean:
+          (key, displayName, group, value) => SwitchListTile(
+            title: Text(displayName),
+            value: value,
+            onChanged: (newValue) => onSettingChanged(key, newValue),
+          ),
+      options:
+          (key, displayName, group, currentValue, options) => ListTile(
+            title: Text(displayName),
+            subtitle: Text(currentValue),
+            trailing: const Icon(Icons.arrow_drop_down),
+            onTap: () async {
+              final selected = await showDialog<String>(
+                context: context,
+                builder: (BuildContext context) {
+                  return SimpleDialog(
+                    title: Text('Выбрать "$displayName"'),
+                    children:
+                        options.map((option) {
+                          return SimpleDialogOption(
+                            onPressed: () {
+                              Navigator.pop(context, option);
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 8.0,
+                              ),
+                              child: Text(option),
+                            ),
+                          );
+                        }).toList(),
                   );
-                }).toList(),
+                },
               );
+              if (selected != null) {
+                onSettingChanged(key, selected);
+              }
             },
-          );
-          if (selected != null) {
-            onSettingChanged(key, selected);
-          }
-        },
-      ),
-      string: (key, displayName, group, value) => ListTile(
-        title: Text(displayName),
-        subtitle: Text(value),
-        trailing: const Icon(Icons.edit),
-        onTap: () async {
-          final textController = TextEditingController(text: value);
-          final newValue = await showDialog<String>(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: Text('Изменить "$displayName"'),
-              content: TextField(controller: textController, autofocus: true),
-              actions: [
-                TextButton(onPressed: () => Navigator.pop(context), child: const Text('Отмена')),
-                ElevatedButton(onPressed: () => Navigator.pop(context, textController.text), child: const Text('Сохранить')),
-              ],
-            ),
-          );
-          if (newValue != null && newValue.isNotEmpty) {
-            onSettingChanged(key, newValue);
-          }
-        },
-      ),
-      group: (key, displayName, group) => ListTile(
-        title: Text(displayName),
-        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-        onTap: () => onGroupSelected?.call(key),
-      ),
+          ),
+      string:
+          (key, displayName, group, value) => ListTile(
+            title: Text(displayName),
+            subtitle: Text(value),
+            trailing: const Icon(Icons.edit),
+            onTap: () async {
+              final textController = TextEditingController(text: value);
+              final newValue = await showDialog<String>(
+                context: context,
+                builder:
+                    (context) => AlertDialog(
+                      title: Text('Изменить "$displayName"'),
+                      content: TextField(
+                        controller: textController,
+                        autofocus: true,
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: const Text('Отмена'),
+                        ),
+                        ElevatedButton(
+                          onPressed:
+                              () => Navigator.pop(context, textController.text),
+                          child: const Text('Сохранить'),
+                        ),
+                      ],
+                    ),
+              );
+              if (newValue != null && newValue.isNotEmpty) {
+                onSettingChanged(key, newValue);
+              }
+            },
+          ),
+      group:
+          (key, displayName, group) => ListTile(
+            title: Text(displayName),
+            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+            onTap: () => onGroupSelected?.call(key),
+          ),
 
-      multiSelect: (key, displayName, group, currentValues, options) => ListTile(
-        title: Text(displayName),
-        subtitle: Text(currentValues.isEmpty ? 'Не выбрано' : currentValues.join(', ')),
-        onTap: () async {
-          // Логика для диалога с чекбоксами
-          await showDialog(
-            context: context,
-            builder: (context) {
-              // Используем StatefulWidget для управления состоянием внутри диалога
-              return MultiSelectDialog(
-                title: displayName,
-                options: options,
-                initialSelection: currentValues,
-                onConfirm: (newSelection) {
-                  // Преобразуем Set в строку "a;b;c" для сохранения
-                  onSettingChanged(key, newSelection.join(';'));
+      multiSelect:
+          (key, displayName, group, currentValues, options) => ListTile(
+            title: Text(displayName),
+            subtitle: Text(
+              currentValues.isEmpty ? 'Не выбрано' : currentValues.join(', '),
+            ),
+            onTap: () async {
+              // Логика для диалога с чекбоксами
+              await showDialog(
+                context: context,
+                builder: (context) {
+                  // Используем StatefulWidget для управления состоянием внутри диалога
+                  return MultiSelectDialog(
+                    title: displayName,
+                    options: options,
+                    initialSelection: currentValues,
+                    onConfirm: (newSelection) {
+                      // Преобразуем Set в строку "a;b;c" для сохранения
+                      onSettingChanged(key, newSelection.join(';'));
+                    },
+                  );
                 },
               );
             },
-          );
-        },
-      ),
+          ),
 
+      slider: (key, displayName, group, value, min, max, divisions) {
+        return ListTile(
+          title: Text(displayName),
+          subtitle: Slider(
+            value: value,
+            min: min,
+            max: max,
+            divisions: divisions,
+            label: value.round().toString(),
+            onChanged: (newValue) {
+              // Вызываем колбэк с новым значением, округленным для чистоты
+              onSettingChanged(key, newValue.toStringAsFixed(1));
+            },
+          ),
+        );
+      },
+      
+      number:
+          (key, displayName, group, value) => ListTile(
+            title: Text(displayName),
+            subtitle: Text(value.toString()),
+            trailing: const Icon(Icons.edit),
+            onTap: () async {
+              // Логика для диалога с вводом числа
+              final textController = TextEditingController(
+                text: value.toString(),
+              );
+              final newValue = await showDialog<String>(
+                context: context,
+                builder:
+                    (context) => AlertDialog(
+                      title: Text('Изменить "$displayName"'),
+                      content: TextField(
+                        controller: textController,
+                        autofocus: true,
+                        keyboardType:
+                            TextInputType.number, // цифровая клавиатура
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: const Text('Отмена'),
+                        ),
+                        ElevatedButton(
+                          onPressed:
+                              () => Navigator.pop(context, textController.text),
+                          child: const Text('Сохранить'),
+                        ),
+                      ],
+                    ),
+              );
+              if (newValue != null && num.tryParse(newValue) != null) {
+                onSettingChanged(key, newValue);
+              }
+            },
+          ),
 
-      number: (key, displayName, group, value) => ListTile(
-        title: Text(displayName),
-        subtitle: Text(value.toString()),
-        trailing: const Icon(Icons.edit),
-        onTap: () async {
-          // Логика для диалога с вводом числа
-          final textController = TextEditingController(text: value.toString());
-          final newValue = await showDialog<String>(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: Text('Изменить "$displayName"'),
-              content: TextField(
-                controller: textController,
-                autofocus: true,
-                keyboardType: TextInputType.number, // цифровая клавиатура
-              ),
-              actions: [
-                TextButton(onPressed: () => Navigator.pop(context), child: const Text('Отмена')),
-                ElevatedButton(onPressed: () => Navigator.pop(context, textController.text), child: const Text('Сохранить')),
-              ],
+      unsupported:
+          (key, displayName, group) => ListTile(
+            title: Text(
+              displayName,
+              style: TextStyle(color: Theme.of(context).disabledColor),
             ),
-          );
-          if (newValue != null && num.tryParse(newValue) != null) {
-            onSettingChanged(key, newValue);
-          }
-        },
-      ),
-
-
-      unsupported: (key, displayName, group) => ListTile(
-        title: Text(displayName, style: TextStyle(color: Theme.of(context).disabledColor)),
-        subtitle: Text('Неподдерживаемый тип: $key'),
-        leading: Icon(Icons.warning_amber, color: Colors.orange.shade300),
-      ),
+            subtitle: Text('Неподдерживаемый тип: $key'),
+            leading: Icon(Icons.warning_amber, color: Colors.orange.shade300),
+          ),
     );
   }
 }
-
 
 class MultiSelectDialog extends StatefulWidget {
   final String title;
@@ -244,21 +295,22 @@ class _MultiSelectDialogState extends State<MultiSelectDialog> {
       title: Text(widget.title),
       content: SingleChildScrollView(
         child: Column(
-          children: widget.options.map((option) {
-            return CheckboxListTile(
-              title: Text(option),
-              value: _selectedValues.contains(option),
-              onChanged: (isSelected) {
-                setState(() {
-                  if (isSelected == true) {
-                    _selectedValues.add(option);
-                  } else {
-                    _selectedValues.remove(option);
-                  }
-                });
-              },
-            );
-          }).toList(),
+          children:
+              widget.options.map((option) {
+                return CheckboxListTile(
+                  title: Text(option),
+                  value: _selectedValues.contains(option),
+                  onChanged: (isSelected) {
+                    setState(() {
+                      if (isSelected == true) {
+                        _selectedValues.add(option);
+                      } else {
+                        _selectedValues.remove(option);
+                      }
+                    });
+                  },
+                );
+              }).toList(),
         ),
       ),
       actions: [

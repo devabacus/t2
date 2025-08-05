@@ -1,6 +1,7 @@
 // manifest: startProject
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'audio_settings.dart';
 import 'setting_definition.dart';
 import 'ui_settings.dart';
 import 'profile_settings.dart';
@@ -40,6 +41,7 @@ SettingsRegistry settingsRegistry(Ref ref) {
   final registry = SettingsRegistry();
   registry.registerAll(getUiSettings());
   registry.registerAll(getProfileSettings());
+  registry.registerAll(getAudioSettings());
   // В будущем вы просто добавите сюда вызов register... для новых групп
   return registry;
 }
