@@ -1,10 +1,8 @@
 // manifest: startProject
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'setting_groups/audio_settings.dart';
 import 'setting_definition.dart';
-import 'setting_groups/ui_settings.dart';
-import 'setting_groups/profile_settings.dart';
+import '../user_settings/groups/groups_list.dart';
 
 part 'settings_registry.g.dart';
 
@@ -37,11 +35,10 @@ class SettingsRegistry {
 
 @Riverpod(keepAlive: true)
 SettingsRegistry settingsRegistry(Ref ref) {
-  // При первом создании провайдера создаем и наполняем реестр
   final registry = SettingsRegistry();
-  registry.registerAll(getUiSettings());
-  registry.registerAll(getProfileSettings());
-  registry.registerAll(getAudioSettings());
-  // В будущем вы просто добавите сюда вызов register... для новых групп
+  final groups = ref.watch(settingGroupsProvider);
+  for (final group in groups) {
+    registry.registerAll(group.definitions());
+  }
   return registry;
 }

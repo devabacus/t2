@@ -30,3 +30,4 @@ abstract class SettingDefinition {
     Map<String, ConfigurationEntity> allConfigs,
   );
 }
+
