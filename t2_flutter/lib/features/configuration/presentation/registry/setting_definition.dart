@@ -143,8 +143,6 @@ class MultiSelectSettingDefinition extends SettingDefinition {
   }
 }
 
-// --- НОВЫЙ ТИП: ВВОД ЧИСЛА ---
-/// "Чертёж" для числовой настройки.
 class NumberSettingDefinition extends SettingDefinition {
   NumberSettingDefinition({
     required super.key,
