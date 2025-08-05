@@ -145,4 +145,4 @@ class ConfigurationPage extends ConsumerWidget {
         createUseCase(ConfigurationEntity(id: const Uuid().v7(), userId: currentUser.id!, customerId: customerId, createdAt: DateTime.now(), lastModified: DateTime.now(), group: 'Profile', key: 'username', value: 'Test User')),
     ]);
   }
-}
+}  
