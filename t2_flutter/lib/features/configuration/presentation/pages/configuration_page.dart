@@ -8,6 +8,7 @@ import '../../domain/providers/configuration/configuration_usecase_providers.dar
 import '../models/setting_view_model.dart';
 import '../providers/configuration/configuration_state_providers.dart';
 import '../providers/settings_mapper.dart';
+import '../widgets/settings_screen_widget.dart';
 
 class ConfigurationPage extends ConsumerWidget {
   const ConfigurationPage({super.key});
@@ -17,36 +18,28 @@ class ConfigurationPage extends ConsumerWidget {
     final configurationsAsync = ref.watch(configurationsStreamProvider);
     final mapper = ref.watch(settingsMapperProvider);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Настройки'),
-        actions: [
-          // Временная кнопка для создания тестовых настроек
-          IconButton(
-            icon: const Icon(Icons.add_circle_outline),
-            tooltip: 'Создать тестовые настройки',
-            onPressed: () => _createTestSettings(ref),
-          ),
-        ],
-      ),
-      body: configurationsAsync.when(
-        data: (configs) {
-          if (configs.isEmpty) {
-            return const Center(child: Text('Настройки еще не созданы. Нажмите + для теста.'));
-          }
+    return configurationsAsync.when(
+      data: (configs) {
+        // 1. Преобразуем данные в модель экрана
+        final screenModel = mapper.mapToScreen(configs);
 
-          final viewModels = mapper.map(configs);
-          
-          return ListView.builder(
-            itemCount: viewModels.length,
-            itemBuilder: (context, index) {
-              return _buildSettingTile(context, ref, viewModels[index]);
-            },
-          );
-        },
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, s) => Center(child: Text('Ошибка загрузки настроек: $e')),
-      ),
+        // 2. Определяем, что делать при изменении настройки
+        onSettingChanged(String key, dynamic value) {
+          final useCase = ref.read(updateConfigurationUseCaseProvider);
+          final config = configs.firstWhere((c) => c.key == key, orElse: () => throw Exception('Config not found'));
+          if (useCase != null) {
+            useCase(config.copyWith(value: value.toString()));
+          }
+        }
+
+        // 3. Отображаем наш переиспользуемый виджет
+        return SettingsScreenWidget(
+          screenModel: screenModel,
+          onSettingChanged: onSettingChanged,
+        );
+      },
+      loading: () => const Scaffold(body: Center(child: CircularProgressIndicator())),
+      error: (e, s) => Scaffold(body: Center(child: Text('Ошибка загрузки: $e'))),
     );
   }
 

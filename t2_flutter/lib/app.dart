@@ -22,9 +22,10 @@ class App extends ConsumerWidget {
         useMaterial3: true,
       ),
       // Убираем роутинг и используем AuthWrapper для управления состоянием
-      home: const AuthWrapper(),
-      // home: const ConfigurationPage(),
+      // home: const AuthWrapper(),
+      home: const ConfigurationPage(),
       // home: const ServerCheckUi(),
     );
   }
 }
+  

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../domain/entities/configuration/configuration_entity.dart';
 import '../models/setting_view_model.dart';
+import '../models/settings_screen_model.dart';
 
 part 'settings_mapper.g.dart';
 
@@ -20,6 +21,29 @@ enum SettingKey {
 
 
 class SettingsMapper {
+
+SettingsScreenModel mapToScreen(List<ConfigurationEntity> configs) {
+    final uiSettings = _mapGroup(configs, 'UI', 'Пользовательский интерфейс');
+    final profileSettings = _mapGroup(configs, 'Profile', 'Профиль');
+
+    return SettingsScreenModel(
+      title: 'Настройки',
+      sections: [
+        if (uiSettings.settings.isNotEmpty) uiSettings,
+        if (profileSettings.settings.isNotEmpty) profileSettings,
+      ],
+    );
+  }
+
+  // Вспомогательный метод для группировки
+  SettingsSectionModel _mapGroup(List<ConfigurationEntity> configs, String groupKey, String groupTitle) {
+    final settingsForGroup = configs.where((c) => c.group == groupKey).toList();
+    final viewModels = map(settingsForGroup); // Используем ваш старый метод `map`
+
+    return SettingsSectionModel(title: groupTitle, settings: viewModels);
+  }
+
+
 
   /// Валидирует и преобразует список ConfigurationEntity в список SettingViewModel.
   List<SettingViewModel> map(List<ConfigurationEntity> configs) {

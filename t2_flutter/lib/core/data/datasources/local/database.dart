@@ -48,7 +48,7 @@ MigrationStrategy get migration => MigrationStrategy(
 
   static QueryExecutor _openConnection() {
     return driftDatabase(
-      name: '{{targetProject}}_flutter',
+      name: 't2_flutter',
     );
   }
 }
