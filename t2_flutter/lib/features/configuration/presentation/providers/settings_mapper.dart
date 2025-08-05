@@ -1,13 +1,13 @@
 // manifest: startProject
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import '../../domain/entities/configuration/configuration_entity.dart';
+import 'package:t2/features/configuration/domain/entities/configuration/configuration_entity.dart';
 import '../models/setting_view_model.dart';
 import '../models/settings_screen_model.dart';
 
 part 'settings_mapper.g.dart';
 
 /// Ключи настроек для избежания "магических строк".
+/// Каждому ключу также сопоставлена его группа.
 enum SettingKey {
   themeMode('themeMode', 'UI'),
   themeOptions('themeOptions', 'UI'),
@@ -19,38 +19,64 @@ enum SettingKey {
   final String group;
 }
 
-
+/// Класс, отвечающий за преобразование "сырых" данных о конфигурации
+/// в готовые модели представления (ViewModel) для UI.
 class SettingsMapper {
+  /// Главный метод-фабрика для создания модели экрана.
+  /// Принимает список всех конфигураций и необязательный ключ группы.
+  /// Если [groupKey] не указан, создает корневой экран со списком групп.
+  /// Если [groupKey] указан, создает экран с настройками для этой группы.
+  SettingsScreenModel mapToScreen(List<ConfigurationEntity> configs, {String? groupKey}) {
+    if (groupKey == null) {
+      return _mapToRootScreen(configs);
+    } else {
+      return _mapToGroupScreen(configs, groupKey);
+    }
+  }
 
-SettingsScreenModel mapToScreen(List<ConfigurationEntity> configs) {
-    final uiSettings = _mapGroup(configs, 'UI', 'Пользовательский интерфейс');
-    final profileSettings = _mapGroup(configs, 'Profile', 'Профиль');
+  /// Создает модель для корневого экрана настроек (список групп).
+  SettingsScreenModel _mapToRootScreen(List<ConfigurationEntity> configs) {
+    // Находим все уникальные группы в конфигурациях
+    final groups = configs.map((c) => c.group).toSet();
+
+    // Преобразуем каждую группу в ViewModel для навигации
+    final groupViewModels = groups.map((groupKey) {
+      return SettingViewModel.group(
+        key: groupKey,
+        displayName: _getGroupDisplayName(groupKey),
+        group: 'root', // Указываем, что это элемент корневого экрана
+      );
+    }).toList();
 
     return SettingsScreenModel(
       title: 'Настройки',
       sections: [
-        if (uiSettings.settings.isNotEmpty) uiSettings,
-        if (profileSettings.settings.isNotEmpty) profileSettings,
+        SettingsSectionModel(title: 'Категории', settings: groupViewModels),
       ],
     );
   }
 
-  // Вспомогательный метод для группировки
-  SettingsSectionModel _mapGroup(List<ConfigurationEntity> configs, String groupKey, String groupTitle) {
+  /// Создает модель для экрана конкретной группы настроек.
+  SettingsScreenModel _mapToGroupScreen(List<ConfigurationEntity> configs, String groupKey) {
+    // Фильтруем настройки, относящиеся только к выбранной группе
     final settingsForGroup = configs.where((c) => c.group == groupKey).toList();
-    final viewModels = map(settingsForGroup); // Используем ваш старый метод `map`
+    // Преобразуем их в конкретные ViewModel (Switch, Options и т.д.)
+    final viewModels = _mapEntitiesToViewModels(settingsForGroup);
 
-    return SettingsSectionModel(title: groupTitle, settings: viewModels);
+    return SettingsScreenModel(
+      title: _getGroupDisplayName(groupKey),
+      sections: [
+        SettingsSectionModel(title: 'Параметры', settings: viewModels),
+      ],
+    );
   }
 
-
-
-  /// Валидирует и преобразует список ConfigurationEntity в список SettingViewModel.
-  List<SettingViewModel> map(List<ConfigurationEntity> configs) {
+  /// Преобразует список ConfigurationEntity в список конкретных SettingViewModel.
+  List<SettingViewModel> _mapEntitiesToViewModels(List<ConfigurationEntity> configs) {
     final configMap = {for (var c in configs) c.key: c};
     final viewModels = <SettingViewModel>[];
 
-    // Обрабатываем каждую известную настройку
+    // Проходимся по всем известным ключам и пытаемся создать для них ViewModel
     for (final settingKey in SettingKey.values) {
       final config = configMap[settingKey.key];
       if (config != null) {
@@ -64,23 +90,26 @@ SettingsScreenModel mapToScreen(List<ConfigurationEntity> configs) {
     return viewModels;
   }
 
-  /// Преобразует одну сущность в ViewModel.
+  /// Преобразует одну сущность `ConfigurationEntity` в `SettingViewModel`.
+  /// Здесь происходит основная логика валидации и определения типа.
   SettingViewModel? _mapSingle(ConfigurationEntity config, Map<String, ConfigurationEntity> allConfigs) {
-    // Используем switch по ключу для определения логики маппинга
     switch (config.key) {
       case 'themeMode':
         final optionsConfig = allConfigs[SettingKey.themeOptions.key];
+        // Валидация: убеждаемся, что значение опций существует
+        final options = optionsConfig?.value.split(';') ?? ['system', 'light', 'dark'];
         return OptionsSettingViewModel(
           key: config.key,
           displayName: 'Тема приложения',
           group: config.group,
           currentValue: config.value,
-          options: optionsConfig?.value.split(';') ?? ['system', 'light', 'dark'],
+          options: options,
         );
       
       case 'enableAnimations':
+        // Валидация: значение должно быть 'true' или 'false'
         if (config.value != 'true' && config.value != 'false') {
-          return null; // Невалидное значение
+          return null; // Возвращаем null, если данные некорректны
         }
         return BooleanSettingViewModel(
           key: config.key,
@@ -97,11 +126,12 @@ SettingsScreenModel mapToScreen(List<ConfigurationEntity> configs) {
           value: config.value,
         );
 
-      // 'themeOptions' - это служебная настройка, не отображаем ее
+      // 'themeOptions' - это служебная настройка, она не должна отображаться как отдельный элемент
       case 'themeOptions':
         return null; 
         
       default:
+        // Если ключ неизвестен, возвращаем неподдерживаемый тип
         return UnsupportedSettingViewModel(
           key: config.key, 
           displayName: 'Неизвестная настройка',
@@ -109,9 +139,24 @@ SettingsScreenModel mapToScreen(List<ConfigurationEntity> configs) {
         );
     }
   }
+  
+  /// Вспомогательный метод для получения человеко-читаемых названий групп.
+  String _getGroupDisplayName(String groupKey) {
+    switch (groupKey) {
+      case 'UI':
+        return 'Интерфейс';
+      case 'Profile':
+        return 'Профиль';
+      case 'Audio':
+        return 'Звук';
+      default:
+        return groupKey; // Возвращаем как есть, если нет совпадения
+    }
+  }
 }
 
+/// Провайдер Riverpod для доступа к экземпляру SettingsMapper.
 @riverpod
-SettingsMapper settingsMapper(Ref ref) {
+SettingsMapper settingsMapper(SettingsMapperRef ref) {
   return SettingsMapper();
 }

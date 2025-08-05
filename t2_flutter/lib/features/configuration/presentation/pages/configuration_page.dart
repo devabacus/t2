@@ -1,148 +1,73 @@
 // manifest: startProject
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:uuid/uuid.dart';
-import '../../../../core/providers/session_manager_provider.dart';
-import '../../domain/entities/configuration/configuration_entity.dart';
+
 import '../../domain/providers/configuration/configuration_usecase_providers.dart';
-import '../models/setting_view_model.dart';
 import '../providers/configuration/configuration_state_providers.dart';
 import '../providers/settings_mapper.dart';
 import '../widgets/settings_screen_widget.dart';
 
+/// Страница-контейнер для отображения настроек.
+///
+/// Эта страница является "умным" компонентом, который:
+/// 1. Подписывается на поток данных о конфигурациях.
+/// 2. Использует Mapper для преобразования данных в ViewModel.
+/// 3. Передает ViewModel в "глупый" UI-компонент [SettingsScreenWidget].
+/// 4. Обрабатывает колбэки от UI-компонента для сохранения данных и навигации.
 class ConfigurationPage extends ConsumerWidget {
-  const ConfigurationPage({super.key});
+  /// Ключ группы настроек для отображения.
+  /// Если null, отображается корневой экран со списком всех групп.
+  final String? groupKey;
+
+  const ConfigurationPage({super.key, this.groupKey});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Подписываемся на общий поток всех конфигураций
     final configurationsAsync = ref.watch(configurationsStreamProvider);
+    // Получаем экземпляр маппера
     final mapper = ref.watch(settingsMapperProvider);
 
     return configurationsAsync.when(
       data: (configs) {
-        // 1. Преобразуем данные в модель экрана
-        final screenModel = mapper.mapToScreen(configs);
+        // 1. Преобразуем сырые данные в декларативную модель экрана,
+        // передавая groupKey, чтобы маппер знал, что отображать.
+        final screenModel = mapper.mapToScreen(configs, groupKey: groupKey);
 
-        // 2. Определяем, что делать при изменении настройки
+        // 2. Определяем колбэк для сохранения измененной настройки.
         onSettingChanged(String key, dynamic value) {
           final useCase = ref.read(updateConfigurationUseCaseProvider);
-          final config = configs.firstWhere((c) => c.key == key, orElse: () => throw Exception('Config not found'));
-          if (useCase != null) {
-            useCase(config.copyWith(value: value.toString()));
-          }
+          // Ищем оригинальную сущность, чтобы обновить ее
+          final configToUpdate = configs.firstWhere((c) => c.key == key);
+          
+          useCase?.call(configToUpdate.copyWith(value: value.toString()));
         }
 
-        // 3. Отображаем наш переиспользуемый виджет
+        // 3. Определяем колбэк для навигации в подгруппу.
+        onGroupSelected(String key) {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              // Открываем новый экземпляр этой же страницы, но уже с ключом группы
+              builder: (context) => ConfigurationPage(groupKey: key),
+            ),
+          );
+        }
+
+        // 4. Отображаем универсальный виджет, передавая ему модель и колбэки.
         return SettingsScreenWidget(
           screenModel: screenModel,
           onSettingChanged: onSettingChanged,
+          onGroupSelected: onGroupSelected,
         );
       },
-      loading: () => const Scaffold(body: Center(child: CircularProgressIndicator())),
-      error: (e, s) => Scaffold(body: Center(child: Text('Ошибка загрузки: $e'))),
-    );
-  }
-
-  Widget _buildSettingTile(BuildContext context, WidgetRef ref, SettingViewModel model) {
-    // Используем pattern-matching (when) из Freezed для безопасной отрисовки
-    return model.when(
-      boolean: (key, displayName, group, value) => SwitchListTile(
-        title: Text(displayName),
-        value: value,
-        onChanged: (newValue) {
-          final useCase = ref.read(updateConfigurationUseCaseProvider);
-          final config = ref.watch(configurationsStreamProvider).value?.firstWhere((c) => c.key == key);
-          if (useCase != null && config != null) {
-            useCase(config.copyWith(value: newValue.toString()));
-          }
-        },
+      loading: () => Scaffold(
+        appBar: AppBar(title: Text(groupKey ?? 'Настройки')),
+        body: const Center(child: CircularProgressIndicator()),
       ),
-      options: (key, displayName, group, currentValue, options) => ListTile(
-        title: Text(displayName),
-        subtitle: Text(currentValue),
-        trailing: const Icon(Icons.arrow_drop_down),
-        onTap: () async {
-          final selectedValue = await showDialog<String>(
-            context: context,
-            builder: (context) => SimpleDialog(
-              title: Text(displayName),
-              children: options.map((option) => SimpleDialogOption(
-                onPressed: () => Navigator.pop(context, option),
-                child: Text(option),
-              )).toList(),
-            ),
-          );
-          if (selectedValue != null) {
-            final useCase = ref.read(updateConfigurationUseCaseProvider);
-            final config = ref.watch(configurationsStreamProvider).value?.firstWhere((c) => c.key == key);
-            if (useCase != null && config != null) {
-              useCase(config.copyWith(value: selectedValue));
-            }
-          }
-        },
-      ),
-      string: (key, displayName, group, value) => ListTile(
-        title: Text(displayName),
-        subtitle: Text(value),
-        trailing: const Icon(Icons.edit),
-        onTap: () async {
-            // --- НАЧАЛО ИЗМЕНЕНИЙ ---
-            final textController = TextEditingController(text: value);
-            final newValue = await showDialog<String>(
-              context: context,
-              builder: (context) => AlertDialog(
-                title: Text('Изменить "$displayName"'),
-                content: TextField(
-                  controller: textController,
-                  autofocus: true,
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text('Отмена'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () => Navigator.pop(context, textController.text),
-                    child: const Text('Сохранить'),
-                  ),
-                ],
-              ),
-            );
-
-            if (newValue != null && newValue.isNotEmpty) {
-              final useCase = ref.read(updateConfigurationUseCaseProvider);
-              final config = ref.watch(configurationsStreamProvider).value?.firstWhere((c) => c.key == key);
-              if (useCase != null && config != null) {
-                useCase(config.copyWith(value: newValue));
-              }
-            }
-            // --- КОНЕЦ ИЗМЕНЕНИЙ ---
-        },
-      ),
-      unsupported: (key, displayName, group) => ListTile(
-        title: Text(displayName),
-        subtitle: Text('Ключ: $key'),
-        leading: const Icon(Icons.warning_amber, color: Colors.orange),
+      error: (e, s) => Scaffold(
+        appBar: AppBar(title: const Text('Ошибка')),
+        body: Center(child: Text('Ошибка загрузки настроек: $e')),
       ),
     );
   }
-  
-  // Временный метод для создания настроек для тестирования
-  void _createTestSettings(WidgetRef ref) {
-    final createUseCase = ref.read(createConfigurationUseCaseProvider);
-    if (createUseCase == null) return;
-    
-    // Получаем текущего пользователя для привязки настроек
-    final currentUser = ref.read(currentUserProvider);
-    final customerId = ref.read(currentCustomerIdProvider);
-    if(currentUser == null || customerId == null) return;
-
-    // Используем Future.wait для асинхронного создания
-    Future.wait([
-        createUseCase(ConfigurationEntity(id: const Uuid().v7(), userId: currentUser.id!, customerId: customerId, createdAt: DateTime.now(), lastModified: DateTime.now(), group: 'UI', key: 'themeMode', value: 'system')),
-        createUseCase(ConfigurationEntity(id: const Uuid().v7(), userId: currentUser.id!, customerId: customerId, createdAt: DateTime.now(), lastModified: DateTime.now(), group: 'UI', key: 'themeOptions', value: 'system;light;dark')),
-        createUseCase(ConfigurationEntity(id: const Uuid().v7(), userId: currentUser.id!, customerId: customerId, createdAt: DateTime.now(), lastModified: DateTime.now(), group: 'UI', key: 'enableAnimations', value: 'true')),
-        createUseCase(ConfigurationEntity(id: const Uuid().v7(), userId: currentUser.id!, customerId: customerId, createdAt: DateTime.now(), lastModified: DateTime.now(), group: 'Profile', key: 'username', value: 'Test User')),
-    ]);
-  }
-}  
+}

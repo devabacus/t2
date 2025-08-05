@@ -26,7 +26,13 @@ sealed class SettingViewModel with _$SettingViewModel {
     required String group,
     required String value,
   }) = StringSettingViewModel;
-  
+
+   const factory SettingViewModel.group({
+    required String key,
+    required String displayName,
+    required String group, // 'root' или другая родительская группа
+  }) = GroupSettingViewModel;
+ 
   const factory SettingViewModel.unsupported({
     required String key,
     required String displayName,

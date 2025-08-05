@@ -88,13 +88,14 @@ extension SettingViewModelPatterns on SettingViewModel {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( BooleanSettingViewModel value)?  boolean,TResult Function( OptionsSettingViewModel value)?  options,TResult Function( StringSettingViewModel value)?  string,TResult Function( UnsupportedSettingViewModel value)?  unsupported,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( BooleanSettingViewModel value)?  boolean,TResult Function( OptionsSettingViewModel value)?  options,TResult Function( StringSettingViewModel value)?  string,TResult Function( GroupSettingViewModel value)?  group,TResult Function( UnsupportedSettingViewModel value)?  unsupported,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case BooleanSettingViewModel() when boolean != null:
 return boolean(_that);case OptionsSettingViewModel() when options != null:
 return options(_that);case StringSettingViewModel() when string != null:
-return string(_that);case UnsupportedSettingViewModel() when unsupported != null:
+return string(_that);case GroupSettingViewModel() when group != null:
+return group(_that);case UnsupportedSettingViewModel() when unsupported != null:
 return unsupported(_that);case _:
   return orElse();
 
@@ -113,13 +114,14 @@ return unsupported(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( BooleanSettingViewModel value)  boolean,required TResult Function( OptionsSettingViewModel value)  options,required TResult Function( StringSettingViewModel value)  string,required TResult Function( UnsupportedSettingViewModel value)  unsupported,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( BooleanSettingViewModel value)  boolean,required TResult Function( OptionsSettingViewModel value)  options,required TResult Function( StringSettingViewModel value)  string,required TResult Function( GroupSettingViewModel value)  group,required TResult Function( UnsupportedSettingViewModel value)  unsupported,}){
 final _that = this;
 switch (_that) {
 case BooleanSettingViewModel():
 return boolean(_that);case OptionsSettingViewModel():
 return options(_that);case StringSettingViewModel():
-return string(_that);case UnsupportedSettingViewModel():
+return string(_that);case GroupSettingViewModel():
+return group(_that);case UnsupportedSettingViewModel():
 return unsupported(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
@@ -134,13 +136,14 @@ return unsupported(_that);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( BooleanSettingViewModel value)?  boolean,TResult? Function( OptionsSettingViewModel value)?  options,TResult? Function( StringSettingViewModel value)?  string,TResult? Function( UnsupportedSettingViewModel value)?  unsupported,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( BooleanSettingViewModel value)?  boolean,TResult? Function( OptionsSettingViewModel value)?  options,TResult? Function( StringSettingViewModel value)?  string,TResult? Function( GroupSettingViewModel value)?  group,TResult? Function( UnsupportedSettingViewModel value)?  unsupported,}){
 final _that = this;
 switch (_that) {
 case BooleanSettingViewModel() when boolean != null:
 return boolean(_that);case OptionsSettingViewModel() when options != null:
 return options(_that);case StringSettingViewModel() when string != null:
-return string(_that);case UnsupportedSettingViewModel() when unsupported != null:
+return string(_that);case GroupSettingViewModel() when group != null:
+return group(_that);case UnsupportedSettingViewModel() when unsupported != null:
 return unsupported(_that);case _:
   return null;
 
@@ -158,12 +161,13 @@ return unsupported(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String key,  String displayName,  String group,  bool value)?  boolean,TResult Function( String key,  String displayName,  String group,  String currentValue,  List<String> options)?  options,TResult Function( String key,  String displayName,  String group,  String value)?  string,TResult Function( String key,  String displayName,  String group)?  unsupported,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String key,  String displayName,  String group,  bool value)?  boolean,TResult Function( String key,  String displayName,  String group,  String currentValue,  List<String> options)?  options,TResult Function( String key,  String displayName,  String group,  String value)?  string,TResult Function( String key,  String displayName,  String group)?  group,TResult Function( String key,  String displayName,  String group)?  unsupported,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case BooleanSettingViewModel() when boolean != null:
 return boolean(_that.key,_that.displayName,_that.group,_that.value);case OptionsSettingViewModel() when options != null:
 return options(_that.key,_that.displayName,_that.group,_that.currentValue,_that.options);case StringSettingViewModel() when string != null:
-return string(_that.key,_that.displayName,_that.group,_that.value);case UnsupportedSettingViewModel() when unsupported != null:
+return string(_that.key,_that.displayName,_that.group,_that.value);case GroupSettingViewModel() when group != null:
+return group(_that.key,_that.displayName,_that.group);case UnsupportedSettingViewModel() when unsupported != null:
 return unsupported(_that.key,_that.displayName,_that.group);case _:
   return orElse();
 
@@ -182,12 +186,13 @@ return unsupported(_that.key,_that.displayName,_that.group);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String key,  String displayName,  String group,  bool value)  boolean,required TResult Function( String key,  String displayName,  String group,  String currentValue,  List<String> options)  options,required TResult Function( String key,  String displayName,  String group,  String value)  string,required TResult Function( String key,  String displayName,  String group)  unsupported,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String key,  String displayName,  String group,  bool value)  boolean,required TResult Function( String key,  String displayName,  String group,  String currentValue,  List<String> options)  options,required TResult Function( String key,  String displayName,  String group,  String value)  string,required TResult Function( String key,  String displayName,  String group)  group,required TResult Function( String key,  String displayName,  String group)  unsupported,}) {final _that = this;
 switch (_that) {
 case BooleanSettingViewModel():
 return boolean(_that.key,_that.displayName,_that.group,_that.value);case OptionsSettingViewModel():
 return options(_that.key,_that.displayName,_that.group,_that.currentValue,_that.options);case StringSettingViewModel():
-return string(_that.key,_that.displayName,_that.group,_that.value);case UnsupportedSettingViewModel():
+return string(_that.key,_that.displayName,_that.group,_that.value);case GroupSettingViewModel():
+return group(_that.key,_that.displayName,_that.group);case UnsupportedSettingViewModel():
 return unsupported(_that.key,_that.displayName,_that.group);}
 }
 /// A variant of `when` that fallback to returning `null`
@@ -202,12 +207,13 @@ return unsupported(_that.key,_that.displayName,_that.group);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String key,  String displayName,  String group,  bool value)?  boolean,TResult? Function( String key,  String displayName,  String group,  String currentValue,  List<String> options)?  options,TResult? Function( String key,  String displayName,  String group,  String value)?  string,TResult? Function( String key,  String displayName,  String group)?  unsupported,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String key,  String displayName,  String group,  bool value)?  boolean,TResult? Function( String key,  String displayName,  String group,  String currentValue,  List<String> options)?  options,TResult? Function( String key,  String displayName,  String group,  String value)?  string,TResult? Function( String key,  String displayName,  String group)?  group,TResult? Function( String key,  String displayName,  String group)?  unsupported,}) {final _that = this;
 switch (_that) {
 case BooleanSettingViewModel() when boolean != null:
 return boolean(_that.key,_that.displayName,_that.group,_that.value);case OptionsSettingViewModel() when options != null:
 return options(_that.key,_that.displayName,_that.group,_that.currentValue,_that.options);case StringSettingViewModel() when string != null:
-return string(_that.key,_that.displayName,_that.group,_that.value);case UnsupportedSettingViewModel() when unsupported != null:
+return string(_that.key,_that.displayName,_that.group,_that.value);case GroupSettingViewModel() when group != null:
+return group(_that.key,_that.displayName,_that.group);case UnsupportedSettingViewModel() when unsupported != null:
 return unsupported(_that.key,_that.displayName,_that.group);case _:
   return null;
 
@@ -433,6 +439,76 @@ key: null == key ? _self.key : key // ignore: cast_nullable_to_non_nullable
 as String,displayName: null == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
 as String,group: null == group ? _self.group : group // ignore: cast_nullable_to_non_nullable
 as String,value: null == value ? _self.value : value // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class GroupSettingViewModel implements SettingViewModel {
+  const GroupSettingViewModel({required this.key, required this.displayName, required this.group});
+  
+
+@override final  String key;
+@override final  String displayName;
+@override final  String group;
+
+/// Create a copy of SettingViewModel
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$GroupSettingViewModelCopyWith<GroupSettingViewModel> get copyWith => _$GroupSettingViewModelCopyWithImpl<GroupSettingViewModel>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GroupSettingViewModel&&(identical(other.key, key) || other.key == key)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.group, group) || other.group == group));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,key,displayName,group);
+
+@override
+String toString() {
+  return 'SettingViewModel.group(key: $key, displayName: $displayName, group: $group)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $GroupSettingViewModelCopyWith<$Res> implements $SettingViewModelCopyWith<$Res> {
+  factory $GroupSettingViewModelCopyWith(GroupSettingViewModel value, $Res Function(GroupSettingViewModel) _then) = _$GroupSettingViewModelCopyWithImpl;
+@override @useResult
+$Res call({
+ String key, String displayName, String group
+});
+
+
+
+
+}
+/// @nodoc
+class _$GroupSettingViewModelCopyWithImpl<$Res>
+    implements $GroupSettingViewModelCopyWith<$Res> {
+  _$GroupSettingViewModelCopyWithImpl(this._self, this._then);
+
+  final GroupSettingViewModel _self;
+  final $Res Function(GroupSettingViewModel) _then;
+
+/// Create a copy of SettingViewModel
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? key = null,Object? displayName = null,Object? group = null,}) {
+  return _then(GroupSettingViewModel(
+key: null == key ? _self.key : key // ignore: cast_nullable_to_non_nullable
+as String,displayName: null == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
+as String,group: null == group ? _self.group : group // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }
