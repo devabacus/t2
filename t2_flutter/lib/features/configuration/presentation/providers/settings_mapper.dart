@@ -1,4 +1,5 @@
 // manifest: startProject
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:t2/features/configuration/domain/entities/configuration/configuration_entity.dart';
 import 'package:t2/features/configuration/presentation/registry/settings_registry.dart';
@@ -86,7 +87,7 @@ class SettingsMapper {
 /// Провайдер Riverpod для доступа к экземпляру SettingsMapper.
 /// Он зависит от реестра, поэтому получает его из [settingsRegistryProvider].
 @riverpod
-SettingsMapper settingsMapper(SettingsMapperRef ref) {
+SettingsMapper settingsMapper(Ref ref) {
   final registry = ref.watch(settingsRegistryProvider);
   return SettingsMapper(registry);
 }

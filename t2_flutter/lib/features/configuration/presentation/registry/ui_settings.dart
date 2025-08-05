@@ -1,5 +1,5 @@
 // manifest: startProject
-import 'setting_definition.dart';
+import 'definitions.dart';
 
 /// Возвращает список всех определений настроек для группы "UI".
 List<SettingDefinition> getUiSettings() {

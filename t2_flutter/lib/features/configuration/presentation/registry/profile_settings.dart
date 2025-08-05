@@ -1,5 +1,5 @@
 // manifest: startProject
-import 'setting_definition.dart';
+import 'definitions.dart';
 
 List<SettingDefinition> getProfileSettings() {
   return [
