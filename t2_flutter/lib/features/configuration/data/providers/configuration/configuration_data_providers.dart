@@ -5,6 +5,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../../../core/data/datasources/local/providers/database_provider.dart';
 import '../../../../../core/providers/session_manager_provider.dart';
 import '../../../../../core/sync/sync_registry.dart';
+import '../../../domain/providers/configuration/configuration_dependencies_provider.dart';
 import '../../../domain/repositories/configuration_repository.dart';
 import '../../datasources/local/daos/configuration/configuration_dao.dart';
 import '../../../../../core/data/datasources/local/daos/sync_metadata_dao.dart';
@@ -19,9 +20,10 @@ part 'configuration_data_providers.g.dart';
 
 @riverpod
 ConfigurationDao configurationDao(Ref ref) {
-  final databaseService = ref.read(databaseServiceProvider);
-  return ConfigurationDao(databaseService);
+  // Получаем зависимость через "мост"
+  return ref.watch(configurationDependenciesProvider).configurationDao;
 }
+
 
 @riverpod
 IConfigurationLocalDataSource configurationLocalDataSource(Ref ref) {
@@ -31,8 +33,8 @@ IConfigurationLocalDataSource configurationLocalDataSource(Ref ref) {
 
 @riverpod
 SyncMetadataDao syncMetadataDao(Ref ref) {
-  final databaseService = ref.read(databaseServiceProvider);
-  return SyncMetadataDao(databaseService.database);
+  // Получаем зависимость через "мост"
+  return ref.watch(configurationDependenciesProvider).syncMetadataDao;
 }
 
 @riverpod

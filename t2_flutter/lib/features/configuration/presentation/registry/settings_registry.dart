@@ -1,44 +1,42 @@
-// manifest: startProject
+// lib/features/configuration/presentation/registry/settings_registry.dart
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'setting_definition.dart';
 import '../user_settings/groups/groups_list.dart';
+import 'setting_definition.dart';
 
 part 'settings_registry.g.dart';
 
-/// Центральный реестр для всех определений настроек в приложении.
 class SettingsRegistry {
   final Map<String, SettingDefinition> _definitions = {};
 
-  /// Регистрирует один "чертёж" настройки.
+  // Конструктор теперь принимает готовый список групп
+  SettingsRegistry(List<SettingGroup> groups) {
+    for (final group in groups) {
+      registerAll(group.definitions());
+    }
+  }
+  
   void register(SettingDefinition definition) {
     if (_definitions.containsKey(definition.key)) {
-      // Можно добавить логирование для отладки дубликатов
       return;
     }
     _definitions[definition.key] = definition;
   }
   
-  /// Регистрирует список "чертежей".
   void registerAll(List<SettingDefinition> definitions) {
     for (final def in definitions) {
       register(def);
     }
   }
 
-  /// Находит "чертёж" по ключу.
   SettingDefinition? find(String key) => _definitions[key];
-
-  /// Возвращает все "чертежи".
   List<SettingDefinition> getAll() => _definitions.values.toList();
 }
 
 @Riverpod(keepAlive: true)
 SettingsRegistry settingsRegistry(Ref ref) {
-  final registry = SettingsRegistry();
+  // Получаем группы из провайдера, который будет переопределен приложением
   final groups = ref.watch(settingGroupsProvider);
-  for (final group in groups) {
-    registry.registerAll(group.definitions());
-  }
-  return registry;
+  return SettingsRegistry(groups);
 }

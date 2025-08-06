@@ -1,13 +1,13 @@
+// lib/features/configuration/presentation/user_settings/groups/groups_list.dart
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../registry/setting_definition.dart';
-import '../audio_settings.dart';
-import '../profile_settings.dart';
-import '../ui_settings.dart';
 
 part 'groups_list.g.dart';
 
+// Этот класс-модель остается в модуле, так как он определяет структуру.
 class SettingGroup {
   final String key;
   final String displayName;
@@ -20,11 +20,11 @@ class SettingGroup {
   });
 }
 
+// Провайдер-заглушка. Он будет переопределен основным приложением.
 @riverpod
 List<SettingGroup> settingGroups(Ref ref) {
-  return [
-    SettingGroup(key: 'UI', displayName: 'Интерфейс', definitions: getUiSettings),
-    SettingGroup(key: 'Profile', displayName: 'Профиль', definitions: getProfileSettings),
-    SettingGroup(key: 'Audio', displayName: 'Аудио', definitions: getAudioSettings),
-  ];
+  throw UnimplementedError(
+    'The settingGroupsProvider must be overridden in the ProviderScope '
+    'to provide the application-specific list of setting groups.'
+  );
 }

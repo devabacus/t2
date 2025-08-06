@@ -1,3 +1,5 @@
+// lib/features/home/presentation/pages/home_page.dart
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -36,7 +38,6 @@ class _HomePageState extends ConsumerState<HomePage> {
       appBar: AppBar(
         title: const Text('T2 Demo Home'),
         actions: [
-          // НОВАЯ КНОПКА ДЛЯ ПЕРЕХОДА К НАСТРОЙКАМ
           IconButton(
             icon: const Icon(Icons.settings),
             tooltip: 'Настройки',

@@ -75,7 +75,7 @@ class DataDisplaySection extends ConsumerWidget {
               title: 'Теги',
               asyncValue: tagsAsync,
               itemBuilder: (item) {
-                final tag = item as TagEntity;
+                final tag = item;
                 return ListTile(
                   title: Text(tag.title),
                   tileColor: selectedTagId == tag.id ? Colors.green.shade50 : null,
