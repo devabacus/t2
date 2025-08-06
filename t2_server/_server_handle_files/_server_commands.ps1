@@ -22,7 +22,7 @@ dart bin/main.dart --apply-migrations
 
 cd "g:\Projects\Flutter\serverpod\t2\t2_server"; serverpod create-migration --experimental-features=all
 cd "g:\Projects\Flutter\serverpod\t2\t2_server"; serverpod generate --experimental-features=all
-
+   
 docker compose down -v
 
 #kubernaties

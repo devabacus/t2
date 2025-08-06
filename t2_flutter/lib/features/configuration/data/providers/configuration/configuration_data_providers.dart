@@ -62,12 +62,15 @@ IConfigurationRepository configurationRepository(Ref ref, {required int userId, 
     customerId,
   );
 
-  // Автоматически регистрируем в реестре
+    // Автоматически регистрируем в реестре
   final registry = ref.read(syncRegistryProvider);
-  registry.registerRepository('categories_${userId}_$customerId', repository);
+  // ИСПРАВЛЕНО: Уникальный ключ для репозитория конфигурации
+  final repoKey = 'configurations_${userId}_$customerId';
+  registry.registerRepository(repoKey, repository);
   
   ref.onDispose(() {
-    registry.unregisterRepository('categories_${userId}_$customerId');
+    // ИСПРАВЛЕНО: Удаляем регистрацию по правильному ключу
+    registry.unregisterRepository(repoKey);
     repository.dispose();
   });
   

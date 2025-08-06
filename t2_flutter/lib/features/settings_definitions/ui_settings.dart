@@ -18,7 +18,7 @@ List<SettingDefinition> getUiSettings() {
       key: 'notificationTypes',
       group: 'UI',
       displayName: 'Типы уведомлений',
-      defaultValue: 'news;updates', // Выбраны 2 из 3 по умолчанию
+      defaultValue: 'news;u   pdates', // Выбраны 2 из 3 по умолчанию
       optionsKey: 'notificationTypesOptions',
       defaultOptions: ['news', 'updates', 'promotions'],
     ),
