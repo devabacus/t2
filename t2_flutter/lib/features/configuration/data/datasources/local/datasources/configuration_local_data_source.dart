@@ -1,7 +1,7 @@
 import 'package:drift/drift.dart';
-import 'package:t2/features/configuration/data/datasources/local/tables/extensions/configuration_table_extension.dart';
-import 'package:t2/features/configuration/domain/entities/configuration/configuration_entity.dart';
-import 'package:t2/features/configuration/domain/entities/extensions/configuration_entity_extension.dart';
+import '../../../../data/datasources/local/tables/extensions/configuration_table_extension.dart';
+import '../../../../domain/entities/configuration/configuration_entity.dart';
+import '../../../../domain/entities/extensions/configuration_entity_extension.dart';
 
 import '../../../../../../core/data/datasources/local/database.dart';
 import '../../../../../../core/data/datasources/local/database_types.dart';
