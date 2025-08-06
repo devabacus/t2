@@ -1,23 +1,14 @@
-// lib/features/configuration/data/repositories/configuration_repository_impl.dart
-
-// ----- ИСПРАВЛЕННЫЕ ИМПОРТЫ -----
-// Единый импорт для всех базовых вещей из нашего нового пакета
 import 'package:app_core/app_core.dart';
 
-// Локальные импорты, относящиеся только к фиче configuration
+import '../../domain/datasources/i_configuration_remote_data_source.dart';
 import '../../domain/entities/configuration/configuration_entity.dart';
 import '../../domain/entities/extensions/configuration_entity_extension.dart';
 import '../../domain/repositories/configuration_repository.dart';
 import '../datasources/local/interfaces/configuration_local_datasource_service.dart';
-import '../../domain/datasources/i_configuration_remote_data_source.dart';
 import '../models/configuration/configuration_model.dart';
 import '../models/extensions/configuration_model_extension.dart';
-import '../datasources/local/tables/extensions/configuration_table_extension.dart';
-// import '../../../../core/data/datasources/local/database.dart'; // Drift Table Data
 
-// ----- КЛАСС РЕПОЗИТОРИЯ -----
-// Теперь он наследуется от BaseSyncRepository из пакета app_core,
-// что делает его совместимым с SyncRegistry из того же пакета.
+
 class ConfigurationRepositoryImpl extends BaseSyncRepository implements IConfigurationRepository {
   final IConfigurationLocalDataSource _localDataSource;
   final IConfigurationRemoteDataSource _remoteDataSource; 
