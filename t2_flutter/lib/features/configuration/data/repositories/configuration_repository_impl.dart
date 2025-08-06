@@ -6,7 +6,7 @@ import '../../domain/entities/extensions/configuration_entity_extension.dart';
 import '../../domain/repositories/configuration_repository.dart';
 import '../datasources/local/interfaces/configuration_local_datasource_service.dart';
 import '../models/configuration/configuration_model.dart';
-import '../models/extensions/configuration_model_extension.dart';
+import '../models/extensions/configuration_model_drift_extension.dart';
 
 
 class ConfigurationRepositoryImpl extends BaseSyncRepository implements IConfigurationRepository {
