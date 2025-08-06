@@ -2,22 +2,17 @@
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:t2/features/configuration/domain/datasources/i_configuration_remote_data_source.dart';
 import 'package:t2/features/configuration/domain/providers/configuration/configuration_dependencies_provider.dart';
-
-import '../../datasources/remote/interfaces/configuration_remote_datasource_service.dart';
-import '../../datasources/remote/sources/configuration_remote_data_source.dart';
 
 part 'configuration_remote_data_providers.g.dart';
 
+// Этот провайдер теперь просто пробрасывает зависимость из "моста".
 @riverpod
 IConfigurationRemoteDataSource configurationRemoteDataSource(Ref ref) {
-  // Получаем зависимость через "мост"
-  final client = ref.watch(configurationDependenciesProvider).serverpodClient;
-  return ConfigurationRemoteDataSource(client);
+  return ref.watch(configurationDependenciesProvider).remoteDataSource;
 }
 
-@riverpod
-Future<bool> configurationRemoteConnectionCheck(Ref ref) async {
-  final remoteDataSource = ref.watch(configurationRemoteDataSourceProvider);
-  return await remoteDataSource.checkConnection();
-}
+// Провайдер для проверки соединения больше не нужен здесь, так как
+// он относится к конкретной реализации (Serverpod). Его можно удалить
+// или перенести в `core`. Для чистоты - удалим.

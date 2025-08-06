@@ -1,8 +1,10 @@
-// manifest: startProject
-// === generated_start:base ===
+// lib/features/configuration/data/repositories/configuration_repository_impl.dart
+
+// УДАЛИТЕ ИМПОРТЫ:
+// import 'package:t2_client/t2_client.dart' as serverpod;
+// import '../../domain/entities/extensions/configuration_entity_extension.dart';
+
 import '../../domain/entities/extensions/configuration_entity_extension.dart';
-import '../../data/datasources/local/tables/extensions/configuration_table_extension.dart';
-import 'package:t2_client/t2_client.dart' as serverpod;
 
 import '../../../../core/data/datasources/local/database.dart';
 import '../../../../core/sync/base_sync_repository.dart';
@@ -11,38 +13,76 @@ import '../../domain/repositories/configuration_repository.dart';
 import '../../../../core/data/datasources/local/database_types.dart';
 import '../datasources/local/interfaces/configuration_local_datasource_service.dart';
 import '../../../../core/data/datasources/local/interfaces/sync_metadata_local_datasource_service.dart';
-import '../datasources/remote/interfaces/configuration_remote_datasource_service.dart';
+// ИМПОРТИРУЕМ НАШУ НОВУЮ АБСТРАКЦИЮ:
+import '../../domain/datasources/i_configuration_remote_data_source.dart'; 
 import '../models/extensions/configuration_model_extension.dart';
+import '../datasources/local/tables/extensions/configuration_table_extension.dart';
 
 class ConfigurationRepositoryImpl extends BaseSyncRepository implements IConfigurationRepository {
   final IConfigurationLocalDataSource _localDataSource;
-  final IConfigurationRemoteDataSource _remoteDataSource;
+  // Теперь репозиторий зависит от абстракции, а не от конкретной реализации
+  final IConfigurationRemoteDataSource _remoteDataSource; 
 
   @override
   String get entityTypeName => 'Configuration';
   @override
-  String get entityType => 'categories_user_$userId';
+  String get entityType => 'configurations_user_$userId';
 
   ConfigurationRepositoryImpl(
     this._localDataSource,
-    this._remoteDataSource,
+    this._remoteDataSource, // Принимаем абстракцию
     ISyncMetadataLocalDataSource syncMetadataDataSource,
     int userId,
     String customerId,
-  ) : super(
-        userId,
-        customerId,
-        syncMetadataDataSource: syncMetadataDataSource,
-      ) {
-    print('✅ ConfigurationRepositoryImpl: Создан экземпляр для userId: $userId');
+  ) : super(userId, customerId, syncMetadataDataSource: syncMetadataDataSource) {
     initEventBasedSync();
   }
 
   @override
-  Future<List<serverpod.Configuration>> getChangesFromServer(DateTime? since) {
+  Future<List<dynamic>> getChangesFromServer(DateTime? since) {
+    // Делегируем вызов нашему абстрактному источнику данных.
+    // Возвращаемый тип Future<List<ConfigurationEntity>> совместим с Future<List<dynamic>>.
     return _remoteDataSource.getConfigurationsSince(since);
   }
 
+  @override
+  Future<void> pushLocalChanges(List<dynamic> localChangesToPush) async {
+    for (final localChange in localChangesToPush as List<ConfigurationTableData>) {
+      final entity = localChange.toModel().toEntity();
+      try {
+        // Мы больше не проверяем 'serverRecord', так как этим может заниматься адаптер.
+        // Мы просто доверяем контракту.
+        if (localChange.isDeleted) {
+          await _syncUpdateToServer(entity); // Отправляем как обновление с isDeleted = true
+          await _localDataSource.physicallyDeleteConfiguration(entity.id, userId: userId, customerId: customerId);
+        } else {
+          // Пытаемся создать. Если сервер вернет ошибку (уже существует), обновляем.
+          // Эта логика более надежна, чем проверка на null.
+          await _syncCreateToServer(entity).catchError((e) {
+            // Предполагаем, что ошибка - это конфликт (запись уже есть) и пробуем обновить.
+            return _syncUpdateToServer(entity);
+          });
+        }
+      } catch (e) {
+        print('    -> ⚠️ Не удалось синхронизировать изменение ID: ${entity.id}. Повторим позже.');
+      }
+    }
+  }
+  
+  Future<void> _syncCreateToServer(ConfigurationEntity configuration) async {
+    final syncedEntity = await _remoteDataSource.createConfiguration(configuration);
+    await _localDataSource.insertOrUpdateFromServer(syncedEntity, SyncStatus.synced);
+  }
+
+  Future<void> _syncUpdateToServer(ConfigurationEntity configuration) async {
+    await _remoteDataSource.updateConfiguration(configuration);
+    await _localDataSource.insertOrUpdateFromServer(configuration, SyncStatus.synced);
+  }
+
+  @override
+  Stream<dynamic> watchEvents() => _remoteDataSource.watchEvents();
+  
+  // ... Остальные методы репозитория (reconcileChanges, handleSyncEvent, локальные CRUD) остаются БЕЗ ИЗМЕНЕНИЙ ...
   @override
   Future<List<dynamic>> reconcileChanges(List<dynamic> serverChanges) async {
     return _localDataSource.reconcileServerChanges(
@@ -51,52 +91,6 @@ class ConfigurationRepositoryImpl extends BaseSyncRepository implements IConfigu
       customerId: customerId,
     );
   }
-
-  @override
-  Future<void> pushLocalChanges(List<dynamic> localChangesToPush) async {
-    for (final localChange in localChangesToPush as List<ConfigurationTableData>) {
-      if (localChange.isDeleted) {
-        try {
-          await _syncUpdateToServer(localChange.toModel().toEntity());
-          await _localDataSource.physicallyDeleteConfiguration(
-            localChange.id,
-            userId: userId,
-            customerId: customerId,
-          );
-          print(
-            '    -> ✅ Удаление "${localChange.id}" синхронизировано с сервером.',
-          );
-        } catch (e) {
-          print(
-            '    -> ⚠️ Не удалось синхронизировать удаление ID: ${localChange.id}. Повторим позже.',
-          );
-        }
-      } else if (localChange.syncStatus == SyncStatus.local) {
-        try {
-          final entity = localChange.toModel().toEntity();
-          final serverRecord = await _remoteDataSource.getConfigurationById(
-            serverpod.UuidValue.fromString(entity.id),
-          );
-          if (serverRecord != null && !serverRecord.isDeleted) {
-            await _syncUpdateToServer(entity);
-          } else {
-            await _syncCreateToServer(entity);
-          }
-          print(
-            '    -> ✅ Изменение "${localChange.id}" синхронизировано с сервером.',
-          );
-        } catch (e) {
-          print(
-            '    -> ⚠️ Не удалось синхронизировать изменение ID: ${localChange.id}. Повторим позже.',
-          );
-        }
-      }
-    }
-  }
-
-  @override
-  Stream<serverpod.ConfigurationSyncEvent> watchEvents() =>
-      _remoteDataSource.watchEvents();
 
   @override
   Future<void> handleSyncEvent(dynamic event) async {
@@ -172,7 +166,6 @@ class ConfigurationRepositoryImpl extends BaseSyncRepository implements IConfigu
 
   @override
   Future<List<ConfigurationEntity>> getConfigurationsByIds(List<String> ids) async {
-    ;
     final models = await _localDataSource.getConfigurationsByIds(
       ids,
       userId: userId,
@@ -180,38 +173,10 @@ class ConfigurationRepositoryImpl extends BaseSyncRepository implements IConfigu
     );
     return models.toEntities();
   }
-
-  Future<void> _syncCreateToServer(ConfigurationEntity configuration) async {
-    try {
-      final serverConfiguration = configuration.toServerpodConfiguration();
-      final syncedConfiguration = await _remoteDataSource.createConfiguration(serverConfiguration);
-      await _localDataSource.insertOrUpdateFromServer(
-        syncedConfiguration,
-        SyncStatus.synced,
-      );
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  Future<void> _syncUpdateToServer(ConfigurationEntity configuration) async {
-    try {
-      final serverConfiguration = configuration.toServerpodConfiguration();
-      await _remoteDataSource.updateConfiguration(serverConfiguration);
-      await _localDataSource.insertOrUpdateFromServer(
-        serverConfiguration,
-        SyncStatus.synced,
-      );
-    } catch (e) {
-      rethrow;
-    }
-  }
-// === generated_end:base ===
-@override
+  
+  @override
   Future<ConfigurationEntity?> getConfigurationByGroupAndKey(String group, String key) async {
     final model = await _localDataSource.getConfigurationByGroupAndKey(group, key, userId: userId, customerId: customerId);
     return model?.toEntity();
   }
 }
-
-

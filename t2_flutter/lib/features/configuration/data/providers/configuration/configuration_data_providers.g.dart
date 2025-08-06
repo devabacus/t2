@@ -6,7 +6,7 @@ part of 'configuration_data_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$configurationDaoHash() => r'61fe009b45c2960dfd54d11126053df337d646b4';
+String _$configurationDaoHash() => r'62536fc24f8539d26616fefc8b28b642f7d533a8';
 
 /// See also [configurationDao].
 @ProviderFor(configurationDao)
@@ -45,7 +45,7 @@ final configurationLocalDataSourceProvider =
 // ignore: unused_element
 typedef ConfigurationLocalDataSourceRef =
     AutoDisposeProviderRef<IConfigurationLocalDataSource>;
-String _$syncMetadataDaoHash() => r'4875e7284109092e2c7f00057f7329e847c5dce2';
+String _$syncMetadataDaoHash() => r'a55f2f486fcf1dba97f55e6b4a8d98d9b790577b';
 
 /// See also [syncMetadataDao].
 @ProviderFor(syncMetadataDao)

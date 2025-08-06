@@ -23,4 +23,9 @@ class ConfigurationTable extends Table {
     
   @override
   Set<Column> get primaryKey => {id};
+
+  @override
+  List<String> get customConstraints => [
+    'UNIQUE("group", key, user_id, customer_id)',
+  ];
 }
