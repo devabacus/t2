@@ -1,8 +1,8 @@
+import 'package:app_core/app_core.dart';
 
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 import 'package:uuid/uuid.dart';
-import 'database_types.dart';
 
 import 'tables/sync_metadata_table.dart';
 import '../../../../features/configuration/data/datasources/local/tables/configuration_table.dart';

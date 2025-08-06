@@ -1,8 +1,8 @@
+import 'package:app_core/app_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../../core/providers/session_manager_provider.dart';
 import '../../domain/entities/category/category_entity.dart';
 import '../../domain/entities/tag/tag_entity.dart';
 import '../../domain/entities/task/task_entity.dart';

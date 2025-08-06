@@ -1,8 +1,8 @@
 
+import 'package:app_core/app_core.dart';
 import 'package:t2/core/data/datasources/local/database.dart';
 
 import '../../../models/tag/tag_model.dart';
-import '../../../../../../core/data/datasources/local/database_types.dart';
 
 abstract class ITagLocalDataSource {
   Future<List<TagModel>> getTags({required int userId, required String customerId});

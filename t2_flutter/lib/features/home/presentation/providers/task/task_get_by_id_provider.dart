@@ -1,9 +1,10 @@
+import 'package:app_core/app_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+
 import '../../../domain/entities/task/task_entity.dart';
 import '../../../domain/providers/task/task_usecase_providers.dart';
 import '../task/task_state_providers.dart';
-import '../../../../../core/providers/session_manager_provider.dart';
 
 part 'task_get_by_id_provider.g.dart';
 

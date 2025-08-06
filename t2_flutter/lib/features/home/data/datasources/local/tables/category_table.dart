@@ -1,7 +1,7 @@
 // manifest: entity
+import 'package:app_core/app_core.dart';
 import 'package:drift/drift.dart';
 import 'package:uuid/uuid.dart';
-import '../../../../../../core/data/datasources/local/database_types.dart';
 // === generated_start:driftTableImports ===
 // === generated_end:driftTableImports ===
 

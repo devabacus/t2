@@ -1,8 +1,8 @@
 // manifest: entity
+import 'package:app_core/app_core.dart';
 import 'package:t2/core/data/datasources/local/database.dart';
 
 import '../../../models/task/task_model.dart';
-import '../../../../../../core/data/datasources/local/database_types.dart';
 
 abstract class ITaskLocalDataSource {
   Future<List<TaskModel>> getTasks({required int userId, required String customerId});

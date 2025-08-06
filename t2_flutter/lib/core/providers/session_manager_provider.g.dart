@@ -24,58 +24,31 @@ final sessionManagerProvider = AutoDisposeProvider<SessionManager>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef SessionManagerRef = AutoDisposeProviderRef<SessionManager>;
-String _$userInfoStreamHash() => r'688f3d558a2101af1ec4876f83da2569c766b421';
+String _$serverpodUserInfoStreamHash() =>
+    r'5395c3eca5b9842ae0d479a9154872a316176d17';
 
-/// See also [userInfoStream].
-@ProviderFor(userInfoStream)
-final userInfoStreamProvider = AutoDisposeStreamProvider<UserInfo?>.internal(
-  userInfoStream,
-  name: r'userInfoStreamProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$userInfoStreamHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef UserInfoStreamRef = AutoDisposeStreamProviderRef<UserInfo?>;
-String _$currentUserHash() => r'a7754de5bf305b224c675a3f8016a175aba872a4';
-
-/// See also [currentUser].
-@ProviderFor(currentUser)
-final currentUserProvider = AutoDisposeProvider<UserInfo?>.internal(
-  currentUser,
-  name: r'currentUserProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$currentUserHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+/// Конкретная реализация стрима аутентификации для Serverpod.
+/// Этот провайдер будет использоваться для переопределения (override)
+/// абстрактного провайдера из app_core.
+///
+/// Copied from [serverpodUserInfoStream].
+@ProviderFor(serverpodUserInfoStream)
+final serverpodUserInfoStreamProvider =
+    AutoDisposeStreamProvider<UserInfoEntity?>.internal(
+      serverpodUserInfoStream,
+      name: r'serverpodUserInfoStreamProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$serverpodUserInfoStreamHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef CurrentUserRef = AutoDisposeProviderRef<UserInfo?>;
-String _$isAuthenticatedHash() => r'ec341d95b490bda54e8278477e26f7b345844931';
-
-/// See also [isAuthenticated].
-@ProviderFor(isAuthenticated)
-final isAuthenticatedProvider = AutoDisposeProvider<bool>.internal(
-  isAuthenticated,
-  name: r'isAuthenticatedProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$isAuthenticatedHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef IsAuthenticatedRef = AutoDisposeProviderRef<bool>;
+typedef ServerpodUserInfoStreamRef =
+    AutoDisposeStreamProviderRef<UserInfoEntity?>;
 String _$currentUserSessionDataHash() =>
     r'8e032fb35a8f1fa11fab490df8d7cf3467b3c6f5';
 
@@ -96,24 +69,26 @@ final currentUserSessionDataProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef CurrentUserSessionDataRef = AutoDisposeProviderRef<UserSessionData?>;
-String _$currentCustomerIdHash() => r'cf23458d8b99f8801ba6db3d9136c1d4805549a2';
+String _$serverpodCurrentCustomerIdHash() =>
+    r'48bc27408427c273e69d2c6251338d9f48120565';
 
-/// See also [currentCustomerId].
-@ProviderFor(currentCustomerId)
-final currentCustomerIdProvider = AutoDisposeProvider<String?>.internal(
-  currentCustomerId,
-  name: r'currentCustomerIdProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$currentCustomerIdHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+/// See also [serverpodCurrentCustomerId].
+@ProviderFor(serverpodCurrentCustomerId)
+final serverpodCurrentCustomerIdProvider =
+    AutoDisposeProvider<String?>.internal(
+      serverpodCurrentCustomerId,
+      name: r'serverpodCurrentCustomerIdProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$serverpodCurrentCustomerIdHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef CurrentCustomerIdRef = AutoDisposeProviderRef<String?>;
+typedef ServerpodCurrentCustomerIdRef = AutoDisposeProviderRef<String?>;
 String _$currentRoleIdHash() => r'be77b5e33fdfd7e2c63b5b59ae6eeb9165cb66cb';
 
 /// See also [currentRoleId].
@@ -153,7 +128,7 @@ final currentUserPermissionsProvider =
 // ignore: unused_element
 typedef CurrentUserPermissionsRef = AutoDisposeProviderRef<List<String>>;
 String _$userSessionDataNotifierHash() =>
-    r'ed616f969ed8eec13011963f29cea6020801e022';
+    r'07717d304c8645be1c8fe61c0a071c7d0112f967';
 
 /// See also [UserSessionDataNotifier].
 @ProviderFor(UserSessionDataNotifier)

@@ -1,9 +1,9 @@
 // manifest: startProject
+import 'package:app_core/app_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'core/routing/router_config.dart'; // <-- Импортируем провайдер роутера
-import 'core/sync/sync_controller_provider.dart';
 
 class App extends ConsumerWidget {
   const App({super.key});

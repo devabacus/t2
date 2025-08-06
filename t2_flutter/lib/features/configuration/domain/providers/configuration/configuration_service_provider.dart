@@ -1,9 +1,9 @@
 // lib/features/configuration/domain/providers/configuration/configuration_service_provider.dart
 
+import 'package:app_core/app_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../../core/providers/session_manager_provider.dart';
 import '../../../data/providers/configuration/configuration_data_providers.dart';
 import '../../../data/services/configuration_service_impl.dart';
 import '../../../presentation/registry/settings_registry.dart';

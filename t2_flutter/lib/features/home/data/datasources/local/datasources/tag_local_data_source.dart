@@ -1,3 +1,4 @@
+import 'package:app_core/app_core.dart';
 import 'package:drift/drift.dart';
 import 'package:t2_client/t2_client.dart' as serverpod;
 import 'package:uuid/uuid_value.dart';
@@ -6,7 +7,6 @@ import '../../../../../../core/data/datasources/local/database.dart';
 import '../tables/extensions/tag_table_extension.dart';
 import '../../../models/tag/tag_model.dart';
 import '../../../models/extensions/tag_model_extension.dart';
-import '../../../../../../core/data/datasources/local/database_types.dart';
 import '../daos/tag/tag_dao.dart';
 import '../interfaces/tag_local_datasource_service.dart';
 

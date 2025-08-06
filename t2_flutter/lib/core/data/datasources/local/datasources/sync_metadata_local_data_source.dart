@@ -1,7 +1,8 @@
 // manifest: startProject
 
+import 'package:app_core/app_core.dart';
+
 import '../daos/sync_metadata_dao.dart';
-import '../interfaces/sync_metadata_local_datasource_service.dart';
 
 class SyncMetadataLocalDataSource implements ISyncMetadataLocalDataSource {
   final SyncMetadataDao _syncMetadataDao;

@@ -1,10 +1,11 @@
 // manifest: startProject
 
 // === generated_start:base ===
+import 'package:app_core/app_core.dart';
+
 import '../../../../../../core/data/datasources/local/database.dart';
 
 import '../../../models/configuration/configuration_model.dart';
-import '../../../../../../core/data/datasources/local/database_types.dart';
 
 abstract class IConfigurationLocalDataSource {
   Future<List<ConfigurationModel>> getConfigurations({required int userId, required String customerId});

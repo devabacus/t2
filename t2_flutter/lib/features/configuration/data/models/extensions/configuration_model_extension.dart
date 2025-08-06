@@ -1,8 +1,8 @@
 // manifest: startProject
+import 'package:app_core/app_core.dart';
 import 'package:drift/drift.dart';
 
 import '../../../../../core/data/datasources/local/database.dart';
-import '../../../../../core/data/datasources/local/database_types.dart';
 import '../../../domain/entities/configuration/configuration_entity.dart';
 import '../configuration/configuration_model.dart';
 

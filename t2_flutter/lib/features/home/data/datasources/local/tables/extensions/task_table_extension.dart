@@ -1,9 +1,9 @@
+import 'package:app_core/app_core.dart';
 import 'package:drift/drift.dart';
 import 'package:t2_client/t2_client.dart' as serverpod;
 
 import '../../../../../../../core/data/datasources/local/database.dart';
 import '../../../../models/task/task_model.dart';
-import '../../../../../../../core/data/datasources/local/database_types.dart';
 
 extension TaskTableDataExtensions on TaskTableData {
   TaskModel toModel() => TaskModel(

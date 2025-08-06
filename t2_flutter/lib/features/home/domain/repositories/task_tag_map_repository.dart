@@ -1,5 +1,6 @@
 // manifest: manyToMany
-import '../../../../core/sync/sync_registry.dart';
+import 'package:app_core/app_core.dart';
+
 import '../entities/tag/tag_entity.dart';
 import '../entities/task/task_entity.dart';
 import '../entities/task_tag_map/task_tag_map_entity.dart';

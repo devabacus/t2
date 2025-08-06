@@ -1,6 +1,7 @@
 // manifest: manyToMany
+import 'package:app_core/app_core.dart';
+
 import '../../../../../../core/data/datasources/local/database.dart';
-import '../../../../../../core/data/datasources/local/database_types.dart';
 import '../../../models/task_tag_map/task_tag_map_model.dart';
 
 abstract class ITaskTagMapLocalDataSource {

@@ -1,9 +1,9 @@
 // manifest: startProject
+import 'package:app_core/app_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../../core/providers/session_manager_provider.dart';
 import '../../domain/entities/configuration/configuration_entity.dart';
 import '../../domain/providers/configuration/configuration_usecase_providers.dart';
 import '../providers/configuration/configuration_state_providers.dart';

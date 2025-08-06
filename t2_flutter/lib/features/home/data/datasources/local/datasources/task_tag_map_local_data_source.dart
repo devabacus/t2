@@ -1,9 +1,9 @@
 // manifest: manyToMany
+import 'package:app_core/app_core.dart';
 import 'package:drift/drift.dart';
 import 'package:t2_client/t2_client.dart' as serverpod;
 
 import '../../../../../../core/data/datasources/local/database.dart';
-import '../../../../../../core/data/datasources/local/database_types.dart';
 import '../../../models/task_tag_map/task_tag_map_model.dart';
 import '../daos/task_tag_map/task_tag_map_dao.dart';
 import '../interfaces/task_tag_map_local_datasource_service.dart';

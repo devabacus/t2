@@ -1,9 +1,9 @@
+import 'package:app_core/app_core.dart';
 import 'package:drift/drift.dart';
 import 'package:t2_client/t2_client.dart' as serverpod;
 
 import '../../../../../../../core/data/datasources/local/database.dart';
 import '../../../../models/tag/tag_model.dart';
-import '../../../../../../../core/data/datasources/local/database_types.dart';
 
 extension TagTableDataExtensions on TagTableData {
   TagModel toModel() => TagModel(id: id, userId: userId, customerId: customerId, createdAt: createdAt, lastModified: lastModified, isDeleted: isDeleted, title: title);

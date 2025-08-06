@@ -1,10 +1,10 @@
+import 'package:app_core/app_core.dart';
 import 'package:drift/drift.dart';
 import '../../../../data/datasources/local/tables/extensions/configuration_table_extension.dart';
 import '../../../../domain/entities/configuration/configuration_entity.dart';
 import '../../../../domain/entities/extensions/configuration_entity_extension.dart';
 
 import '../../../../../../core/data/datasources/local/database.dart';
-import '../../../../../../core/data/datasources/local/database_types.dart';
 import '../../../models/configuration/configuration_model.dart';
 import '../../../models/extensions/configuration_model_extension.dart';
 import '../daos/configuration/configuration_dao.dart';

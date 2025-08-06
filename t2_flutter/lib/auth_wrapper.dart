@@ -1,8 +1,9 @@
 // manifest: startProject
+import 'package:app_core/app_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:serverpod_auth_email_flutter/serverpod_auth_email_flutter.dart';
-import '../../../../core/providers/session_manager_provider.dart';
+
 import '../../../../core/providers/serverpod_client_provider.dart';
 import 'features/home/presentation/pages/home_page.dart';
 

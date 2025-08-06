@@ -5,6 +5,9 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:serverpod_auth_shared_flutter/serverpod_auth_shared_flutter.dart';
 import 'package:serverpod_auth_client/serverpod_auth_client.dart';
 import 'package:t2_client/t2_client.dart';
+
+import 'package:app_core/app_core.dart';
+
 import 'serverpod_client_provider.dart';
 
 part 'session_manager_provider.g.dart';
@@ -20,71 +23,63 @@ SessionManager sessionManager(Ref ref) {
   return sessionManager;
 }
 
+/// Конвертер из serverpod-модели в нашу независимую entity.
+UserInfoEntity? _convertToServerpodUserInfo(UserInfo? serverpodUser) {
+  if (serverpodUser == null) return null;
+  return UserInfoEntity(
+    id: serverpodUser.id!,
+    userIdentifier: serverpodUser.userIdentifier,
+    email: serverpodUser.email,
+    fullName: serverpodUser.fullName,
+  );
+}
+
+/// Конкретная реализация стрима аутентификации для Serverpod.
+/// Этот провайдер будет использоваться для переопределения (override)
+/// абстрактного провайдера из app_core.
 @riverpod
-Stream<UserInfo?> userInfoStream(Ref ref) {
+Stream<UserInfoEntity?> serverpodUserInfoStream(Ref ref) {
   final sessionManager = ref.watch(sessionManagerProvider);
-  late StreamController<UserInfo?> controller;
   
+  // Создаем стрим, который слушает SessionManager от Serverpod
+  final controller = StreamController<UserInfo?>();
   void listener() {
     if (!controller.isClosed) {
       controller.add(sessionManager.signedInUser);
-    } 
+    }
   }
-           
-  controller = StreamController<UserInfo?>(
-    onListen: () {
-      // Отправляем текущее состояние сразу
-      controller.add(sessionManager.signedInUser);
-      // Подписываемся на изменения
-      sessionManager.addListener(listener);
-    },
-    onCancel: () {
-      sessionManager.removeListener(listener);
-    },
-  );
-  
+
+  sessionManager.addListener(listener);
   ref.onDispose(() {
     sessionManager.removeListener(listener);
     controller.close();
   });
-  
-  return controller.stream;
-}
 
-@riverpod
-UserInfo? currentUser(Ref ref) {
-  final asyncUserInfo = ref.watch(userInfoStreamProvider);
-  return asyncUserInfo.valueOrNull;
+  // Важно: мы конвертируем каждую новую serverpod-модель в нашу UserInfoEntity
+  return controller.stream.map(_convertToServerpodUserInfo);
 }
-
-@riverpod
-bool isAuthenticated(Ref ref) {
-  final user = ref.watch(currentUserProvider);
-  return user != null;
-}
-
-// lib/core/providers/session_manager_provider.dart
 
 @riverpod
 class UserSessionDataNotifier extends _$UserSessionDataNotifier {
   @override
+   @override
   UserSessionData? build() {
-    // Слушаем изменения статуса аутентификации пользователя
-    ref.listen(userInfoStreamProvider, (previous, next) async {
+    // Слушаем наш новый стрим, который возвращает нашу сущность
+    ref.listen(serverpodUserInfoStreamProvider, (previous, next) async {
       final newUserId = next.valueOrNull?.id;
       final oldUserId = previous?.valueOrNull?.id;
-    await _fetchUserContext();
-      // Основное условие: ID нового пользователя существует и не совпадает со старым.
-      // Это покрывает все сценарии: первый вход, запуск с активной сессией и смену пользователя.
+      
       if (newUserId != null && newUserId != oldUserId) {
         await _fetchUserContext();
-      } 
-      // Условие выхода: ID нового пользователя - null, а старый ID был.
-      else if (newUserId == null && oldUserId != null) {
+      } else if (newUserId == null && oldUserId != null) {
         state = null;
       }
     });
-    return null; // Изначальное состояние
+    // Запускаем получение контекста при первом запуске, если пользователь уже вошел
+    if (ref.read(sessionManagerProvider).signedInUser != null) {
+       _fetchUserContext();
+    }
+    return null;
   }
 
   // Метод для вызова эндпоинта на сервере и получения UserSessionData
@@ -116,7 +111,7 @@ UserSessionData? currentUserSessionData(Ref ref) {
 
 // Провайдер для получения customerId из UserSessionData
 @riverpod
-String? currentCustomerId(Ref ref) {
+String? serverpodCurrentCustomerId(Ref ref) {
   return ref.watch(currentUserSessionDataProvider)?.customerId.toString();
 }
 

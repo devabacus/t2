@@ -1,15 +1,14 @@
 // manifest: entity
+import 'package:app_core/app_core.dart';
+
 import '../../domain/entities/extensions/category_entity_extension.dart';
 import '../../data/datasources/local/tables/extensions/category_table_extension.dart';
 import 'package:t2_client/t2_client.dart' as serverpod;
 
 import '../../../../core/data/datasources/local/database.dart';
-import '../../../../core/sync/base_sync_repository.dart';
 import '../../domain/entities/category/category_entity.dart';
 import '../../domain/repositories/category_repository.dart';
-import '../../../../core/data/datasources/local/database_types.dart';
 import '../datasources/local/interfaces/category_local_datasource_service.dart';
-import '../../../../core/data/datasources/local/interfaces/sync_metadata_local_datasource_service.dart';
 import '../datasources/remote/interfaces/category_remote_datasource_service.dart';
 import '../models/extensions/category_model_extension.dart';
 

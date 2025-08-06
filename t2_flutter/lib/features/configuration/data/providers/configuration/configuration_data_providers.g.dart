@@ -85,7 +85,7 @@ final syncMetadataLocalDataSourceProvider =
 typedef SyncMetadataLocalDataSourceRef =
     AutoDisposeProviderRef<ISyncMetadataLocalDataSource>;
 String _$configurationRepositoryHash() =>
-    r'590874e80f47f4f0c0922ee5a27218d4dcae1bac';
+    r'86639af28426f8b9393a83d28a89086eb79e17c4';
 
 /// Copied from Dart SDK
 class _SystemHash {

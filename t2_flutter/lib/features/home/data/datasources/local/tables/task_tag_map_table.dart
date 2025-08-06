@@ -1,7 +1,7 @@
 // manifest: manyToMany
+import 'package:app_core/app_core.dart';
 import 'package:drift/drift.dart';
 import 'package:uuid/uuid.dart';
-import '../../../../../../core/data/datasources/local/database_types.dart';
 import 'task_table.dart';
 import 'tag_table.dart';
 

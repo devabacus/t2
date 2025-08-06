@@ -1,5 +1,6 @@
 // manifest: entity
 // === generated_start:base ===
+import 'package:app_core/app_core.dart';
 import 'package:drift/drift.dart';
 import 'package:t2_client/t2_client.dart' as serverpod;
 import 'package:uuid/uuid_value.dart';
@@ -8,7 +9,6 @@ import '../../../../../../core/data/datasources/local/database.dart';
 import '../tables/extensions/category_table_extension.dart';
 import '../../../models/category/category_model.dart';
 import '../../../models/extensions/category_model_extension.dart';
-import '../../../../../../core/data/datasources/local/database_types.dart';
 import '../daos/category/category_dao.dart';
 import '../interfaces/category_local_datasource_service.dart';
 
