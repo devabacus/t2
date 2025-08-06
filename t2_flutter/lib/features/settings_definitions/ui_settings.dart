@@ -32,6 +32,13 @@ List<SettingDefinition> getUiSettings() {
     ),
 
     BooleanSettingDefinition(
+      key: 'testSettings',
+      group: 'UI',
+      displayName: 'Тестовая настройка',
+      defaultValue: true,
+    ),
+
+    BooleanSettingDefinition(
       key: 'newBooleanSettings',
       group: 'UI',
       displayName: 'Новая булева настройка',

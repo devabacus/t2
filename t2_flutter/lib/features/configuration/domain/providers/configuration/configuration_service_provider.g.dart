@@ -7,7 +7,7 @@ part of 'configuration_service_provider.dart';
 // **************************************************************************
 
 String _$configurationServiceHash() =>
-    r'9216d83ab838adb5428aa9a609bc9b73ef77eb57';
+    r'addbe4bab3216f38e62835d0fe820273c28b4b62';
 
 /// Провайдер, предоставляющий экземпляр сервиса конфигурации [IConfigurationService].
 ///

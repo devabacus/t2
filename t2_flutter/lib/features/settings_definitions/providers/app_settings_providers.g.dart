@@ -45,6 +45,22 @@ final enableAnimationsProvider = AutoDisposeStreamProvider<bool>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef EnableAnimationsRef = AutoDisposeStreamProviderRef<bool>;
+String _$testSettingsHash() => r'9b3438697f247f8fc29361ae1e19a0ac349b0488';
+
+/// See also [testSettings].
+@ProviderFor(testSettings)
+final testSettingsProvider = AutoDisposeStreamProvider<bool>.internal(
+  testSettings,
+  name: r'testSettingsProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$testSettingsHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef TestSettingsRef = AutoDisposeStreamProviderRef<bool>;
 String _$itemsPerPageHash() => r'dbff93a90fbdf5a772889abb5a02c42bf8c5a36d';
 
 /// Следит за настройкой количества элементов на странице.

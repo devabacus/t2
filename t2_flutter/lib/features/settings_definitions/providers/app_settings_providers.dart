@@ -1,9 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import 'configuration_service_provider.dart';
+import '../../configuration/domain/providers/configuration/configuration_service_provider.dart';
 
 part 'app_settings_providers.g.dart';
+
 
 /// Следит за изменением темы приложения.
 /// Возвращает 'system', 'light' или 'dark'.
@@ -26,6 +27,17 @@ Stream<bool> enableAnimations(Ref ref) {
     return Stream.value(true);
   }
 }
+
+
+@riverpod
+Stream<bool> testSettings(Ref ref) {
+  try {
+    return ref.watch(configurationServiceProvider).watchValue<bool>('testSettings', true);
+  } catch (e) {
+    return Stream.value(true);
+  }
+}
+
 
 /// Следит за настройкой количества элементов на странице.
 @riverpod

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:t2/features/configuration/domain/providers/configuration/app_settings_providers.dart';
+import 'package:t2/features/settings_definitions/providers/app_settings_providers.dart';
 import 'package:t2/features/configuration/domain/providers/configuration/configuration_service_provider.dart';
 
 /// Виджет для демонстрации доступа к глобальным настройкам приложения.
@@ -12,6 +12,7 @@ class SettingsDisplaySection extends ConsumerWidget {
     // Используем новые типизированные провайдеры
     final themeModeAsync = ref.watch(themeModeProvider);
     final animationsAsync = ref.watch(enableAnimationsProvider);
+    final testSettingsAsync = ref.watch(testSettingsProvider);
     final itemsPerPageAsync = ref.watch(itemsPerPageProvider);
 
     return Card(
@@ -65,6 +66,27 @@ class SettingsDisplaySection extends ConsumerWidget {
               ],
             ),
             const Divider(height: 24),
+
+
+            // Отображение тестовой настройки
+             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text('Тестовая:', style: TextStyle(fontWeight: FontWeight.bold)),
+                testSettingsAsync.when(
+                  data: (enabled) => Switch(
+                    value: enabled, 
+                    onChanged: (newValue) => ref.read(configurationServiceProvider).setValue('testSettings', newValue),
+                  ),
+                  loading: () => const SizedBox(width: 20, height: 20, child: CircularProgressIndicator()),
+                  error: (e, s) => const Icon(Icons.error, color: Colors.red),
+                ),
+              ],
+            ),
+            const Divider(height: 24),
+
+
+
             
             // Отображение элементов на странице
             Row(
