@@ -1,4 +1,5 @@
 // manifest: startProject
+import '../../../../auth_wrapper.dart';
 import '../../presentation/pages/home_page.dart';
 import 'home_routes_constants.dart';
 
@@ -12,7 +13,8 @@ List<RouteBase> getHomeRoutes() {
     GoRoute(
       name: HomeRoutes.home,
       path: HomeRoutes.homePath,
-      builder: (BuildContext context, state) => HomePage(),
+      // builder: (BuildContext context, state) => HomePage(),
+      builder: (BuildContext context, state) => const AuthWrapper(),
     ),
   ];
 }
