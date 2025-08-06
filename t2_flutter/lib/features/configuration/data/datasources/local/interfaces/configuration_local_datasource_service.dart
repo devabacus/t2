@@ -2,9 +2,6 @@
 
 // === generated_start:base ===
 import 'package:app_core/app_core.dart';
-
-import '../../../../../../core/data/datasources/local/database.dart';
-
 import '../../../models/configuration/configuration_model.dart';
 
 abstract class IConfigurationLocalDataSource {
@@ -15,8 +12,8 @@ abstract class IConfigurationLocalDataSource {
   Future<String> createConfiguration(ConfigurationModel configuration);
   Future<bool> updateConfiguration(ConfigurationModel configuration);
   Future<bool> deleteConfiguration(String id, {required int userId, required String customerId});
-  Future<List<ConfigurationTableData>> getAllLocalChanges({required int userId, required String customerId});
-  Future<List<ConfigurationTableData>> reconcileServerChanges(List<dynamic> serverChanges, {required int userId, required String customerId});
+  Future<List<ConfigurationModel>> getAllLocalChanges({required int userId, required String customerId});
+  Future<List<ConfigurationModel>> reconcileServerChanges(List<dynamic> serverChanges, {required int userId, required String customerId});
   Future<void> physicallyDeleteConfiguration(String id, {required int userId, required String customerId});
   Future<void> insertOrUpdateFromServer(dynamic serverChange, SyncStatus status);
   Future<void> handleSyncEvent(dynamic event, {required int userId, required String customerId});

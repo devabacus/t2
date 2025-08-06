@@ -10,9 +10,10 @@ import '../../domain/entities/extensions/configuration_entity_extension.dart';
 import '../../domain/repositories/configuration_repository.dart';
 import '../datasources/local/interfaces/configuration_local_datasource_service.dart';
 import '../../domain/datasources/i_configuration_remote_data_source.dart';
+import '../models/configuration/configuration_model.dart';
 import '../models/extensions/configuration_model_extension.dart';
 import '../datasources/local/tables/extensions/configuration_table_extension.dart';
-import '../../../../core/data/datasources/local/database.dart'; // Drift Table Data
+// import '../../../../core/data/datasources/local/database.dart'; // Drift Table Data
 
 // ----- КЛАСС РЕПОЗИТОРИЯ -----
 // Теперь он наследуется от BaseSyncRepository из пакета app_core,
@@ -36,10 +37,6 @@ class ConfigurationRepositoryImpl extends BaseSyncRepository implements IConfigu
     initEventBasedSync();
   }
 
-  //
-  // --- Весь остальной код файла остается без изменений ---
-  //
-  
   @override
   Future<List<dynamic>> getChangesFromServer(DateTime? since) {
     return _remoteDataSource.getConfigurationsSince(since);
@@ -47,8 +44,8 @@ class ConfigurationRepositoryImpl extends BaseSyncRepository implements IConfigu
 
   @override
   Future<void> pushLocalChanges(List<dynamic> localChangesToPush) async {
-    for (final localChange in localChangesToPush as List<ConfigurationTableData>) {
-      final entity = localChange.toModel().toEntity();
+    for (final localChange in localChangesToPush as List<ConfigurationModel>) {
+      final entity = localChange.toEntity();
       try {
         if (localChange.isDeleted) {
           await _syncUpdateToServer(entity);

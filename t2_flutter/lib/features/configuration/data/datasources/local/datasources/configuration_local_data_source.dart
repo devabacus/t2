@@ -16,7 +16,7 @@ class ConfigurationLocalDataSource implements IConfigurationLocalDataSource {
   ConfigurationLocalDataSource(this._configurationDao);
 
   @override
-  Future<List<ConfigurationTableData>> reconcileServerChanges(
+  Future<List<ConfigurationModel>> reconcileServerChanges(
     List<dynamic> serverChanges, {
     required int userId,
     required String customerId,
@@ -156,9 +156,12 @@ class ConfigurationLocalDataSource implements IConfigurationLocalDataSource {
     return await _configurationDao.updateConfigurationById(id, companion, userId: userId, customerId: customerId);
   }
 
-  @override
-  Future<List<ConfigurationTableData>> getAllLocalChanges({required int userId, required String customerId}) {
-    return (_configurationDao.select(_configurationDao.configurationTable)..where((t) => (t.syncStatus.equals(SyncStatus.synced.name)).not() & t.userId.equals(userId) & t.customerId.equals(customerId))).get();
+    @override
+  Future<List<ConfigurationModel>> getAllLocalChanges({required int userId, required String customerId}) async {
+    final data = await (_configurationDao.select(_configurationDao.configurationTable)
+      ..where((t) => (t.syncStatus.equals(SyncStatus.synced.name)).not() & t.userId.equals(userId) & t.customerId.equals(customerId)))
+      .get();
+    return data.toModels();
   }
 
   @override
