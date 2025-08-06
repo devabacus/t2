@@ -19,6 +19,8 @@ dependencies:
 #   path: ../Packages/ui_kit
   app_core:
     path: ../../../Packages/app_core
+  configuration:
+    path: ../../../Packages/configuration
   serverpod_flutter: 2.9.1
   t2_client:
     path: ../t2_client
