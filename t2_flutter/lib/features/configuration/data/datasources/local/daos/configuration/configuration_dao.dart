@@ -169,20 +169,26 @@ class ConfigurationDao extends DatabaseAccessor<AppDatabase>
   }
 // === generated_end:base ===
 
-   Future<ConfigurationTableData?> getConfigurationByGroupAndKey(
+ Future<ConfigurationTableData?> getConfigurationByGroupAndKey(
     String group,
     String key, {
     required int userId,
     required String customerId,
-  }) =>
-      (select(configurationTable)..where(
-        (t) =>
-            t.group.equals(group) &
-            t.key.equals(key) &
-            t.userId.equals(userId) &
-            t.customerId.equals(customerId) &
-            t.isDeleted.equals(false),
-      )).getSingleOrNull();
+  }) async {
+    // Старый код падал из-за .getSingleOrNull() на дубликатах.
+    // Новый код сортирует найденные записи по дате изменения
+    // и безопасно берет самую последнюю, что делает его устойчивым к дубликатам.
+    final query = select(configurationTable)
+      ..where((t) =>
+          t.group.equals(group) &
+          t.key.equals(key) &
+          t.userId.equals(userId) &
+          t.customerId.equals(customerId) &
+          t.isDeleted.equals(false))
+      ..orderBy([(t) => OrderingTerm(expression: t.lastModified, mode: OrderingMode.desc)]);
+    
+    final results = await query.get();
+    return results.isNotEmpty ? results.first : null;
+  }
 }
-
 
