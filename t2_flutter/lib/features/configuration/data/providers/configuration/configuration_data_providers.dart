@@ -87,5 +87,5 @@ IConfigurationRepository? currentUserConfigurationRepository(Ref ref) {
   }
   
   // Возвращаем репозиторий для текущего пользователя
-  return ref.watch(configurationRepositoryProvider(userId: currentUser!.id!, customerId: currentCustomerId.toString()));
+  return ref.watch(configurationRepositoryProvider(userId: currentUser!.id, customerId: currentCustomerId.toString()));
 }

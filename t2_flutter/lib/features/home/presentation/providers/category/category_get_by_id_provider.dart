@@ -20,7 +20,7 @@ Future<CategoryEntity?> getCategoryById(Ref ref, String id) async {
   }
 
   // Приводим userId и customerId к строковому виду, если они UuidValue
-  final String userId = currentUser!.id!.toString();
+  final String userId = currentUser!.id.toString();
   final String customerId = currentCustomerId.toString();
 
   final categoriesAsyncValue = ref.watch(categoriesStreamProvider);
@@ -33,7 +33,7 @@ Future<CategoryEntity?> getCategoryById(Ref ref, String id) async {
         id: 'NOT_FOUND',
         title: '',
         lastModified: DateTime.now().toUtc(), // lastModified теперь не nullable
-        userId: currentUser.id!, // Используем фактический userId
+        userId: currentUser.id, // Используем фактический userId
         customerId: customerId, // Используем фактический customerId
         createdAt: DateTime.now().toUtc(), // createdAt теперь не nullable
         isDeleted: false, // isDeleted тоже не nullable

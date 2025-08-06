@@ -58,7 +58,7 @@ class _CreationSectionState extends ConsumerState<CreationSection> {
 
     final category = CategoryEntity(
       id: const Uuid().v7(),
-      userId: currentUser!.id!,
+      userId: currentUser!.id,
       customerId: customerId,
       createdAt: DateTime.now(),
       lastModified: DateTime.now(),
@@ -79,7 +79,7 @@ class _CreationSectionState extends ConsumerState<CreationSection> {
 
     final task = TaskEntity(
       id: const Uuid().v7(),
-      userId: currentUser!.id!,
+      userId: currentUser!.id,
       customerId: customerId,
       createdAt: DateTime.now(),
       lastModified: DateTime.now(),
@@ -101,7 +101,7 @@ class _CreationSectionState extends ConsumerState<CreationSection> {
 
     final tag = TagEntity(
       id: const Uuid().v7(),
-      userId: currentUser!.id!,
+      userId: currentUser!.id,
       customerId: customerId,
       createdAt: DateTime.now(),
       lastModified: DateTime.now(),

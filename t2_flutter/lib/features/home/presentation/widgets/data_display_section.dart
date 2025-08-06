@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../domain/entities/category/category_entity.dart';
-import '../../domain/entities/tag/tag_entity.dart';
-import '../../domain/entities/task/task_entity.dart';
 import '../../domain/providers/category/category_usecase_providers.dart';
 import '../../domain/providers/tag/tag_usecase_providers.dart';
 import '../../domain/providers/task/task_usecase_providers.dart';
@@ -41,7 +38,7 @@ class DataDisplaySection extends ConsumerWidget {
               title: 'Категории',
               asyncValue: categoriesAsync,
               itemBuilder: (item) {
-                final category = item as CategoryEntity;
+                final category = item;
                 return ListTile(
                   title: Text(category.title),
                   dense: true,
@@ -57,7 +54,7 @@ class DataDisplaySection extends ConsumerWidget {
               title: 'Задачи',
               asyncValue: tasksAsync,
               itemBuilder: (item) {
-                final task = item as TaskEntity;
+                final task = item;
                 return ListTile(
                   title: Text(task.title),
                   subtitle: Text('ID: ${task.id.substring(0, 8)}...', style: const TextStyle(fontSize: 10)),

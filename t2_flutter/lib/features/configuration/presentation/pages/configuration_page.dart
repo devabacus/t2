@@ -47,7 +47,7 @@ class ConfigurationPage extends ConsumerWidget {
             if (createUseCase != null && definition != null && currentUser != null && customerId != null) {
               final newConfig = ConfigurationEntity(
                 id: const Uuid().v7(),
-                userId: currentUser.id!,
+                userId: currentUser.id,
                 customerId: customerId,
                 createdAt: DateTime.now(),
                 lastModified: DateTime.now(),
