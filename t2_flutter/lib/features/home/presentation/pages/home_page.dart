@@ -1,5 +1,9 @@
+// lib/features/home/presentation/pages/home_page.dart
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:t2/features/configuration/domain/providers/configuration/app_settings_providers.dart';
+import 'package:t2/features/configuration/domain/providers/configuration/configuration_service_provider.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../core/providers/session_manager_provider.dart';
@@ -51,35 +55,17 @@ class _HomePageState extends ConsumerState<HomePage> {
       );
     }
 
-    // if (customerId == null) {
-    //   return Scaffold(
-    //     appBar: AppBar(title: const Text('Тест синхронизации')),
-    //     body: const Center(
-    //       child: Column(
-    //         mainAxisAlignment: MainAxisAlignment.center,
-    //         children: [
-    //           CircularProgressIndicator(),
-    //           SizedBox(height: 16),
-    //           Text('Получение данных сессии...'),
-    //         ],
-    //       ),
-    //     ),
-    //   );
-    // }a
-
     //  подписываемся на стримы
     final categoriesAsync = ref.watch(categoriesStreamProvider);
     final tasksAsync = ref.watch(tasksStreamProvider);
     final tagsAsync = ref.watch(tagsStreamProvider);
     ref.watch(
       currentUserTaskTagMapRepositoryProvider,
-    ); //нужно для инициализации иначе не работает подписка
-
-    // final  = ref.watch(tagsStreamProvider);
+    ); 
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Тест синхронизации TaskTagMap'),
+        title: const Text('Тест синхронизации и Настроек'),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
@@ -95,6 +81,10 @@ class _HomePageState extends ConsumerState<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // === НОВЫЙ БЛОК ДЛЯ ДЕМОНСТРАЦИИ НАСТРОЕК ===
+            _buildSettingsDisplaySection(),
+            const SizedBox(height: 20),
+
             // === БЛОК СОЗДАНИЯ ДАННЫХ ===
             _buildCreationSection(),
             const SizedBox(height: 20),
@@ -105,6 +95,91 @@ class _HomePageState extends ConsumerState<HomePage> {
 
             // === БЛОК ОТОБРАЖЕНИЯ ДАННЫХ ===
             _buildDataDisplaySection(categoriesAsync, tasksAsync, tagsAsync),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // +++ НОВЫЙ ВИДЖЕТ ДЛЯ ОТОБРАЖЕНИЯ НАСТРОЕК +++
+  Widget _buildSettingsDisplaySection() {
+    // Используем новые типизированные провайдеры
+    final themeModeAsync = ref.watch(themeModeProvider);
+    final animationsAsync = ref.watch(enableAnimationsProvider);
+    final itemsPerPageAsync = ref.watch(itemsPerPageProvider);
+
+    return Card(
+      color: Colors.deepPurple.shade50,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              '⚙️ Тест доступа к настройкам',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.deepPurple),
+            ),
+            const SizedBox(height: 16),
+            
+            // Отображение темы
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text('Тема приложения:', style: TextStyle(fontWeight: FontWeight.bold)),
+                themeModeAsync.when(
+                  data: (theme) => Text(theme, style: const TextStyle(fontFamily: 'monospace')),
+                  loading: () => const SizedBox(width: 20, height: 20, child: CircularProgressIndicator()),
+                  error: (e, s) => const Icon(Icons.error, color: Colors.red),
+                ),
+              ],
+            ),
+            Wrap(
+              spacing: 8,
+              children: [
+                ElevatedButton(onPressed: () => ref.read(configurationServiceProvider).setValue('themeMode', 'light'), child: const Text('Light')),
+                ElevatedButton(onPressed: () => ref.read(configurationServiceProvider).setValue('themeMode', 'dark'), child: const Text('Dark')),
+                ElevatedButton(onPressed: () => ref.read(configurationServiceProvider).setValue('themeMode', 'system'), child: const Text('System')),
+              ],
+            ),
+            const Divider(height: 24),
+
+            // Отображение анимаций
+             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text('Анимации:', style: TextStyle(fontWeight: FontWeight.bold)),
+                animationsAsync.when(
+                  data: (enabled) => Switch(
+                    value: enabled, 
+                    onChanged: (newValue) => ref.read(configurationServiceProvider).setValue('enableAnimations', newValue),
+                  ),
+                  loading: () => const SizedBox(width: 20, height: 20, child: CircularProgressIndicator()),
+                  error: (e, s) => const Icon(Icons.error, color: Colors.red),
+                ),
+              ],
+            ),
+            const Divider(height: 24),
+            
+            // Отображение элементов на странице
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text('Элементов на странице:', style: TextStyle(fontWeight: FontWeight.bold)),
+                 itemsPerPageAsync.when(
+                  data: (count) => Text('$count', style: const TextStyle(fontFamily: 'monospace', fontSize: 16)),
+                  loading: () => const SizedBox(width: 20, height: 20, child: CircularProgressIndicator()),
+                  error: (e, s) => const Icon(Icons.error, color: Colors.red),
+                ),
+              ],
+            ),
+             Wrap(
+              spacing: 8,
+              children: [
+                ElevatedButton(onPressed: () => ref.read(configurationServiceProvider).setValue('itemsPerPage', 10), child: const Text('10')),
+                ElevatedButton(onPressed: () => ref.read(configurationServiceProvider).setValue('itemsPerPage', 20), child: const Text('20')),
+                ElevatedButton(onPressed: () => ref.read(configurationServiceProvider).setValue('itemsPerPage', 50), child: const Text('50')),
+              ],
+            ),
           ],
         ),
       ),
