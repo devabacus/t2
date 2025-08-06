@@ -1,12 +1,12 @@
 // lib/features/configuration/data/services/configuration_service_impl.dart
 
+import 'package:collection/collection.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../domain/entities/configuration/configuration_entity.dart';
 import '../../domain/repositories/configuration_repository.dart';
 import '../../domain/services/i_configuration_service.dart';
 import '../../presentation/registry/settings_registry.dart';
-import 'package:collection/collection.dart';
 
 /// Конкретная реализация сервиса конфигурации.
 class ConfigurationServiceImpl implements IConfigurationService {

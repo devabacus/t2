@@ -1,7 +1,6 @@
 // manifest: startProject
-import '../../entities/configuration/configuration_entity.dart';
 import '../../../data/models/configuration/configuration_model.dart';
-import 'package:t2_client/t2_client.dart' as serverpod;
+import '../../entities/configuration/configuration_entity.dart';
 
 extension ConfigurationEntityExtension on ConfigurationEntity {
   ConfigurationModel toModel() => ConfigurationModel(
@@ -23,18 +22,3 @@ extension ConfigurationEntityListExtension on List<ConfigurationEntity> {
   List<ConfigurationModel> toModels() => map((entity) => entity.toModel()).toList();
 }
 
-extension ServerpodConfigurationEntityExtensions on ConfigurationEntity {
-  serverpod.Configuration toServerpodConfiguration() => serverpod.Configuration(
-    id: serverpod.UuidValue.fromString(id),
-    userId: userId,
-    customerId: serverpod.UuidValue.fromString(customerId),
-    createdAt: createdAt,
-    lastModified: lastModified,
-    isDeleted: isDeleted,
-    // === generated_start:serverpodToModelParams ===
-  group: group,
-        key: key,
-        value: value
-// === generated_end:serverpodToModelParams ===
-  );
-}

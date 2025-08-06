@@ -1,7 +1,7 @@
 // manifest: startProject
 
 // === generated_start:base ===
-import 'package:t2/core/data/datasources/local/database.dart';
+import '../../../../../../core/data/datasources/local/database.dart';
 
 import '../../../models/configuration/configuration_model.dart';
 import '../../../../../../core/data/datasources/local/database_types.dart';

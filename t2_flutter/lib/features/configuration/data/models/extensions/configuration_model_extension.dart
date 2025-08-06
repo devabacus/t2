@@ -2,9 +2,8 @@
 import 'package:drift/drift.dart';
 
 import '../../../../../core/data/datasources/local/database.dart';
-import 'package:t2_client/t2_client.dart' as serverpod;
-import '../../../domain/entities/configuration/configuration_entity.dart';
 import '../../../../../core/data/datasources/local/database_types.dart';
+import '../../../domain/entities/configuration/configuration_entity.dart';
 import '../configuration/configuration_model.dart';
 
 extension ConfigurationModelExtension on ConfigurationModel {
@@ -46,24 +45,3 @@ extension ConfigurationModelListExtension on List<ConfigurationModel> {
       map((model) => model.toEntity()).toList();
 }
 
-extension ServerpodConfigurationToModelExtension on serverpod.Configuration {
-  ConfigurationModel toModel() => ConfigurationModel(
-    id: id.toString(),
-    userId: userId,
-    customerId: customerId.toString(),
-    createdAt: createdAt,
-    lastModified: lastModified,
-    isDeleted: isDeleted,
-    // === generated_start:serverpodToModelParams ===
-  group: group,
-        key: key,
-        value: value
-// === generated_end:serverpodToModelParams ===
-  );
-}
-
-extension ServerpodConfigurationListToModelListExtension
-    on List<serverpod.Configuration> {
-  List<ConfigurationModel> toModels() =>
-      map((serverpodModel) => serverpodModel.toModel()).toList();
-}

@@ -2,8 +2,6 @@
 
 import 'package:t2/features/configuration/domain/datasources/i_configuration_remote_data_source.dart';
 import 'package:t2/features/configuration/domain/entities/configuration/configuration_entity.dart';
-import 'package:t2/features/configuration/domain/entities/extensions/configuration_entity_extension.dart';
-import 'package:t2/features/configuration/data/models/extensions/configuration_model_extension.dart';
 import 'package:t2_client/t2_client.dart' as serverpod;
 
 class ServerpodConfigurationDataSource implements IConfigurationRemoteDataSource {
@@ -11,34 +9,61 @@ class ServerpodConfigurationDataSource implements IConfigurationRemoteDataSource
 
   ServerpodConfigurationDataSource(this._client);
 
-  @override
+ // --- ЛОГИКА КОНВЕРТАЦИИ ИЗ SERVERPOD В ENTITY ---
+  ConfigurationEntity _fromServerpod(serverpod.Configuration config) {
+    return ConfigurationEntity(
+      id: config.id.toString(),
+      userId: config.userId,
+      customerId: config.customerId.toString(),
+      createdAt: config.createdAt,
+      lastModified: config.lastModified,
+      isDeleted: config.isDeleted,
+      group: config.group,
+      key: config.key,
+      value: config.value,
+    );
+  }
+
+  // --- ЛОГИКА КОНВЕРТАЦИИ ИЗ ENTITY В SERVERPOD ---
+  serverpod.Configuration _toServerpod(ConfigurationEntity entity) {
+    return serverpod.Configuration(
+      id: serverpod.UuidValue.fromString(entity.id),
+      userId: entity.userId,
+      customerId: serverpod.UuidValue.fromString(entity.customerId),
+      createdAt: entity.createdAt,
+      lastModified: entity.lastModified,
+      isDeleted: entity.isDeleted,
+      group: entity.group,
+      key: entity.key,
+      value: entity.value,
+    );
+  }
+
+
+ @override
   Future<List<ConfigurationEntity>> getConfigurationsSince(DateTime? since) async {
     final serverpodConfigs = await _client.configuration.getConfigurationsSince(since);
-    return serverpodConfigs.map((e) => e.toModel().toEntity()).toList();
+    return serverpodConfigs.map(_fromServerpod).toList();
   }
 
   @override
   Future<ConfigurationEntity> createConfiguration(ConfigurationEntity configuration) async {
-    final serverpodConfig = configuration.toServerpodConfiguration();
-    final result = await _client.configuration.createConfiguration(serverpodConfig);
-    return result.toModel().toEntity();
+    final result = await _client.configuration.createConfiguration(_toServerpod(configuration));
+    return _fromServerpod(result);
   }
 
   @override
   Future<void> updateConfiguration(ConfigurationEntity configuration) async {
-    final serverpodConfig = configuration.toServerpodConfiguration();
-    await _client.configuration.updateConfiguration(serverpodConfig);
+    await _client.configuration.updateConfiguration(_toServerpod(configuration));
   }
 
   @override
   Stream<dynamic> watchEvents() {
-    // ИЗМЕНЕНИЕ: Мы преобразуем событие от Serverpod в нашу чистую Entity
     return _client.configuration.watchEvents().map((event) {
-      // Проверяем, что в событии есть данные, и конвертируем их
       if (event.configuration != null) {
-        return event.configuration!.toModel().toEntity();
+        return _fromServerpod(event.configuration!);
       }
-      return null; // или можно вернуть специальный объект-событие
-    }).where((event) => event != null); // Фильтруем пустые события
+      return null;
+    }).where((event) => event != null);
   }
 }
