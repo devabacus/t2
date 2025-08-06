@@ -8,6 +8,7 @@ import '../../../data/providers/configuration/configuration_data_providers.dart'
 import '../../../data/services/configuration_service_impl.dart';
 import '../../../presentation/registry/settings_registry.dart';
 import '../../services/i_configuration_service.dart';
+import '../../services/mock_configuration_service.dart';
 
 part 'configuration_service_provider.g.dart';
 
@@ -25,7 +26,7 @@ IConfigurationService configurationService(Ref ref) {
   if (currentUser?.id == null || customerId == null) {
     // В реальном приложении здесь лучше возвращать Mock-сервис или
     // обрабатывать это состояние на уровне UI, чтобы не вызывать ошибку.
-    throw StateError('ConfigurationService requires an authenticated user.');
+    return const MockConfigurationService();
   }
 
   final repository = ref.watch(configurationRepositoryProvider(

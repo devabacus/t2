@@ -73,8 +73,8 @@ class ConfigurationServiceImpl implements IConfigurationService {
         // Эти значения должны быть корректно установлены!
         // Репозиторий должен быть создан для конкретного пользователя,
         // и он подставит правильные значения при создании.
-        userId: 0, // Placeholder
-        customerId: '', // Placeholder
+        userId: _repository.userId, // Placeholder
+        customerId: _repository.customerId, // Placeholder
         createdAt: DateTime.now().toUtc(),
         lastModified: DateTime.now().toUtc(),
         group: definition.group,

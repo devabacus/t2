@@ -3,6 +3,10 @@
 import '../entities/configuration/configuration_entity.dart';
 
 abstract class IConfigurationRepository {
+
+  int get userId;
+  String get customerId;
+
   Future<List<ConfigurationEntity>> getConfigurations();
   Stream<List<ConfigurationEntity>> watchConfigurations();
   Future<ConfigurationEntity?> getConfigurationById(String id);
