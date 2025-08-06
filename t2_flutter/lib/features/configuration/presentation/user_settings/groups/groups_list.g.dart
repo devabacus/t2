@@ -8,10 +8,7 @@ part of 'groups_list.dart';
 
 String _$settingGroupsHash() => r'bb35607883fa920be6a07178df47f61806cfceec';
 
-/// Централизованный список всех групп настроек в приложении.
-/// Это единственное место, которое нужно изменить, чтобы добавить или удалить группу.
-///
-/// Copied from [settingGroups].
+/// See also [settingGroups].
 @ProviderFor(settingGroups)
 final settingGroupsProvider = AutoDisposeProvider<List<SettingGroup>>.internal(
   settingGroups,

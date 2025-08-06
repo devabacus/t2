@@ -6,10 +6,11 @@ part of 'settings_mapper.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$settingsMapperHash() => r'6d0d0b6030dc3e54a8c232d7eeef115b4f4392c0';
+String _$settingsMapperHash() => r'1f0dc0c2408af767fd9ecb423fc4204531d754f9';
 
 /// Провайдер Riverpod для доступа к экземпляру SettingsMapper.
-/// Он зависит от реестра, поэтому получает его из [settingsRegistryProvider].
+/// Он автоматически получает зависимости (реестр настроек и список групп)
+/// от других провайдеров.
 ///
 /// Copied from [settingsMapper].
 @ProviderFor(settingsMapper)

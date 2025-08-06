@@ -15,7 +15,8 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CategoryEntity {
 
- String get id; int get userId; String get customerId; DateTime get createdAt; DateTime get lastModified; bool get isDeleted; String get title;
+ String get id; int get userId; String get customerId; DateTime get createdAt; DateTime get lastModified; bool get isDeleted;// === generated_start:freezedConstructor ===
+ String get title;
 /// Create a copy of CategoryEntity
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -224,6 +225,7 @@ class _CategoryEntity implements CategoryEntity {
 @override final  DateTime createdAt;
 @override final  DateTime lastModified;
 @override@JsonKey() final  bool isDeleted;
+// === generated_start:freezedConstructor ===
 @override final  String title;
 
 /// Create a copy of CategoryEntity
