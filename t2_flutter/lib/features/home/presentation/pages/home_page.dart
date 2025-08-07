@@ -10,6 +10,7 @@ import 'package:t2/features/home/presentation/widgets/relation_management_sectio
 import 'package:t2/features/home/presentation/widgets/settings_display_section.dart';
 
 import '../../../../core/providers/session_manager_provider.dart';
+import '../../../auth/domain/providers/auth_usecase_providers.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -50,8 +51,9 @@ class _HomePageState extends ConsumerState<HomePage> {
             icon: const Icon(Icons.logout),
             tooltip: 'Выход',
             onPressed: () async {
-              final sessionManager = ref.read(sessionManagerProvider);
-              await sessionManager.signOutDevice();
+              // final sessionManager = ref.read(sessionManagerProvider);
+              // await sessionManager.signOutDevice();
+              await ref.read(signOutUseCaseProvider)();
             },
           ),
         ],

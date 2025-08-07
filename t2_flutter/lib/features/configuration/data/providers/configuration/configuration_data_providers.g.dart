@@ -6,6 +6,24 @@ part of 'configuration_data_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+String _$configurationDaoHash() => r'62536fc24f8539d26616fefc8b28b642f7d533a8';
+
+/// See also [configurationDao].
+@ProviderFor(configurationDao)
+final configurationDaoProvider = AutoDisposeProvider<ConfigurationDao>.internal(
+  configurationDao,
+  name: r'configurationDaoProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$configurationDaoHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef ConfigurationDaoRef = AutoDisposeProviderRef<ConfigurationDao>;
 String _$configurationRemoteDataSourceHash() =>
     r'9818702f9ddf670e5ab81c0b27dc36a092c2f9ef';
 
@@ -27,24 +45,6 @@ final configurationRemoteDataSourceProvider =
 // ignore: unused_element
 typedef ConfigurationRemoteDataSourceRef =
     AutoDisposeProviderRef<IConfigurationRemoteDataSource>;
-String _$configurationDaoHash() => r'62536fc24f8539d26616fefc8b28b642f7d533a8';
-
-/// See also [configurationDao].
-@ProviderFor(configurationDao)
-final configurationDaoProvider = AutoDisposeProvider<ConfigurationDao>.internal(
-  configurationDao,
-  name: r'configurationDaoProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$configurationDaoHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef ConfigurationDaoRef = AutoDisposeProviderRef<ConfigurationDao>;
 String _$configurationLocalDataSourceHash() =>
     r'237a77839e4005e91f20f898235e6f1a68bd10d1';
 

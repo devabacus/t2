@@ -6,6 +6,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:t2/features/configuration/presentation/routing/configuration_router_config.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
+import '../../features/auth/routing/auth_router_config.dart';
 import '../../features/configuration/presentation/routing/configuration_routes_constants.dart';
 import '../../features/home/presentation/routing/home_router_config.dart';
 import '../../features/home/presentation/routing/home_routes_constants.dart';
@@ -17,8 +18,9 @@ part 'router_config.g.dart';
 GoRouter appRouter(Ref ref) {
   return GoRouter(
     // observers: [TalkerRouteObserver(log.talker)],
-    initialLocation: HomeRoutes.homePath,
+    // initialLocation: HomeRoutes.homePath,
     routes: [
+      ...getAuthRoutes(),
 			...getHomeRoutes(),
       ...getConfigurationRoutes()        
     ]); 
