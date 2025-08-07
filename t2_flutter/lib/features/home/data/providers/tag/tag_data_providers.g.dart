@@ -42,45 +42,26 @@ final tagLocalDataSourceProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef TagLocalDataSourceRef = AutoDisposeProviderRef<ITagLocalDataSource>;
-String _$syncMetadataDaoHash() => r'4875e7284109092e2c7f00057f7329e847c5dce2';
+String _$tagRemoteDataSourceHash() =>
+    r'c41c170478a75a0400c9027e355531f6e70263a1';
 
-/// See also [syncMetadataDao].
-@ProviderFor(syncMetadataDao)
-final syncMetadataDaoProvider = AutoDisposeProvider<SyncMetadataDao>.internal(
-  syncMetadataDao,
-  name: r'syncMetadataDaoProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$syncMetadataDaoHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef SyncMetadataDaoRef = AutoDisposeProviderRef<SyncMetadataDao>;
-String _$syncMetadataLocalDataSourceHash() =>
-    r'8fe23dd3a0392e40a49b10c234daf3add7018260';
-
-/// See also [syncMetadataLocalDataSource].
-@ProviderFor(syncMetadataLocalDataSource)
-final syncMetadataLocalDataSourceProvider =
-    AutoDisposeProvider<ISyncMetadataLocalDataSource>.internal(
-      syncMetadataLocalDataSource,
-      name: r'syncMetadataLocalDataSourceProvider',
+/// See also [tagRemoteDataSource].
+@ProviderFor(tagRemoteDataSource)
+final tagRemoteDataSourceProvider =
+    AutoDisposeProvider<ITagRemoteDataSource>.internal(
+      tagRemoteDataSource,
+      name: r'tagRemoteDataSourceProvider',
       debugGetCreateSourceHash:
           const bool.fromEnvironment('dart.vm.product')
               ? null
-              : _$syncMetadataLocalDataSourceHash,
+              : _$tagRemoteDataSourceHash,
       dependencies: null,
       allTransitiveDependencies: null,
     );
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef SyncMetadataLocalDataSourceRef =
-    AutoDisposeProviderRef<ISyncMetadataLocalDataSource>;
+typedef TagRemoteDataSourceRef = AutoDisposeProviderRef<ITagRemoteDataSource>;
 String _$tagRepositoryHash() => r'2c6e903ad07787d6ce7a9c8491f3a7853632345a';
 
 /// Copied from Dart SDK

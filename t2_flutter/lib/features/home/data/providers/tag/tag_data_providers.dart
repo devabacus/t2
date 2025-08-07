@@ -2,17 +2,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../../core/data/datasources/local/providers/database_provider.dart';
+import '../../../../../core/data/datasources/local/providers/sync_metadata_providers.dart';
+import '../../../../../core/providers/serverpod_client_provider.dart';
 import '../../../../../core/providers/session_manager_provider.dart';
 import '../../../../../core/sync/sync_registry.dart';
 import '../../../domain/repositories/tag_repository.dart';
 import '../../datasources/local/daos/tag/tag_dao.dart';
-import '../../../../../core/data/datasources/local/daos/sync_metadata_dao.dart';
-import '../../datasources/local/interfaces/tag_local_datasource_service.dart';
-import '../../../../../core/data/datasources/local/interfaces/sync_metadata_local_datasource_service.dart';
 import '../../datasources/local/datasources/tag_local_data_source.dart';
-import '../../../../../core/data/datasources/local/datasources/sync_metadata_local_data_source.dart';
+import '../../datasources/local/interfaces/tag_local_datasource_service.dart';
+import '../../datasources/remote/interfaces/tag_remote_datasource_service.dart';
+import '../../datasources/remote/sources/tag_remote_data_source.dart';
 import '../../repositories/tag_repository_impl.dart';
-import 'tag_remote_data_providers.dart';
 
 part 'tag_data_providers.g.dart';
 
@@ -29,15 +29,10 @@ ITagLocalDataSource tagLocalDataSource(Ref ref) {
 }
 
 @riverpod
-SyncMetadataDao syncMetadataDao(Ref ref) {
-  final databaseService = ref.read(databaseServiceProvider);
-  return SyncMetadataDao(databaseService.database);
-}
-
-@riverpod
-ISyncMetadataLocalDataSource syncMetadataLocalDataSource(Ref ref) {
-  final syncMetadataDao = ref.read(syncMetadataDaoProvider);
-  return SyncMetadataLocalDataSource(syncMetadataDao);
+ITagRemoteDataSource tagRemoteDataSource(Ref ref) {
+  ref.keepAlive();
+  final client = ref.watch(serverpodClientProvider);
+  return TagRemoteDataSource(client); 
 }
 
 /// Семейный провайдер репозитория для конкретного пользователя

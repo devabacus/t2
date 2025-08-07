@@ -2,17 +2,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../../core/data/datasources/local/providers/database_provider.dart';
+import '../../../../../core/data/datasources/local/providers/sync_metadata_providers.dart';
+import '../../../../../core/providers/serverpod_client_provider.dart';
 import '../../../../../core/providers/session_manager_provider.dart';
 import '../../../../../core/sync/sync_registry.dart';
 import '../../../domain/repositories/task_repository.dart';
 import '../../datasources/local/daos/task/task_dao.dart';
-import '../../../../../core/data/datasources/local/daos/sync_metadata_dao.dart';
-import '../../datasources/local/interfaces/task_local_datasource_service.dart';
-import '../../../../../core/data/datasources/local/interfaces/sync_metadata_local_datasource_service.dart';
 import '../../datasources/local/datasources/task_local_data_source.dart';
-import '../../../../../core/data/datasources/local/datasources/sync_metadata_local_data_source.dart';
+import '../../datasources/local/interfaces/task_local_datasource_service.dart';
+import '../../datasources/remote/interfaces/task_remote_datasource_service.dart';
+import '../../datasources/remote/sources/task_remote_data_source.dart';
 import '../../repositories/task_repository_impl.dart';
-import 'task_remote_data_providers.dart';
 
 part 'task_data_providers.g.dart';
 
@@ -29,15 +29,10 @@ ITaskLocalDataSource taskLocalDataSource(Ref ref) {
 }
 
 @riverpod
-SyncMetadataDao syncMetadataDao(Ref ref) {
-  final databaseService = ref.read(databaseServiceProvider);
-  return SyncMetadataDao(databaseService.database);
-}
-
-@riverpod
-ISyncMetadataLocalDataSource syncMetadataLocalDataSource(Ref ref) {
-  final syncMetadataDao = ref.read(syncMetadataDaoProvider);
-  return SyncMetadataLocalDataSource(syncMetadataDao);
+ITaskRemoteDataSource taskRemoteDataSource(Ref ref) {
+  ref.keepAlive();
+  final client = ref.watch(serverpodClientProvider);
+  return TaskRemoteDataSource(client); 
 }
 
 /// Семейный провайдер репозитория для конкретного пользователя

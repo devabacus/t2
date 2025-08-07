@@ -19,6 +19,7 @@ class SyncController extends _$SyncController {
   @override
   void build() {
     _connectivitySubscription = Connectivity().onConnectivityChanged.listen(
+      // обрабатываем события от connectivity, если online то запускаем полную синхр.
       _handleConnectivityChange,
     );
 
@@ -31,6 +32,7 @@ class SyncController extends _$SyncController {
     });
   }
 
+// после авторизации пользователя также запускаем авторизацию
   void _listenToAuthChanges() {
     _authSubscription = ref.listen<AsyncValue<UserInfo?>>(
       userInfoStreamProvider,
@@ -46,6 +48,7 @@ class SyncController extends _$SyncController {
     );
   }
 
+// при подключении к сети запускаем полную синхронизацию (_triggerSync)
   Future<void> _handleConnectivityChange(
     List<ConnectivityResult> results,
   ) async {
@@ -58,6 +61,7 @@ class SyncController extends _$SyncController {
     }
   }
 
+// запускаем полную синхронизацию
   Future<void> _triggerSync() async {
     try {
       await Future.delayed(const Duration(milliseconds: 500));
@@ -71,6 +75,7 @@ class SyncController extends _$SyncController {
     }
   }
 
+// ручная синхронизация из других частей приложения
   Future<void> triggerSync() async {
     print('🔄 Запуск ручной синхронизации...');
     await _triggerSync();

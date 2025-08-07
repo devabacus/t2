@@ -9,7 +9,7 @@ import 'serverpod_client_provider.dart';
 
 part 'session_manager_provider.g.dart';
 
-@riverpod
+@riverpod  // создаем сессию для текущего serverpod клента   
 SessionManager sessionManager(Ref ref) {
   ref.keepAlive();
   final client = ref.watch(serverpodClientProvider);
@@ -63,8 +63,6 @@ bool isAuthenticated(Ref ref) {
   return user != null;
 }
 
-// lib/core/providers/session_manager_provider.dart
-
 @riverpod
 class UserSessionDataNotifier extends _$UserSessionDataNotifier {
   @override
@@ -94,7 +92,6 @@ class UserSessionDataNotifier extends _$UserSessionDataNotifier {
 
     try {
       // Вызываем эндпоинт на сервере для получения UserSessionData
-      // Предполагается, что UserManagementEndpoint уже настроен на сервере
       final userContext = await client.userManagement.getMyUserContext();
       state = userContext; // Обновляем состояние провайдера
       print('✅ Получен User Context: $userContext');

@@ -43,45 +43,27 @@ final categoryLocalDataSourceProvider =
 // ignore: unused_element
 typedef CategoryLocalDataSourceRef =
     AutoDisposeProviderRef<ICategoryLocalDataSource>;
-String _$syncMetadataDaoHash() => r'4875e7284109092e2c7f00057f7329e847c5dce2';
+String _$categoryRemoteDataSourceHash() =>
+    r'6bee0ea838bfd7c946e03f75b5137cafdbf79fea';
 
-/// See also [syncMetadataDao].
-@ProviderFor(syncMetadataDao)
-final syncMetadataDaoProvider = AutoDisposeProvider<SyncMetadataDao>.internal(
-  syncMetadataDao,
-  name: r'syncMetadataDaoProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$syncMetadataDaoHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef SyncMetadataDaoRef = AutoDisposeProviderRef<SyncMetadataDao>;
-String _$syncMetadataLocalDataSourceHash() =>
-    r'8fe23dd3a0392e40a49b10c234daf3add7018260';
-
-/// See also [syncMetadataLocalDataSource].
-@ProviderFor(syncMetadataLocalDataSource)
-final syncMetadataLocalDataSourceProvider =
-    AutoDisposeProvider<ISyncMetadataLocalDataSource>.internal(
-      syncMetadataLocalDataSource,
-      name: r'syncMetadataLocalDataSourceProvider',
+/// See also [categoryRemoteDataSource].
+@ProviderFor(categoryRemoteDataSource)
+final categoryRemoteDataSourceProvider =
+    AutoDisposeProvider<ICategoryRemoteDataSource>.internal(
+      categoryRemoteDataSource,
+      name: r'categoryRemoteDataSourceProvider',
       debugGetCreateSourceHash:
           const bool.fromEnvironment('dart.vm.product')
               ? null
-              : _$syncMetadataLocalDataSourceHash,
+              : _$categoryRemoteDataSourceHash,
       dependencies: null,
       allTransitiveDependencies: null,
     );
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef SyncMetadataLocalDataSourceRef =
-    AutoDisposeProviderRef<ISyncMetadataLocalDataSource>;
+typedef CategoryRemoteDataSourceRef =
+    AutoDisposeProviderRef<ICategoryRemoteDataSource>;
 String _$categoryRepositoryHash() =>
     r'2254eaeac6d6519548767df9dea1636558b4702a';
 

@@ -7,6 +7,7 @@ import '../config/config.dart';
 
 part 'serverpod_client_provider.g.dart';
 
+// конфигурация серверпод пока только url, и разрешение логирования
 class ServerpodConfig {
   final String serverUrl;
   final bool enableLogging;
@@ -17,7 +18,8 @@ class ServerpodConfig {
   });
 }
 
-@riverpod
+
+@riverpod // провайдер серверпод конфигурации
 ServerpodConfig serverpodConfig(Ref ref) {
   return ServerpodConfig(
     serverUrl: AppConfig.baseUrl,
@@ -25,7 +27,7 @@ ServerpodConfig serverpodConfig(Ref ref) {
   );
 }
 
-@riverpod
+@riverpod // cоздаем serverpod клента
 Client serverpodClient(Ref ref) {
   ref.keepAlive();
   final config = ref.watch(serverpodConfigProvider);
@@ -53,6 +55,7 @@ Future<bool> serverpodConnectionCheck(Ref ref) async {
   final client = ref.watch(serverpodClientProvider);
   
   try {
+    // тупо запрашиваем инфо пользователя для проверки подключения
     await client.modules.auth.status.getUserInfo();
     return true;
   } catch (e) {

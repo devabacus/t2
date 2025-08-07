@@ -42,45 +42,26 @@ final taskLocalDataSourceProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef TaskLocalDataSourceRef = AutoDisposeProviderRef<ITaskLocalDataSource>;
-String _$syncMetadataDaoHash() => r'4875e7284109092e2c7f00057f7329e847c5dce2';
+String _$taskRemoteDataSourceHash() =>
+    r'37fa4028a3ed32a90e22c0c20ac2aaf521c7e0b0';
 
-/// See also [syncMetadataDao].
-@ProviderFor(syncMetadataDao)
-final syncMetadataDaoProvider = AutoDisposeProvider<SyncMetadataDao>.internal(
-  syncMetadataDao,
-  name: r'syncMetadataDaoProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$syncMetadataDaoHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef SyncMetadataDaoRef = AutoDisposeProviderRef<SyncMetadataDao>;
-String _$syncMetadataLocalDataSourceHash() =>
-    r'8fe23dd3a0392e40a49b10c234daf3add7018260';
-
-/// See also [syncMetadataLocalDataSource].
-@ProviderFor(syncMetadataLocalDataSource)
-final syncMetadataLocalDataSourceProvider =
-    AutoDisposeProvider<ISyncMetadataLocalDataSource>.internal(
-      syncMetadataLocalDataSource,
-      name: r'syncMetadataLocalDataSourceProvider',
+/// See also [taskRemoteDataSource].
+@ProviderFor(taskRemoteDataSource)
+final taskRemoteDataSourceProvider =
+    AutoDisposeProvider<ITaskRemoteDataSource>.internal(
+      taskRemoteDataSource,
+      name: r'taskRemoteDataSourceProvider',
       debugGetCreateSourceHash:
           const bool.fromEnvironment('dart.vm.product')
               ? null
-              : _$syncMetadataLocalDataSourceHash,
+              : _$taskRemoteDataSourceHash,
       dependencies: null,
       allTransitiveDependencies: null,
     );
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef SyncMetadataLocalDataSourceRef =
-    AutoDisposeProviderRef<ISyncMetadataLocalDataSource>;
+typedef TaskRemoteDataSourceRef = AutoDisposeProviderRef<ITaskRemoteDataSource>;
 String _$taskRepositoryHash() => r'544f9447f4ddb3eb8c9dd2491575ab1e8295ee17';
 
 /// Copied from Dart SDK
