@@ -16,15 +16,16 @@ import '../../repositories/configuration_repository_impl.dart';
 part 'configuration_data_providers.g.dart';
 
 @riverpod
-IConfigurationRemoteDataSource configurationRemoteDataSource(Ref ref) {
-  return ref.watch(configurationDependenciesProvider).remoteDataSource;
-}
-
-@riverpod
 ConfigurationDao configurationDao(Ref ref) {
   // Получаем зависимость через "мост"
   return ref.watch(configurationDependenciesProvider).configurationDao;
 }
+
+@riverpod
+IConfigurationRemoteDataSource configurationRemoteDataSource(Ref ref) {
+  return ref.watch(configurationDependenciesProvider).remoteDataSource;
+}
+
 
 @riverpod
 IConfigurationLocalDataSource configurationLocalDataSource(Ref ref) {

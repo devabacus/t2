@@ -26,7 +26,6 @@ class ConfigurationPage extends ConsumerWidget {
       data: (configs) {
         final screenModel = mapper.mapToScreen(configs, groupKey: groupKey);
 
-        // --- НАЧАЛО ИЗМЕНЕНИЙ: УЛУЧШЕННЫЙ КОЛБЭК ---
         onSettingChanged(String key, dynamic value) {
           final updateUseCase = ref.read(updateConfigurationUseCaseProvider);
           final createUseCase = ref.read(createConfigurationUseCaseProvider);
