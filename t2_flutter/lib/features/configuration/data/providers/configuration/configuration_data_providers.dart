@@ -23,7 +23,6 @@ ConfigurationDao configurationDao(Ref ref) {
   return ref.watch(configurationDependenciesProvider).configurationDao;
 }
 
-
 @riverpod
 IConfigurationLocalDataSource configurationLocalDataSource(Ref ref) {
   final configurationDao = ref.read(configurationDaoProvider);
@@ -45,18 +44,24 @@ ISyncMetadataLocalDataSource syncMetadataLocalDataSource(Ref ref) {
 /// Семейный провайдер репозитория для конкретного пользователя
 /// Каждый userId получает свой изолированный экземпляр репозитория
 @riverpod
-IConfigurationRepository configurationRepository(Ref ref, {required int userId, required String customerId}) {
+IConfigurationRepository configurationRepository(
+  Ref ref, {
+  required int userId,
+  required String customerId,
+}) {
   // ref.keepAlive();
-  
+
   // Получаем все зависимости
   final localDataSource = ref.watch(configurationLocalDataSourceProvider);
   final remoteDataSource = ref.watch(configurationRemoteDataSourceProvider);
-  final syncMetadataLocalDataSource = ref.watch(syncMetadataLocalDataSourceProvider);
+  final syncMetadataLocalDataSource = ref.watch(
+    syncMetadataLocalDataSourceProvider,
+  );
 
   // Создаем репозиторий с фиксированным userId
   final repository = ConfigurationRepositoryImpl(
-    localDataSource, 
-    remoteDataSource, 
+    localDataSource,
+    remoteDataSource,
     syncMetadataLocalDataSource,
     userId,
     customerId,
@@ -64,13 +69,17 @@ IConfigurationRepository configurationRepository(Ref ref, {required int userId, 
 
   // Автоматически регистрируем в реестре
   final registry = ref.read(syncRegistryProvider);
-  registry.registerRepository('categories_${userId}_$customerId', repository);
-  
+  // registry.registerRepository('categories_${userId}_$customerId', repository);
+  final repoKey = 'configurations_${userId}_$customerId';
+  registry.registerRepository(repoKey, repository);
+
   ref.onDispose(() {
-    registry.unregisterRepository('categories_${userId}_$customerId');
+    // registry.unregisterRepository('categories_${userId}_$customerId');
+    registry.unregisterRepository(repoKey);
+
     repository.dispose();
   });
-  
+
   return repository;
 }
 
@@ -80,12 +89,17 @@ IConfigurationRepository configurationRepository(Ref ref, {required int userId, 
 IConfigurationRepository? currentUserConfigurationRepository(Ref ref) {
   final currentUser = ref.watch(currentUserProvider);
   final currentCustomerId = ref.watch(currentCustomerIdProvider);
-  
+
   if (currentUser?.id == null || currentCustomerId == null) {
     // Если пользователь не авторизован, возвращаем null
     return null;
   }
-  
+
   // Возвращаем репозиторий для текущего пользователя
-  return ref.watch(configurationRepositoryProvider(userId: currentUser!.id!, customerId: currentCustomerId.toString()));
+  return ref.watch(
+    configurationRepositoryProvider(
+      userId: currentUser!.id!,
+      customerId: currentCustomerId.toString(),
+    ),
+  );
 }
