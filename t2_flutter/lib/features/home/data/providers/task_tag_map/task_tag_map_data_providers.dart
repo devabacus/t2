@@ -1,6 +1,7 @@
 // manifest: manyToMany
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import '../../../../auth/presentation/providers/auth_state_providers.dart';
 import '../../datasources/remote/interfaces/task_tag_map_remote_datasource_service.dart';
 import '../../datasources/remote/sources/task_tag_map_remote_data_source.dart';
 import '../../../../../core/data/datasources/local/interfaces/sync_metadata_local_datasource_service.dart';
@@ -86,7 +87,8 @@ ITaskTagMapRepository taskTagMapRepository(Ref ref, {required int userId, requir
 
 @riverpod
 ITaskTagMapRepository? currentUserTaskTagMapRepository(Ref ref) {
-  final currentUser = ref.watch(currentUserProvider);
+    final currentUser = ref.watch(authStateChangesProvider).valueOrNull;
+
   final currentCustomerId = ref.watch(currentCustomerIdProvider);
 
   if (currentUser?.id == null) {

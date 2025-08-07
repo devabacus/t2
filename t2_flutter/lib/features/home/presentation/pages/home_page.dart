@@ -11,6 +11,7 @@ import 'package:t2/features/home/presentation/widgets/settings_display_section.d
 
 import '../../../../core/providers/session_manager_provider.dart';
 import '../../../auth/domain/providers/auth_usecase_providers.dart';
+import '../../../auth/presentation/providers/auth_state_providers.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -26,7 +27,8 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final currentUser = ref.watch(currentUserProvider);
+      final currentUser = ref.watch(authStateChangesProvider).valueOrNull;
+
 
     if (currentUser == null) {
       return Scaffold(

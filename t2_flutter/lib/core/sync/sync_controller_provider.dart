@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:serverpod_auth_client/serverpod_auth_client.dart';
 
-import '../providers/session_manager_provider.dart';
+import '../../features/auth/presentation/providers/auth_state_providers.dart';
 import 'sync_registry.dart';
 
 part 'sync_controller_provider.g.dart';
@@ -35,7 +35,7 @@ class SyncController extends _$SyncController {
 // после авторизации пользователя также запускаем авторизацию
   void _listenToAuthChanges() {
     _authSubscription = ref.listen<AsyncValue<UserInfo?>>(
-      userInfoStreamProvider,
+      authStateChangesProvider,
       (previous, next) {
         final wasLoggedIn = previous?.valueOrNull != null;
         final isLoggedIn = next.valueOrNull != null;

@@ -6,6 +6,7 @@ import '../../../../../core/data/datasources/local/providers/sync_metadata_provi
 import '../../../../../core/providers/serverpod_client_provider.dart';
 import '../../../../../core/providers/session_manager_provider.dart';
 import '../../../../../core/sync/sync_registry.dart';
+import '../../../../auth/presentation/providers/auth_state_providers.dart';
 import '../../../domain/repositories/tag_repository.dart';
 import '../../datasources/local/daos/tag/tag_dao.dart';
 import '../../datasources/local/datasources/tag_local_data_source.dart';
@@ -71,7 +72,8 @@ ITagRepository tagRepository(Ref ref, {required int userId, required String cust
 /// Автоматически следит за сменой пользователя и предоставляет соответствующий репозиторий
 @riverpod
 ITagRepository? currentUserTagRepository(Ref ref) {
-  final currentUser = ref.watch(currentUserProvider);
+    final currentUser = ref.watch(authStateChangesProvider).valueOrNull;
+
   final currentCustomerId = ref.watch(currentCustomerIdProvider);
   
   if (currentUser?.id == null || currentCustomerId == null) {

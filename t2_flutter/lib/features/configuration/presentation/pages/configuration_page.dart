@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../core/providers/session_manager_provider.dart';
+import '../../../auth/presentation/providers/auth_state_providers.dart';
 import '../../domain/entities/configuration/configuration_entity.dart';
 import '../../domain/providers/configuration/configuration_usecase_providers.dart';
 import '../providers/configuration/configuration_state_providers.dart';
@@ -40,7 +41,8 @@ class ConfigurationPage extends ConsumerWidget {
           } else {
             // --- СЦЕНАРИЙ 2: НАСТРОЙКИ НЕТ -> СОЗДАЕМ ---
             final definition = registry.find(key);
-            final currentUser = ref.read(currentUserProvider);
+              final currentUser = ref.watch(authStateChangesProvider).valueOrNull;
+
             final customerId = ref.read(currentCustomerIdProvider);
 
             if (createUseCase != null && definition != null && currentUser != null && customerId != null) {

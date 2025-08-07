@@ -5,6 +5,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../../../core/data/datasources/local/providers/sync_metadata_providers.dart';
 import '../../../../../core/providers/session_manager_provider.dart';
 import '../../../../../core/sync/sync_registry.dart';
+import '../../../../auth/presentation/providers/auth_state_providers.dart';
 import '../../../domain/datasources/i_configuration_remote_data_source.dart';
 import '../../../domain/providers/configuration/configuration_dependencies_provider.dart';
 import '../../../domain/repositories/configuration_repository.dart';
@@ -79,7 +80,8 @@ IConfigurationRepository configurationRepository(
 /// Автоматически следит за сменой пользователя и предоставляет соответствующий репозиторий
 @riverpod
 IConfigurationRepository? currentUserConfigurationRepository(Ref ref) {
-  final currentUser = ref.watch(currentUserProvider);
+    final currentUser = ref.watch(authStateChangesProvider).valueOrNull;
+
   final currentCustomerId = ref.watch(currentCustomerIdProvider);
 
   if (currentUser?.id == null || currentCustomerId == null) {

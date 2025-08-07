@@ -24,58 +24,6 @@ final sessionManagerProvider = AutoDisposeProvider<SessionManager>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef SessionManagerRef = AutoDisposeProviderRef<SessionManager>;
-String _$userInfoStreamHash() => r'688f3d558a2101af1ec4876f83da2569c766b421';
-
-/// See also [userInfoStream].
-@ProviderFor(userInfoStream)
-final userInfoStreamProvider = AutoDisposeStreamProvider<UserInfo?>.internal(
-  userInfoStream,
-  name: r'userInfoStreamProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$userInfoStreamHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef UserInfoStreamRef = AutoDisposeStreamProviderRef<UserInfo?>;
-String _$currentUserHash() => r'a7754de5bf305b224c675a3f8016a175aba872a4';
-
-/// See also [currentUser].
-@ProviderFor(currentUser)
-final currentUserProvider = AutoDisposeProvider<UserInfo?>.internal(
-  currentUser,
-  name: r'currentUserProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$currentUserHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef CurrentUserRef = AutoDisposeProviderRef<UserInfo?>;
-String _$isAuthenticatedHash() => r'ec341d95b490bda54e8278477e26f7b345844931';
-
-/// See also [isAuthenticated].
-@ProviderFor(isAuthenticated)
-final isAuthenticatedProvider = AutoDisposeProvider<bool>.internal(
-  isAuthenticated,
-  name: r'isAuthenticatedProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$isAuthenticatedHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef IsAuthenticatedRef = AutoDisposeProviderRef<bool>;
 String _$currentUserSessionDataHash() =>
     r'8e032fb35a8f1fa11fab490df8d7cf3467b3c6f5';
 
@@ -153,7 +101,7 @@ final currentUserPermissionsProvider =
 // ignore: unused_element
 typedef CurrentUserPermissionsRef = AutoDisposeProviderRef<List<String>>;
 String _$userSessionDataNotifierHash() =>
-    r'ed616f969ed8eec13011963f29cea6020801e022';
+    r'788caf152526e99cee4bbb0a28fb9911f98e608e';
 
 /// See also [UserSessionDataNotifier].
 @ProviderFor(UserSessionDataNotifier)

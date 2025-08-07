@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import '../../../../auth/presentation/providers/auth_state_providers.dart';
 import '../../../domain/entities/task/task_entity.dart';
 import '../../../domain/providers/task/task_usecase_providers.dart';
 import '../task/task_state_providers.dart';
@@ -10,7 +11,8 @@ part 'task_get_by_id_provider.g.dart';
 @riverpod
 Future<TaskEntity?> getTaskById(Ref ref, String id) async {
   // Получаем userId и customerId из текущей сессии
-  final currentUser = ref.watch(currentUserProvider);
+    final currentUser = ref.watch(authStateChangesProvider).valueOrNull;
+
   final currentCustomerId = ref.watch(currentCustomerIdProvider);
 
   // Если пользователь не авторизован или customerId не доступен, возвращаем null

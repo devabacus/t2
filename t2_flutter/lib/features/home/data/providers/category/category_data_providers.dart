@@ -7,6 +7,7 @@ import '../../../../../core/data/datasources/local/providers/sync_metadata_provi
 import '../../../../../core/providers/serverpod_client_provider.dart';
 import '../../../../../core/providers/session_manager_provider.dart';
 import '../../../../../core/sync/sync_registry.dart';
+import '../../../../auth/presentation/providers/auth_state_providers.dart';
 import '../../../domain/repositories/category_repository.dart';
 import '../../datasources/local/daos/category/category_dao.dart';
 import '../../datasources/local/datasources/category_local_data_source.dart';
@@ -14,6 +15,7 @@ import '../../datasources/local/interfaces/category_local_datasource_service.dar
 import '../../datasources/remote/interfaces/category_remote_datasource_service.dart';
 import '../../datasources/remote/sources/category_remote_data_source.dart';
 import '../../repositories/category_repository_impl.dart';
+
 
 part 'category_data_providers.g.dart';
 
@@ -72,7 +74,7 @@ ICategoryRepository categoryRepository(Ref ref, {required int userId, required S
 /// Автоматически следит за сменой пользователя и предоставляет соответствующий репозиторий
 @riverpod
 ICategoryRepository? currentUserCategoryRepository(Ref ref) {
-  final currentUser = ref.watch(currentUserProvider);
+  final currentUser = ref.watch(authStateChangesProvider).valueOrNull;
   final currentCustomerId = ref.watch(currentCustomerIdProvider);
   
   if (currentUser?.id == null || currentCustomerId == null) {

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../core/providers/session_manager_provider.dart';
+import '../../../auth/presentation/providers/auth_state_providers.dart';
 import '../../domain/entities/category/category_entity.dart';
 import '../../domain/entities/tag/tag_entity.dart';
 import '../../domain/entities/task/task_entity.dart';
@@ -49,7 +50,8 @@ class _CreationSectionState extends ConsumerState<CreationSection> {
 
   Future<void> _createCategory() async {
     if (_categoryController.text.trim().isEmpty) return;
-    final currentUser = ref.read(currentUserProvider);
+      final currentUser = ref.watch(authStateChangesProvider).valueOrNull;
+
     final customerId = ref.read(currentCustomerIdProvider);
     if (currentUser?.id == null || customerId == null) return;
 
@@ -70,7 +72,8 @@ class _CreationSectionState extends ConsumerState<CreationSection> {
 
   Future<void> _createTask() async {
     if (_taskController.text.trim().isEmpty) return;
-    final currentUser = ref.read(currentUserProvider);
+      final currentUser = ref.watch(authStateChangesProvider).valueOrNull;
+
     final customerId = ref.read(currentCustomerIdProvider);
     if (currentUser?.id == null || customerId == null) return;
 
@@ -92,7 +95,8 @@ class _CreationSectionState extends ConsumerState<CreationSection> {
 
   Future<void> _createTag() async {
     if (_tagController.text.trim().isEmpty) return;
-    final currentUser = ref.read(currentUserProvider);
+      final currentUser = ref.watch(authStateChangesProvider).valueOrNull;
+
     final customerId = ref.read(currentCustomerIdProvider);
     if (currentUser?.id == null || customerId == null) return;
 

@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../../core/providers/session_manager_provider.dart';
+import '../../../../auth/presentation/providers/auth_state_providers.dart';
 import '../../../data/providers/configuration/configuration_data_providers.dart';
 import '../../../data/services/configuration_service_impl.dart';
 import '../../../presentation/registry/settings_registry.dart';
@@ -19,7 +20,8 @@ part 'configuration_service_provider.g.dart';
 /// пользователя не имеет смысла.
 @riverpod
 IConfigurationService configurationService(Ref ref) {
-  final currentUser = ref.watch(currentUserProvider);
+    final currentUser = ref.watch(authStateChangesProvider).valueOrNull;
+
   final customerId = ref.watch(currentCustomerIdProvider);
   
   if (currentUser?.id == null || customerId == null) {
