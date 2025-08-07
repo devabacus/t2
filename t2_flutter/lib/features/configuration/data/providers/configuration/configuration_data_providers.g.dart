@@ -6,6 +6,27 @@ part of 'configuration_data_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+String _$configurationRemoteDataSourceHash() =>
+    r'9818702f9ddf670e5ab81c0b27dc36a092c2f9ef';
+
+/// See also [configurationRemoteDataSource].
+@ProviderFor(configurationRemoteDataSource)
+final configurationRemoteDataSourceProvider =
+    AutoDisposeProvider<IConfigurationRemoteDataSource>.internal(
+      configurationRemoteDataSource,
+      name: r'configurationRemoteDataSourceProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$configurationRemoteDataSourceHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef ConfigurationRemoteDataSourceRef =
+    AutoDisposeProviderRef<IConfigurationRemoteDataSource>;
 String _$configurationDaoHash() => r'62536fc24f8539d26616fefc8b28b642f7d533a8';
 
 /// See also [configurationDao].
@@ -45,45 +66,6 @@ final configurationLocalDataSourceProvider =
 // ignore: unused_element
 typedef ConfigurationLocalDataSourceRef =
     AutoDisposeProviderRef<IConfigurationLocalDataSource>;
-String _$syncMetadataDaoHash() => r'a55f2f486fcf1dba97f55e6b4a8d98d9b790577b';
-
-/// See also [syncMetadataDao].
-@ProviderFor(syncMetadataDao)
-final syncMetadataDaoProvider = AutoDisposeProvider<SyncMetadataDao>.internal(
-  syncMetadataDao,
-  name: r'syncMetadataDaoProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$syncMetadataDaoHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef SyncMetadataDaoRef = AutoDisposeProviderRef<SyncMetadataDao>;
-String _$syncMetadataLocalDataSourceHash() =>
-    r'8fe23dd3a0392e40a49b10c234daf3add7018260';
-
-/// See also [syncMetadataLocalDataSource].
-@ProviderFor(syncMetadataLocalDataSource)
-final syncMetadataLocalDataSourceProvider =
-    AutoDisposeProvider<ISyncMetadataLocalDataSource>.internal(
-      syncMetadataLocalDataSource,
-      name: r'syncMetadataLocalDataSourceProvider',
-      debugGetCreateSourceHash:
-          const bool.fromEnvironment('dart.vm.product')
-              ? null
-              : _$syncMetadataLocalDataSourceHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef SyncMetadataLocalDataSourceRef =
-    AutoDisposeProviderRef<ISyncMetadataLocalDataSource>;
 String _$configurationRepositoryHash() =>
     r'86639af28426f8b9393a83d28a89086eb79e17c4';
 

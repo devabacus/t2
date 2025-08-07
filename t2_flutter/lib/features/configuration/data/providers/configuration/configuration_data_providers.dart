@@ -2,20 +2,23 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../../core/data/datasources/local/daos/sync_metadata_dao.dart';
-import '../../../../../core/data/datasources/local/datasources/sync_metadata_local_data_source.dart';
-import '../../../../../core/data/datasources/local/interfaces/sync_metadata_local_datasource_service.dart';
+import '../../../../../core/data/datasources/local/providers/sync_metadata_providers.dart';
 import '../../../../../core/providers/session_manager_provider.dart';
 import '../../../../../core/sync/sync_registry.dart';
+import '../../../domain/datasources/i_configuration_remote_data_source.dart';
 import '../../../domain/providers/configuration/configuration_dependencies_provider.dart';
 import '../../../domain/repositories/configuration_repository.dart';
 import '../../datasources/local/daos/configuration/configuration_dao.dart';
 import '../../datasources/local/datasources/configuration_local_data_source.dart';
 import '../../datasources/local/interfaces/configuration_local_datasource_service.dart';
 import '../../repositories/configuration_repository_impl.dart';
-import 'configuration_remote_data_providers.dart';
 
 part 'configuration_data_providers.g.dart';
+
+@riverpod
+IConfigurationRemoteDataSource configurationRemoteDataSource(Ref ref) {
+  return ref.watch(configurationDependenciesProvider).remoteDataSource;
+}
 
 @riverpod
 ConfigurationDao configurationDao(Ref ref) {
@@ -27,18 +30,6 @@ ConfigurationDao configurationDao(Ref ref) {
 IConfigurationLocalDataSource configurationLocalDataSource(Ref ref) {
   final configurationDao = ref.read(configurationDaoProvider);
   return ConfigurationLocalDataSource(configurationDao);
-}
-
-@riverpod
-SyncMetadataDao syncMetadataDao(Ref ref) {
-  // Получаем зависимость через "мост"
-  return ref.watch(configurationDependenciesProvider).syncMetadataDao;
-}
-
-@riverpod
-ISyncMetadataLocalDataSource syncMetadataLocalDataSource(Ref ref) {
-  final syncMetadataDao = ref.read(syncMetadataDaoProvider);
-  return SyncMetadataLocalDataSource(syncMetadataDao);
 }
 
 /// Семейный провайдер репозитория для конкретного пользователя
