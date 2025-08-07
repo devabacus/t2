@@ -9,7 +9,6 @@ import 'package:t2/features/home/presentation/widgets/data_display_section.dart'
 import 'package:t2/features/home/presentation/widgets/relation_management_section.dart';
 import 'package:t2/features/home/presentation/widgets/settings_display_section.dart';
 
-import '../../../../core/providers/session_manager_provider.dart';
 import '../../../auth/domain/providers/auth_usecase_providers.dart';
 import '../../../auth/presentation/providers/auth_state_providers.dart';
 

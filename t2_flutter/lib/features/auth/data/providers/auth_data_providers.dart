@@ -10,7 +10,7 @@ part 'auth_data_providers.g.dart';
 @Riverpod(keepAlive: true)
 IAuthRemoteDataSource authRemoteDataSource(ref) {
   final sessionManager = ref.watch(sessionManagerProvider);
-  final dataSource = AuthRemoteDataSource(sessionManager, ref);
+  final dataSource = AuthRemoteDataSource(sessionManager);
   ref.onDispose(() => dataSource.dispose());
   return dataSource;
 }

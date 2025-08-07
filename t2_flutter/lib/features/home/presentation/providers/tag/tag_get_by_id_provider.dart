@@ -21,7 +21,7 @@ Future<TagEntity?> getTagById(Ref ref, String id) async {
   }
 
   // Приводим userId и customerId к строковому виду, если они UuidValue
-  final String userId = currentUser!.id!.toString();
+  currentUser!.id!.toString();
   final String customerId = currentCustomerId.toString();
 
   final tagsAsyncValue = ref.watch(tagsStreamProvider);
