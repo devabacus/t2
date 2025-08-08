@@ -2,8 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../../auth/domain/providers/auth_usecase_providers.dart';
 import '../../../auth/presentation/providers/auth_state_providers.dart';
+import '../routings/user_routes_constants.dart';
 
 class AdminPage extends ConsumerWidget {
   const AdminPage({super.key});
@@ -138,10 +140,7 @@ class _AdminFunctionsGrid extends StatelessWidget {
           icon: Icons.people,
           color: Colors.blue,
           onTap: () {
-            // TODO: Навигация к странице пользователей
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Функция в разработке')),
-            );
+            context.push(UsersRoutes.usersPath);
           },
         ),
         _AdminFunctionCard(

@@ -3,6 +3,7 @@
 import 'package:go_router/go_router.dart';
 import '../pages/admin_page.dart';
 import 'admin_routes_constants.dart';
+import 'user_router_config.dart';
 
 List<RouteBase> getAdminRoutes() {
   return [
@@ -11,5 +12,6 @@ List<RouteBase> getAdminRoutes() {
       path: AdminRoutes.adminPath,
       builder: (context, state) => const AdminPage(),
     ),
+    ...getUsersRoutes(),
   ];
 }
