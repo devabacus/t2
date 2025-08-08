@@ -492,6 +492,30 @@ Future<bool> saBlockUser(Session session, int userId, bool blocked) async {
       customerUser: customerUser,
     );
   }
+
+Future<RoleDetails?> saGetRoleDetails(Session session, UuidValue roleId) async {
+  await _requireSuperAdmin(session);
+  
+  // ИСПОЛЬЗУЕМ findFirstRow С `where` и `include`. Это правильный синтаксис.
+  final role = await Role.db.findFirstRow(
+    session, 
+    where: (r) => r.id.equals(roleId)
+  );
+
+  if (role == null) {
+    return null;
+  }
+
+  final rolePermissions = await RolePermission.db.find(
+    session,
+    where: (rp) => rp.roleId.equals(roleId),
+  );
+  
+  final permissionIds = rolePermissions.map((rp) => rp.permissionId).toList();
+  
+  return RoleDetails(role: role, permissionIds: permissionIds);
+}
+
 }
 
 

@@ -23,16 +23,17 @@ import 'package:t2_client/src/protocol/user/customer.dart' as _i11;
 import 'package:serverpod_auth_client/serverpod_auth_client.dart' as _i12;
 import 'package:t2_client/src/protocol/user/super_user_details.dart' as _i13;
 import 'package:t2_client/src/protocol/user/super_admin_dashboard.dart' as _i14;
-import 'package:t2_client/src/protocol/tag.dart' as _i15;
-import 'package:t2_client/src/protocol/tag_sync_event.dart' as _i16;
-import 'package:t2_client/src/protocol/task.dart' as _i17;
-import 'package:t2_client/src/protocol/task_sync_event.dart' as _i18;
-import 'package:t2_client/src/protocol/task_tag_map.dart' as _i19;
-import 'package:t2_client/src/protocol/task_tag_map_sync_event.dart' as _i20;
-import 'package:t2_client/src/protocol/test_data.dart' as _i21;
-import 'package:t2_client/src/protocol/user/user_session_data.dart' as _i22;
-import 'package:t2_client/src/protocol/greeting.dart' as _i23;
-import 'protocol.dart' as _i24;
+import 'package:t2_client/src/protocol/user/role_details.dart' as _i15;
+import 'package:t2_client/src/protocol/tag.dart' as _i16;
+import 'package:t2_client/src/protocol/tag_sync_event.dart' as _i17;
+import 'package:t2_client/src/protocol/task.dart' as _i18;
+import 'package:t2_client/src/protocol/task_sync_event.dart' as _i19;
+import 'package:t2_client/src/protocol/task_tag_map.dart' as _i20;
+import 'package:t2_client/src/protocol/task_tag_map_sync_event.dart' as _i21;
+import 'package:t2_client/src/protocol/test_data.dart' as _i22;
+import 'package:t2_client/src/protocol/user/user_session_data.dart' as _i23;
+import 'package:t2_client/src/protocol/greeting.dart' as _i24;
+import 'protocol.dart' as _i25;
 
 /// {@category Endpoint}
 class EndpointAdmin extends _i1.EndpointRef {
@@ -363,6 +364,13 @@ class EndpointSuperAdmin extends _i1.EndpointRef {
         'saGetUserDetails',
         {'userId': userId},
       );
+
+  _i2.Future<_i15.RoleDetails?> saGetRoleDetails(_i4.UuidValue roleId) =>
+      caller.callServerEndpoint<_i15.RoleDetails?>(
+        'superAdmin',
+        'saGetRoleDetails',
+        {'roleId': roleId},
+      );
 }
 
 /// {@category Endpoint}
@@ -372,43 +380,43 @@ class EndpointTag extends _i1.EndpointRef {
   @override
   String get name => 'tag';
 
-  _i2.Future<_i15.Tag> createTag(_i15.Tag tag) =>
-      caller.callServerEndpoint<_i15.Tag>(
+  _i2.Future<_i16.Tag> createTag(_i16.Tag tag) =>
+      caller.callServerEndpoint<_i16.Tag>(
         'tag',
         'createTag',
         {'tag': tag},
       );
 
-  _i2.Future<List<_i15.Tag>> getTags({int? limit}) =>
-      caller.callServerEndpoint<List<_i15.Tag>>(
+  _i2.Future<List<_i16.Tag>> getTags({int? limit}) =>
+      caller.callServerEndpoint<List<_i16.Tag>>(
         'tag',
         'getTags',
         {'limit': limit},
       );
 
-  _i2.Future<_i15.Tag?> getTagById(_i4.UuidValue id) =>
-      caller.callServerEndpoint<_i15.Tag?>(
+  _i2.Future<_i16.Tag?> getTagById(_i4.UuidValue id) =>
+      caller.callServerEndpoint<_i16.Tag?>(
         'tag',
         'getTagById',
         {'id': id},
       );
 
-  _i2.Future<List<_i15.Tag>> getTagsSince(DateTime? since) =>
-      caller.callServerEndpoint<List<_i15.Tag>>(
+  _i2.Future<List<_i16.Tag>> getTagsSince(DateTime? since) =>
+      caller.callServerEndpoint<List<_i16.Tag>>(
         'tag',
         'getTagsSince',
         {'since': since},
       );
 
-  _i2.Future<bool> updateTag(_i15.Tag tag) => caller.callServerEndpoint<bool>(
+  _i2.Future<bool> updateTag(_i16.Tag tag) => caller.callServerEndpoint<bool>(
         'tag',
         'updateTag',
         {'tag': tag},
       );
 
-  _i2.Stream<_i16.TagSyncEvent> watchEvents() =>
-      caller.callStreamingServerEndpoint<_i2.Stream<_i16.TagSyncEvent>,
-          _i16.TagSyncEvent>(
+  _i2.Stream<_i17.TagSyncEvent> watchEvents() =>
+      caller.callStreamingServerEndpoint<_i2.Stream<_i17.TagSyncEvent>,
+          _i17.TagSyncEvent>(
         'tag',
         'watchEvents',
         {},
@@ -423,52 +431,52 @@ class EndpointTask extends _i1.EndpointRef {
   @override
   String get name => 'task';
 
-  _i2.Future<_i17.Task> createTask(_i17.Task task) =>
-      caller.callServerEndpoint<_i17.Task>(
+  _i2.Future<_i18.Task> createTask(_i18.Task task) =>
+      caller.callServerEndpoint<_i18.Task>(
         'task',
         'createTask',
         {'task': task},
       );
 
-  _i2.Future<List<_i17.Task>> getTasks({int? limit}) =>
-      caller.callServerEndpoint<List<_i17.Task>>(
+  _i2.Future<List<_i18.Task>> getTasks({int? limit}) =>
+      caller.callServerEndpoint<List<_i18.Task>>(
         'task',
         'getTasks',
         {'limit': limit},
       );
 
-  _i2.Future<_i17.Task?> getTaskById(_i4.UuidValue id) =>
-      caller.callServerEndpoint<_i17.Task?>(
+  _i2.Future<_i18.Task?> getTaskById(_i4.UuidValue id) =>
+      caller.callServerEndpoint<_i18.Task?>(
         'task',
         'getTaskById',
         {'id': id},
       );
 
-  _i2.Future<List<_i17.Task>> getTasksSince(DateTime? since) =>
-      caller.callServerEndpoint<List<_i17.Task>>(
+  _i2.Future<List<_i18.Task>> getTasksSince(DateTime? since) =>
+      caller.callServerEndpoint<List<_i18.Task>>(
         'task',
         'getTasksSince',
         {'since': since},
       );
 
-  _i2.Future<bool> updateTask(_i17.Task task) =>
+  _i2.Future<bool> updateTask(_i18.Task task) =>
       caller.callServerEndpoint<bool>(
         'task',
         'updateTask',
         {'task': task},
       );
 
-  _i2.Stream<_i18.TaskSyncEvent> watchEvents() =>
-      caller.callStreamingServerEndpoint<_i2.Stream<_i18.TaskSyncEvent>,
-          _i18.TaskSyncEvent>(
+  _i2.Stream<_i19.TaskSyncEvent> watchEvents() =>
+      caller.callStreamingServerEndpoint<_i2.Stream<_i19.TaskSyncEvent>,
+          _i19.TaskSyncEvent>(
         'task',
         'watchEvents',
         {},
         {},
       );
 
-  _i2.Future<List<_i17.Task>> getTasksByCategoryId(_i4.UuidValue categoryId) =>
-      caller.callServerEndpoint<List<_i17.Task>>(
+  _i2.Future<List<_i18.Task>> getTasksByCategoryId(_i4.UuidValue categoryId) =>
+      caller.callServerEndpoint<List<_i18.Task>>(
         'task',
         'getTasksByCategoryId',
         {'categoryId': categoryId},
@@ -482,37 +490,37 @@ class EndpointTaskTagMap extends _i1.EndpointRef {
   @override
   String get name => 'taskTagMap';
 
-  _i2.Future<_i19.TaskTagMap> createTaskTagMap(_i19.TaskTagMap taskTagMap) =>
-      caller.callServerEndpoint<_i19.TaskTagMap>(
+  _i2.Future<_i20.TaskTagMap> createTaskTagMap(_i20.TaskTagMap taskTagMap) =>
+      caller.callServerEndpoint<_i20.TaskTagMap>(
         'taskTagMap',
         'createTaskTagMap',
         {'taskTagMap': taskTagMap},
       );
 
-  _i2.Future<List<_i15.Tag>> getTagsForTask(_i4.UuidValue taskId) =>
-      caller.callServerEndpoint<List<_i15.Tag>>(
+  _i2.Future<List<_i16.Tag>> getTagsForTask(_i4.UuidValue taskId) =>
+      caller.callServerEndpoint<List<_i16.Tag>>(
         'taskTagMap',
         'getTagsForTask',
         {'taskId': taskId},
       );
 
-  _i2.Future<List<_i17.Task>> getTasksForTag(_i4.UuidValue tagId) =>
-      caller.callServerEndpoint<List<_i17.Task>>(
+  _i2.Future<List<_i18.Task>> getTasksForTag(_i4.UuidValue tagId) =>
+      caller.callServerEndpoint<List<_i18.Task>>(
         'taskTagMap',
         'getTasksForTag',
         {'tagId': tagId},
       );
 
-  _i2.Future<List<_i19.TaskTagMap>> getTaskTagMapsSince(DateTime? since) =>
-      caller.callServerEndpoint<List<_i19.TaskTagMap>>(
+  _i2.Future<List<_i20.TaskTagMap>> getTaskTagMapsSince(DateTime? since) =>
+      caller.callServerEndpoint<List<_i20.TaskTagMap>>(
         'taskTagMap',
         'getTaskTagMapsSince',
         {'since': since},
       );
 
-  _i2.Stream<_i20.TaskTagMapSyncEvent> watchEvents() =>
-      caller.callStreamingServerEndpoint<_i2.Stream<_i20.TaskTagMapSyncEvent>,
-          _i20.TaskTagMapSyncEvent>(
+  _i2.Stream<_i21.TaskTagMapSyncEvent> watchEvents() =>
+      caller.callStreamingServerEndpoint<_i2.Stream<_i21.TaskTagMapSyncEvent>,
+          _i21.TaskTagMapSyncEvent>(
         'taskTagMap',
         'watchEvents',
         {},
@@ -541,31 +549,31 @@ class EndpointTestData extends _i1.EndpointRef {
   String get name => 'testData';
 
   /// Создает новую запись TestData в базе данных.
-  _i2.Future<_i21.TestData> createTestData(_i21.TestData testData) =>
-      caller.callServerEndpoint<_i21.TestData>(
+  _i2.Future<_i22.TestData> createTestData(_i22.TestData testData) =>
+      caller.callServerEndpoint<_i22.TestData>(
         'testData',
         'createTestData',
         {'testData': testData},
       );
 
   /// Возвращает список всех записей.
-  _i2.Future<List<_i21.TestData>> listTestDatas() =>
-      caller.callServerEndpoint<List<_i21.TestData>>(
+  _i2.Future<List<_i22.TestData>> listTestDatas() =>
+      caller.callServerEndpoint<List<_i22.TestData>>(
         'testData',
         'listTestDatas',
         {},
       );
 
   /// Обновляет существующую запись.
-  _i2.Future<_i21.TestData> updateTestData(_i21.TestData testData) =>
-      caller.callServerEndpoint<_i21.TestData>(
+  _i2.Future<_i22.TestData> updateTestData(_i22.TestData testData) =>
+      caller.callServerEndpoint<_i22.TestData>(
         'testData',
         'updateTestData',
         {'testData': testData},
       );
 
   /// Удаляет запись.
-  _i2.Future<bool> deleteTestData(_i21.TestData testData) =>
+  _i2.Future<bool> deleteTestData(_i22.TestData testData) =>
       caller.callServerEndpoint<bool>(
         'testData',
         'deleteTestData',
@@ -580,8 +588,8 @@ class EndpointUserManagement extends _i1.EndpointRef {
   @override
   String get name => 'userManagement';
 
-  _i2.Future<_i22.UserSessionData?> getMyUserContext() =>
-      caller.callServerEndpoint<_i22.UserSessionData?>(
+  _i2.Future<_i23.UserSessionData?> getMyUserContext() =>
+      caller.callServerEndpoint<_i23.UserSessionData?>(
         'userManagement',
         'getMyUserContext',
         {},
@@ -598,8 +606,8 @@ class EndpointGreeting extends _i1.EndpointRef {
   String get name => 'greeting';
 
   /// Returns a personalized greeting message: "Hello {name}".
-  _i2.Future<_i23.Greeting> hello(String name) =>
-      caller.callServerEndpoint<_i23.Greeting>(
+  _i2.Future<_i24.Greeting> hello(String name) =>
+      caller.callServerEndpoint<_i24.Greeting>(
         'greeting',
         'hello',
         {'name': name},
@@ -630,7 +638,7 @@ class Client extends _i1.ServerpodClientShared {
     bool? disconnectStreamsOnLostInternetConnection,
   }) : super(
           host,
-          _i24.Protocol(),
+          _i25.Protocol(),
           securityContext: securityContext,
           authenticationKeyManager: authenticationKeyManager,
           streamingConnectionTimeout: streamingConnectionTimeout,

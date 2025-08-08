@@ -360,5 +360,264 @@ class _DeleteRoleProviderElement extends AutoDisposeFutureProviderElement<void>
   String get roleId => (origin as DeleteRoleProvider).roleId;
 }
 
+String _$roleDetailsHash() => r'510dc7df31aaa67a5777bc93bca47f4f2ab0c62b';
+
+/// See also [roleDetails].
+@ProviderFor(roleDetails)
+const roleDetailsProvider = RoleDetailsFamily();
+
+/// See also [roleDetails].
+class RoleDetailsFamily extends Family<AsyncValue<RoleDetails?>> {
+  /// See also [roleDetails].
+  const RoleDetailsFamily();
+
+  /// See also [roleDetails].
+  RoleDetailsProvider call(String roleId) {
+    return RoleDetailsProvider(roleId);
+  }
+
+  @override
+  RoleDetailsProvider getProviderOverride(
+    covariant RoleDetailsProvider provider,
+  ) {
+    return call(provider.roleId);
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'roleDetailsProvider';
+}
+
+/// See also [roleDetails].
+class RoleDetailsProvider extends AutoDisposeFutureProvider<RoleDetails?> {
+  /// See also [roleDetails].
+  RoleDetailsProvider(String roleId)
+    : this._internal(
+        (ref) => roleDetails(ref as RoleDetailsRef, roleId),
+        from: roleDetailsProvider,
+        name: r'roleDetailsProvider',
+        debugGetCreateSourceHash:
+            const bool.fromEnvironment('dart.vm.product')
+                ? null
+                : _$roleDetailsHash,
+        dependencies: RoleDetailsFamily._dependencies,
+        allTransitiveDependencies: RoleDetailsFamily._allTransitiveDependencies,
+        roleId: roleId,
+      );
+
+  RoleDetailsProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.roleId,
+  }) : super.internal();
+
+  final String roleId;
+
+  @override
+  Override overrideWith(
+    FutureOr<RoleDetails?> Function(RoleDetailsRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: RoleDetailsProvider._internal(
+        (ref) => create(ref as RoleDetailsRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        roleId: roleId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<RoleDetails?> createElement() {
+    return _RoleDetailsProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is RoleDetailsProvider && other.roleId == roleId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, roleId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin RoleDetailsRef on AutoDisposeFutureProviderRef<RoleDetails?> {
+  /// The parameter `roleId` of this provider.
+  String get roleId;
+}
+
+class _RoleDetailsProviderElement
+    extends AutoDisposeFutureProviderElement<RoleDetails?>
+    with RoleDetailsRef {
+  _RoleDetailsProviderElement(super.provider);
+
+  @override
+  String get roleId => (origin as RoleDetailsProvider).roleId;
+}
+
+String _$updateRoleHash() => r'dc8e90e238354362d47315808dd54796a722e66f';
+
+/// See also [updateRole].
+@ProviderFor(updateRole)
+const updateRoleProvider = UpdateRoleFamily();
+
+/// See also [updateRole].
+class UpdateRoleFamily extends Family<AsyncValue<void>> {
+  /// See also [updateRole].
+  const UpdateRoleFamily();
+
+  /// See also [updateRole].
+  UpdateRoleProvider call({
+    required Role role,
+    required List<String> permissionIds,
+  }) {
+    return UpdateRoleProvider(role: role, permissionIds: permissionIds);
+  }
+
+  @override
+  UpdateRoleProvider getProviderOverride(
+    covariant UpdateRoleProvider provider,
+  ) {
+    return call(role: provider.role, permissionIds: provider.permissionIds);
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'updateRoleProvider';
+}
+
+/// See also [updateRole].
+class UpdateRoleProvider extends AutoDisposeFutureProvider<void> {
+  /// See also [updateRole].
+  UpdateRoleProvider({required Role role, required List<String> permissionIds})
+    : this._internal(
+        (ref) => updateRole(
+          ref as UpdateRoleRef,
+          role: role,
+          permissionIds: permissionIds,
+        ),
+        from: updateRoleProvider,
+        name: r'updateRoleProvider',
+        debugGetCreateSourceHash:
+            const bool.fromEnvironment('dart.vm.product')
+                ? null
+                : _$updateRoleHash,
+        dependencies: UpdateRoleFamily._dependencies,
+        allTransitiveDependencies: UpdateRoleFamily._allTransitiveDependencies,
+        role: role,
+        permissionIds: permissionIds,
+      );
+
+  UpdateRoleProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.role,
+    required this.permissionIds,
+  }) : super.internal();
+
+  final Role role;
+  final List<String> permissionIds;
+
+  @override
+  Override overrideWith(
+    FutureOr<void> Function(UpdateRoleRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: UpdateRoleProvider._internal(
+        (ref) => create(ref as UpdateRoleRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        role: role,
+        permissionIds: permissionIds,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<void> createElement() {
+    return _UpdateRoleProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is UpdateRoleProvider &&
+        other.role == role &&
+        other.permissionIds == permissionIds;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, role.hashCode);
+    hash = _SystemHash.combine(hash, permissionIds.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin UpdateRoleRef on AutoDisposeFutureProviderRef<void> {
+  /// The parameter `role` of this provider.
+  Role get role;
+
+  /// The parameter `permissionIds` of this provider.
+  List<String> get permissionIds;
+}
+
+class _UpdateRoleProviderElement extends AutoDisposeFutureProviderElement<void>
+    with UpdateRoleRef {
+  _UpdateRoleProviderElement(super.provider);
+
+  @override
+  Role get role => (origin as UpdateRoleProvider).role;
+  @override
+  List<String> get permissionIds =>
+      (origin as UpdateRoleProvider).permissionIds;
+}
+
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

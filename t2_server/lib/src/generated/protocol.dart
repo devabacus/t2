@@ -29,23 +29,24 @@ import 'user/customer.dart' as _i17;
 import 'user/customer_user.dart' as _i18;
 import 'user/permission.dart' as _i19;
 import 'user/role.dart' as _i20;
-import 'user/role_permission.dart' as _i21;
-import 'user/super_admin_dashboard.dart' as _i22;
-import 'user/super_user_details.dart' as _i23;
-import 'user/user_details.dart' as _i24;
-import 'user/user_session_data.dart' as _i25;
-import 'package:t2_server/src/generated/user/user_details.dart' as _i26;
-import 'package:t2_server/src/generated/user/role.dart' as _i27;
-import 'package:t2_server/src/generated/user/permission.dart' as _i28;
-import 'package:uuid/uuid_value.dart' as _i29;
-import 'package:t2_server/src/generated/category.dart' as _i30;
-import 'package:t2_server/src/generated/configuration.dart' as _i31;
-import 'package:t2_server/src/generated/user/customer.dart' as _i32;
-import 'package:t2_server/src/generated/user/super_user_details.dart' as _i33;
-import 'package:t2_server/src/generated/tag.dart' as _i34;
-import 'package:t2_server/src/generated/task.dart' as _i35;
-import 'package:t2_server/src/generated/task_tag_map.dart' as _i36;
-import 'package:t2_server/src/generated/test_data.dart' as _i37;
+import 'user/role_details.dart' as _i21;
+import 'user/role_permission.dart' as _i22;
+import 'user/super_admin_dashboard.dart' as _i23;
+import 'user/super_user_details.dart' as _i24;
+import 'user/user_details.dart' as _i25;
+import 'user/user_session_data.dart' as _i26;
+import 'package:t2_server/src/generated/user/user_details.dart' as _i27;
+import 'package:t2_server/src/generated/user/role.dart' as _i28;
+import 'package:t2_server/src/generated/user/permission.dart' as _i29;
+import 'package:uuid/uuid_value.dart' as _i30;
+import 'package:t2_server/src/generated/category.dart' as _i31;
+import 'package:t2_server/src/generated/configuration.dart' as _i32;
+import 'package:t2_server/src/generated/user/customer.dart' as _i33;
+import 'package:t2_server/src/generated/user/super_user_details.dart' as _i34;
+import 'package:t2_server/src/generated/tag.dart' as _i35;
+import 'package:t2_server/src/generated/task.dart' as _i36;
+import 'package:t2_server/src/generated/task_tag_map.dart' as _i37;
+import 'package:t2_server/src/generated/test_data.dart' as _i38;
 export 'greeting.dart';
 export 'category.dart';
 export 'category_sync_event.dart';
@@ -63,6 +64,7 @@ export 'user/customer.dart';
 export 'user/customer_user.dart';
 export 'user/permission.dart';
 export 'user/role.dart';
+export 'user/role_details.dart';
 export 'user/role_permission.dart';
 export 'user/super_admin_dashboard.dart';
 export 'user/super_user_details.dart';
@@ -1035,20 +1037,23 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i20.Role) {
       return _i20.Role.fromJson(data) as T;
     }
-    if (t == _i21.RolePermission) {
-      return _i21.RolePermission.fromJson(data) as T;
+    if (t == _i21.RoleDetails) {
+      return _i21.RoleDetails.fromJson(data) as T;
     }
-    if (t == _i22.SuperAdminDashboard) {
-      return _i22.SuperAdminDashboard.fromJson(data) as T;
+    if (t == _i22.RolePermission) {
+      return _i22.RolePermission.fromJson(data) as T;
     }
-    if (t == _i23.SuperUserDetails) {
-      return _i23.SuperUserDetails.fromJson(data) as T;
+    if (t == _i23.SuperAdminDashboard) {
+      return _i23.SuperAdminDashboard.fromJson(data) as T;
     }
-    if (t == _i24.UserDetails) {
-      return _i24.UserDetails.fromJson(data) as T;
+    if (t == _i24.SuperUserDetails) {
+      return _i24.SuperUserDetails.fromJson(data) as T;
     }
-    if (t == _i25.UserSessionData) {
-      return _i25.UserSessionData.fromJson(data) as T;
+    if (t == _i25.UserDetails) {
+      return _i25.UserDetails.fromJson(data) as T;
+    }
+    if (t == _i26.UserSessionData) {
+      return _i26.UserSessionData.fromJson(data) as T;
     }
     if (t == _i1.getType<_i4.Greeting?>()) {
       return (data != null ? _i4.Greeting.fromJson(data) : null) as T;
@@ -1103,31 +1108,38 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i1.getType<_i20.Role?>()) {
       return (data != null ? _i20.Role.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i21.RolePermission?>()) {
-      return (data != null ? _i21.RolePermission.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i21.RoleDetails?>()) {
+      return (data != null ? _i21.RoleDetails.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i22.SuperAdminDashboard?>()) {
-      return (data != null ? _i22.SuperAdminDashboard.fromJson(data) : null)
+    if (t == _i1.getType<_i22.RolePermission?>()) {
+      return (data != null ? _i22.RolePermission.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i23.SuperAdminDashboard?>()) {
+      return (data != null ? _i23.SuperAdminDashboard.fromJson(data) : null)
           as T;
     }
-    if (t == _i1.getType<_i23.SuperUserDetails?>()) {
-      return (data != null ? _i23.SuperUserDetails.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i24.SuperUserDetails?>()) {
+      return (data != null ? _i24.SuperUserDetails.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i24.UserDetails?>()) {
-      return (data != null ? _i24.UserDetails.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i25.UserDetails?>()) {
+      return (data != null ? _i25.UserDetails.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i25.UserSessionData?>()) {
-      return (data != null ? _i25.UserSessionData.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i26.UserSessionData?>()) {
+      return (data != null ? _i26.UserSessionData.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<List<_i14.TaskTagMap>?>()) {
+      return (data != null
+          ? (data as List).map((e) => deserialize<_i14.TaskTagMap>(e)).toList()
+          : null) as T;
     }
     if (t == _i1.getType<List<_i14.TaskTagMap>?>()) {
       return (data != null
           ? (data as List).map((e) => deserialize<_i14.TaskTagMap>(e)).toList()
           : null) as T;
     }
-    if (t == _i1.getType<List<_i14.TaskTagMap>?>()) {
-      return (data != null
-          ? (data as List).map((e) => deserialize<_i14.TaskTagMap>(e)).toList()
-          : null) as T;
+    if (t == List<_i1.UuidValue>) {
+      return (data as List).map((e) => deserialize<_i1.UuidValue>(e)).toList()
+          as T;
     }
     if (t == List<_i3.UserInfo>) {
       return (data as List).map((e) => deserialize<_i3.UserInfo>(e)).toList()
@@ -1136,52 +1148,52 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == List<String>) {
       return (data as List).map((e) => deserialize<String>(e)).toList() as T;
     }
-    if (t == List<_i26.UserDetails>) {
+    if (t == List<_i27.UserDetails>) {
       return (data as List)
-          .map((e) => deserialize<_i26.UserDetails>(e))
+          .map((e) => deserialize<_i27.UserDetails>(e))
           .toList() as T;
     }
-    if (t == List<_i27.Role>) {
-      return (data as List).map((e) => deserialize<_i27.Role>(e)).toList() as T;
+    if (t == List<_i28.Role>) {
+      return (data as List).map((e) => deserialize<_i28.Role>(e)).toList() as T;
     }
-    if (t == List<_i28.Permission>) {
-      return (data as List).map((e) => deserialize<_i28.Permission>(e)).toList()
+    if (t == List<_i29.Permission>) {
+      return (data as List).map((e) => deserialize<_i29.Permission>(e)).toList()
           as T;
     }
-    if (t == List<_i29.UuidValue>) {
-      return (data as List).map((e) => deserialize<_i29.UuidValue>(e)).toList()
+    if (t == List<_i30.UuidValue>) {
+      return (data as List).map((e) => deserialize<_i30.UuidValue>(e)).toList()
           as T;
     }
-    if (t == List<_i30.Category>) {
-      return (data as List).map((e) => deserialize<_i30.Category>(e)).toList()
+    if (t == List<_i31.Category>) {
+      return (data as List).map((e) => deserialize<_i31.Category>(e)).toList()
           as T;
     }
-    if (t == List<_i31.Configuration>) {
+    if (t == List<_i32.Configuration>) {
       return (data as List)
-          .map((e) => deserialize<_i31.Configuration>(e))
+          .map((e) => deserialize<_i32.Configuration>(e))
           .toList() as T;
     }
-    if (t == List<_i32.Customer>) {
-      return (data as List).map((e) => deserialize<_i32.Customer>(e)).toList()
+    if (t == List<_i33.Customer>) {
+      return (data as List).map((e) => deserialize<_i33.Customer>(e)).toList()
           as T;
     }
-    if (t == List<_i33.SuperUserDetails>) {
+    if (t == List<_i34.SuperUserDetails>) {
       return (data as List)
-          .map((e) => deserialize<_i33.SuperUserDetails>(e))
+          .map((e) => deserialize<_i34.SuperUserDetails>(e))
           .toList() as T;
     }
-    if (t == List<_i34.Tag>) {
-      return (data as List).map((e) => deserialize<_i34.Tag>(e)).toList() as T;
+    if (t == List<_i35.Tag>) {
+      return (data as List).map((e) => deserialize<_i35.Tag>(e)).toList() as T;
     }
-    if (t == List<_i35.Task>) {
-      return (data as List).map((e) => deserialize<_i35.Task>(e)).toList() as T;
+    if (t == List<_i36.Task>) {
+      return (data as List).map((e) => deserialize<_i36.Task>(e)).toList() as T;
     }
-    if (t == List<_i36.TaskTagMap>) {
-      return (data as List).map((e) => deserialize<_i36.TaskTagMap>(e)).toList()
+    if (t == List<_i37.TaskTagMap>) {
+      return (data as List).map((e) => deserialize<_i37.TaskTagMap>(e)).toList()
           as T;
     }
-    if (t == List<_i37.TestData>) {
-      return (data as List).map((e) => deserialize<_i37.TestData>(e)).toList()
+    if (t == List<_i38.TestData>) {
+      return (data as List).map((e) => deserialize<_i38.TestData>(e)).toList()
           as T;
     }
     try {
@@ -1248,19 +1260,22 @@ class Protocol extends _i1.SerializationManagerServer {
     if (data is _i20.Role) {
       return 'Role';
     }
-    if (data is _i21.RolePermission) {
+    if (data is _i21.RoleDetails) {
+      return 'RoleDetails';
+    }
+    if (data is _i22.RolePermission) {
       return 'RolePermission';
     }
-    if (data is _i22.SuperAdminDashboard) {
+    if (data is _i23.SuperAdminDashboard) {
       return 'SuperAdminDashboard';
     }
-    if (data is _i23.SuperUserDetails) {
+    if (data is _i24.SuperUserDetails) {
       return 'SuperUserDetails';
     }
-    if (data is _i24.UserDetails) {
+    if (data is _i25.UserDetails) {
       return 'UserDetails';
     }
-    if (data is _i25.UserSessionData) {
+    if (data is _i26.UserSessionData) {
       return 'UserSessionData';
     }
     className = _i2.Protocol().getClassNameForObject(data);
@@ -1331,20 +1346,23 @@ class Protocol extends _i1.SerializationManagerServer {
     if (dataClassName == 'Role') {
       return deserialize<_i20.Role>(data['data']);
     }
+    if (dataClassName == 'RoleDetails') {
+      return deserialize<_i21.RoleDetails>(data['data']);
+    }
     if (dataClassName == 'RolePermission') {
-      return deserialize<_i21.RolePermission>(data['data']);
+      return deserialize<_i22.RolePermission>(data['data']);
     }
     if (dataClassName == 'SuperAdminDashboard') {
-      return deserialize<_i22.SuperAdminDashboard>(data['data']);
+      return deserialize<_i23.SuperAdminDashboard>(data['data']);
     }
     if (dataClassName == 'SuperUserDetails') {
-      return deserialize<_i23.SuperUserDetails>(data['data']);
+      return deserialize<_i24.SuperUserDetails>(data['data']);
     }
     if (dataClassName == 'UserDetails') {
-      return deserialize<_i24.UserDetails>(data['data']);
+      return deserialize<_i25.UserDetails>(data['data']);
     }
     if (dataClassName == 'UserSessionData') {
-      return deserialize<_i25.UserSessionData>(data['data']);
+      return deserialize<_i26.UserSessionData>(data['data']);
     }
     if (dataClassName.startsWith('serverpod.')) {
       data['className'] = dataClassName.substring(10);
@@ -1392,8 +1410,8 @@ class Protocol extends _i1.SerializationManagerServer {
         return _i19.Permission.t;
       case _i20.Role:
         return _i20.Role.t;
-      case _i21.RolePermission:
-        return _i21.RolePermission.t;
+      case _i22.RolePermission:
+        return _i22.RolePermission.t;
     }
     return null;
   }

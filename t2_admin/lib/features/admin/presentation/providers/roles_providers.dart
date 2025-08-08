@@ -67,3 +67,37 @@ Future<void> deleteRole(Ref ref, String roleId) async {
   // Обновляем список ролей
   ref.invalidate(rolesListProvider);
 }
+
+@riverpod
+Future<RoleDetails?> roleDetails(Ref ref, String roleId) async {
+  final client = ref.read(serverpodClientProvider);
+  try {
+    return await client.superAdmin.saGetRoleDetails(UuidValue.fromString(roleId));
+  } catch (e) {
+    throw Exception('Не удалось загрузить данные роли: $e');
+  }
+}
+
+// НОВЫЙ ПРОВАЙДЕР для обновления роли
+@riverpod
+Future<void> updateRole(Ref ref, {
+  required Role role,
+  required List<String> permissionIds,
+}) async {
+  final client = ref.read(serverpodClientProvider);
+  try {
+    final permissionUuids = permissionIds.map((id) => UuidValue.fromString(id)).toList();
+    
+    // Используем существующий эндпоинт для сохранения
+    await client.superAdmin.saCreateOrUpdateRole(
+      role: role,
+      permissionIds: permissionUuids,
+    );
+    
+    // Обновляем кэш
+    ref.invalidate(rolesListProvider);
+    ref.invalidate(roleDetailsProvider(role.id.toString()));
+  } catch (e) {
+    throw Exception('Не удалось обновить роль: $e');
+  }
+}

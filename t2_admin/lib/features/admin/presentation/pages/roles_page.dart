@@ -18,6 +18,8 @@ class RolesPage extends BaseListPage<Role> {
 }
 
 class _RolesPageState extends BaseListPageState<Role, RolesPage> {
+
+
   @override
   String get pageTitle => 'Управление ролями';
 
@@ -86,11 +88,7 @@ class _RolesPageState extends BaseListPageState<Role, RolesPage> {
 
   @override
   void navigateToEdit(Role item) {
-    // TODO: Реализовать страницу редактирования ролей
-    // context.push('${RolesRoutes.editRolePath}/${item.id}');
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Редактирование ролей пока не реализовано')),
-    );
+    context.push('${RolesRoutes.editRolePath}/${item.id}');    
   }
 
   @override
@@ -99,5 +97,5 @@ class _RolesPageState extends BaseListPageState<Role, RolesPage> {
   }
   
   @override
-  bool canEdit(Role item) => false; // Временно отключаем редактирование
+  bool canEdit(Role item) => true; 
 }
