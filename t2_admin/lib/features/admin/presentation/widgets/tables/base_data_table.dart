@@ -83,7 +83,7 @@ class BaseDataTable<T> extends StatelessWidget {
     );
   }
 
-  Widget _buildActionsCell(T item) {
+   Widget _buildActionsCell(T item) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -93,6 +93,7 @@ class BaseDataTable<T> extends StatelessWidget {
             color: Colors.blue,
             onPressed: () => onEdit(item),
             tooltip: 'Редактировать',
+            mouseCursor: SystemMouseCursors.click, // <-- ДОБАВЛЕНО
           ),
         if (canDelete(item))
           IconButton(
@@ -100,6 +101,7 @@ class BaseDataTable<T> extends StatelessWidget {
             color: Colors.red,
             onPressed: () => onDelete(item),
             tooltip: 'Удалить',
+            mouseCursor: SystemMouseCursors.click, // <-- ДОБАВЛЕНО
           ),
         ...additionalActions(item),
       ],

@@ -99,18 +99,17 @@ class _UsersPageState extends BaseListPageState<UserDetails, UsersPage> {
           size: 20,
         ),
         tooltip: user.blocked ? 'Разблокировать' : 'Заблокировать',
+        mouseCursor: SystemMouseCursors.click, // <-- ДОБАВЛЕНО
         onPressed: () {
-          // 2. Вызываем новую функцию
           showBlockUserDialog(
             context: context,
             ref: ref,
             user: user,
-            onSuccess: refreshList, // 3. Передаем метод для обновления списка
+            onSuccess: refreshList,
           );
         },
       ),
     ];
   }
   
-  // 4. Метод _showBlockUserDialog отсюда полностью удален
 }
