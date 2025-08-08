@@ -1,9 +1,16 @@
-// lib/features/admin/presentation/routing/users_routes_constants.dart
+// lib/features/admin/presentation/routing/user_routes_constants.dart
 
 class UsersRoutes {
+  // Названия роутов
   static const String users = 'users';
-  static const String usersPath = '/admin/users';
-  
   static const String createUser = 'create-user';
+  static const String editUser = 'edit-user';
+  
+  // Пути роутов
+  static const String usersPath = '/admin/users';
   static const String createUserPath = '/admin/users/create';
+  static const String editUserPath = '/admin/users/edit';
+  
+  // Полный путь для редактирования с параметром
+  static String editUserPathWithId(String userId) => '$editUserPath/$userId';
 }

@@ -256,5 +256,565 @@ class _CreateUserProviderElement extends AutoDisposeFutureProviderElement<void>
   String get roleId => (origin as CreateUserProvider).roleId;
 }
 
+String _$userDetailsHash() => r'5b9aae835308d4ebaabf488580f1c32b6a21add4';
+
+/// See also [userDetails].
+@ProviderFor(userDetails)
+const userDetailsProvider = UserDetailsFamily();
+
+/// See also [userDetails].
+class UserDetailsFamily extends Family<AsyncValue<SuperUserDetails?>> {
+  /// See also [userDetails].
+  const UserDetailsFamily();
+
+  /// See also [userDetails].
+  UserDetailsProvider call(int userId) {
+    return UserDetailsProvider(userId);
+  }
+
+  @override
+  UserDetailsProvider getProviderOverride(
+    covariant UserDetailsProvider provider,
+  ) {
+    return call(provider.userId);
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'userDetailsProvider';
+}
+
+/// See also [userDetails].
+class UserDetailsProvider extends AutoDisposeFutureProvider<SuperUserDetails?> {
+  /// See also [userDetails].
+  UserDetailsProvider(int userId)
+    : this._internal(
+        (ref) => userDetails(ref as UserDetailsRef, userId),
+        from: userDetailsProvider,
+        name: r'userDetailsProvider',
+        debugGetCreateSourceHash:
+            const bool.fromEnvironment('dart.vm.product')
+                ? null
+                : _$userDetailsHash,
+        dependencies: UserDetailsFamily._dependencies,
+        allTransitiveDependencies: UserDetailsFamily._allTransitiveDependencies,
+        userId: userId,
+      );
+
+  UserDetailsProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.userId,
+  }) : super.internal();
+
+  final int userId;
+
+  @override
+  Override overrideWith(
+    FutureOr<SuperUserDetails?> Function(UserDetailsRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: UserDetailsProvider._internal(
+        (ref) => create(ref as UserDetailsRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        userId: userId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<SuperUserDetails?> createElement() {
+    return _UserDetailsProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is UserDetailsProvider && other.userId == userId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, userId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin UserDetailsRef on AutoDisposeFutureProviderRef<SuperUserDetails?> {
+  /// The parameter `userId` of this provider.
+  int get userId;
+}
+
+class _UserDetailsProviderElement
+    extends AutoDisposeFutureProviderElement<SuperUserDetails?>
+    with UserDetailsRef {
+  _UserDetailsProviderElement(super.provider);
+
+  @override
+  int get userId => (origin as UserDetailsProvider).userId;
+}
+
+String _$updateUserHash() => r'd0ba290eae26afd11ff61732ea36a7ff070df852';
+
+/// See also [updateUser].
+@ProviderFor(updateUser)
+const updateUserProvider = UpdateUserFamily();
+
+/// See also [updateUser].
+class UpdateUserFamily extends Family<AsyncValue<void>> {
+  /// See also [updateUser].
+  const UpdateUserFamily();
+
+  /// See also [updateUser].
+  UpdateUserProvider call({
+    required int userId,
+    required String userName,
+    required String email,
+    required String customerId,
+    required String roleId,
+  }) {
+    return UpdateUserProvider(
+      userId: userId,
+      userName: userName,
+      email: email,
+      customerId: customerId,
+      roleId: roleId,
+    );
+  }
+
+  @override
+  UpdateUserProvider getProviderOverride(
+    covariant UpdateUserProvider provider,
+  ) {
+    return call(
+      userId: provider.userId,
+      userName: provider.userName,
+      email: provider.email,
+      customerId: provider.customerId,
+      roleId: provider.roleId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'updateUserProvider';
+}
+
+/// See also [updateUser].
+class UpdateUserProvider extends AutoDisposeFutureProvider<void> {
+  /// See also [updateUser].
+  UpdateUserProvider({
+    required int userId,
+    required String userName,
+    required String email,
+    required String customerId,
+    required String roleId,
+  }) : this._internal(
+         (ref) => updateUser(
+           ref as UpdateUserRef,
+           userId: userId,
+           userName: userName,
+           email: email,
+           customerId: customerId,
+           roleId: roleId,
+         ),
+         from: updateUserProvider,
+         name: r'updateUserProvider',
+         debugGetCreateSourceHash:
+             const bool.fromEnvironment('dart.vm.product')
+                 ? null
+                 : _$updateUserHash,
+         dependencies: UpdateUserFamily._dependencies,
+         allTransitiveDependencies: UpdateUserFamily._allTransitiveDependencies,
+         userId: userId,
+         userName: userName,
+         email: email,
+         customerId: customerId,
+         roleId: roleId,
+       );
+
+  UpdateUserProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.userId,
+    required this.userName,
+    required this.email,
+    required this.customerId,
+    required this.roleId,
+  }) : super.internal();
+
+  final int userId;
+  final String userName;
+  final String email;
+  final String customerId;
+  final String roleId;
+
+  @override
+  Override overrideWith(
+    FutureOr<void> Function(UpdateUserRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: UpdateUserProvider._internal(
+        (ref) => create(ref as UpdateUserRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        userId: userId,
+        userName: userName,
+        email: email,
+        customerId: customerId,
+        roleId: roleId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<void> createElement() {
+    return _UpdateUserProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is UpdateUserProvider &&
+        other.userId == userId &&
+        other.userName == userName &&
+        other.email == email &&
+        other.customerId == customerId &&
+        other.roleId == roleId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, userId.hashCode);
+    hash = _SystemHash.combine(hash, userName.hashCode);
+    hash = _SystemHash.combine(hash, email.hashCode);
+    hash = _SystemHash.combine(hash, customerId.hashCode);
+    hash = _SystemHash.combine(hash, roleId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin UpdateUserRef on AutoDisposeFutureProviderRef<void> {
+  /// The parameter `userId` of this provider.
+  int get userId;
+
+  /// The parameter `userName` of this provider.
+  String get userName;
+
+  /// The parameter `email` of this provider.
+  String get email;
+
+  /// The parameter `customerId` of this provider.
+  String get customerId;
+
+  /// The parameter `roleId` of this provider.
+  String get roleId;
+}
+
+class _UpdateUserProviderElement extends AutoDisposeFutureProviderElement<void>
+    with UpdateUserRef {
+  _UpdateUserProviderElement(super.provider);
+
+  @override
+  int get userId => (origin as UpdateUserProvider).userId;
+  @override
+  String get userName => (origin as UpdateUserProvider).userName;
+  @override
+  String get email => (origin as UpdateUserProvider).email;
+  @override
+  String get customerId => (origin as UpdateUserProvider).customerId;
+  @override
+  String get roleId => (origin as UpdateUserProvider).roleId;
+}
+
+String _$deleteUserHash() => r'8b2370def78d9e2979ce4a2ee05940cf36e9b884';
+
+/// See also [deleteUser].
+@ProviderFor(deleteUser)
+const deleteUserProvider = DeleteUserFamily();
+
+/// See also [deleteUser].
+class DeleteUserFamily extends Family<AsyncValue<void>> {
+  /// See also [deleteUser].
+  const DeleteUserFamily();
+
+  /// See also [deleteUser].
+  DeleteUserProvider call(int userId) {
+    return DeleteUserProvider(userId);
+  }
+
+  @override
+  DeleteUserProvider getProviderOverride(
+    covariant DeleteUserProvider provider,
+  ) {
+    return call(provider.userId);
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'deleteUserProvider';
+}
+
+/// See also [deleteUser].
+class DeleteUserProvider extends AutoDisposeFutureProvider<void> {
+  /// See also [deleteUser].
+  DeleteUserProvider(int userId)
+    : this._internal(
+        (ref) => deleteUser(ref as DeleteUserRef, userId),
+        from: deleteUserProvider,
+        name: r'deleteUserProvider',
+        debugGetCreateSourceHash:
+            const bool.fromEnvironment('dart.vm.product')
+                ? null
+                : _$deleteUserHash,
+        dependencies: DeleteUserFamily._dependencies,
+        allTransitiveDependencies: DeleteUserFamily._allTransitiveDependencies,
+        userId: userId,
+      );
+
+  DeleteUserProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.userId,
+  }) : super.internal();
+
+  final int userId;
+
+  @override
+  Override overrideWith(
+    FutureOr<void> Function(DeleteUserRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: DeleteUserProvider._internal(
+        (ref) => create(ref as DeleteUserRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        userId: userId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<void> createElement() {
+    return _DeleteUserProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is DeleteUserProvider && other.userId == userId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, userId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin DeleteUserRef on AutoDisposeFutureProviderRef<void> {
+  /// The parameter `userId` of this provider.
+  int get userId;
+}
+
+class _DeleteUserProviderElement extends AutoDisposeFutureProviderElement<void>
+    with DeleteUserRef {
+  _DeleteUserProviderElement(super.provider);
+
+  @override
+  int get userId => (origin as DeleteUserProvider).userId;
+}
+
+String _$blockUserHash() => r'd85ac19772429b7661368c9b29ae626a233e79ca';
+
+/// See also [blockUser].
+@ProviderFor(blockUser)
+const blockUserProvider = BlockUserFamily();
+
+/// See also [blockUser].
+class BlockUserFamily extends Family<AsyncValue<void>> {
+  /// See also [blockUser].
+  const BlockUserFamily();
+
+  /// See also [blockUser].
+  BlockUserProvider call(int userId, bool blocked) {
+    return BlockUserProvider(userId, blocked);
+  }
+
+  @override
+  BlockUserProvider getProviderOverride(covariant BlockUserProvider provider) {
+    return call(provider.userId, provider.blocked);
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'blockUserProvider';
+}
+
+/// See also [blockUser].
+class BlockUserProvider extends AutoDisposeFutureProvider<void> {
+  /// See also [blockUser].
+  BlockUserProvider(int userId, bool blocked)
+    : this._internal(
+        (ref) => blockUser(ref as BlockUserRef, userId, blocked),
+        from: blockUserProvider,
+        name: r'blockUserProvider',
+        debugGetCreateSourceHash:
+            const bool.fromEnvironment('dart.vm.product')
+                ? null
+                : _$blockUserHash,
+        dependencies: BlockUserFamily._dependencies,
+        allTransitiveDependencies: BlockUserFamily._allTransitiveDependencies,
+        userId: userId,
+        blocked: blocked,
+      );
+
+  BlockUserProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.userId,
+    required this.blocked,
+  }) : super.internal();
+
+  final int userId;
+  final bool blocked;
+
+  @override
+  Override overrideWith(FutureOr<void> Function(BlockUserRef provider) create) {
+    return ProviderOverride(
+      origin: this,
+      override: BlockUserProvider._internal(
+        (ref) => create(ref as BlockUserRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        userId: userId,
+        blocked: blocked,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<void> createElement() {
+    return _BlockUserProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is BlockUserProvider &&
+        other.userId == userId &&
+        other.blocked == blocked;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, userId.hashCode);
+    hash = _SystemHash.combine(hash, blocked.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin BlockUserRef on AutoDisposeFutureProviderRef<void> {
+  /// The parameter `userId` of this provider.
+  int get userId;
+
+  /// The parameter `blocked` of this provider.
+  bool get blocked;
+}
+
+class _BlockUserProviderElement extends AutoDisposeFutureProviderElement<void>
+    with BlockUserRef {
+  _BlockUserProviderElement(super.provider);
+
+  @override
+  int get userId => (origin as BlockUserProvider).userId;
+  @override
+  bool get blocked => (origin as BlockUserProvider).blocked;
+}
+
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

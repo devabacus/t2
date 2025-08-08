@@ -32,6 +32,9 @@ superAdmin:
   - saListAllPermissions:
   - saCreateOrUpdateRole:
   - saDeleteRole:
+  - saUpdateUser:
+  - saDeleteUser:
+  - saGetUserDetails:
 tag:
   - createTag:
   - getTags:

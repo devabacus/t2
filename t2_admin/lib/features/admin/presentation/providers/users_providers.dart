@@ -60,3 +60,76 @@ Future<void> createUser(Ref ref, {
   // Обновляем список пользователей после создания
   ref.invalidate(usersListProvider);
 }
+
+// НОВЫЕ ПРОВАЙДЕРЫ ДЛЯ РЕДАКТИРОВАНИЯ И УДАЛЕНИЯ
+
+@riverpod
+Future<SuperUserDetails?> userDetails(Ref ref, int userId) async {
+  final client = ref.read(serverpodClientProvider);
+  try {
+    return await client.superAdmin.saGetUserDetails(userId);
+  } catch (e) {
+    throw Exception('Не удалось загрузить данные пользователя: $e');
+  }
+}
+
+@riverpod
+Future<void> updateUser(Ref ref, {
+  required int userId,
+  required String userName,
+  required String email,
+  required String customerId,
+  required String roleId,
+}) async {
+  final client = ref.read(serverpodClientProvider);
+  
+  try {
+    // Преобразуем строки в UuidValue
+    final customerUuid = UuidValue.fromString(customerId);
+    final roleUuid = UuidValue.fromString(roleId);
+    
+    // Используем новый метод для обновления пользователя
+    await client.superAdmin.saUpdateUser(
+      userId: userId,
+      userName: userName,
+      email: email,
+      customerId: customerUuid,
+      roleId: roleUuid,
+    );
+    
+    // Обновляем кэш
+    ref.invalidate(usersListProvider);
+    ref.invalidate(userDetailsProvider(userId));
+  } catch (e) {
+    throw Exception('Не удалось обновить пользователя: $e');
+  }
+}
+
+@riverpod
+Future<void> deleteUser(Ref ref, int userId) async {
+  final client = ref.read(serverpodClientProvider);
+  
+  try {
+    await client.superAdmin.saDeleteUser(userId);
+    
+    // Обновляем список пользователей
+    ref.invalidate(usersListProvider);
+  } catch (e) {
+    throw Exception('Не удалось удалить пользователя: $e');
+  }
+}
+
+@riverpod
+Future<void> blockUser(Ref ref, int userId, bool blocked) async {
+  final client = ref.read(serverpodClientProvider);
+  
+  try {
+    await client.superAdmin.saBlockUser(userId, blocked);
+    
+    // Обновляем список пользователей
+    ref.invalidate(usersListProvider);
+    ref.invalidate(userDetailsProvider(userId));
+  } catch (e) {
+    throw Exception('Не удалось ${blocked ? 'заблокировать' : 'разблокировать'} пользователя: $e');
+  }
+}

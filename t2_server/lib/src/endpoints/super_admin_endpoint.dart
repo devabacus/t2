@@ -271,8 +271,6 @@ Future<bool> saBlockUser(Session session, int userId, bool blocked) async {
 
 // Добавить в t2_server/lib/src/endpoints/super_admin_endpoint.dart
 
-// Добавьте эти методы в конец класса SuperAdminEndpoint, перед последней закрывающей скобкой:
-
   // Получение всех разрешений в системе
   Future<List<Permission>> saListAllPermissions(Session session) async {
     await _requireSuperAdmin(session);
@@ -351,6 +349,148 @@ Future<bool> saBlockUser(Session session, int userId, bool blocked) async {
     });
     
     return true;
+  }
+
+  // Обновление информации о пользователе
+  Future<bool> saUpdateUser(Session session, {
+    required int userId,
+    required String userName,
+    required String email,
+    required UuidValue customerId,
+    required UuidValue roleId,
+  }) async {
+    await _requireSuperAdmin(session);
+
+    // Проверяем, что пользователь существует
+    final userInfo = await UserInfo.db.findById(session, userId);
+    if (userInfo == null) {
+      throw Exception('Пользователь не найден.');
+    }
+
+    // Проверяем уникальность email (если изменился)
+    if (userInfo.email != email) {
+      final existingUser = await Users.findUserByEmail(session, email);
+      if (existingUser != null && existingUser.id != userId) {
+        throw Exception('Пользователь с таким email уже существует.');
+      }
+    }
+
+    // Проверяем, что роль принадлежит указанной организации
+    final role = await Role.db.findById(session, roleId);
+    if (role == null || role.customerId != customerId) {
+      throw Exception('Роль не найдена или не принадлежит указанной организации.');
+    }
+
+    await session.db.transaction((transaction) async {
+      // Обновляем информацию пользователя
+      userInfo.userName = userName;
+      userInfo.email = email;
+      userInfo.userIdentifier = email; // Обычно userIdentifier = email
+      
+      await UserInfo.db.updateRow(session, userInfo, transaction: transaction);
+
+      // Обновляем связь пользователь-организация-роль
+      final customerUser = await CustomerUser.db.findFirstRow(
+        session,
+        where: (cu) => cu.userId.equals(userId),
+        transaction: transaction,
+      );
+
+      if (customerUser != null) {
+        customerUser.customerId = customerId;
+        customerUser.roleId = roleId;
+        await CustomerUser.db.updateRow(session, customerUser, transaction: transaction);
+      } else {
+        // Если по какой-то причине связи нет, создаем новую
+        await CustomerUser.db.insertRow(
+          session,
+          CustomerUser(
+            customerId: customerId,
+            userId: userId,
+            roleId: roleId,
+          ),
+          transaction: transaction,
+        );
+      }
+    });
+
+    // Логируем действие
+    final authContext = await getAuthenticatedUserContext(session);
+    session.log(
+      'User $userId updated by admin ${authContext.userId}',
+      level: LogLevel.info,
+    );
+
+    return true;
+  }
+
+  // Удаление пользователя
+  Future<bool> saDeleteUser(Session session, int userId) async {
+    await _requireSuperAdmin(session);
+
+    // Проверяем, что пользователь существует
+    final userInfo = await UserInfo.db.findById(session, userId);
+    if (userInfo == null) {
+      throw Exception('Пользователь не найден.');
+    }
+
+    // Проверяем, что это не суперадминистратор
+    if (_superAdminUserIds.contains(userId)) {
+      throw Exception('Нельзя удалить суперадминистратора.');
+    }
+
+    await session.db.transaction((transaction) async {
+      // Удаляем связи пользователь-организация-роль
+      await CustomerUser.db.deleteWhere(
+        session,
+        where: (cu) => cu.userId.equals(userId),
+        transaction: transaction,
+      );
+
+      // Удаляем информацию о пользователе
+      await UserInfo.db.deleteWhere(
+        session,
+        where: (u) => u.id.equals(userId),
+        transaction: transaction,
+      );
+    });
+
+    // Логируем действие
+    final authContext = await getAuthenticatedUserContext(session);
+    session.log(
+      'User $userId deleted by admin ${authContext.userId}',
+      level: LogLevel.info,
+    );
+
+    return true;
+  }
+
+  // Получение детальной информации о пользователе
+  Future<SuperUserDetails?> saGetUserDetails(Session session, int userId) async {
+    await _requireSuperAdmin(session);
+
+    final userInfo = await UserInfo.db.findById(session, userId);
+    if (userInfo == null) return null;
+
+    final customerUser = await CustomerUser.db.findFirstRow(
+      session,
+      where: (cu) => cu.userId.equals(userId),
+    );
+
+    Customer? customer;
+    Role? role;
+
+    if (customerUser != null) {
+      customer = await Customer.db.findById(session, customerUser.customerId);
+      role = await Role.db.findById(session, customerUser.roleId);
+    }
+
+    return SuperUserDetails(
+      userInfo: userInfo,
+      customer: customer,
+      role: role,
+      customerUser: customerUser,
+    );
   }
 }
 

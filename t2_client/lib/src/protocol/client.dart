@@ -331,6 +331,38 @@ class EndpointSuperAdmin extends _i1.EndpointRef {
         'saDeleteRole',
         {'roleId': roleId},
       );
+
+  _i2.Future<bool> saUpdateUser({
+    required int userId,
+    required String userName,
+    required String email,
+    required _i4.UuidValue customerId,
+    required _i4.UuidValue roleId,
+  }) =>
+      caller.callServerEndpoint<bool>(
+        'superAdmin',
+        'saUpdateUser',
+        {
+          'userId': userId,
+          'userName': userName,
+          'email': email,
+          'customerId': customerId,
+          'roleId': roleId,
+        },
+      );
+
+  _i2.Future<bool> saDeleteUser(int userId) => caller.callServerEndpoint<bool>(
+        'superAdmin',
+        'saDeleteUser',
+        {'userId': userId},
+      );
+
+  _i2.Future<_i13.SuperUserDetails?> saGetUserDetails(int userId) =>
+      caller.callServerEndpoint<_i13.SuperUserDetails?>(
+        'superAdmin',
+        'saGetUserDetails',
+        {'userId': userId},
+      );
 }
 
 /// {@category Endpoint}

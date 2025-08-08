@@ -682,6 +682,85 @@ class Endpoints extends _i1.EndpointDispatch {
             params['roleId'],
           ),
         ),
+        'saUpdateUser': _i1.MethodConnector(
+          name: 'saUpdateUser',
+          params: {
+            'userId': _i1.ParameterDescription(
+              name: 'userId',
+              type: _i1.getType<int>(),
+              nullable: false,
+            ),
+            'userName': _i1.ParameterDescription(
+              name: 'userName',
+              type: _i1.getType<String>(),
+              nullable: false,
+            ),
+            'email': _i1.ParameterDescription(
+              name: 'email',
+              type: _i1.getType<String>(),
+              nullable: false,
+            ),
+            'customerId': _i1.ParameterDescription(
+              name: 'customerId',
+              type: _i1.getType<_i12.UuidValue>(),
+              nullable: false,
+            ),
+            'roleId': _i1.ParameterDescription(
+              name: 'roleId',
+              type: _i1.getType<_i12.UuidValue>(),
+              nullable: false,
+            ),
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['superAdmin'] as _i5.SuperAdminEndpoint).saUpdateUser(
+            session,
+            userId: params['userId'],
+            userName: params['userName'],
+            email: params['email'],
+            customerId: params['customerId'],
+            roleId: params['roleId'],
+          ),
+        ),
+        'saDeleteUser': _i1.MethodConnector(
+          name: 'saDeleteUser',
+          params: {
+            'userId': _i1.ParameterDescription(
+              name: 'userId',
+              type: _i1.getType<int>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['superAdmin'] as _i5.SuperAdminEndpoint).saDeleteUser(
+            session,
+            params['userId'],
+          ),
+        ),
+        'saGetUserDetails': _i1.MethodConnector(
+          name: 'saGetUserDetails',
+          params: {
+            'userId': _i1.ParameterDescription(
+              name: 'userId',
+              type: _i1.getType<int>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['superAdmin'] as _i5.SuperAdminEndpoint)
+                  .saGetUserDetails(
+            session,
+            params['userId'],
+          ),
+        ),
       },
     );
     connectors['tag'] = _i1.EndpointConnector(
