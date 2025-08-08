@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:t2_client/t2_client.dart';
-
 import '../providers/roles_providers.dart';
 import '../providers/users_providers.dart';
 
@@ -56,14 +55,30 @@ class _CreateUserPageState extends ConsumerState<CreateUserPage> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Пользователь успешно создан')),
+          const SnackBar(
+            content: Text('Пользователь успешно создан'),
+            backgroundColor: Colors.green,
+          ),
         );
         context.pop(); // Возвращаемся к списку пользователей
       }
     } catch (e) {
       if (mounted) {
+        String errorMessage = 'Ошибка при создании пользователя';
+        
+        if (e.toString().contains('уже существует')) {
+          errorMessage = 'Пользователь с таким email уже существует';
+        } else if (e.toString().contains('foreign key')) {
+          errorMessage = 'Выбранная организация или роль недоступна';
+        } else {
+          errorMessage = 'Ошибка: ${e.toString()}';
+        }
+        
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Ошибка: $e')),
+          SnackBar(
+            content: Text(errorMessage),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     } finally {
