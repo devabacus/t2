@@ -304,6 +304,33 @@ class EndpointSuperAdmin extends _i1.EndpointRef {
           'newRoleId': newRoleId,
         },
       );
+
+  _i2.Future<List<_i6.Permission>> saListAllPermissions() =>
+      caller.callServerEndpoint<List<_i6.Permission>>(
+        'superAdmin',
+        'saListAllPermissions',
+        {},
+      );
+
+  _i2.Future<_i5.Role> saCreateOrUpdateRole({
+    required _i5.Role role,
+    required List<_i4.UuidValue> permissionIds,
+  }) =>
+      caller.callServerEndpoint<_i5.Role>(
+        'superAdmin',
+        'saCreateOrUpdateRole',
+        {
+          'role': role,
+          'permissionIds': permissionIds,
+        },
+      );
+
+  _i2.Future<bool> saDeleteRole(_i4.UuidValue roleId) =>
+      caller.callServerEndpoint<bool>(
+        'superAdmin',
+        'saDeleteRole',
+        {'roleId': roleId},
+      );
 }
 
 /// {@category Endpoint}

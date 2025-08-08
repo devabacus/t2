@@ -629,6 +629,59 @@ class Endpoints extends _i1.EndpointDispatch {
             newRoleId: params['newRoleId'],
           ),
         ),
+        'saListAllPermissions': _i1.MethodConnector(
+          name: 'saListAllPermissions',
+          params: {},
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['superAdmin'] as _i5.SuperAdminEndpoint)
+                  .saListAllPermissions(session),
+        ),
+        'saCreateOrUpdateRole': _i1.MethodConnector(
+          name: 'saCreateOrUpdateRole',
+          params: {
+            'role': _i1.ParameterDescription(
+              name: 'role',
+              type: _i1.getType<_i13.Role>(),
+              nullable: false,
+            ),
+            'permissionIds': _i1.ParameterDescription(
+              name: 'permissionIds',
+              type: _i1.getType<List<_i12.UuidValue>>(),
+              nullable: false,
+            ),
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['superAdmin'] as _i5.SuperAdminEndpoint)
+                  .saCreateOrUpdateRole(
+            session,
+            role: params['role'],
+            permissionIds: params['permissionIds'],
+          ),
+        ),
+        'saDeleteRole': _i1.MethodConnector(
+          name: 'saDeleteRole',
+          params: {
+            'roleId': _i1.ParameterDescription(
+              name: 'roleId',
+              type: _i1.getType<_i12.UuidValue>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['superAdmin'] as _i5.SuperAdminEndpoint).saDeleteRole(
+            session,
+            params['roleId'],
+          ),
+        ),
       },
     );
     connectors['tag'] = _i1.EndpointConnector(

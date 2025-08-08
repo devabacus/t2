@@ -266,4 +266,92 @@ Future<bool> saBlockUser(Session session, int userId, bool blocked) async {
 
     return true;
   }
+
+
+
+// Добавить в t2_server/lib/src/endpoints/super_admin_endpoint.dart
+
+// Добавьте эти методы в конец класса SuperAdminEndpoint, перед последней закрывающей скобкой:
+
+  // Получение всех разрешений в системе
+  Future<List<Permission>> saListAllPermissions(Session session) async {
+    await _requireSuperAdmin(session);
+    return Permission.db.find(session, orderBy: (p) => p.key);
+  }
+
+  // Создание/обновление роли (суперадмин версия)
+  Future<Role> saCreateOrUpdateRole(Session session, {
+    required Role role,
+    required List<UuidValue> permissionIds,
+  }) async {
+    await _requireSuperAdmin(session);
+    
+    return await session.db.transaction((transaction) async {
+      Role updatedRole;
+      if (role.id == null) {
+        // Создаем новую роль
+        updatedRole = await Role.db.insertRow(session, role, transaction: transaction);
+      } else {
+        // Обновляем существующую роль
+        updatedRole = await Role.db.updateRow(session, role, transaction: transaction);
+      }
+      
+      // Удаляем старые связи роль-разрешение
+      await RolePermission.db.deleteWhere(
+        session,
+        where: (rp) => rp.roleId.equals(updatedRole.id!),
+        transaction: transaction,
+      );
+      
+      // Создаем новые связи роль-разрешение
+      if (permissionIds.isNotEmpty) {
+        final newLinks = permissionIds
+            .map((permId) => RolePermission(
+                  roleId: updatedRole.id!,
+                  permissionId: permId,
+                ))
+            .toList();
+        await RolePermission.db.insert(session, newLinks, transaction: transaction);
+      }
+      
+      return updatedRole;
+    });
+  }
+
+  // Удаление роли (суперадмин версия)
+  Future<bool> saDeleteRole(Session session, UuidValue roleId) async {
+    await _requireSuperAdmin(session);
+    
+    // Проверяем, есть ли пользователи с этой ролью
+    final assignedUsersCount = await CustomerUser.db.count(
+      session, 
+      where: (cu) => cu.roleId.equals(roleId),
+    );
+    
+    if (assignedUsersCount > 0) {
+      throw Exception(
+        'Нельзя удалить роль, так как она назначена пользователям ($assignedUsersCount).',
+      );
+    }
+    
+    await session.db.transaction((transaction) async {
+      // Удаляем связи роль-разрешение
+      await RolePermission.db.deleteWhere(
+        session,
+        where: (rp) => rp.roleId.equals(roleId),
+        transaction: transaction,
+      );
+      
+      // Удаляем саму роль
+      await Role.db.deleteWhere(
+        session,
+        where: (r) => r.id.equals(roleId),
+        transaction: transaction,
+      );
+    });
+    
+    return true;
+  }
 }
+
+

@@ -29,6 +29,9 @@ superAdmin:
   - saGetDashboard:
   - saListAllRoles:
   - saMoveUserToCustomer:
+  - saListAllPermissions:
+  - saCreateOrUpdateRole:
+  - saDeleteRole:
 tag:
   - createTag:
   - getTags:
