@@ -96,7 +96,7 @@ class _RolesPageState extends BaseListPageState<Role, RolesPage> {
     context.push(RolesRoutes.createRolePath);
   }
 
-  @override
+  @override   
   void navigateToEdit(Role item) {
     context.push('${RolesRoutes.editRolePath}/${item.id}');
   }
