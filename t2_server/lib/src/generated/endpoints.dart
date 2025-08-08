@@ -18,6 +18,7 @@ import '../endpoints/tag_endpoint.dart' as _i6;
 import '../endpoints/task_endpoint.dart' as _i7;
 import '../endpoints/task_tag_map_endpoint.dart' as _i8;
 import '../endpoints/test_data_endpoint.dart' as _i9;
+<<<<<<< HEAD
 import '../endpoints/user_manager_endpoint.dart' as _i10;
 import '../greeting_endpoint.dart' as _i11;
 import 'package:uuid/uuid_value.dart' as _i12;
@@ -30,6 +31,21 @@ import 'package:t2_server/src/generated/task.dart' as _i18;
 import 'package:t2_server/src/generated/task_tag_map.dart' as _i19;
 import 'package:t2_server/src/generated/test_data.dart' as _i20;
 import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i21;
+=======
+import '../endpoints/user_context_endpoint.dart' as _i10;
+import '../endpoints/user_manager_endpoint.dart' as _i11;
+import '../greeting_endpoint.dart' as _i12;
+import 'package:uuid/uuid_value.dart' as _i13;
+import 'package:t2_server/src/generated/user/role.dart' as _i14;
+import 'package:t2_server/src/generated/category.dart' as _i15;
+import 'package:t2_server/src/generated/configuration.dart' as _i16;
+import 'package:t2_server/src/generated/user/customer.dart' as _i17;
+import 'package:t2_server/src/generated/tag.dart' as _i18;
+import 'package:t2_server/src/generated/task.dart' as _i19;
+import 'package:t2_server/src/generated/task_tag_map.dart' as _i20;
+import 'package:t2_server/src/generated/test_data.dart' as _i21;
+import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i22;
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
 
 class Endpoints extends _i1.EndpointDispatch {
   @override
@@ -83,13 +99,27 @@ class Endpoints extends _i1.EndpointDispatch {
           'testData',
           null,
         ),
+<<<<<<< HEAD
       'userManagement': _i10.UserManagementEndpoint()
+=======
+      'userContext': _i10.UserContextEndpoint()
+        ..initialize(
+          server,
+          'userContext',
+          null,
+        ),
+      'userManagement': _i11.UserManagementEndpoint()
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
         ..initialize(
           server,
           'userManagement',
           null,
         ),
+<<<<<<< HEAD
       'greeting': _i11.GreetingEndpoint()
+=======
+      'greeting': _i12.GreetingEndpoint()
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
         ..initialize(
           server,
           'greeting',
@@ -119,7 +149,11 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'roleId': _i1.ParameterDescription(
               name: 'roleId',
+<<<<<<< HEAD
               type: _i1.getType<_i12.UuidValue>(),
+=======
+              type: _i1.getType<_i13.UuidValue>(),
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
               nullable: false,
             ),
           },
@@ -157,12 +191,20 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'role': _i1.ParameterDescription(
               name: 'role',
+<<<<<<< HEAD
               type: _i1.getType<_i13.Role>(),
+=======
+              type: _i1.getType<_i14.Role>(),
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
               nullable: false,
             ),
             'permissionIds': _i1.ParameterDescription(
               name: 'permissionIds',
+<<<<<<< HEAD
               type: _i1.getType<List<_i12.UuidValue>>(),
+=======
+              type: _i1.getType<List<_i13.UuidValue>>(),
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
               nullable: false,
             ),
           },
@@ -181,7 +223,11 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'roleId': _i1.ParameterDescription(
               name: 'roleId',
+<<<<<<< HEAD
               type: _i1.getType<_i12.UuidValue>(),
+=======
+              type: _i1.getType<_i13.UuidValue>(),
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
               nullable: false,
             )
           },
@@ -205,7 +251,11 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'category': _i1.ParameterDescription(
               name: 'category',
+<<<<<<< HEAD
               type: _i1.getType<_i14.Category>(),
+=======
+              type: _i1.getType<_i15.Category>(),
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
               nullable: false,
             )
           },
@@ -241,7 +291,11 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'id': _i1.ParameterDescription(
               name: 'id',
+<<<<<<< HEAD
               type: _i1.getType<_i12.UuidValue>(),
+=======
+              type: _i1.getType<_i13.UuidValue>(),
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
               nullable: false,
             )
           },
@@ -278,7 +332,11 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'category': _i1.ParameterDescription(
               name: 'category',
+<<<<<<< HEAD
               type: _i1.getType<_i14.Category>(),
+=======
+              type: _i1.getType<_i15.Category>(),
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
               nullable: false,
             )
           },
@@ -315,7 +373,11 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'configuration': _i1.ParameterDescription(
               name: 'configuration',
+<<<<<<< HEAD
               type: _i1.getType<_i15.Configuration>(),
+=======
+              type: _i1.getType<_i16.Configuration>(),
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
               nullable: false,
             )
           },
@@ -353,7 +415,11 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'id': _i1.ParameterDescription(
               name: 'id',
+<<<<<<< HEAD
               type: _i1.getType<_i12.UuidValue>(),
+=======
+              type: _i1.getType<_i13.UuidValue>(),
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
               nullable: false,
             )
           },
@@ -391,7 +457,11 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'configuration': _i1.ParameterDescription(
               name: 'configuration',
+<<<<<<< HEAD
               type: _i1.getType<_i15.Configuration>(),
+=======
+              type: _i1.getType<_i16.Configuration>(),
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
               nullable: false,
             )
           },
@@ -439,7 +509,11 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'customer': _i1.ParameterDescription(
               name: 'customer',
+<<<<<<< HEAD
               type: _i1.getType<_i16.Customer>(),
+=======
+              type: _i1.getType<_i17.Customer>(),
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
               nullable: false,
             )
           },
@@ -473,12 +547,20 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'customerId': _i1.ParameterDescription(
               name: 'customerId',
+<<<<<<< HEAD
               type: _i1.getType<_i12.UuidValue>(),
+=======
+              type: _i1.getType<_i13.UuidValue>(),
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
               nullable: false,
             ),
             'roleId': _i1.ParameterDescription(
               name: 'roleId',
+<<<<<<< HEAD
               type: _i1.getType<_i12.UuidValue>(),
+=======
+              type: _i1.getType<_i13.UuidValue>(),
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
               nullable: false,
             ),
           },
@@ -500,7 +582,11 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'customerId': _i1.ParameterDescription(
               name: 'customerId',
+<<<<<<< HEAD
               type: _i1.getType<_i12.UuidValue?>(),
+=======
+              type: _i1.getType<_i13.UuidValue?>(),
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
               nullable: true,
             ),
             'limit': _i1.ParameterDescription(
@@ -555,7 +641,11 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'customerId': _i1.ParameterDescription(
               name: 'customerId',
+<<<<<<< HEAD
               type: _i1.getType<_i12.UuidValue>(),
+=======
+              type: _i1.getType<_i13.UuidValue>(),
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
               nullable: false,
             )
           },
@@ -584,7 +674,11 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'customerId': _i1.ParameterDescription(
               name: 'customerId',
+<<<<<<< HEAD
               type: _i1.getType<_i12.UuidValue?>(),
+=======
+              type: _i1.getType<_i13.UuidValue?>(),
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
               nullable: true,
             )
           },
@@ -608,12 +702,20 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'newCustomerId': _i1.ParameterDescription(
               name: 'newCustomerId',
+<<<<<<< HEAD
               type: _i1.getType<_i12.UuidValue>(),
+=======
+              type: _i1.getType<_i13.UuidValue>(),
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
               nullable: false,
             ),
             'newRoleId': _i1.ParameterDescription(
               name: 'newRoleId',
+<<<<<<< HEAD
               type: _i1.getType<_i12.UuidValue>(),
+=======
+              type: _i1.getType<_i13.UuidValue>(),
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
               nullable: false,
             ),
           },
@@ -640,7 +742,11 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'tag': _i1.ParameterDescription(
               name: 'tag',
+<<<<<<< HEAD
               type: _i1.getType<_i17.Tag>(),
+=======
+              type: _i1.getType<_i18.Tag>(),
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
               nullable: false,
             )
           },
@@ -676,7 +782,11 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'id': _i1.ParameterDescription(
               name: 'id',
+<<<<<<< HEAD
               type: _i1.getType<_i12.UuidValue>(),
+=======
+              type: _i1.getType<_i13.UuidValue>(),
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
               nullable: false,
             )
           },
@@ -712,7 +822,11 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'tag': _i1.ParameterDescription(
               name: 'tag',
+<<<<<<< HEAD
               type: _i1.getType<_i17.Tag>(),
+=======
+              type: _i1.getType<_i18.Tag>(),
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
               nullable: false,
             )
           },
@@ -748,7 +862,11 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'task': _i1.ParameterDescription(
               name: 'task',
+<<<<<<< HEAD
               type: _i1.getType<_i18.Task>(),
+=======
+              type: _i1.getType<_i19.Task>(),
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
               nullable: false,
             )
           },
@@ -784,7 +902,11 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'id': _i1.ParameterDescription(
               name: 'id',
+<<<<<<< HEAD
               type: _i1.getType<_i12.UuidValue>(),
+=======
+              type: _i1.getType<_i13.UuidValue>(),
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
               nullable: false,
             )
           },
@@ -820,7 +942,11 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'task': _i1.ParameterDescription(
               name: 'task',
+<<<<<<< HEAD
               type: _i1.getType<_i18.Task>(),
+=======
+              type: _i1.getType<_i19.Task>(),
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
               nullable: false,
             )
           },
@@ -838,7 +964,11 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'categoryId': _i1.ParameterDescription(
               name: 'categoryId',
+<<<<<<< HEAD
               type: _i1.getType<_i12.UuidValue>(),
+=======
+              type: _i1.getType<_i13.UuidValue>(),
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
               nullable: false,
             )
           },
@@ -874,7 +1004,11 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'taskTagMap': _i1.ParameterDescription(
               name: 'taskTagMap',
+<<<<<<< HEAD
               type: _i1.getType<_i19.TaskTagMap>(),
+=======
+              type: _i1.getType<_i20.TaskTagMap>(),
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
               nullable: false,
             )
           },
@@ -893,7 +1027,11 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'taskId': _i1.ParameterDescription(
               name: 'taskId',
+<<<<<<< HEAD
               type: _i1.getType<_i12.UuidValue>(),
+=======
+              type: _i1.getType<_i13.UuidValue>(),
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
               nullable: false,
             )
           },
@@ -912,7 +1050,11 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'tagId': _i1.ParameterDescription(
               name: 'tagId',
+<<<<<<< HEAD
               type: _i1.getType<_i12.UuidValue>(),
+=======
+              type: _i1.getType<_i13.UuidValue>(),
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
               nullable: false,
             )
           },
@@ -950,12 +1092,20 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'taskId': _i1.ParameterDescription(
               name: 'taskId',
+<<<<<<< HEAD
               type: _i1.getType<_i12.UuidValue>(),
+=======
+              type: _i1.getType<_i13.UuidValue>(),
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
               nullable: false,
             ),
             'tagId': _i1.ParameterDescription(
               name: 'tagId',
+<<<<<<< HEAD
               type: _i1.getType<_i12.UuidValue>(),
+=======
+              type: _i1.getType<_i13.UuidValue>(),
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
               nullable: false,
             ),
           },
@@ -994,7 +1144,11 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'testData': _i1.ParameterDescription(
               name: 'testData',
+<<<<<<< HEAD
               type: _i1.getType<_i20.TestData>(),
+=======
+              type: _i1.getType<_i21.TestData>(),
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
               nullable: false,
             )
           },
@@ -1022,7 +1176,11 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'testData': _i1.ParameterDescription(
               name: 'testData',
+<<<<<<< HEAD
               type: _i1.getType<_i20.TestData>(),
+=======
+              type: _i1.getType<_i21.TestData>(),
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
               nullable: false,
             )
           },
@@ -1040,7 +1198,11 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'testData': _i1.ParameterDescription(
               name: 'testData',
+<<<<<<< HEAD
               type: _i1.getType<_i20.TestData>(),
+=======
+              type: _i1.getType<_i21.TestData>(),
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
               nullable: false,
             )
           },
@@ -1055,6 +1217,22 @@ class Endpoints extends _i1.EndpointDispatch {
         ),
       },
     );
+    connectors['userContext'] = _i1.EndpointConnector(
+      name: 'userContext',
+      endpoint: endpoints['userContext']!,
+      methodConnectors: {
+        'getMyRole': _i1.MethodConnector(
+          name: 'getMyRole',
+          params: {},
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['userContext'] as _i10.UserContextEndpoint)
+                  .getMyRole(session),
+        )
+      },
+    );
     connectors['userManagement'] = _i1.EndpointConnector(
       name: 'userManagement',
       endpoint: endpoints['userManagement']!,
@@ -1066,7 +1244,11 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
+<<<<<<< HEAD
               (endpoints['userManagement'] as _i10.UserManagementEndpoint)
+=======
+              (endpoints['userManagement'] as _i11.UserManagementEndpoint)
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
                   .getMyUserContext(session),
         )
       },
@@ -1088,13 +1270,21 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
+<<<<<<< HEAD
               (endpoints['greeting'] as _i11.GreetingEndpoint).hello(
+=======
+              (endpoints['greeting'] as _i12.GreetingEndpoint).hello(
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
             session,
             params['name'],
           ),
         )
       },
     );
+<<<<<<< HEAD
     modules['serverpod_auth'] = _i21.Endpoints()..initializeEndpoints(server);
+=======
+    modules['serverpod_auth'] = _i22.Endpoints()..initializeEndpoints(server);
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
   }
 }

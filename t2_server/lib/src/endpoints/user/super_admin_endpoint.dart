@@ -2,8 +2,8 @@
 import 'package:serverpod/serverpod.dart';
 import 'package:serverpod_auth_server/serverpod_auth_server.dart';
 
-import '../generated/protocol.dart';
-import 'shared/auth_context_mixin.dart';
+import '../../generated/protocol.dart';
+import '../shared/auth_context_mixin.dart';
 
 class SuperAdminEndpoint extends Endpoint with AuthContextMixin {
   

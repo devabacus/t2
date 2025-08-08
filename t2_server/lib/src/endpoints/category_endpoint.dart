@@ -2,7 +2,7 @@
 import 'package:serverpod/serverpod.dart';
 import 'package:t2_server/src/generated/protocol.dart';
 import 'shared/auth_context_mixin.dart';
-import 'user_manager_endpoint.dart';
+import 'user/user_manager_endpoint.dart';
 
 const _categoryChannelBase = 't2_category_events_for_user_';
 

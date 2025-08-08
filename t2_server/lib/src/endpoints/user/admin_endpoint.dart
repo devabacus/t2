@@ -2,9 +2,9 @@
 import 'package:serverpod/serverpod.dart';
 import 'package:serverpod_auth_server/serverpod_auth_server.dart';
 
-import '../generated/protocol.dart';
-import '../permissions.dart';
-import 'shared/auth_context_mixin.dart';
+import '../../generated/protocol.dart';
+import '../../permissions.dart';
+import '../shared/auth_context_mixin.dart';
 
 class AdminEndpoint extends Endpoint with AuthContextMixin {
 
