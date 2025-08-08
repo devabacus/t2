@@ -3,168 +3,101 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:t2_client/t2_client.dart';
 
+import '../base/base_list_page.dart';
 import '../providers/roles_providers.dart';
+import '../providers/users_providers.dart';
 import '../routings/roles_routes_constants.dart';
 
-class RolesPage extends ConsumerWidget {
+class RolesPage extends BaseListPage<Role> {
   const RolesPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final rolesState = ref.watch(rolesListProvider);
+  ConsumerState<RolesPage> createState() => _RolesPageState();
+}
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Управление ролями'),
-        backgroundColor: Colors.green,
-        foregroundColor: Colors.white,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.add),
-            tooltip: 'Добавить роль',
-            onPressed: () {
-              context.push(RolesRoutes.createRolePath);
-            },
-          ),
-        ],
-      ),
-      body: rolesState.when(
-        data: (roles) {
-          if (roles.isEmpty) {
-            return const Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.security,
-                    size: 64,
-                    color: Colors.grey,
-                  ),
-                  SizedBox(height: 16),
-                  Text(
-                    'Роли не найдены',
-                    style: TextStyle(fontSize: 18, color: Colors.grey),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    'Добавьте первую роль',
-                    style: TextStyle(fontSize: 14, color: Colors.grey),
-                  ),
-                ],
-              ),
-            );
-          }
+class _RolesPageState extends BaseListPageState<Role, RolesPage> {
+  @override
+  String get pageTitle => 'Управление ролями';
 
-          return ListView.builder(
-            padding: const EdgeInsets.all(16),
-            itemCount: roles.length,
-            itemBuilder: (context, index) {
-              final role = roles[index];
+  @override
+  String get entityNameSingular => 'Роль';
 
-              return Card(
-                margin: const EdgeInsets.only(bottom: 8),
-                child: ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: Colors.green,
-                    child: Icon(
-                      Icons.security,
-                      color: Colors.white,
-                    ),
-                  ),
-                  title: Text(role.name),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      if (role.description != null && role.description!.isNotEmpty)
-                        Text(role.description!),
-                      const SizedBox(height: 4),
-                      Text(
-                        'ID: ${role.id.toString()}',
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ],
-                  ),
-                  trailing: PopupMenuButton<String>(
-                    onSelected: (value) async {
-                      if (value == 'delete') {
-                        final confirmed = await showDialog<bool>(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: const Text('Удалить роль'),
-                            content: Text('Вы уверены, что хотите удалить роль "${role.name}"?'),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(context, false),
-                                child: const Text('Отмена'),
-                              ),
-                              TextButton(
-                                onPressed: () => Navigator.pop(context, true),
-                                child: const Text('Удалить'),
-                              ),
-                            ],
-                          ),
-                        );
-                        
-                        if (confirmed == true) {
-                          try {
-                            await ref.read(deleteRoleProvider(role.id.toString()).future);
-                            if (context.mounted) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Роль успешно удалена'),
-                                  backgroundColor: Colors.green,
-                                ),
-                              );
-                            }
-                          } catch (e) {
-                            if (context.mounted) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text('Ошибка при удалении роли: $e'),
-                                  backgroundColor: Colors.red,
-                                ),
-                              );
-                            }
-                          }
-                        }
-                      }
-                    },
-                    itemBuilder: (context) => [
-                      const PopupMenuItem(
-                        value: 'delete',
-                        child: ListTile(
-                          leading: Icon(Icons.delete, color: Colors.red),
-                          title: Text('Удалить'),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          );
-        },
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stack) => Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(Icons.error, size: 64, color: Colors.red),
-              const SizedBox(height: 16),
-              Text('Ошибка: $error'),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () => ref.invalidate(rolesListProvider),
-                child: const Text('Попробовать снова'),
-              ),
-            ],
-          ),
-        ),
-      ),
+  @override
+  String get entityNamePlural => 'Роли';
+
+  @override
+  IconData get entityIcon => Icons.security;
+
+  @override
+  Color get themeColor => Colors.green;
+
+  @override
+  AutoDisposeFutureProvider<List<Role>> get listProvider => rolesListProvider;
+
+  @override
+  String getItemId(Role item) => item.id.toString();
+
+  @override
+  String getItemDisplayName(Role item) => item.name;
+
+  @override
+  List<DataColumn> getColumns() {
+    return [
+      const DataColumn(label: Text('Название')),
+      const DataColumn(label: Text('Описание')),
+      const DataColumn(label: Text('Организация')), // Предполагается, что вы добавите получение Customer в Role
+      const DataColumn(label: Text('ID')),
+    ];
+  }
+
+  @override
+  DataRow buildDataRow(Role role) {
+    // ПРИМЕЧАНИЕ: На сервере необходимо будет добавить `include: Role.include(customer: Customer.include())`
+    // в эндпоинт `saListAllRoles`, чтобы поле `customer` не было null.
+    final customerName = ref.watch(customersListProvider).when(
+      data: (customers) {
+        try {
+            return customers.firstWhere((c) => c.id == role.customerId).name;
+        } catch (e) {
+            return 'Не найдена';
+        }
+      },
+      loading: () => 'Загрузка...',
+      error: (_, __) => 'Ошибка',
+    );
+
+
+    return DataRow(
+      cells: [
+        DataCell(Text(role.name)),
+        DataCell(Text(role.description ?? '-')),
+        DataCell(Text(customerName)),
+        DataCell(Text(role.id.toString())),
+      ],
     );
   }
+
+  @override
+  void navigateToCreate() {
+    context.push(RolesRoutes.createRolePath);
+  }
+
+  @override
+  void navigateToEdit(Role item) {
+    // TODO: Реализовать страницу редактирования ролей
+    // context.push('${RolesRoutes.editRolePath}/${item.id}');
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Редактирование ролей пока не реализовано')),
+    );
+  }
+
+  @override
+  Future<void> deleteItem(Role item) async {
+    await ref.read(deleteRoleProvider(item.id.toString()).future);
+  }
+  
+  @override
+  bool canEdit(Role item) => false; // Временно отключаем редактирование
 }
