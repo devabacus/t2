@@ -36,6 +36,7 @@ superAdmin:
   - saDeleteUser:
   - saGetUserDetails:
   - saGetRoleDetails:
+  - saGetCustomer:
 tag:
   - createTag:
   - getTags:

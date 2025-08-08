@@ -16,7 +16,8 @@ class OrganizationsPage extends BaseListPage<Customer> {
   ConsumerState<OrganizationsPage> createState() => _OrganizationsPageState();
 }
 
-class _OrganizationsPageState extends BaseListPageState<Customer, OrganizationsPage> {
+class _OrganizationsPageState
+    extends BaseListPageState<Customer, OrganizationsPage> {
   @override
   String get pageTitle => 'Управление организациями';
 
@@ -33,7 +34,8 @@ class _OrganizationsPageState extends BaseListPageState<Customer, OrganizationsP
   Color get themeColor => Colors.orange;
 
   @override
-  AutoDisposeFutureProvider<List<Customer>> get listProvider => organizationsListProvider;
+  AutoDisposeFutureProvider<List<Customer>> get listProvider =>
+      organizationsListProvider;
 
   @override
   String getItemId(Customer item) => item.id.toString();
@@ -70,9 +72,7 @@ class _OrganizationsPageState extends BaseListPageState<Customer, OrganizationsP
 
   @override
   void navigateToEdit(Customer item) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Редактирование организаций пока не реализовано')),
-    );
+    context.push('${OrganizationsRoutes.editOrganizationPath}/${item.id}');
   }
 
   @override
@@ -82,7 +82,7 @@ class _OrganizationsPageState extends BaseListPageState<Customer, OrganizationsP
     // вам нужно будет переопределить метод `showDeleteConfirmation` из `BaseListPageState`.
     await ref.read(deleteOrganizationProvider(item.id.toString()).future);
   }
-  
+
   @override
-  bool canEdit(Customer item) => false; // Редактирование пока не реализовано
+  bool canEdit(Customer item) => true; // Редактирование пока не реализовано
 }

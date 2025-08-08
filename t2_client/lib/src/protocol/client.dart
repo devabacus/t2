@@ -371,6 +371,13 @@ class EndpointSuperAdmin extends _i1.EndpointRef {
         'saGetRoleDetails',
         {'roleId': roleId},
       );
+
+  _i2.Future<_i11.Customer?> saGetCustomer(_i4.UuidValue customerId) =>
+      caller.callServerEndpoint<_i11.Customer?>(
+        'superAdmin',
+        'saGetCustomer',
+        {'customerId': customerId},
+      );
 }
 
 /// {@category Endpoint}

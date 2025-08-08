@@ -339,5 +339,255 @@ class _DeleteOrganizationProviderElement
       (origin as DeleteOrganizationProvider).organizationId;
 }
 
+String _$organizationDetailsHash() =>
+    r'a9f80686dd13b1b698267fd71daf71920ea94613';
+
+/// See also [organizationDetails].
+@ProviderFor(organizationDetails)
+const organizationDetailsProvider = OrganizationDetailsFamily();
+
+/// See also [organizationDetails].
+class OrganizationDetailsFamily extends Family<AsyncValue<Customer?>> {
+  /// See also [organizationDetails].
+  const OrganizationDetailsFamily();
+
+  /// See also [organizationDetails].
+  OrganizationDetailsProvider call(String organizationId) {
+    return OrganizationDetailsProvider(organizationId);
+  }
+
+  @override
+  OrganizationDetailsProvider getProviderOverride(
+    covariant OrganizationDetailsProvider provider,
+  ) {
+    return call(provider.organizationId);
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'organizationDetailsProvider';
+}
+
+/// See also [organizationDetails].
+class OrganizationDetailsProvider extends AutoDisposeFutureProvider<Customer?> {
+  /// See also [organizationDetails].
+  OrganizationDetailsProvider(String organizationId)
+    : this._internal(
+        (ref) =>
+            organizationDetails(ref as OrganizationDetailsRef, organizationId),
+        from: organizationDetailsProvider,
+        name: r'organizationDetailsProvider',
+        debugGetCreateSourceHash:
+            const bool.fromEnvironment('dart.vm.product')
+                ? null
+                : _$organizationDetailsHash,
+        dependencies: OrganizationDetailsFamily._dependencies,
+        allTransitiveDependencies:
+            OrganizationDetailsFamily._allTransitiveDependencies,
+        organizationId: organizationId,
+      );
+
+  OrganizationDetailsProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.organizationId,
+  }) : super.internal();
+
+  final String organizationId;
+
+  @override
+  Override overrideWith(
+    FutureOr<Customer?> Function(OrganizationDetailsRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: OrganizationDetailsProvider._internal(
+        (ref) => create(ref as OrganizationDetailsRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        organizationId: organizationId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<Customer?> createElement() {
+    return _OrganizationDetailsProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is OrganizationDetailsProvider &&
+        other.organizationId == organizationId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, organizationId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin OrganizationDetailsRef on AutoDisposeFutureProviderRef<Customer?> {
+  /// The parameter `organizationId` of this provider.
+  String get organizationId;
+}
+
+class _OrganizationDetailsProviderElement
+    extends AutoDisposeFutureProviderElement<Customer?>
+    with OrganizationDetailsRef {
+  _OrganizationDetailsProviderElement(super.provider);
+
+  @override
+  String get organizationId =>
+      (origin as OrganizationDetailsProvider).organizationId;
+}
+
+String _$updateOrganizationHash() =>
+    r'94ba0048b4e4827cc6a6cb702d9ce1477b0ed4ee';
+
+/// See also [updateOrganization].
+@ProviderFor(updateOrganization)
+const updateOrganizationProvider = UpdateOrganizationFamily();
+
+/// See also [updateOrganization].
+class UpdateOrganizationFamily extends Family<AsyncValue<void>> {
+  /// See also [updateOrganization].
+  const UpdateOrganizationFamily();
+
+  /// See also [updateOrganization].
+  UpdateOrganizationProvider call({required Customer customer}) {
+    return UpdateOrganizationProvider(customer: customer);
+  }
+
+  @override
+  UpdateOrganizationProvider getProviderOverride(
+    covariant UpdateOrganizationProvider provider,
+  ) {
+    return call(customer: provider.customer);
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'updateOrganizationProvider';
+}
+
+/// See also [updateOrganization].
+class UpdateOrganizationProvider extends AutoDisposeFutureProvider<void> {
+  /// See also [updateOrganization].
+  UpdateOrganizationProvider({required Customer customer})
+    : this._internal(
+        (ref) => updateOrganization(
+          ref as UpdateOrganizationRef,
+          customer: customer,
+        ),
+        from: updateOrganizationProvider,
+        name: r'updateOrganizationProvider',
+        debugGetCreateSourceHash:
+            const bool.fromEnvironment('dart.vm.product')
+                ? null
+                : _$updateOrganizationHash,
+        dependencies: UpdateOrganizationFamily._dependencies,
+        allTransitiveDependencies:
+            UpdateOrganizationFamily._allTransitiveDependencies,
+        customer: customer,
+      );
+
+  UpdateOrganizationProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.customer,
+  }) : super.internal();
+
+  final Customer customer;
+
+  @override
+  Override overrideWith(
+    FutureOr<void> Function(UpdateOrganizationRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: UpdateOrganizationProvider._internal(
+        (ref) => create(ref as UpdateOrganizationRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        customer: customer,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<void> createElement() {
+    return _UpdateOrganizationProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is UpdateOrganizationProvider && other.customer == customer;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, customer.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin UpdateOrganizationRef on AutoDisposeFutureProviderRef<void> {
+  /// The parameter `customer` of this provider.
+  Customer get customer;
+}
+
+class _UpdateOrganizationProviderElement
+    extends AutoDisposeFutureProviderElement<void>
+    with UpdateOrganizationRef {
+  _UpdateOrganizationProviderElement(super.provider);
+
+  @override
+  Customer get customer => (origin as UpdateOrganizationProvider).customer;
+}
+
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

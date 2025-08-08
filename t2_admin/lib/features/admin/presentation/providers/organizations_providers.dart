@@ -52,3 +52,33 @@ Future<void> deleteOrganization(Ref ref, String organizationId) async {
   // Обновляем список организаций
   ref.invalidate(organizationsListProvider);
 }
+
+// НОВЫЙ ПРОВАЙДЕР для получения деталей одной организации
+@riverpod
+Future<Customer?> organizationDetails(Ref ref, String organizationId) async {
+  final client = ref.read(serverpodClientProvider);
+  try {
+    // Вызываем новый эндпоинт, который мы добавили на сервере
+    return await client.superAdmin.saGetCustomer(UuidValue.fromString(organizationId));
+  } catch (e) {
+    throw Exception('Не удалось загрузить данные организации: $e');
+  }
+}
+
+// НОВЫЙ ПРОВАЙДЕР для обновления организации
+@riverpod
+Future<void> updateOrganization(Ref ref, {
+  required Customer customer,
+}) async {
+  final client = ref.read(serverpodClientProvider);
+  try {
+    // Используем существующий эндпоинт для сохранения
+    await client.superAdmin.saSaveCustomer(customer);
+    
+    // Обновляем кэш, чтобы списки и страницы обновились
+    ref.invalidate(organizationsListProvider);
+    ref.invalidate(organizationDetailsProvider(customer.id.toString()));
+  } catch (e) {
+    throw Exception('Не удалось обновить организацию: $e');
+  }
+}

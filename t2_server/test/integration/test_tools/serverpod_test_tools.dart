@@ -1262,6 +1262,35 @@ class _SuperAdminEndpoint {
       }
     });
   }
+
+  _i3.Future<_i12.Customer?> saGetCustomer(
+    _i1.TestSessionBuilder sessionBuilder,
+    _i5.UuidValue customerId,
+  ) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+        endpoint: 'superAdmin',
+        method: 'saGetCustomer',
+      );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'superAdmin',
+          methodName: 'saGetCustomer',
+          parameters: _i1.testObjectToJson({'customerId': customerId}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue = await (_localCallContext.method.call(
+          _localUniqueSession,
+          _localCallContext.arguments,
+        ) as _i3.Future<_i12.Customer?>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
 }
 
 class _TagEndpoint {
