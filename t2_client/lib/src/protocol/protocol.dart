@@ -34,18 +34,18 @@ import 'user/user_details.dart' as _i22;
 import 'user/user_role.dart' as _i23;
 import 'user/user_session_data.dart' as _i24;
 import 'package:serverpod_auth_client/serverpod_auth_client.dart' as _i25;
-import 'package:t2_client/src/protocol/category.dart' as _i26;
-import 'package:t2_client/src/protocol/configuration.dart' as _i27;
-import 'package:t2_client/src/protocol/tag.dart' as _i28;
-import 'package:t2_client/src/protocol/task.dart' as _i29;
-import 'package:t2_client/src/protocol/task_tag_map.dart' as _i30;
-import 'package:t2_client/src/protocol/test_data.dart' as _i31;
-import 'package:t2_client/src/protocol/user/user_details.dart' as _i32;
-import 'package:t2_client/src/protocol/user/role.dart' as _i33;
-import 'package:t2_client/src/protocol/user/permission.dart' as _i34;
-import 'package:uuid/uuid_value.dart' as _i35;
-import 'package:t2_client/src/protocol/user/customer.dart' as _i36;
-import 'package:t2_client/src/protocol/user/super_user_details.dart' as _i37;
+import 'package:t2_client/src/protocol/user/user_details.dart' as _i26;
+import 'package:t2_client/src/protocol/user/role.dart' as _i27;
+import 'package:t2_client/src/protocol/user/permission.dart' as _i28;
+import 'package:uuid/uuid_value.dart' as _i29;
+import 'package:t2_client/src/protocol/category.dart' as _i30;
+import 'package:t2_client/src/protocol/configuration.dart' as _i31;
+import 'package:t2_client/src/protocol/user/customer.dart' as _i32;
+import 'package:t2_client/src/protocol/user/super_user_details.dart' as _i33;
+import 'package:t2_client/src/protocol/tag.dart' as _i34;
+import 'package:t2_client/src/protocol/task.dart' as _i35;
+import 'package:t2_client/src/protocol/task_tag_map.dart' as _i36;
+import 'package:t2_client/src/protocol/test_data.dart' as _i37;
 export 'greeting.dart';
 export 'category.dart';
 export 'category_sync_event.dart';
@@ -242,53 +242,53 @@ class Protocol extends _i1.SerializationManager {
     if (t == List<String>) {
       return (data as List).map((e) => deserialize<String>(e)).toList() as T;
     }
-    if (t == List<_i26.Category>) {
-      return (data as List).map((e) => deserialize<_i26.Category>(e)).toList()
-          as T;
-    }
-    if (t == List<_i27.Configuration>) {
+    if (t == List<_i26.UserDetails>) {
       return (data as List)
-          .map((e) => deserialize<_i27.Configuration>(e))
+          .map((e) => deserialize<_i26.UserDetails>(e))
           .toList() as T;
     }
-    if (t == List<_i28.Tag>) {
-      return (data as List).map((e) => deserialize<_i28.Tag>(e)).toList() as T;
+    if (t == List<_i27.Role>) {
+      return (data as List).map((e) => deserialize<_i27.Role>(e)).toList() as T;
     }
-    if (t == List<_i29.Task>) {
-      return (data as List).map((e) => deserialize<_i29.Task>(e)).toList() as T;
-    }
-    if (t == List<_i30.TaskTagMap>) {
-      return (data as List).map((e) => deserialize<_i30.TaskTagMap>(e)).toList()
+    if (t == List<_i28.Permission>) {
+      return (data as List).map((e) => deserialize<_i28.Permission>(e)).toList()
           as T;
     }
-    if (t == List<_i31.TestData>) {
-      return (data as List).map((e) => deserialize<_i31.TestData>(e)).toList()
+    if (t == List<_i29.UuidValue>) {
+      return (data as List).map((e) => deserialize<_i29.UuidValue>(e)).toList()
           as T;
     }
-    if (t == List<_i32.UserDetails>) {
+    if (t == List<_i30.Category>) {
+      return (data as List).map((e) => deserialize<_i30.Category>(e)).toList()
+          as T;
+    }
+    if (t == List<_i31.Configuration>) {
       return (data as List)
-          .map((e) => deserialize<_i32.UserDetails>(e))
+          .map((e) => deserialize<_i31.Configuration>(e))
           .toList() as T;
     }
-    if (t == List<_i33.Role>) {
-      return (data as List).map((e) => deserialize<_i33.Role>(e)).toList() as T;
-    }
-    if (t == List<_i34.Permission>) {
-      return (data as List).map((e) => deserialize<_i34.Permission>(e)).toList()
+    if (t == List<_i32.Customer>) {
+      return (data as List).map((e) => deserialize<_i32.Customer>(e)).toList()
           as T;
     }
-    if (t == List<_i35.UuidValue>) {
-      return (data as List).map((e) => deserialize<_i35.UuidValue>(e)).toList()
-          as T;
-    }
-    if (t == List<_i36.Customer>) {
-      return (data as List).map((e) => deserialize<_i36.Customer>(e)).toList()
-          as T;
-    }
-    if (t == List<_i37.SuperUserDetails>) {
+    if (t == List<_i33.SuperUserDetails>) {
       return (data as List)
-          .map((e) => deserialize<_i37.SuperUserDetails>(e))
+          .map((e) => deserialize<_i33.SuperUserDetails>(e))
           .toList() as T;
+    }
+    if (t == List<_i34.Tag>) {
+      return (data as List).map((e) => deserialize<_i34.Tag>(e)).toList() as T;
+    }
+    if (t == List<_i35.Task>) {
+      return (data as List).map((e) => deserialize<_i35.Task>(e)).toList() as T;
+    }
+    if (t == List<_i36.TaskTagMap>) {
+      return (data as List).map((e) => deserialize<_i36.TaskTagMap>(e)).toList()
+          as T;
+    }
+    if (t == List<_i37.TestData>) {
+      return (data as List).map((e) => deserialize<_i37.TestData>(e)).toList()
+          as T;
     }
     try {
       return _i25.Protocol().deserialize<T>(data, t);
