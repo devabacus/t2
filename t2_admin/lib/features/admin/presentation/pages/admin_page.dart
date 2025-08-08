@@ -3,7 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../widgets/dashboard/dashboard_widgets.dart'; // <-- Наш новый импорт
+// 1. Добавляем импорт для доступа к нашему use case
+import '../../../auth/domain/providers/auth_usecase_providers.dart';
+import '../widgets/dashboard/dashboard_widgets.dart';
 
 class AdminPage extends ConsumerWidget {
   const AdminPage({super.key});
@@ -14,18 +16,20 @@ class AdminPage extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('Панель управления'),
         actions: [
-          // Можно добавить, например, кнопку выхода
           IconButton(
             icon: const Icon(Icons.logout),
-            onPressed: () {
-              // TODO: Реализовать выход
+            tooltip: 'Выход',
+            // 2. Реализуем логику выхода
+            onPressed: () async {
+              // Вызываем use case для выхода
+              await ref.read(signOutUseCaseProvider)();
+              // GoRouter и AuthWrapperPage автоматически обработают
+              // перенаправление на страницу входа
             },
           )
         ],
       ),
-      body: const DashboardView(), // <-- Просто отображаем наш новый дашборд
+      body: const DashboardView(),
     );
   }
 }
-
-// Удаляем старые виджеты _AdminHeader и _AdminFunctionsGrid, они больше не нужны.
