@@ -93,7 +93,7 @@ class BaseDataTable<T> extends StatelessWidget {
             color: Colors.blue,
             onPressed: () => onEdit(item),
             tooltip: 'Редактировать',
-            mouseCursor: SystemMouseCursors.click, // <-- ДОБАВЛЕНО
+            mouseCursor: SystemMouseCursors.click, 
           ),
         if (canDelete(item))
           IconButton(
@@ -101,7 +101,7 @@ class BaseDataTable<T> extends StatelessWidget {
             color: Colors.red,
             onPressed: () => onDelete(item),
             tooltip: 'Удалить',
-            mouseCursor: SystemMouseCursors.click, // <-- ДОБАВЛЕНО
+            mouseCursor: SystemMouseCursors.click,  
           ),
         ...additionalActions(item),
       ],
