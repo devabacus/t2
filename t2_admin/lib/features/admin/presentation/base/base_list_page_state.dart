@@ -1,0 +1,252 @@
+// lib/features/admin/presentation/base/base_list_page_state.dart
+
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../widgets/common/list_toolbar.dart';
+import '../widgets/common/bulk_actions_bar.dart';
+import '../widgets/common/empty_state.dart';
+import '../widgets/common/error_widget.dart';
+import '../widgets/tables/base_data_table.dart';
+
+/// Базовая логика состояния для списковых страниц
+abstract class BaseListPageStateCore<T, W extends ConsumerStatefulWidget>
+    extends ConsumerState<W> {
+  
+  // Поиск и фильтрация
+  String searchQuery = '';
+  final TextEditingController searchController = TextEditingController();
+  
+  // Сортировка
+  String? sortField;
+  bool sortAscending = true;
+  
+  // Выбор элементов
+  final Set<T> selectedItems = {};
+  bool isSelectAll = false;
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
+
+  // Абстрактные методы для реализации в наследниках
+  String get pageTitle;
+  String get entityNameSingular;
+  String get entityNamePlural;
+  IconData get entityIcon;
+  Color get themeColor => Colors.blue;
+  
+  // Изменено: вместо ProviderListenable используем прямой тип провайдера
+  AutoDisposeFutureProvider<List<T>> get listProvider;
+  
+  List<DataColumn> getColumns();
+  DataRow buildDataRow(T item);
+  String getItemId(T item);
+  String getItemDisplayName(T item);
+  
+  void navigateToCreate();
+  void navigateToEdit(T item);
+  Future<void> deleteItem(T item);
+  
+  bool canDelete(T item) => true;
+  bool canEdit(T item) => true;
+  
+  List<Widget> getAdditionalActions(T item) => [];
+  List<Widget> getAdditionalBulkActions() => [];
+
+  // Общие методы
+  bool matchesSearchQuery(T item) {
+    if (searchQuery.isEmpty) return true;
+    return getItemDisplayName(item)
+        .toLowerCase()
+        .contains(searchQuery.toLowerCase());
+  }
+
+  void refreshList() {
+    ref.invalidate(listProvider);
+  }
+
+  void onSearchChanged(String value) {
+    setState(() {
+      searchQuery = value;
+    });
+  }
+
+  void selectAll(List<T> items) {
+    setState(() {
+      isSelectAll = true;
+      selectedItems.addAll(items);
+    });
+  }
+
+  void clearSelection() {
+    setState(() {
+      selectedItems.clear();
+      isSelectAll = false;
+    });
+  }
+
+  void toggleItemSelection(T item) {
+    setState(() {
+      if (selectedItems.contains(item)) {
+        selectedItems.remove(item);
+        isSelectAll = false;
+      } else {
+        selectedItems.add(item);
+      }
+    });
+  }
+
+  // Построение UI компонентов
+  Widget buildToolbar() {
+    return ListToolbar(
+      searchController: searchController,
+      entityNamePlural: entityNamePlural,
+      onSearchChanged: onSearchChanged,
+    );
+  }
+
+  Widget buildBulkActionsBar() {
+    return BulkActionsBar(
+      selectedCount: selectedItems.length,
+      themeColor: themeColor,
+      additionalActions: getAdditionalBulkActions(),
+      onDelete: () => deleteSelectedItems(),
+      onCancel: clearSelection,
+    );
+  }
+
+  Widget buildDataContent(List<T> items) {
+    final filteredItems = items.where(matchesSearchQuery).toList();
+    
+    if (filteredItems.isEmpty) {
+      return EmptyStateWidget(
+        icon: entityIcon,
+        title: searchQuery.isNotEmpty
+            ? 'Не найдено ${entityNamePlural.toLowerCase()}'
+            : 'Нет ${entityNamePlural.toLowerCase()}',
+        subtitle: searchQuery.isNotEmpty
+            ? 'Попробуйте изменить параметры поиска'
+            : 'Нажмите кнопку "+" чтобы добавить',
+      );
+    }
+    
+    return BaseDataTable<T>(
+      items: filteredItems,
+      columns: getColumns(),
+      selectedItems: selectedItems,
+      isSelectAll: isSelectAll,
+      onSelectAll: () => selectAll(filteredItems),
+      onClearSelection: clearSelection,
+      onToggleItem: toggleItemSelection,
+      buildDataRow: buildDataRow,
+      canEdit: canEdit,
+      canDelete: canDelete,
+      onEdit: navigateToEdit,
+      onDelete: showDeleteConfirmation,
+      additionalActions: getAdditionalActions,
+    );
+  }
+
+  Widget buildErrorWidget(Object error) {
+    return CustomErrorWidget(
+      error: error,
+      onRetry: refreshList,
+    );
+  }
+
+  // Диалоги
+  Future<void> showDeleteConfirmation(T item) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Подтверждение'),
+        content: Text('Удалить $entityNameSingular "${getItemDisplayName(item)}"?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('Отмена'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            child: const Text('Удалить'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed ?? false) {
+      try {
+        await deleteItem(item);
+        refreshList();
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('$entityNameSingular удален'),
+              backgroundColor: Colors.green,
+            ),
+          );
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Ошибка: $e'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+    }
+  }
+
+  Future<void> deleteSelectedItems() async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Подтверждение'),
+        content: Text('Удалить ${selectedItems.length} элементов?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('Отмена'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            child: const Text('Удалить'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed ?? false) {
+      try {
+        for (final item in selectedItems) {
+          await deleteItem(item);
+        }
+        clearSelection();
+        refreshList();
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Элементы удалены'),
+              backgroundColor: Colors.green,
+            ),
+          );
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Ошибка: $e'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+    }
+  }
+}
