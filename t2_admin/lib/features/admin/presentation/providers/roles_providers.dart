@@ -3,28 +3,18 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:t2_client/t2_client.dart';
-import '../../../../core/providers/serverpod_client_provider.dart';
+import '../../data/providers/role_data_providers.dart'; // <-- Новый импорт
 
 part 'roles_providers.g.dart';
 
 @riverpod
 Future<List<Role>> rolesList(Ref ref) async {
-  final client = ref.read(serverpodClientProvider);
-  try {
-    return await client.superAdmin.saListAllRoles();
-  } catch (e) {
-    throw Exception('Не удалось загрузить список ролей: $e');
-  }
+  return ref.watch(roleRepositoryProvider).getRoles();
 }
 
 @riverpod
 Future<List<Permission>> permissionsList(Ref ref) async {
-  final client = ref.read(serverpodClientProvider);
-  try {
-    return await client.superAdmin.saListAllPermissions();
-  } catch (e) {
-    throw Exception('Не удалось загрузить список разрешений: $e');
-  }
+  return ref.watch(roleRepositoryProvider).getPermissions();
 }
 
 @riverpod
@@ -34,70 +24,35 @@ Future<void> createRole(Ref ref, {
   required List<String> permissionIds,
   required String customerId,
 }) async {
-  final client = ref.read(serverpodClientProvider);
-  
-  // Преобразуем строки в UuidValue
-  final permissionUuids = permissionIds.map((id) => UuidValue.fromString(id)).toList();
-  final customerUuid = UuidValue.fromString(customerId);
-  
-  // Создаем роль
-  final role = Role(
-    customerId: customerUuid,
-    name: roleName,
-    description: roleDescription,
-    createdAt: DateTime.now(),
+  await ref.read(roleRepositoryProvider).createRole(
+    roleName: roleName,
+    roleDescription: roleDescription,
+    permissionIds: permissionIds,
+    customerId: customerId,
   );
-  
-  await client.superAdmin.saCreateOrUpdateRole(
-    role: role,
-    permissionIds: permissionUuids,
-  );
-  
-  // Обновляем список ролей
   ref.invalidate(rolesListProvider);
 }  
 
 @riverpod
 Future<void> deleteRole(Ref ref, String roleId) async {
-  final client = ref.read(serverpodClientProvider);
-  
-  final roleUuid = UuidValue.fromString(roleId);
-  await client.superAdmin.saDeleteRole(roleUuid);
-  
-  // Обновляем список ролей
+  await ref.read(roleRepositoryProvider).deleteRole(roleId);
   ref.invalidate(rolesListProvider);
 }
 
 @riverpod
 Future<RoleDetails?> roleDetails(Ref ref, String roleId) async {
-  final client = ref.read(serverpodClientProvider);
-  try {
-    return await client.superAdmin.saGetRoleDetails(UuidValue.fromString(roleId));
-  } catch (e) {
-    throw Exception('Не удалось загрузить данные роли: $e');
-  }
+  return ref.watch(roleRepositoryProvider).getRoleDetails(roleId);
 }
 
-// НОВЫЙ ПРОВАЙДЕР для обновления роли
 @riverpod
 Future<void> updateRole(Ref ref, {
   required Role role,
   required List<String> permissionIds,
 }) async {
-  final client = ref.read(serverpodClientProvider);
-  try {
-    final permissionUuids = permissionIds.map((id) => UuidValue.fromString(id)).toList();
-    
-    // Используем существующий эндпоинт для сохранения
-    await client.superAdmin.saCreateOrUpdateRole(
-      role: role,
-      permissionIds: permissionUuids,
-    );
-    
-    // Обновляем кэш
-    ref.invalidate(rolesListProvider);
-    ref.invalidate(roleDetailsProvider(role.id.toString()));
-  } catch (e) {
-    throw Exception('Не удалось обновить роль: $e');
-  }
+  await ref.read(roleRepositoryProvider).updateRole(
+    role: role,
+    permissionIds: permissionIds,
+  );
+  ref.invalidate(rolesListProvider);
+  ref.invalidate(roleDetailsProvider(role.id.toString()));
 }

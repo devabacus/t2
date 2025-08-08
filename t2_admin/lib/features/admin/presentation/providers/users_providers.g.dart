@@ -6,7 +6,7 @@ part of 'users_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$usersListHash() => r'9fbe1b42f7ef592236bb33fab9c19abd24d39e7a';
+String _$usersListHash() => r'4a5df683193976574e12c2e5467f733aa8eebb9b';
 
 /// See also [usersList].
 @ProviderFor(usersList)
@@ -22,7 +22,7 @@ final usersListProvider = AutoDisposeFutureProvider<List<UserDetails>>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef UsersListRef = AutoDisposeFutureProviderRef<List<UserDetails>>;
-String _$customersListHash() => r'c1288792b7d9cf800ec11f89fcf428fd1babcc3a';
+String _$customersListHash() => r'63dcd6c0eda43303c3baec88b6fa71f656fcc7b2';
 
 /// See also [customersList].
 @ProviderFor(customersList)
@@ -41,7 +41,7 @@ final customersListProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef CustomersListRef = AutoDisposeFutureProviderRef<List<Customer>>;
-String _$createUserHash() => r'b7db5c93e1b02dc6db0e4611a5d88135767c0b42';
+String _$createUserHash() => r'ed3eda2f802354fb83c9181725c8daf9abd91441';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -256,7 +256,7 @@ class _CreateUserProviderElement extends AutoDisposeFutureProviderElement<void>
   String get roleId => (origin as CreateUserProvider).roleId;
 }
 
-String _$userDetailsHash() => r'5b9aae835308d4ebaabf488580f1c32b6a21add4';
+String _$userDetailsHash() => r'9aca78a94a112dd2125b836fcbcb3743c80e2200';
 
 /// See also [userDetails].
 @ProviderFor(userDetails)
@@ -376,7 +376,7 @@ class _UserDetailsProviderElement
   int get userId => (origin as UserDetailsProvider).userId;
 }
 
-String _$updateUserHash() => r'd0ba290eae26afd11ff61732ea36a7ff070df852';
+String _$updateUserHash() => r'a0ec89aa564ef6cced134d6f0de93a5be5d87b1d';
 
 /// See also [updateUser].
 @ProviderFor(updateUser)
@@ -570,7 +570,7 @@ class _UpdateUserProviderElement extends AutoDisposeFutureProviderElement<void>
   String get roleId => (origin as UpdateUserProvider).roleId;
 }
 
-String _$deleteUserHash() => r'8b2370def78d9e2979ce4a2ee05940cf36e9b884';
+String _$deleteUserHash() => r'6ed70dfac7348ab39d28462a82770e746efcc508';
 
 /// See also [deleteUser].
 @ProviderFor(deleteUser)
@@ -689,7 +689,7 @@ class _DeleteUserProviderElement extends AutoDisposeFutureProviderElement<void>
   int get userId => (origin as DeleteUserProvider).userId;
 }
 
-String _$blockUserHash() => r'd85ac19772429b7661368c9b29ae626a233e79ca';
+String _$blockUserHash() => r'81c19ef6a62815eec3887678a18d26ea97b9f5f6';
 
 /// See also [blockUser].
 @ProviderFor(blockUser)
