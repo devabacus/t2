@@ -3,173 +3,86 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:t2_client/t2_client.dart';
 
+import '../base/base_list_page.dart';
 import '../providers/organizations_providers.dart';
 import '../routings/organizations_routes_constants.dart';
 
-class OrganizationsPage extends ConsumerWidget {
+class OrganizationsPage extends BaseListPage<Customer> {
   const OrganizationsPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final organizationsState = ref.watch(organizationsListProvider);
+  ConsumerState<OrganizationsPage> createState() => _OrganizationsPageState();
+}
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Управление организациями'),
-        backgroundColor: Colors.orange,
-        foregroundColor: Colors.white,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.add_business),
-            tooltip: 'Добавить организацию',
-            onPressed: () {
-              context.push(OrganizationsRoutes.createOrganizationPath);
-            },
-          ),
-        ],
-      ),
-      body: organizationsState.when(
-        data: (organizations) {
-          if (organizations.isEmpty) {
-            return const Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.business,
-                    size: 64,
-                    color: Colors.grey,
-                  ),
-                  SizedBox(height: 16),
-                  Text(
-                    'Организации не найдены',
-                    style: TextStyle(fontSize: 18, color: Colors.grey),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    'Добавьте первую организацию',
-                    style: TextStyle(fontSize: 14, color: Colors.grey),
-                  ),
-                ],
-              ),
-            );
-          }
+class _OrganizationsPageState extends BaseListPageState<Customer, OrganizationsPage> {
+  @override
+  String get pageTitle => 'Управление организациями';
 
-          return ListView.builder(
-            padding: const EdgeInsets.all(16),
-            itemCount: organizations.length,
-            itemBuilder: (context, index) {
-              final organization = organizations[index];
+  @override
+  String get entityNameSingular => 'Организацию';
 
-              return Card(
-                margin: const EdgeInsets.only(bottom: 8),
-                child: ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: Colors.orange,
-                    child: Text(
-                      organization.name.isNotEmpty 
-                          ? organization.name[0].toUpperCase()
-                          : 'О',
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                  ),
-                  title: Text(organization.name),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      if (organization.email != null && organization.email!.isNotEmpty)
-                        Text('Email: ${organization.email}'),
-                      if (organization.info != null && organization.info!.isNotEmpty)
-                        Text('Описание: ${organization.info}'),
-                      const SizedBox(height: 4),
-                      Text(
-                        'Создана: ${organization.createdAt.day}/${organization.createdAt.month}/${organization.createdAt.year}',
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ],
-                  ),
-                  trailing: PopupMenuButton<String>(
-                    onSelected: (value) async {
-                      if (value == 'delete') {
-                        final confirmed = await showDialog<bool>(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: const Text('Удалить организацию'),
-                            content: Text('Вы уверены, что хотите удалить организацию "${organization.name}"?\n\nВнимание: все пользователи и роли этой организации будут удалены!'),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(context, false),
-                                child: const Text('Отмена'),
-                              ),
-                              TextButton(
-                                onPressed: () => Navigator.pop(context, true),
-                                style: TextButton.styleFrom(foregroundColor: Colors.red),
-                                child: const Text('Удалить'),
-                              ),
-                            ],
-                          ),
-                        );
-                        
-                        if (confirmed == true) {
-                          try {
-                            await ref.read(deleteOrganizationProvider(organization.id.toString()).future);
-                            if (context.mounted) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Организация успешно удалена'),
-                                  backgroundColor: Colors.green,
-                                ),
-                              );
-                            }
-                          } catch (e) {
-                            if (context.mounted) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text('Ошибка при удалении: $e'),
-                                  backgroundColor: Colors.red,
-                                ),
-                              );
-                            }
-                          }
-                        }
-                      }
-                    },
-                    itemBuilder: (context) => [
-                      const PopupMenuItem(
-                        value: 'delete',
-                        child: ListTile(
-                          leading: Icon(Icons.delete, color: Colors.red),
-                          title: Text('Удалить'),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          );
-        },
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stack) => Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(Icons.error, size: 64, color: Colors.red),
-              const SizedBox(height: 16),
-              Text('Ошибка: $error'),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () => ref.invalidate(organizationsListProvider),
-                child: const Text('Попробовать снова'),
-              ),
-            ],
-          ),
-        ),
-      ),
+  @override
+  String get entityNamePlural => 'Организации';
+
+  @override
+  IconData get entityIcon => Icons.business;
+
+  @override
+  Color get themeColor => Colors.orange;
+
+  @override
+  AutoDisposeFutureProvider<List<Customer>> get listProvider => organizationsListProvider;
+
+  @override
+  String getItemId(Customer item) => item.id.toString();
+
+  @override
+  String getItemDisplayName(Customer item) => item.name;
+
+  @override
+  List<DataColumn> getColumns() {
+    return [
+      const DataColumn(label: Text('Название')),
+      const DataColumn(label: Text('Email')),
+      const DataColumn(label: Text('Описание')),
+      const DataColumn(label: Text('ID')),
+    ];
+  }
+
+  @override
+  DataRow buildDataRow(Customer item) {
+    return DataRow(
+      cells: [
+        DataCell(Text(item.name)),
+        DataCell(Text(item.email ?? '-')),
+        DataCell(Text(item.info ?? '-')),
+        DataCell(Text(item.id.toString())),
+      ],
     );
   }
+
+  @override
+  void navigateToCreate() {
+    context.push(OrganizationsRoutes.createOrganizationPath);
+  }
+
+  @override
+  void navigateToEdit(Customer item) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Редактирование организаций пока не реализовано')),
+    );
+  }
+
+  @override
+  Future<void> deleteItem(Customer item) async {
+    // Внимание: перед удалением базовый класс покажет стандартный диалог подтверждения.
+    // Если вам нужен кастомный диалог (как был раньше, с предупреждением об удалении пользователей),
+    // вам нужно будет переопределить метод `showDeleteConfirmation` из `BaseListPageState`.
+    await ref.read(deleteOrganizationProvider(item.id.toString()).future);
+  }
+  
+  @override
+  bool canEdit(Customer item) => false; // Редактирование пока не реализовано
 }
