@@ -1,14 +1,12 @@
-// lib/features/admin/presentation/pages/user_page.dart
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:serverpod_auth_client/serverpod_auth_client.dart';
 import 'package:t2_client/t2_client.dart';
 
 import '../base/base_list_page.dart';
 import '../providers/users_providers.dart';
 import '../routings/user_routes_constants.dart';
+import '../widgets/dialogs/user_dialogs.dart'; // <-- 1. Импортируем наш новый файл
 
 class UsersPage extends BaseListPage<UserDetails> {
   const UsersPage({super.key});
@@ -101,68 +99,18 @@ class _UsersPageState extends BaseListPageState<UserDetails, UsersPage> {
           size: 20,
         ),
         tooltip: user.blocked ? 'Разблокировать' : 'Заблокировать',
-        onPressed: () => _showBlockUserDialog(context, ref, user, !user.blocked),
+        onPressed: () {
+          // 2. Вызываем новую функцию
+          showBlockUserDialog(
+            context: context,
+            ref: ref,
+            user: user,
+            onSuccess: refreshList, // 3. Передаем метод для обновления списка
+          );
+        },
       ),
     ];
   }
-
-  // --- Вспомогательные методы, специфичные для этой страницы ---
-
-  void _showBlockUserDialog(
-    BuildContext context,
-    WidgetRef ref,
-    UserInfo user,
-    bool willBlock,
-  ) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(willBlock ? 'Заблокировать пользователя' : 'Разблокировать пользователя'),
-        content: Text(
-          willBlock
-              ? 'Вы уверены, что хотите заблокировать пользователя "${user.userName}"? Он не сможет войти в систему.'
-              : 'Вы уверены, что хотите разблокировать пользователя "${user.userName}"?'
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Отмена'),
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: willBlock ? Colors.orange : Colors.green,
-              foregroundColor: Colors.white,
-            ),
-            onPressed: () async {
-              Navigator.of(context).pop();
-              try {
-                await ref.read(blockUserProvider(user.id!, willBlock).future);
-                if (mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        'Пользователь "${user.userName}" ${willBlock ? "заблокирован" : "разблокирован"}'
-                      ),
-                      backgroundColor: willBlock ? Colors.orange : Colors.green,
-                    ),
-                  );
-                }
-                refreshList(); // Обновляем список для отображения изменений
-              } catch (e) {
-                if (mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Ошибка: $e'),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
-                }
-              }
-            },
-            child: Text(willBlock ? 'Заблокировать' : 'Разблокировать'),
-          ),
-        ],
-      ),
-    );
-  }
+  
+  // 4. Метод _showBlockUserDialog отсюда полностью удален
 }
