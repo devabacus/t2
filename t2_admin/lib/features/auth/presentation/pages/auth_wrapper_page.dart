@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../admin/presentation/pages/admin_page.dart';
 import '../providers/auth_state_providers.dart';
 import 'login_page.dart';
 
@@ -13,10 +14,10 @@ class AuthWrapperPage extends ConsumerWidget {
     return authState.when(
       data: (user) {
         if (user != null) {
-          // return const HomePage();
-          return const LoginPage();
+          return const AdminPage();
+          // return const LoginPage();
         } else {
-          return const LoginPage();
+          return const LoginPage();          
         }
       },
       loading: () => const Scaffold(
