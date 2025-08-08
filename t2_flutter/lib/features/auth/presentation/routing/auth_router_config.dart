@@ -1,5 +1,5 @@
 import 'package:go_router/go_router.dart';
-import '../presentation/pages/auth_wrapper_page.dart';
+import '../pages/auth_wrapper_page.dart';
 import 'auth_routes_constants.dart';
 
 List<RouteBase> getAuthRoutes() {
