@@ -1,10 +1,3 @@
-admin:
-  - listUsers:
-  - updateUserRole:
-  - listRoles:
-  - listPermissions:
-  - createOrUpdateRole:
-  - deleteRole:
 category:
   - createCategory:
   - getCategories:
@@ -19,16 +12,6 @@ configuration:
   - getConfigurationsSince:
   - updateConfiguration:
   - watchEvents:
-superAdmin:
-  - saListCustomers:
-  - saSaveCustomer:
-  - saCreateUser:
-  - saListAllUsers:
-  - saBlockUser:
-  - saDeleteCustomer:
-  - saGetDashboard:
-  - saListAllRoles:
-  - saMoveUserToCustomer:
 tag:
   - createTag:
   - getTags:
@@ -56,6 +39,25 @@ testData:
   - listTestDatas:
   - updateTestData:
   - deleteTestData:
+admin:
+  - listUsers:
+  - updateUserRole:
+  - listRoles:
+  - listPermissions:
+  - createOrUpdateRole:
+  - deleteRole:
+superAdmin:
+  - saListCustomers:
+  - saSaveCustomer:
+  - saCreateUser:
+  - saListAllUsers:
+  - saBlockUser:
+  - saDeleteCustomer:
+  - saGetDashboard:
+  - saListAllRoles:
+  - saMoveUserToCustomer:
+userContext:
+  - getMyRole:
 userManagement:
   - getMyUserContext:
 greeting:

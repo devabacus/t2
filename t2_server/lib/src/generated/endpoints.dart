@@ -10,192 +10,99 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
-import '../endpoints/admin_endpoint.dart' as _i2;
-import '../endpoints/category_endpoint.dart' as _i3;
-import '../endpoints/configuration_endpoint.dart' as _i4;
-import '../endpoints/super_admin_endpoint.dart' as _i5;
-import '../endpoints/tag_endpoint.dart' as _i6;
-import '../endpoints/task_endpoint.dart' as _i7;
-import '../endpoints/task_tag_map_endpoint.dart' as _i8;
-import '../endpoints/test_data_endpoint.dart' as _i9;
-import '../endpoints/user_manager_endpoint.dart' as _i10;
-import '../greeting_endpoint.dart' as _i11;
-import 'package:uuid/uuid_value.dart' as _i12;
-import 'package:t2_server/src/generated/user/role.dart' as _i13;
-import 'package:t2_server/src/generated/category.dart' as _i14;
+import '../endpoints/category_endpoint.dart' as _i2;
+import '../endpoints/configuration_endpoint.dart' as _i3;
+import '../endpoints/tag_endpoint.dart' as _i4;
+import '../endpoints/task_endpoint.dart' as _i5;
+import '../endpoints/task_tag_map_endpoint.dart' as _i6;
+import '../endpoints/test_data_endpoint.dart' as _i7;
+import '../endpoints/user/admin_endpoint.dart' as _i8;
+import '../endpoints/user/super_admin_endpoint.dart' as _i9;
+import '../endpoints/user/user_context_endpoint.dart' as _i10;
+import '../endpoints/user/user_manager_endpoint.dart' as _i11;
+import '../greeting_endpoint.dart' as _i12;
+import 'package:t2_server/src/generated/category.dart' as _i13;
+import 'package:uuid/uuid_value.dart' as _i14;
 import 'package:t2_server/src/generated/configuration.dart' as _i15;
-import 'package:t2_server/src/generated/user/customer.dart' as _i16;
-import 'package:t2_server/src/generated/tag.dart' as _i17;
-import 'package:t2_server/src/generated/task.dart' as _i18;
-import 'package:t2_server/src/generated/task_tag_map.dart' as _i19;
-import 'package:t2_server/src/generated/test_data.dart' as _i20;
-import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i21;
+import 'package:t2_server/src/generated/tag.dart' as _i16;
+import 'package:t2_server/src/generated/task.dart' as _i17;
+import 'package:t2_server/src/generated/task_tag_map.dart' as _i18;
+import 'package:t2_server/src/generated/test_data.dart' as _i19;
+import 'package:t2_server/src/generated/user/role.dart' as _i20;
+import 'package:t2_server/src/generated/user/customer.dart' as _i21;
+import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i22;
 
 class Endpoints extends _i1.EndpointDispatch {
   @override
   void initializeEndpoints(_i1.Server server) {
     var endpoints = <String, _i1.Endpoint>{
-      'admin': _i2.AdminEndpoint()
-        ..initialize(
-          server,
-          'admin',
-          null,
-        ),
-      'category': _i3.CategoryEndpoint()
+      'category': _i2.CategoryEndpoint()
         ..initialize(
           server,
           'category',
           null,
         ),
-      'configuration': _i4.ConfigurationEndpoint()
+      'configuration': _i3.ConfigurationEndpoint()
         ..initialize(
           server,
           'configuration',
           null,
         ),
-      'superAdmin': _i5.SuperAdminEndpoint()
-        ..initialize(
-          server,
-          'superAdmin',
-          null,
-        ),
-      'tag': _i6.TagEndpoint()
+      'tag': _i4.TagEndpoint()
         ..initialize(
           server,
           'tag',
           null,
         ),
-      'task': _i7.TaskEndpoint()
+      'task': _i5.TaskEndpoint()
         ..initialize(
           server,
           'task',
           null,
         ),
-      'taskTagMap': _i8.TaskTagMapEndpoint()
+      'taskTagMap': _i6.TaskTagMapEndpoint()
         ..initialize(
           server,
           'taskTagMap',
           null,
         ),
-      'testData': _i9.TestDataEndpoint()
+      'testData': _i7.TestDataEndpoint()
         ..initialize(
           server,
           'testData',
           null,
         ),
-      'userManagement': _i10.UserManagementEndpoint()
+      'admin': _i8.AdminEndpoint()
+        ..initialize(
+          server,
+          'admin',
+          null,
+        ),
+      'superAdmin': _i9.SuperAdminEndpoint()
+        ..initialize(
+          server,
+          'superAdmin',
+          null,
+        ),
+      'userContext': _i10.UserContextEndpoint()
+        ..initialize(
+          server,
+          'userContext',
+          null,
+        ),
+      'userManagement': _i11.UserManagementEndpoint()
         ..initialize(
           server,
           'userManagement',
           null,
         ),
-      'greeting': _i11.GreetingEndpoint()
+      'greeting': _i12.GreetingEndpoint()
         ..initialize(
           server,
           'greeting',
           null,
         ),
     };
-    connectors['admin'] = _i1.EndpointConnector(
-      name: 'admin',
-      endpoint: endpoints['admin']!,
-      methodConnectors: {
-        'listUsers': _i1.MethodConnector(
-          name: 'listUsers',
-          params: {},
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['admin'] as _i2.AdminEndpoint).listUsers(session),
-        ),
-        'updateUserRole': _i1.MethodConnector(
-          name: 'updateUserRole',
-          params: {
-            'userId': _i1.ParameterDescription(
-              name: 'userId',
-              type: _i1.getType<int>(),
-              nullable: false,
-            ),
-            'roleId': _i1.ParameterDescription(
-              name: 'roleId',
-              type: _i1.getType<_i12.UuidValue>(),
-              nullable: false,
-            ),
-          },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['admin'] as _i2.AdminEndpoint).updateUserRole(
-            session,
-            userId: params['userId'],
-            roleId: params['roleId'],
-          ),
-        ),
-        'listRoles': _i1.MethodConnector(
-          name: 'listRoles',
-          params: {},
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['admin'] as _i2.AdminEndpoint).listRoles(session),
-        ),
-        'listPermissions': _i1.MethodConnector(
-          name: 'listPermissions',
-          params: {},
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['admin'] as _i2.AdminEndpoint)
-                  .listPermissions(session),
-        ),
-        'createOrUpdateRole': _i1.MethodConnector(
-          name: 'createOrUpdateRole',
-          params: {
-            'role': _i1.ParameterDescription(
-              name: 'role',
-              type: _i1.getType<_i13.Role>(),
-              nullable: false,
-            ),
-            'permissionIds': _i1.ParameterDescription(
-              name: 'permissionIds',
-              type: _i1.getType<List<_i12.UuidValue>>(),
-              nullable: false,
-            ),
-          },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['admin'] as _i2.AdminEndpoint).createOrUpdateRole(
-            session,
-            params['role'],
-            params['permissionIds'],
-          ),
-        ),
-        'deleteRole': _i1.MethodConnector(
-          name: 'deleteRole',
-          params: {
-            'roleId': _i1.ParameterDescription(
-              name: 'roleId',
-              type: _i1.getType<_i12.UuidValue>(),
-              nullable: false,
-            )
-          },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['admin'] as _i2.AdminEndpoint).deleteRole(
-            session,
-            params['roleId'],
-          ),
-        ),
-      },
-    );
     connectors['category'] = _i1.EndpointConnector(
       name: 'category',
       endpoint: endpoints['category']!,
@@ -205,7 +112,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'category': _i1.ParameterDescription(
               name: 'category',
-              type: _i1.getType<_i14.Category>(),
+              type: _i1.getType<_i13.Category>(),
               nullable: false,
             )
           },
@@ -213,7 +120,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['category'] as _i3.CategoryEndpoint).createCategory(
+              (endpoints['category'] as _i2.CategoryEndpoint).createCategory(
             session,
             params['category'],
           ),
@@ -231,7 +138,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['category'] as _i3.CategoryEndpoint).getCategories(
+              (endpoints['category'] as _i2.CategoryEndpoint).getCategories(
             session,
             limit: params['limit'],
           ),
@@ -241,7 +148,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'id': _i1.ParameterDescription(
               name: 'id',
-              type: _i1.getType<_i12.UuidValue>(),
+              type: _i1.getType<_i14.UuidValue>(),
               nullable: false,
             )
           },
@@ -249,7 +156,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['category'] as _i3.CategoryEndpoint).getCategoryById(
+              (endpoints['category'] as _i2.CategoryEndpoint).getCategoryById(
             session,
             params['id'],
           ),
@@ -267,7 +174,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['category'] as _i3.CategoryEndpoint)
+              (endpoints['category'] as _i2.CategoryEndpoint)
                   .getCategoriesSince(
             session,
             params['since'],
@@ -278,7 +185,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'category': _i1.ParameterDescription(
               name: 'category',
-              type: _i1.getType<_i14.Category>(),
+              type: _i1.getType<_i13.Category>(),
               nullable: false,
             )
           },
@@ -286,7 +193,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['category'] as _i3.CategoryEndpoint).updateCategory(
+              (endpoints['category'] as _i2.CategoryEndpoint).updateCategory(
             session,
             params['category'],
           ),
@@ -301,7 +208,7 @@ class Endpoints extends _i1.EndpointDispatch {
             Map<String, dynamic> params,
             Map<String, Stream> streamParams,
           ) =>
-              (endpoints['category'] as _i3.CategoryEndpoint)
+              (endpoints['category'] as _i2.CategoryEndpoint)
                   .watchEvents(session),
         ),
       },
@@ -323,7 +230,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['configuration'] as _i4.ConfigurationEndpoint)
+              (endpoints['configuration'] as _i3.ConfigurationEndpoint)
                   .createConfiguration(
             session,
             params['configuration'],
@@ -342,7 +249,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['configuration'] as _i4.ConfigurationEndpoint)
+              (endpoints['configuration'] as _i3.ConfigurationEndpoint)
                   .getConfigurations(
             session,
             limit: params['limit'],
@@ -353,7 +260,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'id': _i1.ParameterDescription(
               name: 'id',
-              type: _i1.getType<_i12.UuidValue>(),
+              type: _i1.getType<_i14.UuidValue>(),
               nullable: false,
             )
           },
@@ -361,7 +268,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['configuration'] as _i4.ConfigurationEndpoint)
+              (endpoints['configuration'] as _i3.ConfigurationEndpoint)
                   .getConfigurationById(
             session,
             params['id'],
@@ -380,7 +287,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['configuration'] as _i4.ConfigurationEndpoint)
+              (endpoints['configuration'] as _i3.ConfigurationEndpoint)
                   .getConfigurationsSince(
             session,
             params['since'],
@@ -399,7 +306,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['configuration'] as _i4.ConfigurationEndpoint)
+              (endpoints['configuration'] as _i3.ConfigurationEndpoint)
                   .updateConfiguration(
             session,
             params['configuration'],
@@ -415,8 +322,532 @@ class Endpoints extends _i1.EndpointDispatch {
             Map<String, dynamic> params,
             Map<String, Stream> streamParams,
           ) =>
-              (endpoints['configuration'] as _i4.ConfigurationEndpoint)
+              (endpoints['configuration'] as _i3.ConfigurationEndpoint)
                   .watchEvents(session),
+        ),
+      },
+    );
+    connectors['tag'] = _i1.EndpointConnector(
+      name: 'tag',
+      endpoint: endpoints['tag']!,
+      methodConnectors: {
+        'createTag': _i1.MethodConnector(
+          name: 'createTag',
+          params: {
+            'tag': _i1.ParameterDescription(
+              name: 'tag',
+              type: _i1.getType<_i16.Tag>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['tag'] as _i4.TagEndpoint).createTag(
+            session,
+            params['tag'],
+          ),
+        ),
+        'getTags': _i1.MethodConnector(
+          name: 'getTags',
+          params: {
+            'limit': _i1.ParameterDescription(
+              name: 'limit',
+              type: _i1.getType<int?>(),
+              nullable: true,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['tag'] as _i4.TagEndpoint).getTags(
+            session,
+            limit: params['limit'],
+          ),
+        ),
+        'getTagById': _i1.MethodConnector(
+          name: 'getTagById',
+          params: {
+            'id': _i1.ParameterDescription(
+              name: 'id',
+              type: _i1.getType<_i14.UuidValue>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['tag'] as _i4.TagEndpoint).getTagById(
+            session,
+            params['id'],
+          ),
+        ),
+        'getTagsSince': _i1.MethodConnector(
+          name: 'getTagsSince',
+          params: {
+            'since': _i1.ParameterDescription(
+              name: 'since',
+              type: _i1.getType<DateTime?>(),
+              nullable: true,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['tag'] as _i4.TagEndpoint).getTagsSince(
+            session,
+            params['since'],
+          ),
+        ),
+        'updateTag': _i1.MethodConnector(
+          name: 'updateTag',
+          params: {
+            'tag': _i1.ParameterDescription(
+              name: 'tag',
+              type: _i1.getType<_i16.Tag>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['tag'] as _i4.TagEndpoint).updateTag(
+            session,
+            params['tag'],
+          ),
+        ),
+        'watchEvents': _i1.MethodStreamConnector(
+          name: 'watchEvents',
+          params: {},
+          streamParams: {},
+          returnType: _i1.MethodStreamReturnType.streamType,
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+            Map<String, Stream> streamParams,
+          ) =>
+              (endpoints['tag'] as _i4.TagEndpoint).watchEvents(session),
+        ),
+      },
+    );
+    connectors['task'] = _i1.EndpointConnector(
+      name: 'task',
+      endpoint: endpoints['task']!,
+      methodConnectors: {
+        'createTask': _i1.MethodConnector(
+          name: 'createTask',
+          params: {
+            'task': _i1.ParameterDescription(
+              name: 'task',
+              type: _i1.getType<_i17.Task>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['task'] as _i5.TaskEndpoint).createTask(
+            session,
+            params['task'],
+          ),
+        ),
+        'getTasks': _i1.MethodConnector(
+          name: 'getTasks',
+          params: {
+            'limit': _i1.ParameterDescription(
+              name: 'limit',
+              type: _i1.getType<int?>(),
+              nullable: true,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['task'] as _i5.TaskEndpoint).getTasks(
+            session,
+            limit: params['limit'],
+          ),
+        ),
+        'getTaskById': _i1.MethodConnector(
+          name: 'getTaskById',
+          params: {
+            'id': _i1.ParameterDescription(
+              name: 'id',
+              type: _i1.getType<_i14.UuidValue>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['task'] as _i5.TaskEndpoint).getTaskById(
+            session,
+            params['id'],
+          ),
+        ),
+        'getTasksSince': _i1.MethodConnector(
+          name: 'getTasksSince',
+          params: {
+            'since': _i1.ParameterDescription(
+              name: 'since',
+              type: _i1.getType<DateTime?>(),
+              nullable: true,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['task'] as _i5.TaskEndpoint).getTasksSince(
+            session,
+            params['since'],
+          ),
+        ),
+        'updateTask': _i1.MethodConnector(
+          name: 'updateTask',
+          params: {
+            'task': _i1.ParameterDescription(
+              name: 'task',
+              type: _i1.getType<_i17.Task>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['task'] as _i5.TaskEndpoint).updateTask(
+            session,
+            params['task'],
+          ),
+        ),
+        'getTasksByCategoryId': _i1.MethodConnector(
+          name: 'getTasksByCategoryId',
+          params: {
+            'categoryId': _i1.ParameterDescription(
+              name: 'categoryId',
+              type: _i1.getType<_i14.UuidValue>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['task'] as _i5.TaskEndpoint).getTasksByCategoryId(
+            session,
+            params['categoryId'],
+          ),
+        ),
+        'watchEvents': _i1.MethodStreamConnector(
+          name: 'watchEvents',
+          params: {},
+          streamParams: {},
+          returnType: _i1.MethodStreamReturnType.streamType,
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+            Map<String, Stream> streamParams,
+          ) =>
+              (endpoints['task'] as _i5.TaskEndpoint).watchEvents(session),
+        ),
+      },
+    );
+    connectors['taskTagMap'] = _i1.EndpointConnector(
+      name: 'taskTagMap',
+      endpoint: endpoints['taskTagMap']!,
+      methodConnectors: {
+        'createTaskTagMap': _i1.MethodConnector(
+          name: 'createTaskTagMap',
+          params: {
+            'taskTagMap': _i1.ParameterDescription(
+              name: 'taskTagMap',
+              type: _i1.getType<_i18.TaskTagMap>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['taskTagMap'] as _i6.TaskTagMapEndpoint)
+                  .createTaskTagMap(
+            session,
+            params['taskTagMap'],
+          ),
+        ),
+        'getTagsForTask': _i1.MethodConnector(
+          name: 'getTagsForTask',
+          params: {
+            'taskId': _i1.ParameterDescription(
+              name: 'taskId',
+              type: _i1.getType<_i14.UuidValue>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['taskTagMap'] as _i6.TaskTagMapEndpoint)
+                  .getTagsForTask(
+            session,
+            params['taskId'],
+          ),
+        ),
+        'getTasksForTag': _i1.MethodConnector(
+          name: 'getTasksForTag',
+          params: {
+            'tagId': _i1.ParameterDescription(
+              name: 'tagId',
+              type: _i1.getType<_i14.UuidValue>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['taskTagMap'] as _i6.TaskTagMapEndpoint)
+                  .getTasksForTag(
+            session,
+            params['tagId'],
+          ),
+        ),
+        'getTaskTagMapsSince': _i1.MethodConnector(
+          name: 'getTaskTagMapsSince',
+          params: {
+            'since': _i1.ParameterDescription(
+              name: 'since',
+              type: _i1.getType<DateTime?>(),
+              nullable: true,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['taskTagMap'] as _i6.TaskTagMapEndpoint)
+                  .getTaskTagMapsSince(
+            session,
+            params['since'],
+          ),
+        ),
+        'deleteTaskTagMapByTaskAndTag': _i1.MethodConnector(
+          name: 'deleteTaskTagMapByTaskAndTag',
+          params: {
+            'taskId': _i1.ParameterDescription(
+              name: 'taskId',
+              type: _i1.getType<_i14.UuidValue>(),
+              nullable: false,
+            ),
+            'tagId': _i1.ParameterDescription(
+              name: 'tagId',
+              type: _i1.getType<_i14.UuidValue>(),
+              nullable: false,
+            ),
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['taskTagMap'] as _i6.TaskTagMapEndpoint)
+                  .deleteTaskTagMapByTaskAndTag(
+            session,
+            params['taskId'],
+            params['tagId'],
+          ),
+        ),
+        'watchEvents': _i1.MethodStreamConnector(
+          name: 'watchEvents',
+          params: {},
+          streamParams: {},
+          returnType: _i1.MethodStreamReturnType.streamType,
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+            Map<String, Stream> streamParams,
+          ) =>
+              (endpoints['taskTagMap'] as _i6.TaskTagMapEndpoint)
+                  .watchEvents(session),
+        ),
+      },
+    );
+    connectors['testData'] = _i1.EndpointConnector(
+      name: 'testData',
+      endpoint: endpoints['testData']!,
+      methodConnectors: {
+        'createTestData': _i1.MethodConnector(
+          name: 'createTestData',
+          params: {
+            'testData': _i1.ParameterDescription(
+              name: 'testData',
+              type: _i1.getType<_i19.TestData>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['testData'] as _i7.TestDataEndpoint).createTestData(
+            session,
+            params['testData'],
+          ),
+        ),
+        'listTestDatas': _i1.MethodConnector(
+          name: 'listTestDatas',
+          params: {},
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['testData'] as _i7.TestDataEndpoint)
+                  .listTestDatas(session),
+        ),
+        'updateTestData': _i1.MethodConnector(
+          name: 'updateTestData',
+          params: {
+            'testData': _i1.ParameterDescription(
+              name: 'testData',
+              type: _i1.getType<_i19.TestData>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['testData'] as _i7.TestDataEndpoint).updateTestData(
+            session,
+            params['testData'],
+          ),
+        ),
+        'deleteTestData': _i1.MethodConnector(
+          name: 'deleteTestData',
+          params: {
+            'testData': _i1.ParameterDescription(
+              name: 'testData',
+              type: _i1.getType<_i19.TestData>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['testData'] as _i7.TestDataEndpoint).deleteTestData(
+            session,
+            params['testData'],
+          ),
+        ),
+      },
+    );
+    connectors['admin'] = _i1.EndpointConnector(
+      name: 'admin',
+      endpoint: endpoints['admin']!,
+      methodConnectors: {
+        'listUsers': _i1.MethodConnector(
+          name: 'listUsers',
+          params: {},
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['admin'] as _i8.AdminEndpoint).listUsers(session),
+        ),
+        'updateUserRole': _i1.MethodConnector(
+          name: 'updateUserRole',
+          params: {
+            'userId': _i1.ParameterDescription(
+              name: 'userId',
+              type: _i1.getType<int>(),
+              nullable: false,
+            ),
+            'roleId': _i1.ParameterDescription(
+              name: 'roleId',
+              type: _i1.getType<_i14.UuidValue>(),
+              nullable: false,
+            ),
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['admin'] as _i8.AdminEndpoint).updateUserRole(
+            session,
+            userId: params['userId'],
+            roleId: params['roleId'],
+          ),
+        ),
+        'listRoles': _i1.MethodConnector(
+          name: 'listRoles',
+          params: {},
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['admin'] as _i8.AdminEndpoint).listRoles(session),
+        ),
+        'listPermissions': _i1.MethodConnector(
+          name: 'listPermissions',
+          params: {},
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['admin'] as _i8.AdminEndpoint)
+                  .listPermissions(session),
+        ),
+        'createOrUpdateRole': _i1.MethodConnector(
+          name: 'createOrUpdateRole',
+          params: {
+            'role': _i1.ParameterDescription(
+              name: 'role',
+              type: _i1.getType<_i20.Role>(),
+              nullable: false,
+            ),
+            'permissionIds': _i1.ParameterDescription(
+              name: 'permissionIds',
+              type: _i1.getType<List<_i14.UuidValue>>(),
+              nullable: false,
+            ),
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['admin'] as _i8.AdminEndpoint).createOrUpdateRole(
+            session,
+            params['role'],
+            params['permissionIds'],
+          ),
+        ),
+        'deleteRole': _i1.MethodConnector(
+          name: 'deleteRole',
+          params: {
+            'roleId': _i1.ParameterDescription(
+              name: 'roleId',
+              type: _i1.getType<_i14.UuidValue>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['admin'] as _i8.AdminEndpoint).deleteRole(
+            session,
+            params['roleId'],
+          ),
         ),
       },
     );
@@ -431,7 +862,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['superAdmin'] as _i5.SuperAdminEndpoint)
+              (endpoints['superAdmin'] as _i9.SuperAdminEndpoint)
                   .saListCustomers(session),
         ),
         'saSaveCustomer': _i1.MethodConnector(
@@ -439,7 +870,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'customer': _i1.ParameterDescription(
               name: 'customer',
-              type: _i1.getType<_i16.Customer>(),
+              type: _i1.getType<_i21.Customer>(),
               nullable: false,
             )
           },
@@ -447,7 +878,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['superAdmin'] as _i5.SuperAdminEndpoint)
+              (endpoints['superAdmin'] as _i9.SuperAdminEndpoint)
                   .saSaveCustomer(
             session,
             params['customer'],
@@ -473,12 +904,12 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'customerId': _i1.ParameterDescription(
               name: 'customerId',
-              type: _i1.getType<_i12.UuidValue>(),
+              type: _i1.getType<_i14.UuidValue>(),
               nullable: false,
             ),
             'roleId': _i1.ParameterDescription(
               name: 'roleId',
-              type: _i1.getType<_i12.UuidValue>(),
+              type: _i1.getType<_i14.UuidValue>(),
               nullable: false,
             ),
           },
@@ -486,7 +917,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['superAdmin'] as _i5.SuperAdminEndpoint).saCreateUser(
+              (endpoints['superAdmin'] as _i9.SuperAdminEndpoint).saCreateUser(
             session,
             userName: params['userName'],
             email: params['email'],
@@ -500,7 +931,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'customerId': _i1.ParameterDescription(
               name: 'customerId',
-              type: _i1.getType<_i12.UuidValue?>(),
+              type: _i1.getType<_i14.UuidValue?>(),
               nullable: true,
             ),
             'limit': _i1.ParameterDescription(
@@ -518,7 +949,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['superAdmin'] as _i5.SuperAdminEndpoint)
+              (endpoints['superAdmin'] as _i9.SuperAdminEndpoint)
                   .saListAllUsers(
             session,
             customerId: params['customerId'],
@@ -544,7 +975,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['superAdmin'] as _i5.SuperAdminEndpoint).saBlockUser(
+              (endpoints['superAdmin'] as _i9.SuperAdminEndpoint).saBlockUser(
             session,
             params['userId'],
             params['blocked'],
@@ -555,7 +986,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'customerId': _i1.ParameterDescription(
               name: 'customerId',
-              type: _i1.getType<_i12.UuidValue>(),
+              type: _i1.getType<_i14.UuidValue>(),
               nullable: false,
             )
           },
@@ -563,7 +994,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['superAdmin'] as _i5.SuperAdminEndpoint)
+              (endpoints['superAdmin'] as _i9.SuperAdminEndpoint)
                   .saDeleteCustomer(
             session,
             params['customerId'],
@@ -576,7 +1007,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['superAdmin'] as _i5.SuperAdminEndpoint)
+              (endpoints['superAdmin'] as _i9.SuperAdminEndpoint)
                   .saGetDashboard(session),
         ),
         'saListAllRoles': _i1.MethodConnector(
@@ -584,7 +1015,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'customerId': _i1.ParameterDescription(
               name: 'customerId',
-              type: _i1.getType<_i12.UuidValue?>(),
+              type: _i1.getType<_i14.UuidValue?>(),
               nullable: true,
             )
           },
@@ -592,7 +1023,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['superAdmin'] as _i5.SuperAdminEndpoint)
+              (endpoints['superAdmin'] as _i9.SuperAdminEndpoint)
                   .saListAllRoles(
             session,
             customerId: params['customerId'],
@@ -608,12 +1039,12 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'newCustomerId': _i1.ParameterDescription(
               name: 'newCustomerId',
-              type: _i1.getType<_i12.UuidValue>(),
+              type: _i1.getType<_i14.UuidValue>(),
               nullable: false,
             ),
             'newRoleId': _i1.ParameterDescription(
               name: 'newRoleId',
-              type: _i1.getType<_i12.UuidValue>(),
+              type: _i1.getType<_i14.UuidValue>(),
               nullable: false,
             ),
           },
@@ -621,7 +1052,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['superAdmin'] as _i5.SuperAdminEndpoint)
+              (endpoints['superAdmin'] as _i9.SuperAdminEndpoint)
                   .saMoveUserToCustomer(
             session,
             userId: params['userId'],
@@ -631,428 +1062,20 @@ class Endpoints extends _i1.EndpointDispatch {
         ),
       },
     );
-    connectors['tag'] = _i1.EndpointConnector(
-      name: 'tag',
-      endpoint: endpoints['tag']!,
+    connectors['userContext'] = _i1.EndpointConnector(
+      name: 'userContext',
+      endpoint: endpoints['userContext']!,
       methodConnectors: {
-        'createTag': _i1.MethodConnector(
-          name: 'createTag',
-          params: {
-            'tag': _i1.ParameterDescription(
-              name: 'tag',
-              type: _i1.getType<_i17.Tag>(),
-              nullable: false,
-            )
-          },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['tag'] as _i6.TagEndpoint).createTag(
-            session,
-            params['tag'],
-          ),
-        ),
-        'getTags': _i1.MethodConnector(
-          name: 'getTags',
-          params: {
-            'limit': _i1.ParameterDescription(
-              name: 'limit',
-              type: _i1.getType<int?>(),
-              nullable: true,
-            )
-          },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['tag'] as _i6.TagEndpoint).getTags(
-            session,
-            limit: params['limit'],
-          ),
-        ),
-        'getTagById': _i1.MethodConnector(
-          name: 'getTagById',
-          params: {
-            'id': _i1.ParameterDescription(
-              name: 'id',
-              type: _i1.getType<_i12.UuidValue>(),
-              nullable: false,
-            )
-          },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['tag'] as _i6.TagEndpoint).getTagById(
-            session,
-            params['id'],
-          ),
-        ),
-        'getTagsSince': _i1.MethodConnector(
-          name: 'getTagsSince',
-          params: {
-            'since': _i1.ParameterDescription(
-              name: 'since',
-              type: _i1.getType<DateTime?>(),
-              nullable: true,
-            )
-          },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['tag'] as _i6.TagEndpoint).getTagsSince(
-            session,
-            params['since'],
-          ),
-        ),
-        'updateTag': _i1.MethodConnector(
-          name: 'updateTag',
-          params: {
-            'tag': _i1.ParameterDescription(
-              name: 'tag',
-              type: _i1.getType<_i17.Tag>(),
-              nullable: false,
-            )
-          },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['tag'] as _i6.TagEndpoint).updateTag(
-            session,
-            params['tag'],
-          ),
-        ),
-        'watchEvents': _i1.MethodStreamConnector(
-          name: 'watchEvents',
-          params: {},
-          streamParams: {},
-          returnType: _i1.MethodStreamReturnType.streamType,
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-            Map<String, Stream> streamParams,
-          ) =>
-              (endpoints['tag'] as _i6.TagEndpoint).watchEvents(session),
-        ),
-      },
-    );
-    connectors['task'] = _i1.EndpointConnector(
-      name: 'task',
-      endpoint: endpoints['task']!,
-      methodConnectors: {
-        'createTask': _i1.MethodConnector(
-          name: 'createTask',
-          params: {
-            'task': _i1.ParameterDescription(
-              name: 'task',
-              type: _i1.getType<_i18.Task>(),
-              nullable: false,
-            )
-          },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['task'] as _i7.TaskEndpoint).createTask(
-            session,
-            params['task'],
-          ),
-        ),
-        'getTasks': _i1.MethodConnector(
-          name: 'getTasks',
-          params: {
-            'limit': _i1.ParameterDescription(
-              name: 'limit',
-              type: _i1.getType<int?>(),
-              nullable: true,
-            )
-          },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['task'] as _i7.TaskEndpoint).getTasks(
-            session,
-            limit: params['limit'],
-          ),
-        ),
-        'getTaskById': _i1.MethodConnector(
-          name: 'getTaskById',
-          params: {
-            'id': _i1.ParameterDescription(
-              name: 'id',
-              type: _i1.getType<_i12.UuidValue>(),
-              nullable: false,
-            )
-          },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['task'] as _i7.TaskEndpoint).getTaskById(
-            session,
-            params['id'],
-          ),
-        ),
-        'getTasksSince': _i1.MethodConnector(
-          name: 'getTasksSince',
-          params: {
-            'since': _i1.ParameterDescription(
-              name: 'since',
-              type: _i1.getType<DateTime?>(),
-              nullable: true,
-            )
-          },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['task'] as _i7.TaskEndpoint).getTasksSince(
-            session,
-            params['since'],
-          ),
-        ),
-        'updateTask': _i1.MethodConnector(
-          name: 'updateTask',
-          params: {
-            'task': _i1.ParameterDescription(
-              name: 'task',
-              type: _i1.getType<_i18.Task>(),
-              nullable: false,
-            )
-          },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['task'] as _i7.TaskEndpoint).updateTask(
-            session,
-            params['task'],
-          ),
-        ),
-        'getTasksByCategoryId': _i1.MethodConnector(
-          name: 'getTasksByCategoryId',
-          params: {
-            'categoryId': _i1.ParameterDescription(
-              name: 'categoryId',
-              type: _i1.getType<_i12.UuidValue>(),
-              nullable: false,
-            )
-          },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['task'] as _i7.TaskEndpoint).getTasksByCategoryId(
-            session,
-            params['categoryId'],
-          ),
-        ),
-        'watchEvents': _i1.MethodStreamConnector(
-          name: 'watchEvents',
-          params: {},
-          streamParams: {},
-          returnType: _i1.MethodStreamReturnType.streamType,
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-            Map<String, Stream> streamParams,
-          ) =>
-              (endpoints['task'] as _i7.TaskEndpoint).watchEvents(session),
-        ),
-      },
-    );
-    connectors['taskTagMap'] = _i1.EndpointConnector(
-      name: 'taskTagMap',
-      endpoint: endpoints['taskTagMap']!,
-      methodConnectors: {
-        'createTaskTagMap': _i1.MethodConnector(
-          name: 'createTaskTagMap',
-          params: {
-            'taskTagMap': _i1.ParameterDescription(
-              name: 'taskTagMap',
-              type: _i1.getType<_i19.TaskTagMap>(),
-              nullable: false,
-            )
-          },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['taskTagMap'] as _i8.TaskTagMapEndpoint)
-                  .createTaskTagMap(
-            session,
-            params['taskTagMap'],
-          ),
-        ),
-        'getTagsForTask': _i1.MethodConnector(
-          name: 'getTagsForTask',
-          params: {
-            'taskId': _i1.ParameterDescription(
-              name: 'taskId',
-              type: _i1.getType<_i12.UuidValue>(),
-              nullable: false,
-            )
-          },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['taskTagMap'] as _i8.TaskTagMapEndpoint)
-                  .getTagsForTask(
-            session,
-            params['taskId'],
-          ),
-        ),
-        'getTasksForTag': _i1.MethodConnector(
-          name: 'getTasksForTag',
-          params: {
-            'tagId': _i1.ParameterDescription(
-              name: 'tagId',
-              type: _i1.getType<_i12.UuidValue>(),
-              nullable: false,
-            )
-          },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['taskTagMap'] as _i8.TaskTagMapEndpoint)
-                  .getTasksForTag(
-            session,
-            params['tagId'],
-          ),
-        ),
-        'getTaskTagMapsSince': _i1.MethodConnector(
-          name: 'getTaskTagMapsSince',
-          params: {
-            'since': _i1.ParameterDescription(
-              name: 'since',
-              type: _i1.getType<DateTime?>(),
-              nullable: true,
-            )
-          },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['taskTagMap'] as _i8.TaskTagMapEndpoint)
-                  .getTaskTagMapsSince(
-            session,
-            params['since'],
-          ),
-        ),
-        'deleteTaskTagMapByTaskAndTag': _i1.MethodConnector(
-          name: 'deleteTaskTagMapByTaskAndTag',
-          params: {
-            'taskId': _i1.ParameterDescription(
-              name: 'taskId',
-              type: _i1.getType<_i12.UuidValue>(),
-              nullable: false,
-            ),
-            'tagId': _i1.ParameterDescription(
-              name: 'tagId',
-              type: _i1.getType<_i12.UuidValue>(),
-              nullable: false,
-            ),
-          },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['taskTagMap'] as _i8.TaskTagMapEndpoint)
-                  .deleteTaskTagMapByTaskAndTag(
-            session,
-            params['taskId'],
-            params['tagId'],
-          ),
-        ),
-        'watchEvents': _i1.MethodStreamConnector(
-          name: 'watchEvents',
-          params: {},
-          streamParams: {},
-          returnType: _i1.MethodStreamReturnType.streamType,
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-            Map<String, Stream> streamParams,
-          ) =>
-              (endpoints['taskTagMap'] as _i8.TaskTagMapEndpoint)
-                  .watchEvents(session),
-        ),
-      },
-    );
-    connectors['testData'] = _i1.EndpointConnector(
-      name: 'testData',
-      endpoint: endpoints['testData']!,
-      methodConnectors: {
-        'createTestData': _i1.MethodConnector(
-          name: 'createTestData',
-          params: {
-            'testData': _i1.ParameterDescription(
-              name: 'testData',
-              type: _i1.getType<_i20.TestData>(),
-              nullable: false,
-            )
-          },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['testData'] as _i9.TestDataEndpoint).createTestData(
-            session,
-            params['testData'],
-          ),
-        ),
-        'listTestDatas': _i1.MethodConnector(
-          name: 'listTestDatas',
+        'getMyRole': _i1.MethodConnector(
+          name: 'getMyRole',
           params: {},
           call: (
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['testData'] as _i9.TestDataEndpoint)
-                  .listTestDatas(session),
-        ),
-        'updateTestData': _i1.MethodConnector(
-          name: 'updateTestData',
-          params: {
-            'testData': _i1.ParameterDescription(
-              name: 'testData',
-              type: _i1.getType<_i20.TestData>(),
-              nullable: false,
-            )
-          },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['testData'] as _i9.TestDataEndpoint).updateTestData(
-            session,
-            params['testData'],
-          ),
-        ),
-        'deleteTestData': _i1.MethodConnector(
-          name: 'deleteTestData',
-          params: {
-            'testData': _i1.ParameterDescription(
-              name: 'testData',
-              type: _i1.getType<_i20.TestData>(),
-              nullable: false,
-            )
-          },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['testData'] as _i9.TestDataEndpoint).deleteTestData(
-            session,
-            params['testData'],
-          ),
-        ),
+              (endpoints['userContext'] as _i10.UserContextEndpoint)
+                  .getMyRole(session),
+        )
       },
     );
     connectors['userManagement'] = _i1.EndpointConnector(
@@ -1066,7 +1089,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['userManagement'] as _i10.UserManagementEndpoint)
+              (endpoints['userManagement'] as _i11.UserManagementEndpoint)
                   .getMyUserContext(session),
         )
       },
@@ -1088,13 +1111,13 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['greeting'] as _i11.GreetingEndpoint).hello(
+              (endpoints['greeting'] as _i12.GreetingEndpoint).hello(
             session,
             params['name'],
           ),
         )
       },
     );
-    modules['serverpod_auth'] = _i21.Endpoints()..initializeEndpoints(server);
+    modules['serverpod_auth'] = _i22.Endpoints()..initializeEndpoints(server);
   }
 }
