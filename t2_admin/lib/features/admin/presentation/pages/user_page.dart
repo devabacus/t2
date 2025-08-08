@@ -1,165 +1,117 @@
-// lib/features/admin/presentation/pages/users/users_page.dart
+// lib/features/admin/presentation/pages/user_page.dart
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:serverpod_auth_client/serverpod_auth_client.dart';
+import 'package:t2_client/t2_client.dart';
 
+import '../base/base_list_page.dart';
 import '../providers/users_providers.dart';
 import '../routings/user_routes_constants.dart';
 
-class UsersPage extends ConsumerWidget {
+class UsersPage extends BaseListPage<UserDetails> {
   const UsersPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final usersState = ref.watch(usersListProvider);
+  ConsumerState<UsersPage> createState() => _UsersPageState();
+}
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Управление пользователями'),
-        backgroundColor: Colors.blue,
-        foregroundColor: Colors.white,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.person_add),
-            tooltip: 'Добавить пользователя',
-            onPressed: () {
-              context.push(UsersRoutes.createUserPath);
-            },
-          ),
-        ],
-      ),
-      body: usersState.when(
-        data: (users) {
-          if (users.isEmpty) {
-            return const Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.people_outline,
-                    size: 64,
-                    color: Colors.grey,
-                  ),
-                  SizedBox(height: 16),
-                  Text(
-                    'Пользователи не найдены',
-                    style: TextStyle(fontSize: 18, color: Colors.grey),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    'Добавьте первого пользователя',
-                    style: TextStyle(fontSize: 14, color: Colors.grey),
-                  ),
-                ],
-              ),
-            );
-          }
+class _UsersPageState extends BaseListPageState<UserDetails, UsersPage> {
+  @override
+  String get pageTitle => 'Управление пользователями';
 
-          return ListView.builder(
-            padding: const EdgeInsets.all(16),
-            itemCount: users.length,
-            itemBuilder: (context, index) {
-              final userDetails = users[index];
-              final user = userDetails.userInfo;
-              final role = userDetails.role;
+  @override
+  String get entityNameSingular => 'Пользователя';
 
-              return Card(
-                margin: const EdgeInsets.only(bottom: 8),
-                child: ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: user.blocked ? Colors.red : Colors.blue,
-                    child: Text(
-                      user.userName!.isNotEmpty 
-                          ? user.userName![0].toUpperCase()
-                          : 'У',
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                  ),
-                  title: Text(user.userName!),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(user.email!),
-                      if (role != null) Text('Роль: ${role.name}'),
-                      Text(
-                        user.blocked ? 'ЗАБЛОКИРОВАН' : 'Активен',
-                        style: TextStyle(
-                          color: user.blocked ? Colors.red : Colors.green,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      // Кнопка блокировки/разблокировки
-                      IconButton(
-                        icon: Icon(
-                          user.blocked ? Icons.lock_open : Icons.lock,
-                          color: user.blocked ? Colors.green : Colors.orange,
-                        ),
-                        tooltip: user.blocked ? 'Разблокировать' : 'Заблокировать',
-                        onPressed: () => _showBlockUserDialog(
-                          context, 
-                          ref, 
-                          user.id!, 
-                          user.userName!, 
-                          !user.blocked
-                        ),
-                      ),
-                      // Кнопка редактирования
-                      IconButton(
-                        icon: const Icon(Icons.edit, color: Colors.blue),
-                        tooltip: 'Редактировать',
-                        onPressed: () {
-                          context.push('${UsersRoutes.editUserPath}/${user.id}');
-                        },
-                      ),
-                      // Кнопка удаления
-                      IconButton(
-                        icon: const Icon(Icons.delete, color: Colors.red),
-                        tooltip: 'Удалить',
-                        onPressed: () => _showDeleteUserDialog(
-                          context, 
-                          ref, 
-                          user.id!, 
-                          user.userName!
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          );
-        },
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stack) => Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(Icons.error, size: 64, color: Colors.red),
-              const SizedBox(height: 16),
-              Text('Ошибка: $error'),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () => ref.invalidate(usersListProvider),
-                child: const Text('Повторить'),
-              ),
-            ],
+  @override
+  String get entityNamePlural => 'Пользователи';
+
+  @override
+  IconData get entityIcon => Icons.people;
+
+  @override
+  Color get themeColor => Colors.blue;
+
+  @override
+  AutoDisposeFutureProvider<List<UserDetails>> get listProvider => usersListProvider;
+
+  @override
+  String getItemId(UserDetails item) => item.userInfo.id.toString();
+
+  @override
+  String getItemDisplayName(UserDetails item) => item.userInfo.userName ?? 'N/A';
+
+  @override
+  List<DataColumn> getColumns() {
+    return [
+      const DataColumn(label: Text('Имя')),
+      const DataColumn(label: Text('Email')),
+      const DataColumn(label: Text('Роль')),
+      const DataColumn(label: Text('Статус')),
+    ];
+  }
+
+  @override
+  DataRow buildDataRow(UserDetails item) {
+    final user = item.userInfo;
+    final roleName = item.role?.name ?? 'Не назначена';
+
+    return DataRow(
+      cells: [
+        DataCell(Text(user.userName ?? '')),
+        DataCell(Text(user.email ?? '')),
+        DataCell(Text(roleName)),
+        DataCell(
+          Text(
+            user.blocked ? 'Заблокирован' : 'Активен',
+            style: TextStyle(
+              color: user.blocked ? Colors.red : Colors.green,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
-      ),
+      ],
     );
   }
+
+  @override
+  void navigateToCreate() {
+    context.push(UsersRoutes.createUserPath);
+  }
+
+  @override
+  void navigateToEdit(UserDetails item) {
+    context.push(UsersRoutes.editUserPathWithId(item.userInfo.id.toString()));
+  }
+
+  @override
+  Future<void> deleteItem(UserDetails item) async {
+    await ref.read(deleteUserProvider(item.userInfo.id!).future);
+  }
+
+  @override
+  List<Widget> getAdditionalActions(UserDetails item) {
+    final user = item.userInfo;
+    return [
+      IconButton(
+        icon: Icon(
+          user.blocked ? Icons.lock_open : Icons.lock,
+          color: user.blocked ? Colors.green : Colors.orange,
+          size: 20,
+        ),
+        tooltip: user.blocked ? 'Разблокировать' : 'Заблокировать',
+        onPressed: () => _showBlockUserDialog(context, ref, user, !user.blocked),
+      ),
+    ];
+  }
+
+  // --- Вспомогательные методы, специфичные для этой страницы ---
 
   void _showBlockUserDialog(
     BuildContext context,
     WidgetRef ref,
-    int userId,
-    String userName,
+    UserInfo user,
     bool willBlock,
   ) {
     showDialog(
@@ -167,9 +119,9 @@ class UsersPage extends ConsumerWidget {
       builder: (context) => AlertDialog(
         title: Text(willBlock ? 'Заблокировать пользователя' : 'Разблокировать пользователя'),
         content: Text(
-          willBlock 
-            ? 'Вы уверены, что хотите заблокировать пользователя "$userName"? Он не сможет войти в систему.'
-            : 'Вы уверены, что хотите разблокировать пользователя "$userName"?'
+          willBlock
+              ? 'Вы уверены, что хотите заблокировать пользователя "${user.userName}"? Он не сможет войти в систему.'
+              : 'Вы уверены, что хотите разблокировать пользователя "${user.userName}"?'
         ),
         actions: [
           TextButton(
@@ -183,24 +135,21 @@ class UsersPage extends ConsumerWidget {
             ),
             onPressed: () async {
               Navigator.of(context).pop();
-              
               try {
-                await ref.read(blockUserProvider(userId, willBlock).future);
-                
-                if (context.mounted) {
+                await ref.read(blockUserProvider(user.id!, willBlock).future);
+                if (mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
-                        willBlock 
-                          ? 'Пользователь "$userName" заблокирован'
-                          : 'Пользователь "$userName" разблокирован'
+                        'Пользователь "${user.userName}" ${willBlock ? "заблокирован" : "разблокирован"}'
                       ),
                       backgroundColor: willBlock ? Colors.orange : Colors.green,
                     ),
                   );
                 }
+                refreshList(); // Обновляем список для отображения изменений
               } catch (e) {
-                if (context.mounted) {
+                if (mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('Ошибка: $e'),
@@ -211,62 +160,6 @@ class UsersPage extends ConsumerWidget {
               }
             },
             child: Text(willBlock ? 'Заблокировать' : 'Разблокировать'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showDeleteUserDialog(
-    BuildContext context,
-    WidgetRef ref,
-    int userId,
-    String userName,
-  ) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Удалить пользователя'),
-        content: Text(
-          'Вы уверены, что хотите удалить пользователя "$userName"? '
-          'Это действие нельзя отменить!'
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Отмена'),
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
-              foregroundColor: Colors.white,
-            ),
-            onPressed: () async {
-              Navigator.of(context).pop();
-              
-              try {
-                await ref.read(deleteUserProvider(userId).future);
-                
-                if (context.mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Пользователь "$userName" удален'),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
-                }
-              } catch (e) {
-                if (context.mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Ошибка при удалении: $e'),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
-                }
-              }
-            },
-            child: const Text('Удалить'),
           ),
         ],
       ),
