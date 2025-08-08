@@ -33,6 +33,7 @@ import 'user/role_permission.dart' as _i21;
 import 'user/super_admin_dashboard.dart' as _i22;
 import 'user/super_user_details.dart' as _i23;
 import 'user/user_details.dart' as _i24;
+<<<<<<< HEAD
 import 'user/user_session_data.dart' as _i25;
 import 'package:t2_server/src/generated/user/user_details.dart' as _i26;
 import 'package:t2_server/src/generated/user/role.dart' as _i27;
@@ -46,6 +47,22 @@ import 'package:t2_server/src/generated/tag.dart' as _i34;
 import 'package:t2_server/src/generated/task.dart' as _i35;
 import 'package:t2_server/src/generated/task_tag_map.dart' as _i36;
 import 'package:t2_server/src/generated/test_data.dart' as _i37;
+=======
+import 'user/user_role.dart' as _i25;
+import 'user/user_session_data.dart' as _i26;
+import 'package:t2_server/src/generated/user/user_details.dart' as _i27;
+import 'package:t2_server/src/generated/user/role.dart' as _i28;
+import 'package:t2_server/src/generated/user/permission.dart' as _i29;
+import 'package:uuid/uuid_value.dart' as _i30;
+import 'package:t2_server/src/generated/category.dart' as _i31;
+import 'package:t2_server/src/generated/configuration.dart' as _i32;
+import 'package:t2_server/src/generated/user/customer.dart' as _i33;
+import 'package:t2_server/src/generated/user/super_user_details.dart' as _i34;
+import 'package:t2_server/src/generated/tag.dart' as _i35;
+import 'package:t2_server/src/generated/task.dart' as _i36;
+import 'package:t2_server/src/generated/task_tag_map.dart' as _i37;
+import 'package:t2_server/src/generated/test_data.dart' as _i38;
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
 export 'greeting.dart';
 export 'category.dart';
 export 'category_sync_event.dart';
@@ -67,6 +84,7 @@ export 'user/role_permission.dart';
 export 'user/super_admin_dashboard.dart';
 export 'user/super_user_details.dart';
 export 'user/user_details.dart';
+export 'user/user_role.dart';
 export 'user/user_session_data.dart';
 
 class Protocol extends _i1.SerializationManagerServer {
@@ -1047,8 +1065,11 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i24.UserDetails) {
       return _i24.UserDetails.fromJson(data) as T;
     }
-    if (t == _i25.UserSessionData) {
-      return _i25.UserSessionData.fromJson(data) as T;
+    if (t == _i25.UserRole) {
+      return _i25.UserRole.fromJson(data) as T;
+    }
+    if (t == _i26.UserSessionData) {
+      return _i26.UserSessionData.fromJson(data) as T;
     }
     if (t == _i1.getType<_i4.Greeting?>()) {
       return (data != null ? _i4.Greeting.fromJson(data) : null) as T;
@@ -1116,8 +1137,11 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i1.getType<_i24.UserDetails?>()) {
       return (data != null ? _i24.UserDetails.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i25.UserSessionData?>()) {
-      return (data != null ? _i25.UserSessionData.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i25.UserRole?>()) {
+      return (data != null ? _i25.UserRole.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i26.UserSessionData?>()) {
+      return (data != null ? _i26.UserSessionData.fromJson(data) : null) as T;
     }
     if (t == _i1.getType<List<_i14.TaskTagMap>?>()) {
       return (data != null
@@ -1136,31 +1160,32 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == List<String>) {
       return (data as List).map((e) => deserialize<String>(e)).toList() as T;
     }
-    if (t == List<_i26.UserDetails>) {
+    if (t == List<_i27.UserDetails>) {
       return (data as List)
-          .map((e) => deserialize<_i26.UserDetails>(e))
+          .map((e) => deserialize<_i27.UserDetails>(e))
           .toList() as T;
     }
-    if (t == List<_i27.Role>) {
-      return (data as List).map((e) => deserialize<_i27.Role>(e)).toList() as T;
+    if (t == List<_i28.Role>) {
+      return (data as List).map((e) => deserialize<_i28.Role>(e)).toList() as T;
     }
-    if (t == List<_i28.Permission>) {
-      return (data as List).map((e) => deserialize<_i28.Permission>(e)).toList()
+    if (t == List<_i29.Permission>) {
+      return (data as List).map((e) => deserialize<_i29.Permission>(e)).toList()
           as T;
     }
-    if (t == List<_i29.UuidValue>) {
-      return (data as List).map((e) => deserialize<_i29.UuidValue>(e)).toList()
+    if (t == List<_i30.UuidValue>) {
+      return (data as List).map((e) => deserialize<_i30.UuidValue>(e)).toList()
           as T;
     }
-    if (t == List<_i30.Category>) {
-      return (data as List).map((e) => deserialize<_i30.Category>(e)).toList()
+    if (t == List<_i31.Category>) {
+      return (data as List).map((e) => deserialize<_i31.Category>(e)).toList()
           as T;
     }
-    if (t == List<_i31.Configuration>) {
+    if (t == List<_i32.Configuration>) {
       return (data as List)
-          .map((e) => deserialize<_i31.Configuration>(e))
+          .map((e) => deserialize<_i32.Configuration>(e))
           .toList() as T;
     }
+<<<<<<< HEAD
     if (t == List<_i32.Customer>) {
       return (data as List).map((e) => deserialize<_i32.Customer>(e)).toList()
           as T;
@@ -1182,6 +1207,29 @@ class Protocol extends _i1.SerializationManagerServer {
     }
     if (t == List<_i37.TestData>) {
       return (data as List).map((e) => deserialize<_i37.TestData>(e)).toList()
+=======
+    if (t == List<_i33.Customer>) {
+      return (data as List).map((e) => deserialize<_i33.Customer>(e)).toList()
+          as T;
+    }
+    if (t == List<_i34.SuperUserDetails>) {
+      return (data as List)
+          .map((e) => deserialize<_i34.SuperUserDetails>(e))
+          .toList() as T;
+    }
+    if (t == List<_i35.Tag>) {
+      return (data as List).map((e) => deserialize<_i35.Tag>(e)).toList() as T;
+    }
+    if (t == List<_i36.Task>) {
+      return (data as List).map((e) => deserialize<_i36.Task>(e)).toList() as T;
+    }
+    if (t == List<_i37.TaskTagMap>) {
+      return (data as List).map((e) => deserialize<_i37.TaskTagMap>(e)).toList()
+          as T;
+    }
+    if (t == List<_i38.TestData>) {
+      return (data as List).map((e) => deserialize<_i38.TestData>(e)).toList()
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
           as T;
     }
     try {
@@ -1260,7 +1308,10 @@ class Protocol extends _i1.SerializationManagerServer {
     if (data is _i24.UserDetails) {
       return 'UserDetails';
     }
-    if (data is _i25.UserSessionData) {
+    if (data is _i25.UserRole) {
+      return 'UserRole';
+    }
+    if (data is _i26.UserSessionData) {
       return 'UserSessionData';
     }
     className = _i2.Protocol().getClassNameForObject(data);
@@ -1343,8 +1394,11 @@ class Protocol extends _i1.SerializationManagerServer {
     if (dataClassName == 'UserDetails') {
       return deserialize<_i24.UserDetails>(data['data']);
     }
+    if (dataClassName == 'UserRole') {
+      return deserialize<_i25.UserRole>(data['data']);
+    }
     if (dataClassName == 'UserSessionData') {
-      return deserialize<_i25.UserSessionData>(data['data']);
+      return deserialize<_i26.UserSessionData>(data['data']);
     }
     if (dataClassName.startsWith('serverpod.')) {
       data['className'] = dataClassName.substring(10);

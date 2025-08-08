@@ -34,8 +34,14 @@ import 'package:t2_server/src/generated/task_sync_event.dart' as _i19;
 import 'package:t2_server/src/generated/task_tag_map.dart' as _i20;
 import 'package:t2_server/src/generated/task_tag_map_sync_event.dart' as _i21;
 import 'package:t2_server/src/generated/test_data.dart' as _i22;
+<<<<<<< HEAD
 import 'package:t2_server/src/generated/user/user_session_data.dart' as _i23;
 import 'package:t2_server/src/generated/greeting.dart' as _i24;
+=======
+import 'package:t2_server/src/endpoints/user_context_endpoint.dart' as _i23;
+import 'package:t2_server/src/generated/user/user_session_data.dart' as _i24;
+import 'package:t2_server/src/generated/greeting.dart' as _i25;
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
 import 'package:t2_server/src/generated/protocol.dart';
 import 'package:t2_server/src/generated/endpoints.dart';
 export 'package:serverpod_test/serverpod_test_public_exports.dart';
@@ -138,6 +144,8 @@ class TestEndpoints {
 
   late final _TestDataEndpoint testData;
 
+  late final _UserContextEndpoint userContext;
+
   late final _UserManagementEndpoint userManagement;
 
   late final _GreetingEndpoint greeting;
@@ -179,6 +187,10 @@ class _InternalTestEndpoints extends TestEndpoints
       serializationManager,
     );
     testData = _TestDataEndpoint(
+      endpoints,
+      serializationManager,
+    );
+    userContext = _UserContextEndpoint(
       endpoints,
       serializationManager,
     );
@@ -1765,6 +1777,44 @@ class _TestDataEndpoint {
   }
 }
 
+class _UserContextEndpoint {
+  _UserContextEndpoint(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _i2.EndpointDispatch _endpointDispatch;
+
+  final _i2.SerializationManager _serializationManager;
+
+  _i3.Future<_i23.UserRole> getMyRole(
+      _i1.TestSessionBuilder sessionBuilder) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+        endpoint: 'userContext',
+        method: 'getMyRole',
+      );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'userContext',
+          methodName: 'getMyRole',
+          parameters: _i1.testObjectToJson({}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue = await (_localCallContext.method.call(
+          _localUniqueSession,
+          _localCallContext.arguments,
+        ) as _i3.Future<_i23.UserRole>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
 class _UserManagementEndpoint {
   _UserManagementEndpoint(
     this._endpointDispatch,
@@ -1775,7 +1825,11 @@ class _UserManagementEndpoint {
 
   final _i2.SerializationManager _serializationManager;
 
+<<<<<<< HEAD
   _i3.Future<_i23.UserSessionData?> getMyUserContext(
+=======
+  _i3.Future<_i24.UserSessionData?> getMyUserContext(
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
       _i1.TestSessionBuilder sessionBuilder) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -1794,7 +1848,11 @@ class _UserManagementEndpoint {
         var _localReturnValue = await (_localCallContext.method.call(
           _localUniqueSession,
           _localCallContext.arguments,
+<<<<<<< HEAD
         ) as _i3.Future<_i23.UserSessionData?>);
+=======
+        ) as _i3.Future<_i24.UserSessionData?>);
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1813,7 +1871,11 @@ class _GreetingEndpoint {
 
   final _i2.SerializationManager _serializationManager;
 
+<<<<<<< HEAD
   _i3.Future<_i24.Greeting> hello(
+=======
+  _i3.Future<_i25.Greeting> hello(
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
     _i1.TestSessionBuilder sessionBuilder,
     String name,
   ) async {
@@ -1834,7 +1896,11 @@ class _GreetingEndpoint {
         var _localReturnValue = await (_localCallContext.method.call(
           _localUniqueSession,
           _localCallContext.arguments,
+<<<<<<< HEAD
         ) as _i3.Future<_i24.Greeting>);
+=======
+        ) as _i3.Future<_i25.Greeting>);
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();

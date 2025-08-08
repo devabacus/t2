@@ -30,9 +30,16 @@ import 'package:t2_client/src/protocol/task_sync_event.dart' as _i18;
 import 'package:t2_client/src/protocol/task_tag_map.dart' as _i19;
 import 'package:t2_client/src/protocol/task_tag_map_sync_event.dart' as _i20;
 import 'package:t2_client/src/protocol/test_data.dart' as _i21;
+<<<<<<< HEAD
 import 'package:t2_client/src/protocol/user/user_session_data.dart' as _i22;
 import 'package:t2_client/src/protocol/greeting.dart' as _i23;
 import 'protocol.dart' as _i24;
+=======
+import 'package:t2_client/src/endpoints/user_context_endpoint.dart' as _i22;
+import 'package:t2_client/src/protocol/user/user_session_data.dart' as _i23;
+import 'package:t2_client/src/protocol/greeting.dart' as _i24;
+import 'protocol.dart' as _i25;
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
 
 /// {@category Endpoint}
 class EndpointAdmin extends _i1.EndpointRef {
@@ -515,14 +522,34 @@ class EndpointTestData extends _i1.EndpointRef {
 }
 
 /// {@category Endpoint}
+class EndpointUserContext extends _i1.EndpointRef {
+  EndpointUserContext(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'userContext';
+
+  _i2.Future<_i22.UserRole> getMyRole() =>
+      caller.callServerEndpoint<_i22.UserRole>(
+        'userContext',
+        'getMyRole',
+        {},
+      );
+}
+
+/// {@category Endpoint}
 class EndpointUserManagement extends _i1.EndpointRef {
   EndpointUserManagement(_i1.EndpointCaller caller) : super(caller);
 
   @override
   String get name => 'userManagement';
 
+<<<<<<< HEAD
   _i2.Future<_i22.UserSessionData?> getMyUserContext() =>
       caller.callServerEndpoint<_i22.UserSessionData?>(
+=======
+  _i2.Future<_i23.UserSessionData?> getMyUserContext() =>
+      caller.callServerEndpoint<_i23.UserSessionData?>(
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
         'userManagement',
         'getMyUserContext',
         {},
@@ -539,8 +566,13 @@ class EndpointGreeting extends _i1.EndpointRef {
   String get name => 'greeting';
 
   /// Returns a personalized greeting message: "Hello {name}".
+<<<<<<< HEAD
   _i2.Future<_i23.Greeting> hello(String name) =>
       caller.callServerEndpoint<_i23.Greeting>(
+=======
+  _i2.Future<_i24.Greeting> hello(String name) =>
+      caller.callServerEndpoint<_i24.Greeting>(
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
         'greeting',
         'hello',
         {'name': name},
@@ -571,7 +603,11 @@ class Client extends _i1.ServerpodClientShared {
     bool? disconnectStreamsOnLostInternetConnection,
   }) : super(
           host,
+<<<<<<< HEAD
           _i24.Protocol(),
+=======
+          _i25.Protocol(),
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
           securityContext: securityContext,
           authenticationKeyManager: authenticationKeyManager,
           streamingConnectionTimeout: streamingConnectionTimeout,
@@ -589,6 +625,7 @@ class Client extends _i1.ServerpodClientShared {
     task = EndpointTask(this);
     taskTagMap = EndpointTaskTagMap(this);
     testData = EndpointTestData(this);
+    userContext = EndpointUserContext(this);
     userManagement = EndpointUserManagement(this);
     greeting = EndpointGreeting(this);
     modules = Modules(this);
@@ -610,6 +647,8 @@ class Client extends _i1.ServerpodClientShared {
 
   late final EndpointTestData testData;
 
+  late final EndpointUserContext userContext;
+
   late final EndpointUserManagement userManagement;
 
   late final EndpointGreeting greeting;
@@ -626,6 +665,7 @@ class Client extends _i1.ServerpodClientShared {
         'task': task,
         'taskTagMap': taskTagMap,
         'testData': testData,
+        'userContext': userContext,
         'userManagement': userManagement,
         'greeting': greeting,
       };

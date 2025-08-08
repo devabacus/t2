@@ -116,6 +116,11 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+<<<<<<< HEAD
+=======
+  assets:
+    - .env
+>>>>>>> a2d00b6e80ee1147fa37cc2a833d305834106965
 
   assets:
     - .env
