@@ -55,7 +55,7 @@ Future<void> createRole(Ref ref, {
   
   // Обновляем список ролей
   ref.invalidate(rolesListProvider);
-}
+}  
 
 @riverpod
 Future<void> deleteRole(Ref ref, String roleId) async {
