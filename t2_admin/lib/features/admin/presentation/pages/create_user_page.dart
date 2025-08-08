@@ -45,13 +45,13 @@ class _CreateUserPageState extends ConsumerState<CreateUserPage> {
     setState(() => _isLoading = true);
 
     try {
-      await ref.read(createUserUseCaseProvider.notifier).call(
+      await ref.read(createUserProvider(
         userName: _nameController.text,
         email: _emailController.text,
         password: _passwordController.text,
         customerId: _selectedCustomerId!,
         roleId: _selectedRoleId!,
-      );
+      ).future);
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(

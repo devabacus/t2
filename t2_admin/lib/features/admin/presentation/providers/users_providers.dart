@@ -35,44 +35,28 @@ Future<List<Customer>> customersList(Ref ref) async {
 }
 
 @riverpod
-class CreateUserUseCase extends _$CreateUserUseCase {
-  @override
-  FutureOr<void> build() {
-    return null;
-  }
-
-  Future<void> call({
-    required String userName,
-    required String email,
-    required String password,
-    required String customerId,
-    required String roleId,
-  }) async {
-    state = const AsyncLoading();
-    
-    try {
-      final client = ref.read(serverpodClientProvider);
-      
-      // Преобразуем строки в UuidValue
-      final customerUuid = UuidValue.fromString(customerId);
-      final roleUuid = UuidValue.fromString(roleId);
-      
-      // Используем super admin endpoint для создания пользователя
-      await client.superAdmin.saCreateUser(
-        userName: userName,
-        email: email,
-        password: password,
-        customerId: customerUuid,
-        roleId: roleUuid,
-      );
-      
-      // Обновляем список пользователей после создания
-      ref.invalidate(usersListProvider);
-      
-      state = const AsyncData(null);
-    } catch (e) {
-      state = AsyncError(e, StackTrace.current);
-      rethrow;
-    }
-  }
+Future<void> createUser(Ref ref, {
+  required String userName,
+  required String email,
+  required String password,
+  required String customerId,
+  required String roleId,
+}) async {
+  final client = ref.read(serverpodClientProvider);
+  
+  // Преобразуем строки в UuidValue
+  final customerUuid = UuidValue.fromString(customerId);
+  final roleUuid = UuidValue.fromString(roleId);
+  
+  // Используем super admin endpoint для создания пользователя
+  await client.superAdmin.saCreateUser(
+    userName: userName,
+    email: email,
+    password: password,
+    customerId: customerUuid,
+    roleId: roleUuid,
+  );
+  
+  // Обновляем список пользователей после создания
+  ref.invalidate(usersListProvider);
 }
