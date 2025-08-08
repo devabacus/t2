@@ -23,7 +23,7 @@ List<RouteBase> getUsersRoutes() {
       path: '${UsersRoutes.editUserPath}/:userId',
       builder: (context, state) {
         final userId = state.pathParameters['userId']!;
-        return EditUserPage(userId: userId);
+        return EditUserPage(itemId: userId);
       },
     ),
   ];
