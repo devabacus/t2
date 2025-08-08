@@ -28,14 +28,21 @@ import 'user/customer_user.dart' as _i16;
 import 'user/permission.dart' as _i17;
 import 'user/role.dart' as _i18;
 import 'user/role_permission.dart' as _i19;
-import 'user/user_session_data.dart' as _i20;
-import 'package:t2_client/src/protocol/category.dart' as _i21;
-import 'package:t2_client/src/protocol/configuration.dart' as _i22;
-import 'package:t2_client/src/protocol/tag.dart' as _i23;
-import 'package:t2_client/src/protocol/task.dart' as _i24;
-import 'package:t2_client/src/protocol/task_tag_map.dart' as _i25;
-import 'package:t2_client/src/protocol/test_data.dart' as _i26;
-import 'package:serverpod_auth_client/serverpod_auth_client.dart' as _i27;
+import 'user/super_admin_dashboard.dart' as _i20;
+import 'user/super_user_details.dart' as _i21;
+import 'user/user_details.dart' as _i22;
+import 'user/user_session_data.dart' as _i23;
+import 'package:serverpod_auth_client/serverpod_auth_client.dart' as _i24;
+import 'package:t2_client/src/protocol/user/user_details.dart' as _i25;
+import 'package:t2_client/src/protocol/user/role.dart' as _i26;
+import 'package:t2_client/src/protocol/user/permission.dart' as _i27;
+import 'package:uuid/uuid_value.dart' as _i28;
+import 'package:t2_client/src/protocol/category.dart' as _i29;
+import 'package:t2_client/src/protocol/configuration.dart' as _i30;
+import 'package:t2_client/src/protocol/tag.dart' as _i31;
+import 'package:t2_client/src/protocol/task.dart' as _i32;
+import 'package:t2_client/src/protocol/task_tag_map.dart' as _i33;
+import 'package:t2_client/src/protocol/test_data.dart' as _i34;
 export 'greeting.dart';
 export 'category.dart';
 export 'category_sync_event.dart';
@@ -54,6 +61,9 @@ export 'user/customer_user.dart';
 export 'user/permission.dart';
 export 'user/role.dart';
 export 'user/role_permission.dart';
+export 'user/super_admin_dashboard.dart';
+export 'user/super_user_details.dart';
+export 'user/user_details.dart';
 export 'user/user_session_data.dart';
 export 'client.dart';
 
@@ -124,8 +134,17 @@ class Protocol extends _i1.SerializationManager {
     if (t == _i19.RolePermission) {
       return _i19.RolePermission.fromJson(data) as T;
     }
-    if (t == _i20.UserSessionData) {
-      return _i20.UserSessionData.fromJson(data) as T;
+    if (t == _i20.SuperAdminDashboard) {
+      return _i20.SuperAdminDashboard.fromJson(data) as T;
+    }
+    if (t == _i21.SuperUserDetails) {
+      return _i21.SuperUserDetails.fromJson(data) as T;
+    }
+    if (t == _i22.UserDetails) {
+      return _i22.UserDetails.fromJson(data) as T;
+    }
+    if (t == _i23.UserSessionData) {
+      return _i23.UserSessionData.fromJson(data) as T;
     }
     if (t == _i1.getType<_i2.Greeting?>()) {
       return (data != null ? _i2.Greeting.fromJson(data) : null) as T;
@@ -183,8 +202,18 @@ class Protocol extends _i1.SerializationManager {
     if (t == _i1.getType<_i19.RolePermission?>()) {
       return (data != null ? _i19.RolePermission.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i20.UserSessionData?>()) {
-      return (data != null ? _i20.UserSessionData.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i20.SuperAdminDashboard?>()) {
+      return (data != null ? _i20.SuperAdminDashboard.fromJson(data) : null)
+          as T;
+    }
+    if (t == _i1.getType<_i21.SuperUserDetails?>()) {
+      return (data != null ? _i21.SuperUserDetails.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i22.UserDetails?>()) {
+      return (data != null ? _i22.UserDetails.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i23.UserSessionData?>()) {
+      return (data != null ? _i23.UserSessionData.fromJson(data) : null) as T;
     }
     if (t == _i1.getType<List<_i12.TaskTagMap>?>()) {
       return (data != null
@@ -195,35 +224,55 @@ class Protocol extends _i1.SerializationManager {
       return (data != null
           ? (data as List).map((e) => deserialize<_i12.TaskTagMap>(e)).toList()
           : null) as T;
+    }
+    if (t == List<_i24.UserInfo>) {
+      return (data as List).map((e) => deserialize<_i24.UserInfo>(e)).toList()
+          as T;
     }
     if (t == List<String>) {
       return (data as List).map((e) => deserialize<String>(e)).toList() as T;
     }
-    if (t == List<_i21.Category>) {
-      return (data as List).map((e) => deserialize<_i21.Category>(e)).toList()
-          as T;
-    }
-    if (t == List<_i22.Configuration>) {
+    if (t == List<_i25.UserDetails>) {
       return (data as List)
-          .map((e) => deserialize<_i22.Configuration>(e))
+          .map((e) => deserialize<_i25.UserDetails>(e))
           .toList() as T;
     }
-    if (t == List<_i23.Tag>) {
-      return (data as List).map((e) => deserialize<_i23.Tag>(e)).toList() as T;
+    if (t == List<_i26.Role>) {
+      return (data as List).map((e) => deserialize<_i26.Role>(e)).toList() as T;
     }
-    if (t == List<_i24.Task>) {
-      return (data as List).map((e) => deserialize<_i24.Task>(e)).toList() as T;
-    }
-    if (t == List<_i25.TaskTagMap>) {
-      return (data as List).map((e) => deserialize<_i25.TaskTagMap>(e)).toList()
+    if (t == List<_i27.Permission>) {
+      return (data as List).map((e) => deserialize<_i27.Permission>(e)).toList()
           as T;
     }
-    if (t == List<_i26.TestData>) {
-      return (data as List).map((e) => deserialize<_i26.TestData>(e)).toList()
+    if (t == List<_i28.UuidValue>) {
+      return (data as List).map((e) => deserialize<_i28.UuidValue>(e)).toList()
+          as T;
+    }
+    if (t == List<_i29.Category>) {
+      return (data as List).map((e) => deserialize<_i29.Category>(e)).toList()
+          as T;
+    }
+    if (t == List<_i30.Configuration>) {
+      return (data as List)
+          .map((e) => deserialize<_i30.Configuration>(e))
+          .toList() as T;
+    }
+    if (t == List<_i31.Tag>) {
+      return (data as List).map((e) => deserialize<_i31.Tag>(e)).toList() as T;
+    }
+    if (t == List<_i32.Task>) {
+      return (data as List).map((e) => deserialize<_i32.Task>(e)).toList() as T;
+    }
+    if (t == List<_i33.TaskTagMap>) {
+      return (data as List).map((e) => deserialize<_i33.TaskTagMap>(e)).toList()
+          as T;
+    }
+    if (t == List<_i34.TestData>) {
+      return (data as List).map((e) => deserialize<_i34.TestData>(e)).toList()
           as T;
     }
     try {
-      return _i27.Protocol().deserialize<T>(data, t);
+      return _i24.Protocol().deserialize<T>(data, t);
     } on _i1.DeserializationTypeNotFoundException catch (_) {}
     return super.deserialize<T>(data, t);
   }
@@ -286,10 +335,19 @@ class Protocol extends _i1.SerializationManager {
     if (data is _i19.RolePermission) {
       return 'RolePermission';
     }
-    if (data is _i20.UserSessionData) {
+    if (data is _i20.SuperAdminDashboard) {
+      return 'SuperAdminDashboard';
+    }
+    if (data is _i21.SuperUserDetails) {
+      return 'SuperUserDetails';
+    }
+    if (data is _i22.UserDetails) {
+      return 'UserDetails';
+    }
+    if (data is _i23.UserSessionData) {
       return 'UserSessionData';
     }
-    className = _i27.Protocol().getClassNameForObject(data);
+    className = _i24.Protocol().getClassNameForObject(data);
     if (className != null) {
       return 'serverpod_auth.$className';
     }
@@ -356,12 +414,21 @@ class Protocol extends _i1.SerializationManager {
     if (dataClassName == 'RolePermission') {
       return deserialize<_i19.RolePermission>(data['data']);
     }
+    if (dataClassName == 'SuperAdminDashboard') {
+      return deserialize<_i20.SuperAdminDashboard>(data['data']);
+    }
+    if (dataClassName == 'SuperUserDetails') {
+      return deserialize<_i21.SuperUserDetails>(data['data']);
+    }
+    if (dataClassName == 'UserDetails') {
+      return deserialize<_i22.UserDetails>(data['data']);
+    }
     if (dataClassName == 'UserSessionData') {
-      return deserialize<_i20.UserSessionData>(data['data']);
+      return deserialize<_i23.UserSessionData>(data['data']);
     }
     if (dataClassName.startsWith('serverpod_auth.')) {
       data['className'] = dataClassName.substring(15);
-      return _i27.Protocol().deserializeByClassName(data);
+      return _i24.Protocol().deserializeByClassName(data);
     }
     return super.deserializeByClassName(data);
   }

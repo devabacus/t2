@@ -1,0 +1,4 @@
+class: UserDetails
+fields:
+  userInfo: module:auth:UserInfo
+  role: Role?

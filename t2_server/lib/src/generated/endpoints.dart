@@ -10,76 +10,184 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
-import '../endpoints/category_endpoint.dart' as _i2;
-import '../endpoints/configuration_endpoint.dart' as _i3;
-import '../endpoints/tag_endpoint.dart' as _i4;
-import '../endpoints/task_endpoint.dart' as _i5;
-import '../endpoints/task_tag_map_endpoint.dart' as _i6;
-import '../endpoints/test_data_endpoint.dart' as _i7;
-import '../endpoints/user_manager_endpoint.dart' as _i8;
-import '../greeting_endpoint.dart' as _i9;
-import 'package:t2_server/src/generated/category.dart' as _i10;
+import '../endpoints/admin_endpoint.dart' as _i2;
+import '../endpoints/category_endpoint.dart' as _i3;
+import '../endpoints/configuration_endpoint.dart' as _i4;
+import '../endpoints/tag_endpoint.dart' as _i5;
+import '../endpoints/task_endpoint.dart' as _i6;
+import '../endpoints/task_tag_map_endpoint.dart' as _i7;
+import '../endpoints/test_data_endpoint.dart' as _i8;
+import '../endpoints/user_manager_endpoint.dart' as _i9;
+import '../greeting_endpoint.dart' as _i10;
 import 'package:uuid/uuid_value.dart' as _i11;
-import 'package:t2_server/src/generated/configuration.dart' as _i12;
-import 'package:t2_server/src/generated/tag.dart' as _i13;
-import 'package:t2_server/src/generated/task.dart' as _i14;
-import 'package:t2_server/src/generated/task_tag_map.dart' as _i15;
-import 'package:t2_server/src/generated/test_data.dart' as _i16;
-import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i17;
+import 'package:t2_server/src/generated/user/role.dart' as _i12;
+import 'package:t2_server/src/generated/category.dart' as _i13;
+import 'package:t2_server/src/generated/configuration.dart' as _i14;
+import 'package:t2_server/src/generated/tag.dart' as _i15;
+import 'package:t2_server/src/generated/task.dart' as _i16;
+import 'package:t2_server/src/generated/task_tag_map.dart' as _i17;
+import 'package:t2_server/src/generated/test_data.dart' as _i18;
+import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i19;
 
 class Endpoints extends _i1.EndpointDispatch {
   @override
   void initializeEndpoints(_i1.Server server) {
     var endpoints = <String, _i1.Endpoint>{
-      'category': _i2.CategoryEndpoint()
+      'admin': _i2.AdminEndpoint()
+        ..initialize(
+          server,
+          'admin',
+          null,
+        ),
+      'category': _i3.CategoryEndpoint()
         ..initialize(
           server,
           'category',
           null,
         ),
-      'configuration': _i3.ConfigurationEndpoint()
+      'configuration': _i4.ConfigurationEndpoint()
         ..initialize(
           server,
           'configuration',
           null,
         ),
-      'tag': _i4.TagEndpoint()
+      'tag': _i5.TagEndpoint()
         ..initialize(
           server,
           'tag',
           null,
         ),
-      'task': _i5.TaskEndpoint()
+      'task': _i6.TaskEndpoint()
         ..initialize(
           server,
           'task',
           null,
         ),
-      'taskTagMap': _i6.TaskTagMapEndpoint()
+      'taskTagMap': _i7.TaskTagMapEndpoint()
         ..initialize(
           server,
           'taskTagMap',
           null,
         ),
-      'testData': _i7.TestDataEndpoint()
+      'testData': _i8.TestDataEndpoint()
         ..initialize(
           server,
           'testData',
           null,
         ),
-      'userManagement': _i8.UserManagementEndpoint()
+      'userManagement': _i9.UserManagementEndpoint()
         ..initialize(
           server,
           'userManagement',
           null,
         ),
-      'greeting': _i9.GreetingEndpoint()
+      'greeting': _i10.GreetingEndpoint()
         ..initialize(
           server,
           'greeting',
           null,
         ),
     };
+    connectors['admin'] = _i1.EndpointConnector(
+      name: 'admin',
+      endpoint: endpoints['admin']!,
+      methodConnectors: {
+        'listUsers': _i1.MethodConnector(
+          name: 'listUsers',
+          params: {},
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['admin'] as _i2.AdminEndpoint).listUsers(session),
+        ),
+        'updateUserRole': _i1.MethodConnector(
+          name: 'updateUserRole',
+          params: {
+            'userId': _i1.ParameterDescription(
+              name: 'userId',
+              type: _i1.getType<int>(),
+              nullable: false,
+            ),
+            'roleId': _i1.ParameterDescription(
+              name: 'roleId',
+              type: _i1.getType<_i11.UuidValue>(),
+              nullable: false,
+            ),
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['admin'] as _i2.AdminEndpoint).updateUserRole(
+            session,
+            userId: params['userId'],
+            roleId: params['roleId'],
+          ),
+        ),
+        'listRoles': _i1.MethodConnector(
+          name: 'listRoles',
+          params: {},
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['admin'] as _i2.AdminEndpoint).listRoles(session),
+        ),
+        'listPermissions': _i1.MethodConnector(
+          name: 'listPermissions',
+          params: {},
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['admin'] as _i2.AdminEndpoint)
+                  .listPermissions(session),
+        ),
+        'createOrUpdateRole': _i1.MethodConnector(
+          name: 'createOrUpdateRole',
+          params: {
+            'role': _i1.ParameterDescription(
+              name: 'role',
+              type: _i1.getType<_i12.Role>(),
+              nullable: false,
+            ),
+            'permissionIds': _i1.ParameterDescription(
+              name: 'permissionIds',
+              type: _i1.getType<List<_i11.UuidValue>>(),
+              nullable: false,
+            ),
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['admin'] as _i2.AdminEndpoint).createOrUpdateRole(
+            session,
+            params['role'],
+            params['permissionIds'],
+          ),
+        ),
+        'deleteRole': _i1.MethodConnector(
+          name: 'deleteRole',
+          params: {
+            'roleId': _i1.ParameterDescription(
+              name: 'roleId',
+              type: _i1.getType<_i11.UuidValue>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['admin'] as _i2.AdminEndpoint).deleteRole(
+            session,
+            params['roleId'],
+          ),
+        ),
+      },
+    );
     connectors['category'] = _i1.EndpointConnector(
       name: 'category',
       endpoint: endpoints['category']!,
@@ -89,7 +197,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'category': _i1.ParameterDescription(
               name: 'category',
-              type: _i1.getType<_i10.Category>(),
+              type: _i1.getType<_i13.Category>(),
               nullable: false,
             )
           },
@@ -97,7 +205,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['category'] as _i2.CategoryEndpoint).createCategory(
+              (endpoints['category'] as _i3.CategoryEndpoint).createCategory(
             session,
             params['category'],
           ),
@@ -115,7 +223,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['category'] as _i2.CategoryEndpoint).getCategories(
+              (endpoints['category'] as _i3.CategoryEndpoint).getCategories(
             session,
             limit: params['limit'],
           ),
@@ -133,7 +241,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['category'] as _i2.CategoryEndpoint).getCategoryById(
+              (endpoints['category'] as _i3.CategoryEndpoint).getCategoryById(
             session,
             params['id'],
           ),
@@ -151,7 +259,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['category'] as _i2.CategoryEndpoint)
+              (endpoints['category'] as _i3.CategoryEndpoint)
                   .getCategoriesSince(
             session,
             params['since'],
@@ -162,7 +270,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'category': _i1.ParameterDescription(
               name: 'category',
-              type: _i1.getType<_i10.Category>(),
+              type: _i1.getType<_i13.Category>(),
               nullable: false,
             )
           },
@@ -170,7 +278,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['category'] as _i2.CategoryEndpoint).updateCategory(
+              (endpoints['category'] as _i3.CategoryEndpoint).updateCategory(
             session,
             params['category'],
           ),
@@ -185,7 +293,7 @@ class Endpoints extends _i1.EndpointDispatch {
             Map<String, dynamic> params,
             Map<String, Stream> streamParams,
           ) =>
-              (endpoints['category'] as _i2.CategoryEndpoint)
+              (endpoints['category'] as _i3.CategoryEndpoint)
                   .watchEvents(session),
         ),
       },
@@ -199,7 +307,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'configuration': _i1.ParameterDescription(
               name: 'configuration',
-              type: _i1.getType<_i12.Configuration>(),
+              type: _i1.getType<_i14.Configuration>(),
               nullable: false,
             )
           },
@@ -207,7 +315,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['configuration'] as _i3.ConfigurationEndpoint)
+              (endpoints['configuration'] as _i4.ConfigurationEndpoint)
                   .createConfiguration(
             session,
             params['configuration'],
@@ -226,7 +334,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['configuration'] as _i3.ConfigurationEndpoint)
+              (endpoints['configuration'] as _i4.ConfigurationEndpoint)
                   .getConfigurations(
             session,
             limit: params['limit'],
@@ -245,7 +353,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['configuration'] as _i3.ConfigurationEndpoint)
+              (endpoints['configuration'] as _i4.ConfigurationEndpoint)
                   .getConfigurationById(
             session,
             params['id'],
@@ -264,7 +372,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['configuration'] as _i3.ConfigurationEndpoint)
+              (endpoints['configuration'] as _i4.ConfigurationEndpoint)
                   .getConfigurationsSince(
             session,
             params['since'],
@@ -275,7 +383,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'configuration': _i1.ParameterDescription(
               name: 'configuration',
-              type: _i1.getType<_i12.Configuration>(),
+              type: _i1.getType<_i14.Configuration>(),
               nullable: false,
             )
           },
@@ -283,7 +391,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['configuration'] as _i3.ConfigurationEndpoint)
+              (endpoints['configuration'] as _i4.ConfigurationEndpoint)
                   .updateConfiguration(
             session,
             params['configuration'],
@@ -299,7 +407,7 @@ class Endpoints extends _i1.EndpointDispatch {
             Map<String, dynamic> params,
             Map<String, Stream> streamParams,
           ) =>
-              (endpoints['configuration'] as _i3.ConfigurationEndpoint)
+              (endpoints['configuration'] as _i4.ConfigurationEndpoint)
                   .watchEvents(session),
         ),
       },
@@ -313,7 +421,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'tag': _i1.ParameterDescription(
               name: 'tag',
-              type: _i1.getType<_i13.Tag>(),
+              type: _i1.getType<_i15.Tag>(),
               nullable: false,
             )
           },
@@ -321,7 +429,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['tag'] as _i4.TagEndpoint).createTag(
+              (endpoints['tag'] as _i5.TagEndpoint).createTag(
             session,
             params['tag'],
           ),
@@ -339,7 +447,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['tag'] as _i4.TagEndpoint).getTags(
+              (endpoints['tag'] as _i5.TagEndpoint).getTags(
             session,
             limit: params['limit'],
           ),
@@ -357,7 +465,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['tag'] as _i4.TagEndpoint).getTagById(
+              (endpoints['tag'] as _i5.TagEndpoint).getTagById(
             session,
             params['id'],
           ),
@@ -375,7 +483,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['tag'] as _i4.TagEndpoint).getTagsSince(
+              (endpoints['tag'] as _i5.TagEndpoint).getTagsSince(
             session,
             params['since'],
           ),
@@ -385,7 +493,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'tag': _i1.ParameterDescription(
               name: 'tag',
-              type: _i1.getType<_i13.Tag>(),
+              type: _i1.getType<_i15.Tag>(),
               nullable: false,
             )
           },
@@ -393,7 +501,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['tag'] as _i4.TagEndpoint).updateTag(
+              (endpoints['tag'] as _i5.TagEndpoint).updateTag(
             session,
             params['tag'],
           ),
@@ -408,7 +516,7 @@ class Endpoints extends _i1.EndpointDispatch {
             Map<String, dynamic> params,
             Map<String, Stream> streamParams,
           ) =>
-              (endpoints['tag'] as _i4.TagEndpoint).watchEvents(session),
+              (endpoints['tag'] as _i5.TagEndpoint).watchEvents(session),
         ),
       },
     );
@@ -421,7 +529,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'task': _i1.ParameterDescription(
               name: 'task',
-              type: _i1.getType<_i14.Task>(),
+              type: _i1.getType<_i16.Task>(),
               nullable: false,
             )
           },
@@ -429,7 +537,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['task'] as _i5.TaskEndpoint).createTask(
+              (endpoints['task'] as _i6.TaskEndpoint).createTask(
             session,
             params['task'],
           ),
@@ -447,7 +555,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['task'] as _i5.TaskEndpoint).getTasks(
+              (endpoints['task'] as _i6.TaskEndpoint).getTasks(
             session,
             limit: params['limit'],
           ),
@@ -465,7 +573,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['task'] as _i5.TaskEndpoint).getTaskById(
+              (endpoints['task'] as _i6.TaskEndpoint).getTaskById(
             session,
             params['id'],
           ),
@@ -483,7 +591,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['task'] as _i5.TaskEndpoint).getTasksSince(
+              (endpoints['task'] as _i6.TaskEndpoint).getTasksSince(
             session,
             params['since'],
           ),
@@ -493,7 +601,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'task': _i1.ParameterDescription(
               name: 'task',
-              type: _i1.getType<_i14.Task>(),
+              type: _i1.getType<_i16.Task>(),
               nullable: false,
             )
           },
@@ -501,7 +609,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['task'] as _i5.TaskEndpoint).updateTask(
+              (endpoints['task'] as _i6.TaskEndpoint).updateTask(
             session,
             params['task'],
           ),
@@ -519,7 +627,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['task'] as _i5.TaskEndpoint).getTasksByCategoryId(
+              (endpoints['task'] as _i6.TaskEndpoint).getTasksByCategoryId(
             session,
             params['categoryId'],
           ),
@@ -534,7 +642,7 @@ class Endpoints extends _i1.EndpointDispatch {
             Map<String, dynamic> params,
             Map<String, Stream> streamParams,
           ) =>
-              (endpoints['task'] as _i5.TaskEndpoint).watchEvents(session),
+              (endpoints['task'] as _i6.TaskEndpoint).watchEvents(session),
         ),
       },
     );
@@ -547,7 +655,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'taskTagMap': _i1.ParameterDescription(
               name: 'taskTagMap',
-              type: _i1.getType<_i15.TaskTagMap>(),
+              type: _i1.getType<_i17.TaskTagMap>(),
               nullable: false,
             )
           },
@@ -555,7 +663,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['taskTagMap'] as _i6.TaskTagMapEndpoint)
+              (endpoints['taskTagMap'] as _i7.TaskTagMapEndpoint)
                   .createTaskTagMap(
             session,
             params['taskTagMap'],
@@ -574,7 +682,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['taskTagMap'] as _i6.TaskTagMapEndpoint)
+              (endpoints['taskTagMap'] as _i7.TaskTagMapEndpoint)
                   .getTagsForTask(
             session,
             params['taskId'],
@@ -593,7 +701,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['taskTagMap'] as _i6.TaskTagMapEndpoint)
+              (endpoints['taskTagMap'] as _i7.TaskTagMapEndpoint)
                   .getTasksForTag(
             session,
             params['tagId'],
@@ -612,7 +720,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['taskTagMap'] as _i6.TaskTagMapEndpoint)
+              (endpoints['taskTagMap'] as _i7.TaskTagMapEndpoint)
                   .getTaskTagMapsSince(
             session,
             params['since'],
@@ -636,7 +744,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['taskTagMap'] as _i6.TaskTagMapEndpoint)
+              (endpoints['taskTagMap'] as _i7.TaskTagMapEndpoint)
                   .deleteTaskTagMapByTaskAndTag(
             session,
             params['taskId'],
@@ -653,7 +761,7 @@ class Endpoints extends _i1.EndpointDispatch {
             Map<String, dynamic> params,
             Map<String, Stream> streamParams,
           ) =>
-              (endpoints['taskTagMap'] as _i6.TaskTagMapEndpoint)
+              (endpoints['taskTagMap'] as _i7.TaskTagMapEndpoint)
                   .watchEvents(session),
         ),
       },
@@ -667,7 +775,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'testData': _i1.ParameterDescription(
               name: 'testData',
-              type: _i1.getType<_i16.TestData>(),
+              type: _i1.getType<_i18.TestData>(),
               nullable: false,
             )
           },
@@ -675,7 +783,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['testData'] as _i7.TestDataEndpoint).createTestData(
+              (endpoints['testData'] as _i8.TestDataEndpoint).createTestData(
             session,
             params['testData'],
           ),
@@ -687,7 +795,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['testData'] as _i7.TestDataEndpoint)
+              (endpoints['testData'] as _i8.TestDataEndpoint)
                   .listTestDatas(session),
         ),
         'updateTestData': _i1.MethodConnector(
@@ -695,7 +803,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'testData': _i1.ParameterDescription(
               name: 'testData',
-              type: _i1.getType<_i16.TestData>(),
+              type: _i1.getType<_i18.TestData>(),
               nullable: false,
             )
           },
@@ -703,7 +811,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['testData'] as _i7.TestDataEndpoint).updateTestData(
+              (endpoints['testData'] as _i8.TestDataEndpoint).updateTestData(
             session,
             params['testData'],
           ),
@@ -713,7 +821,7 @@ class Endpoints extends _i1.EndpointDispatch {
           params: {
             'testData': _i1.ParameterDescription(
               name: 'testData',
-              type: _i1.getType<_i16.TestData>(),
+              type: _i1.getType<_i18.TestData>(),
               nullable: false,
             )
           },
@@ -721,7 +829,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['testData'] as _i7.TestDataEndpoint).deleteTestData(
+              (endpoints['testData'] as _i8.TestDataEndpoint).deleteTestData(
             session,
             params['testData'],
           ),
@@ -739,7 +847,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['userManagement'] as _i8.UserManagementEndpoint)
+              (endpoints['userManagement'] as _i9.UserManagementEndpoint)
                   .getMyUserContext(session),
         )
       },
@@ -761,13 +869,13 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['greeting'] as _i9.GreetingEndpoint).hello(
+              (endpoints['greeting'] as _i10.GreetingEndpoint).hello(
             session,
             params['name'],
           ),
         )
       },
     );
-    modules['serverpod_auth'] = _i17.Endpoints()..initializeEndpoints(server);
+    modules['serverpod_auth'] = _i19.Endpoints()..initializeEndpoints(server);
   }
 }

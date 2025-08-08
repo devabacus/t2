@@ -1,3 +1,10 @@
+admin:
+  - listUsers:
+  - updateUserRole:
+  - listRoles:
+  - listPermissions:
+  - createOrUpdateRole:
+  - deleteRole:
 category:
   - createCategory:
   - getCategories:
