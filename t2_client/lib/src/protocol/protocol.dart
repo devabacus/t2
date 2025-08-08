@@ -39,10 +39,12 @@ import 'package:t2_client/src/protocol/user/permission.dart' as _i27;
 import 'package:uuid/uuid_value.dart' as _i28;
 import 'package:t2_client/src/protocol/category.dart' as _i29;
 import 'package:t2_client/src/protocol/configuration.dart' as _i30;
-import 'package:t2_client/src/protocol/tag.dart' as _i31;
-import 'package:t2_client/src/protocol/task.dart' as _i32;
-import 'package:t2_client/src/protocol/task_tag_map.dart' as _i33;
-import 'package:t2_client/src/protocol/test_data.dart' as _i34;
+import 'package:t2_client/src/protocol/user/customer.dart' as _i31;
+import 'package:t2_client/src/protocol/user/super_user_details.dart' as _i32;
+import 'package:t2_client/src/protocol/tag.dart' as _i33;
+import 'package:t2_client/src/protocol/task.dart' as _i34;
+import 'package:t2_client/src/protocol/task_tag_map.dart' as _i35;
+import 'package:t2_client/src/protocol/test_data.dart' as _i36;
 export 'greeting.dart';
 export 'category.dart';
 export 'category_sync_event.dart';
@@ -257,18 +259,27 @@ class Protocol extends _i1.SerializationManager {
           .map((e) => deserialize<_i30.Configuration>(e))
           .toList() as T;
     }
-    if (t == List<_i31.Tag>) {
-      return (data as List).map((e) => deserialize<_i31.Tag>(e)).toList() as T;
-    }
-    if (t == List<_i32.Task>) {
-      return (data as List).map((e) => deserialize<_i32.Task>(e)).toList() as T;
-    }
-    if (t == List<_i33.TaskTagMap>) {
-      return (data as List).map((e) => deserialize<_i33.TaskTagMap>(e)).toList()
+    if (t == List<_i31.Customer>) {
+      return (data as List).map((e) => deserialize<_i31.Customer>(e)).toList()
           as T;
     }
-    if (t == List<_i34.TestData>) {
-      return (data as List).map((e) => deserialize<_i34.TestData>(e)).toList()
+    if (t == List<_i32.SuperUserDetails>) {
+      return (data as List)
+          .map((e) => deserialize<_i32.SuperUserDetails>(e))
+          .toList() as T;
+    }
+    if (t == List<_i33.Tag>) {
+      return (data as List).map((e) => deserialize<_i33.Tag>(e)).toList() as T;
+    }
+    if (t == List<_i34.Task>) {
+      return (data as List).map((e) => deserialize<_i34.Task>(e)).toList() as T;
+    }
+    if (t == List<_i35.TaskTagMap>) {
+      return (data as List).map((e) => deserialize<_i35.TaskTagMap>(e)).toList()
+          as T;
+    }
+    if (t == List<_i36.TestData>) {
+      return (data as List).map((e) => deserialize<_i36.TestData>(e)).toList()
           as T;
     }
     try {
