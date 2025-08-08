@@ -1,3 +1,5 @@
+// lib/features/admin/presentation/pages/user_page.dart
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -6,7 +8,7 @@ import 'package:t2_client/t2_client.dart';
 import '../base/base_list_page.dart';
 import '../providers/users_providers.dart';
 import '../routings/user_routes_constants.dart';
-import '../widgets/dialogs/user_dialogs.dart'; // <-- 1. Импортируем наш новый файл
+import '../widgets/dialogs/user_dialogs.dart';
 
 class UsersPage extends BaseListPage<UserDetails> {
   const UsersPage({super.key});
@@ -41,12 +43,28 @@ class _UsersPageState extends BaseListPageState<UserDetails, UsersPage> {
   String getItemDisplayName(UserDetails item) => item.userInfo.userName ?? 'N/A';
 
   @override
+  Comparable<dynamic> getComparableValue(UserDetails item, int columnIndex) {
+    switch (columnIndex) {
+      case 0: // Имя
+        return item.userInfo.userName?.toLowerCase() ?? '';
+      case 1: // Email
+        return item.userInfo.email?.toLowerCase() ?? '';
+      case 2: // Роль
+        return item.role?.name.toLowerCase() ?? '';
+      case 3: // Статус
+        return item.userInfo.blocked.toString(); // "true" или "false"
+      default:
+        return item.userInfo.id ?? 0;
+    }
+  }
+
+  @override
   List<DataColumn> getColumns() {
     return [
-      const DataColumn(label: Text('Имя')),
-      const DataColumn(label: Text('Email')),
-      const DataColumn(label: Text('Роль')),
-      const DataColumn(label: Text('Статус')),
+      DataColumn(label: const Text('Имя'), onSort: onSort),
+      DataColumn(label: const Text('Email'), onSort: onSort),
+      DataColumn(label: const Text('Роль'), onSort: onSort),
+      DataColumn(label: const Text('Статус'), onSort: onSort),
     ];
   }
 
@@ -86,6 +104,7 @@ class _UsersPageState extends BaseListPageState<UserDetails, UsersPage> {
   @override
   Future<void> deleteItem(UserDetails item) async {
     await ref.read(deleteUserProvider(item.userInfo.id!).future);
+    ref.invalidate(usersListProvider);
   }
 
   @override
@@ -99,7 +118,7 @@ class _UsersPageState extends BaseListPageState<UserDetails, UsersPage> {
           size: 20,
         ),
         tooltip: user.blocked ? 'Разблокировать' : 'Заблокировать',
-        mouseCursor: SystemMouseCursors.click, // <-- ДОБАВЛЕНО
+        mouseCursor: SystemMouseCursors.click,
         onPressed: () {
           showBlockUserDialog(
             context: context,
@@ -111,5 +130,4 @@ class _UsersPageState extends BaseListPageState<UserDetails, UsersPage> {
       ),
     ];
   }
-  
 }

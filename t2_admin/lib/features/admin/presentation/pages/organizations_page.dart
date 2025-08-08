@@ -44,12 +44,35 @@ class _OrganizationsPageState
   String getItemDisplayName(Customer item) => item.name;
 
   @override
+  Comparable<dynamic> getComparableValue(Customer item, int columnIndex) {
+    switch (columnIndex) {
+      case 0: // Название
+        return item.name.toLowerCase();
+      case 1: // Email
+        return item.email?.toLowerCase() ?? '';
+      case 3: // ID
+        return item.id.toString();
+      default:
+        return item.createdAt; // По умолчанию, например, для несортируемых колонок
+    }
+  }
+
+  @override
   List<DataColumn> getColumns() {
     return [
-      const DataColumn(label: Text('Название')),
-      const DataColumn(label: Text('Email')),
-      const DataColumn(label: Text('Описание')),
-      const DataColumn(label: Text('ID')),
+      DataColumn(
+        label: const Text('Название'),
+        onSort: onSort,
+      ),
+      DataColumn(
+        label: const Text('Email'),
+        onSort: onSort,
+      ),
+      const DataColumn(label: Text('Описание')), // Несортируемая колонка
+      DataColumn(
+        label: const Text('ID'),
+        onSort: onSort,
+      ),
     ];
   }
 
@@ -77,12 +100,10 @@ class _OrganizationsPageState
 
   @override
   Future<void> deleteItem(Customer item) async {
-    // Внимание: перед удалением базовый класс покажет стандартный диалог подтверждения.
-    // Если вам нужен кастомный диалог (как был раньше, с предупреждением об удалении пользователей),
-    // вам нужно будет переопределить метод `showDeleteConfirmation` из `BaseListPageState`.
     await ref.read(deleteOrganizationProvider(item.id.toString()).future);
+    ref.invalidate(organizationsListProvider);
   }
 
   @override
-  bool canEdit(Customer item) => true; // Редактирование пока не реализовано
+  bool canEdit(Customer item) => true;
 }

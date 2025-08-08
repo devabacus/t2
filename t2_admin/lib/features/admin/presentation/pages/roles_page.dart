@@ -7,7 +7,7 @@ import 'package:t2_client/t2_client.dart';
 
 import '../base/base_list_page.dart';
 import '../providers/roles_providers.dart';
-import '../providers/users_providers.dart';
+import '../providers/users_providers.dart'; // Для получения списка организаций
 import '../routings/roles_routes_constants.dart';
 
 class RolesPage extends BaseListPage<Role> {
@@ -18,8 +18,6 @@ class RolesPage extends BaseListPage<Role> {
 }
 
 class _RolesPageState extends BaseListPageState<Role, RolesPage> {
-
-
   @override
   String get pageTitle => 'Управление ролями';
 
@@ -45,31 +43,43 @@ class _RolesPageState extends BaseListPageState<Role, RolesPage> {
   String getItemDisplayName(Role item) => item.name;
 
   @override
+  Comparable<dynamic> getComparableValue(Role item, int columnIndex) {
+    switch (columnIndex) {
+      case 0: // Название
+        return item.name.toLowerCase();
+      // Организацию сложно сортировать на клиенте, так как это асинхронный запрос.
+      // Лучше всего делать это на сервере. Пока мы ее не сортируем.
+      case 3: // ID
+        return item.id.toString();
+      default:
+        return item.createdAt ?? DateTime(1970);
+    }
+  }
+
+  @override
   List<DataColumn> getColumns() {
     return [
-      const DataColumn(label: Text('Название')),
+      DataColumn(label: const Text('Название'), onSort: onSort),
       const DataColumn(label: Text('Описание')),
-      const DataColumn(label: Text('Организация')), // Предполагается, что вы добавите получение Customer в Role
-      const DataColumn(label: Text('ID')),
+      const DataColumn(label: Text('Организация')), // Несортируемая колонка
+      DataColumn(label: const Text('ID'), onSort: onSort),
     ];
   }
 
   @override
   DataRow buildDataRow(Role role) {
-    // ПРИМЕЧАНИЕ: На сервере необходимо будет добавить `include: Role.include(customer: Customer.include())`
-    // в эндпоинт `saListAllRoles`, чтобы поле `customer` не было null.
+    // Получаем имя организации для отображения
     final customerName = ref.watch(customersListProvider).when(
       data: (customers) {
         try {
-            return customers.firstWhere((c) => c.id == role.customerId).name;
+          return customers.firstWhere((c) => c.id == role.customerId).name;
         } catch (e) {
-            return 'Не найдена';
+          return 'Не найдена';
         }
       },
       loading: () => 'Загрузка...',
       error: (_, __) => 'Ошибка',
     );
-
 
     return DataRow(
       cells: [
@@ -88,14 +98,15 @@ class _RolesPageState extends BaseListPageState<Role, RolesPage> {
 
   @override
   void navigateToEdit(Role item) {
-    context.push('${RolesRoutes.editRolePath}/${item.id}');    
+    context.push('${RolesRoutes.editRolePath}/${item.id}');
   }
 
   @override
   Future<void> deleteItem(Role item) async {
     await ref.read(deleteRoleProvider(item.id.toString()).future);
+    ref.invalidate(rolesListProvider);
   }
   
   @override
-  bool canEdit(Role item) => true; 
+  bool canEdit(Role item) => true;
 }

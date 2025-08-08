@@ -7,6 +7,8 @@ class BaseDataTable<T> extends StatelessWidget {
   final List<DataColumn> columns;
   final Set<T> selectedItems;
   final bool isSelectAll;
+  final int? sortColumnIndex;
+  final bool sortAscending;
   final VoidCallback onSelectAll;
   final VoidCallback onClearSelection;
   final Function(T) onToggleItem;
@@ -23,6 +25,8 @@ class BaseDataTable<T> extends StatelessWidget {
     required this.columns,
     required this.selectedItems,
     required this.isSelectAll,
+    this.sortColumnIndex,
+    required this.sortAscending,
     required this.onSelectAll,
     required this.onClearSelection,
     required this.onToggleItem,
@@ -42,6 +46,8 @@ class BaseDataTable<T> extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         child: DataTable(
           showCheckboxColumn: true,
+          sortColumnIndex: sortColumnIndex,
+          sortAscending: sortAscending,
           columns: [
             DataColumn(
               label: Checkbox(
@@ -64,6 +70,7 @@ class BaseDataTable<T> extends StatelessWidget {
             
             return DataRow(
               selected: isSelected,
+              onSelectChanged: (_) => onToggleItem(item), 
               cells: [
                 DataCell(
                   Checkbox(
@@ -93,7 +100,7 @@ class BaseDataTable<T> extends StatelessWidget {
             color: Colors.blue,
             onPressed: () => onEdit(item),
             tooltip: 'Редактировать',
-            mouseCursor: SystemMouseCursors.click, 
+            mouseCursor: SystemMouseCursors.click,
           ),
         if (canDelete(item))
           IconButton(
@@ -101,7 +108,7 @@ class BaseDataTable<T> extends StatelessWidget {
             color: Colors.red,
             onPressed: () => onDelete(item),
             tooltip: 'Удалить',
-            mouseCursor: SystemMouseCursors.click,  
+            mouseCursor: SystemMouseCursors.click,
           ),
         ...additionalActions(item),
       ],

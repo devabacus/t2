@@ -8,7 +8,6 @@ import '../widgets/common/empty_state.dart';
 import '../widgets/common/error_widget.dart';
 import '../widgets/tables/base_data_table.dart';
 
-/// Базовая логика состояния для списковых страниц
 abstract class BaseListPageStateCore<T, W extends ConsumerStatefulWidget>
     extends ConsumerState<W> {
   
@@ -16,8 +15,8 @@ abstract class BaseListPageStateCore<T, W extends ConsumerStatefulWidget>
   String searchQuery = '';
   final TextEditingController searchController = TextEditingController();
   
-  // Сортировка
-  String? sortField;
+  // Состояние сортировки
+  int? sortColumnIndex;
   bool sortAscending = true;
   
   // Выбор элементов
@@ -37,13 +36,16 @@ abstract class BaseListPageStateCore<T, W extends ConsumerStatefulWidget>
   IconData get entityIcon;
   Color get themeColor => Colors.blue;
   
-  // Изменено: вместо ProviderListenable используем прямой тип провайдера
   AutoDisposeFutureProvider<List<T>> get listProvider;
   
   List<DataColumn> getColumns();
   DataRow buildDataRow(T item);
   String getItemId(T item);
   String getItemDisplayName(T item);
+  
+  /// Возвращает значение для сравнения при сортировке.
+  /// Должен быть реализован в каждой конкретной странице.
+  Comparable<dynamic> getComparableValue(T item, int columnIndex);
   
   void navigateToCreate();
   void navigateToEdit(T item);
@@ -55,7 +57,14 @@ abstract class BaseListPageStateCore<T, W extends ConsumerStatefulWidget>
   List<Widget> getAdditionalActions(T item) => [];
   List<Widget> getAdditionalBulkActions() => [];
 
-  // Общие методы
+  /// Обрабатывает клик по заголовку столбца для сортировки.
+  void onSort(int columnIndex, bool ascending) {
+    setState(() {
+      sortColumnIndex = columnIndex;
+      sortAscending = ascending;
+    });
+  }
+
   bool matchesSearchQuery(T item) {
     if (searchQuery.isEmpty) return true;
     return getItemDisplayName(item)
@@ -120,6 +129,15 @@ abstract class BaseListPageStateCore<T, W extends ConsumerStatefulWidget>
   Widget buildDataContent(List<T> items) {
     final filteredItems = items.where(matchesSearchQuery).toList();
     
+    // Применяем сортировку к отфильтрованным данным
+    if (sortColumnIndex != null) {
+      filteredItems.sort((a, b) {
+        final valA = getComparableValue(a, sortColumnIndex!);
+        final valB = getComparableValue(b, sortColumnIndex!);
+        return sortAscending ? valA.compareTo(valB) : valB.compareTo(valA);
+      });
+    }
+    
     if (filteredItems.isEmpty) {
       return EmptyStateWidget(
         icon: entityIcon,
@@ -137,6 +155,8 @@ abstract class BaseListPageStateCore<T, W extends ConsumerStatefulWidget>
       columns: getColumns(),
       selectedItems: selectedItems,
       isSelectAll: isSelectAll,
+      sortColumnIndex: sortColumnIndex,
+      sortAscending: sortAscending,
       onSelectAll: () => selectAll(filteredItems),
       onClearSelection: clearSelection,
       onToggleItem: toggleItemSelection,
@@ -180,7 +200,7 @@ abstract class BaseListPageStateCore<T, W extends ConsumerStatefulWidget>
     if (confirmed ?? false) {
       try {
         await deleteItem(item);
-        refreshList();
+        // refreshList(); // refreshList будет вызван после успешного удаления
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -228,7 +248,7 @@ abstract class BaseListPageStateCore<T, W extends ConsumerStatefulWidget>
           await deleteItem(item);
         }
         clearSelection();
-        refreshList();
+        // refreshList(); // refreshList будет вызван после успешного удаления
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
