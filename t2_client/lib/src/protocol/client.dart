@@ -19,17 +19,20 @@ import 'package:t2_client/src/protocol/category.dart' as _i7;
 import 'package:t2_client/src/protocol/category_sync_event.dart' as _i8;
 import 'package:t2_client/src/protocol/configuration.dart' as _i9;
 import 'package:t2_client/src/protocol/configuration_sync_event.dart' as _i10;
-import 'package:t2_client/src/protocol/tag.dart' as _i11;
-import 'package:t2_client/src/protocol/tag_sync_event.dart' as _i12;
-import 'package:t2_client/src/protocol/task.dart' as _i13;
-import 'package:t2_client/src/protocol/task_sync_event.dart' as _i14;
-import 'package:t2_client/src/protocol/task_tag_map.dart' as _i15;
-import 'package:t2_client/src/protocol/task_tag_map_sync_event.dart' as _i16;
-import 'package:t2_client/src/protocol/test_data.dart' as _i17;
-import 'package:t2_client/src/protocol/user/user_session_data.dart' as _i18;
-import 'package:t2_client/src/protocol/greeting.dart' as _i19;
-import 'package:serverpod_auth_client/serverpod_auth_client.dart' as _i20;
-import 'protocol.dart' as _i21;
+import 'package:t2_client/src/protocol/user/customer.dart' as _i11;
+import 'package:serverpod_auth_client/serverpod_auth_client.dart' as _i12;
+import 'package:t2_client/src/protocol/user/super_user_details.dart' as _i13;
+import 'package:t2_client/src/protocol/user/super_admin_dashboard.dart' as _i14;
+import 'package:t2_client/src/protocol/tag.dart' as _i15;
+import 'package:t2_client/src/protocol/tag_sync_event.dart' as _i16;
+import 'package:t2_client/src/protocol/task.dart' as _i17;
+import 'package:t2_client/src/protocol/task_sync_event.dart' as _i18;
+import 'package:t2_client/src/protocol/task_tag_map.dart' as _i19;
+import 'package:t2_client/src/protocol/task_tag_map_sync_event.dart' as _i20;
+import 'package:t2_client/src/protocol/test_data.dart' as _i21;
+import 'package:t2_client/src/protocol/user/user_session_data.dart' as _i22;
+import 'package:t2_client/src/protocol/greeting.dart' as _i23;
+import 'protocol.dart' as _i24;
 
 /// {@category Endpoint}
 class EndpointAdmin extends _i1.EndpointRef {
@@ -199,49 +202,154 @@ class EndpointConfiguration extends _i1.EndpointRef {
 }
 
 /// {@category Endpoint}
+class EndpointSuperAdmin extends _i1.EndpointRef {
+  EndpointSuperAdmin(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'superAdmin';
+
+  _i2.Future<List<_i11.Customer>> saListCustomers() =>
+      caller.callServerEndpoint<List<_i11.Customer>>(
+        'superAdmin',
+        'saListCustomers',
+        {},
+      );
+
+  _i2.Future<_i11.Customer> saSaveCustomer(_i11.Customer customer) =>
+      caller.callServerEndpoint<_i11.Customer>(
+        'superAdmin',
+        'saSaveCustomer',
+        {'customer': customer},
+      );
+
+  _i2.Future<_i12.UserInfo?> saCreateUser({
+    required String userName,
+    required String email,
+    required String password,
+    required _i4.UuidValue customerId,
+    required _i4.UuidValue roleId,
+  }) =>
+      caller.callServerEndpoint<_i12.UserInfo?>(
+        'superAdmin',
+        'saCreateUser',
+        {
+          'userName': userName,
+          'email': email,
+          'password': password,
+          'customerId': customerId,
+          'roleId': roleId,
+        },
+      );
+
+  _i2.Future<List<_i13.SuperUserDetails>> saListAllUsers({
+    _i4.UuidValue? customerId,
+    int? limit,
+    int? offset,
+  }) =>
+      caller.callServerEndpoint<List<_i13.SuperUserDetails>>(
+        'superAdmin',
+        'saListAllUsers',
+        {
+          'customerId': customerId,
+          'limit': limit,
+          'offset': offset,
+        },
+      );
+
+  _i2.Future<bool> saBlockUser(
+    int userId,
+    bool blocked,
+  ) =>
+      caller.callServerEndpoint<bool>(
+        'superAdmin',
+        'saBlockUser',
+        {
+          'userId': userId,
+          'blocked': blocked,
+        },
+      );
+
+  _i2.Future<bool> saDeleteCustomer(_i4.UuidValue customerId) =>
+      caller.callServerEndpoint<bool>(
+        'superAdmin',
+        'saDeleteCustomer',
+        {'customerId': customerId},
+      );
+
+  _i2.Future<_i14.SuperAdminDashboard> saGetDashboard() =>
+      caller.callServerEndpoint<_i14.SuperAdminDashboard>(
+        'superAdmin',
+        'saGetDashboard',
+        {},
+      );
+
+  _i2.Future<List<_i5.Role>> saListAllRoles({_i4.UuidValue? customerId}) =>
+      caller.callServerEndpoint<List<_i5.Role>>(
+        'superAdmin',
+        'saListAllRoles',
+        {'customerId': customerId},
+      );
+
+  _i2.Future<bool> saMoveUserToCustomer({
+    required int userId,
+    required _i4.UuidValue newCustomerId,
+    required _i4.UuidValue newRoleId,
+  }) =>
+      caller.callServerEndpoint<bool>(
+        'superAdmin',
+        'saMoveUserToCustomer',
+        {
+          'userId': userId,
+          'newCustomerId': newCustomerId,
+          'newRoleId': newRoleId,
+        },
+      );
+}
+
+/// {@category Endpoint}
 class EndpointTag extends _i1.EndpointRef {
   EndpointTag(_i1.EndpointCaller caller) : super(caller);
 
   @override
   String get name => 'tag';
 
-  _i2.Future<_i11.Tag> createTag(_i11.Tag tag) =>
-      caller.callServerEndpoint<_i11.Tag>(
+  _i2.Future<_i15.Tag> createTag(_i15.Tag tag) =>
+      caller.callServerEndpoint<_i15.Tag>(
         'tag',
         'createTag',
         {'tag': tag},
       );
 
-  _i2.Future<List<_i11.Tag>> getTags({int? limit}) =>
-      caller.callServerEndpoint<List<_i11.Tag>>(
+  _i2.Future<List<_i15.Tag>> getTags({int? limit}) =>
+      caller.callServerEndpoint<List<_i15.Tag>>(
         'tag',
         'getTags',
         {'limit': limit},
       );
 
-  _i2.Future<_i11.Tag?> getTagById(_i4.UuidValue id) =>
-      caller.callServerEndpoint<_i11.Tag?>(
+  _i2.Future<_i15.Tag?> getTagById(_i4.UuidValue id) =>
+      caller.callServerEndpoint<_i15.Tag?>(
         'tag',
         'getTagById',
         {'id': id},
       );
 
-  _i2.Future<List<_i11.Tag>> getTagsSince(DateTime? since) =>
-      caller.callServerEndpoint<List<_i11.Tag>>(
+  _i2.Future<List<_i15.Tag>> getTagsSince(DateTime? since) =>
+      caller.callServerEndpoint<List<_i15.Tag>>(
         'tag',
         'getTagsSince',
         {'since': since},
       );
 
-  _i2.Future<bool> updateTag(_i11.Tag tag) => caller.callServerEndpoint<bool>(
+  _i2.Future<bool> updateTag(_i15.Tag tag) => caller.callServerEndpoint<bool>(
         'tag',
         'updateTag',
         {'tag': tag},
       );
 
-  _i2.Stream<_i12.TagSyncEvent> watchEvents() =>
-      caller.callStreamingServerEndpoint<_i2.Stream<_i12.TagSyncEvent>,
-          _i12.TagSyncEvent>(
+  _i2.Stream<_i16.TagSyncEvent> watchEvents() =>
+      caller.callStreamingServerEndpoint<_i2.Stream<_i16.TagSyncEvent>,
+          _i16.TagSyncEvent>(
         'tag',
         'watchEvents',
         {},
@@ -256,52 +364,52 @@ class EndpointTask extends _i1.EndpointRef {
   @override
   String get name => 'task';
 
-  _i2.Future<_i13.Task> createTask(_i13.Task task) =>
-      caller.callServerEndpoint<_i13.Task>(
+  _i2.Future<_i17.Task> createTask(_i17.Task task) =>
+      caller.callServerEndpoint<_i17.Task>(
         'task',
         'createTask',
         {'task': task},
       );
 
-  _i2.Future<List<_i13.Task>> getTasks({int? limit}) =>
-      caller.callServerEndpoint<List<_i13.Task>>(
+  _i2.Future<List<_i17.Task>> getTasks({int? limit}) =>
+      caller.callServerEndpoint<List<_i17.Task>>(
         'task',
         'getTasks',
         {'limit': limit},
       );
 
-  _i2.Future<_i13.Task?> getTaskById(_i4.UuidValue id) =>
-      caller.callServerEndpoint<_i13.Task?>(
+  _i2.Future<_i17.Task?> getTaskById(_i4.UuidValue id) =>
+      caller.callServerEndpoint<_i17.Task?>(
         'task',
         'getTaskById',
         {'id': id},
       );
 
-  _i2.Future<List<_i13.Task>> getTasksSince(DateTime? since) =>
-      caller.callServerEndpoint<List<_i13.Task>>(
+  _i2.Future<List<_i17.Task>> getTasksSince(DateTime? since) =>
+      caller.callServerEndpoint<List<_i17.Task>>(
         'task',
         'getTasksSince',
         {'since': since},
       );
 
-  _i2.Future<bool> updateTask(_i13.Task task) =>
+  _i2.Future<bool> updateTask(_i17.Task task) =>
       caller.callServerEndpoint<bool>(
         'task',
         'updateTask',
         {'task': task},
       );
 
-  _i2.Stream<_i14.TaskSyncEvent> watchEvents() =>
-      caller.callStreamingServerEndpoint<_i2.Stream<_i14.TaskSyncEvent>,
-          _i14.TaskSyncEvent>(
+  _i2.Stream<_i18.TaskSyncEvent> watchEvents() =>
+      caller.callStreamingServerEndpoint<_i2.Stream<_i18.TaskSyncEvent>,
+          _i18.TaskSyncEvent>(
         'task',
         'watchEvents',
         {},
         {},
       );
 
-  _i2.Future<List<_i13.Task>> getTasksByCategoryId(_i4.UuidValue categoryId) =>
-      caller.callServerEndpoint<List<_i13.Task>>(
+  _i2.Future<List<_i17.Task>> getTasksByCategoryId(_i4.UuidValue categoryId) =>
+      caller.callServerEndpoint<List<_i17.Task>>(
         'task',
         'getTasksByCategoryId',
         {'categoryId': categoryId},
@@ -315,37 +423,37 @@ class EndpointTaskTagMap extends _i1.EndpointRef {
   @override
   String get name => 'taskTagMap';
 
-  _i2.Future<_i15.TaskTagMap> createTaskTagMap(_i15.TaskTagMap taskTagMap) =>
-      caller.callServerEndpoint<_i15.TaskTagMap>(
+  _i2.Future<_i19.TaskTagMap> createTaskTagMap(_i19.TaskTagMap taskTagMap) =>
+      caller.callServerEndpoint<_i19.TaskTagMap>(
         'taskTagMap',
         'createTaskTagMap',
         {'taskTagMap': taskTagMap},
       );
 
-  _i2.Future<List<_i11.Tag>> getTagsForTask(_i4.UuidValue taskId) =>
-      caller.callServerEndpoint<List<_i11.Tag>>(
+  _i2.Future<List<_i15.Tag>> getTagsForTask(_i4.UuidValue taskId) =>
+      caller.callServerEndpoint<List<_i15.Tag>>(
         'taskTagMap',
         'getTagsForTask',
         {'taskId': taskId},
       );
 
-  _i2.Future<List<_i13.Task>> getTasksForTag(_i4.UuidValue tagId) =>
-      caller.callServerEndpoint<List<_i13.Task>>(
+  _i2.Future<List<_i17.Task>> getTasksForTag(_i4.UuidValue tagId) =>
+      caller.callServerEndpoint<List<_i17.Task>>(
         'taskTagMap',
         'getTasksForTag',
         {'tagId': tagId},
       );
 
-  _i2.Future<List<_i15.TaskTagMap>> getTaskTagMapsSince(DateTime? since) =>
-      caller.callServerEndpoint<List<_i15.TaskTagMap>>(
+  _i2.Future<List<_i19.TaskTagMap>> getTaskTagMapsSince(DateTime? since) =>
+      caller.callServerEndpoint<List<_i19.TaskTagMap>>(
         'taskTagMap',
         'getTaskTagMapsSince',
         {'since': since},
       );
 
-  _i2.Stream<_i16.TaskTagMapSyncEvent> watchEvents() =>
-      caller.callStreamingServerEndpoint<_i2.Stream<_i16.TaskTagMapSyncEvent>,
-          _i16.TaskTagMapSyncEvent>(
+  _i2.Stream<_i20.TaskTagMapSyncEvent> watchEvents() =>
+      caller.callStreamingServerEndpoint<_i2.Stream<_i20.TaskTagMapSyncEvent>,
+          _i20.TaskTagMapSyncEvent>(
         'taskTagMap',
         'watchEvents',
         {},
@@ -374,31 +482,31 @@ class EndpointTestData extends _i1.EndpointRef {
   String get name => 'testData';
 
   /// Создает новую запись TestData в базе данных.
-  _i2.Future<_i17.TestData> createTestData(_i17.TestData testData) =>
-      caller.callServerEndpoint<_i17.TestData>(
+  _i2.Future<_i21.TestData> createTestData(_i21.TestData testData) =>
+      caller.callServerEndpoint<_i21.TestData>(
         'testData',
         'createTestData',
         {'testData': testData},
       );
 
   /// Возвращает список всех записей.
-  _i2.Future<List<_i17.TestData>> listTestDatas() =>
-      caller.callServerEndpoint<List<_i17.TestData>>(
+  _i2.Future<List<_i21.TestData>> listTestDatas() =>
+      caller.callServerEndpoint<List<_i21.TestData>>(
         'testData',
         'listTestDatas',
         {},
       );
 
   /// Обновляет существующую запись.
-  _i2.Future<_i17.TestData> updateTestData(_i17.TestData testData) =>
-      caller.callServerEndpoint<_i17.TestData>(
+  _i2.Future<_i21.TestData> updateTestData(_i21.TestData testData) =>
+      caller.callServerEndpoint<_i21.TestData>(
         'testData',
         'updateTestData',
         {'testData': testData},
       );
 
   /// Удаляет запись.
-  _i2.Future<bool> deleteTestData(_i17.TestData testData) =>
+  _i2.Future<bool> deleteTestData(_i21.TestData testData) =>
       caller.callServerEndpoint<bool>(
         'testData',
         'deleteTestData',
@@ -413,8 +521,8 @@ class EndpointUserManagement extends _i1.EndpointRef {
   @override
   String get name => 'userManagement';
 
-  _i2.Future<_i18.UserSessionData?> getMyUserContext() =>
-      caller.callServerEndpoint<_i18.UserSessionData?>(
+  _i2.Future<_i22.UserSessionData?> getMyUserContext() =>
+      caller.callServerEndpoint<_i22.UserSessionData?>(
         'userManagement',
         'getMyUserContext',
         {},
@@ -431,8 +539,8 @@ class EndpointGreeting extends _i1.EndpointRef {
   String get name => 'greeting';
 
   /// Returns a personalized greeting message: "Hello {name}".
-  _i2.Future<_i19.Greeting> hello(String name) =>
-      caller.callServerEndpoint<_i19.Greeting>(
+  _i2.Future<_i23.Greeting> hello(String name) =>
+      caller.callServerEndpoint<_i23.Greeting>(
         'greeting',
         'hello',
         {'name': name},
@@ -441,10 +549,10 @@ class EndpointGreeting extends _i1.EndpointRef {
 
 class Modules {
   Modules(Client client) {
-    auth = _i20.Caller(client);
+    auth = _i12.Caller(client);
   }
 
-  late final _i20.Caller auth;
+  late final _i12.Caller auth;
 }
 
 class Client extends _i1.ServerpodClientShared {
@@ -463,7 +571,7 @@ class Client extends _i1.ServerpodClientShared {
     bool? disconnectStreamsOnLostInternetConnection,
   }) : super(
           host,
-          _i21.Protocol(),
+          _i24.Protocol(),
           securityContext: securityContext,
           authenticationKeyManager: authenticationKeyManager,
           streamingConnectionTimeout: streamingConnectionTimeout,
@@ -476,6 +584,7 @@ class Client extends _i1.ServerpodClientShared {
     admin = EndpointAdmin(this);
     category = EndpointCategory(this);
     configuration = EndpointConfiguration(this);
+    superAdmin = EndpointSuperAdmin(this);
     tag = EndpointTag(this);
     task = EndpointTask(this);
     taskTagMap = EndpointTaskTagMap(this);
@@ -490,6 +599,8 @@ class Client extends _i1.ServerpodClientShared {
   late final EndpointCategory category;
 
   late final EndpointConfiguration configuration;
+
+  late final EndpointSuperAdmin superAdmin;
 
   late final EndpointTag tag;
 
@@ -510,6 +621,7 @@ class Client extends _i1.ServerpodClientShared {
         'admin': admin,
         'category': category,
         'configuration': configuration,
+        'superAdmin': superAdmin,
         'tag': tag,
         'task': task,
         'taskTagMap': taskTagMap,

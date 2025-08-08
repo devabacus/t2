@@ -19,6 +19,16 @@ configuration:
   - getConfigurationsSince:
   - updateConfiguration:
   - watchEvents:
+superAdmin:
+  - saListCustomers:
+  - saSaveCustomer:
+  - saCreateUser:
+  - saListAllUsers:
+  - saBlockUser:
+  - saDeleteCustomer:
+  - saGetDashboard:
+  - saListAllRoles:
+  - saMoveUserToCustomer:
 tag:
   - createTag:
   - getTags:
