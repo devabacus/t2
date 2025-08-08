@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:t2_client/t2_client.dart';
+
 import '../providers/roles_providers.dart';
 import '../providers/users_providers.dart';
 
@@ -19,6 +21,7 @@ class _CreateUserPageState extends ConsumerState<CreateUserPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   
+  String? _selectedCustomerId;
   String? _selectedRoleId;
   bool _isLoading = false;
 
@@ -31,7 +34,9 @@ class _CreateUserPageState extends ConsumerState<CreateUserPage> {
   }
 
   Future<void> _createUser() async {
-    if (!_formKey.currentState!.validate() || _selectedRoleId == null) {
+    if (!_formKey.currentState!.validate() || 
+        _selectedCustomerId == null || 
+        _selectedRoleId == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Заполните все поля')),
       );
@@ -45,6 +50,7 @@ class _CreateUserPageState extends ConsumerState<CreateUserPage> {
         userName: _nameController.text,
         email: _emailController.text,
         password: _passwordController.text,
+        customerId: _selectedCustomerId!,
         roleId: _selectedRoleId!,
       );
 
@@ -70,6 +76,7 @@ class _CreateUserPageState extends ConsumerState<CreateUserPage> {
   @override
   Widget build(BuildContext context) {
     final rolesState = ref.watch(rolesListProvider);
+    final customersState = ref.watch(customersListProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -144,8 +151,47 @@ class _CreateUserPageState extends ConsumerState<CreateUserPage> {
               ),
               const SizedBox(height: 16),
               
+              customersState.when(
+                data: (customers) {
+                  return DropdownButtonFormField<String>(
+                    value: _selectedCustomerId,
+                    decoration: const InputDecoration(
+                      labelText: 'Организация',
+                      border: OutlineInputBorder(),
+                      prefixIcon: Icon(Icons.business),
+                    ),
+                    items: customers.map((customer) {
+                      return DropdownMenuItem<String>(
+                        value: customer.id.toString(),
+                        child: Text(customer.name),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedCustomerId = value;
+                        _selectedRoleId = null; // Сбрасываем роль при смене организации
+                      });
+                    },
+                    validator: (value) {
+                      if (value == null) {
+                        return 'Выберите организацию';
+                      }
+                      return null;
+                    },
+                  );
+                },
+                loading: () => const LinearProgressIndicator(),
+                error: (error, stack) => Text('Ошибка загрузки организаций: $error'),
+              ),
+              const SizedBox(height: 16),
+              
               rolesState.when(
                 data: (roles) {
+                  // Фильтруем роли по выбранной организации
+                  final filteredRoles = _selectedCustomerId != null
+                      ? roles.where((role) => role.customerId.toString() == _selectedCustomerId).toList()
+                      : <Role>[];
+                  
                   return DropdownButtonFormField<String>(
                     value: _selectedRoleId,
                     decoration: const InputDecoration(
@@ -153,15 +199,15 @@ class _CreateUserPageState extends ConsumerState<CreateUserPage> {
                       border: OutlineInputBorder(),
                       prefixIcon: Icon(Icons.security),
                     ),
-                    items: roles.map((role) {
+                    items: filteredRoles.map((role) {
                       return DropdownMenuItem<String>(
                         value: role.id.toString(),
                         child: Text(role.name),
                       );
                     }).toList(),
-                    onChanged: (value) {
+                    onChanged: _selectedCustomerId != null ? (value) {
                       setState(() => _selectedRoleId = value);
-                    },
+                    } : null,
                     validator: (value) {
                       if (value == null) {
                         return 'Выберите роль';

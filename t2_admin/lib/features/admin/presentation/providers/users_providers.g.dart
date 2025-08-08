@@ -6,7 +6,7 @@ part of 'users_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$usersListHash() => r'62302fcf1522677047ed727f09ffc6fc0acaf5d4';
+String _$usersListHash() => r'9fbe1b42f7ef592236bb33fab9c19abd24d39e7a';
 
 /// See also [usersList].
 @ProviderFor(usersList)
@@ -22,7 +22,26 @@ final usersListProvider = AutoDisposeFutureProvider<List<UserDetails>>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef UsersListRef = AutoDisposeFutureProviderRef<List<UserDetails>>;
-String _$createUserUseCaseHash() => r'876ff3fb0e9d95be9521368a3fdcec63be9882bb';
+String _$customersListHash() => r'c1288792b7d9cf800ec11f89fcf428fd1babcc3a';
+
+/// See also [customersList].
+@ProviderFor(customersList)
+final customersListProvider =
+    AutoDisposeFutureProvider<List<Customer>>.internal(
+      customersList,
+      name: r'customersListProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$customersListHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef CustomersListRef = AutoDisposeFutureProviderRef<List<Customer>>;
+String _$createUserUseCaseHash() => r'5996093d3492e7cec2e0a3a2edfc7c766fe9aec2';
 
 /// See also [CreateUserUseCase].
 @ProviderFor(CreateUserUseCase)

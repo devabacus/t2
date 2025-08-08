@@ -25,6 +25,16 @@ Future<List<UserDetails>> usersList(Ref ref) async {
 }
 
 @riverpod
+Future<List<Customer>> customersList(Ref ref) async {
+  final client = ref.read(serverpodClientProvider);
+  try {
+    return await client.superAdmin.saListCustomers();
+  } catch (e) {
+    throw Exception('Не удалось загрузить список организаций: $e');
+  }
+}
+
+@riverpod
 class CreateUserUseCase extends _$CreateUserUseCase {
   @override
   FutureOr<void> build() {
@@ -35,6 +45,7 @@ class CreateUserUseCase extends _$CreateUserUseCase {
     required String userName,
     required String email,
     required String password,
+    required String customerId,
     required String roleId,
   }) async {
     state = const AsyncLoading();
@@ -42,7 +53,8 @@ class CreateUserUseCase extends _$CreateUserUseCase {
     try {
       final client = ref.read(serverpodClientProvider);
       
-      // Преобразуем строку roleId в UuidValue
+      // Преобразуем строки в UuidValue
+      final customerUuid = UuidValue.fromString(customerId);
       final roleUuid = UuidValue.fromString(roleId);
       
       // Используем super admin endpoint для создания пользователя
@@ -50,7 +62,7 @@ class CreateUserUseCase extends _$CreateUserUseCase {
         userName: userName,
         email: email,
         password: password,
-        customerId: UuidValue.fromString('00000000-0000-0000-0000-000000000000'), // TODO: получать из контекста
+        customerId: customerUuid,
         roleId: roleUuid,
       );
       
