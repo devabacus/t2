@@ -20,7 +20,6 @@ GoRouter appRouter(Ref ref) {
     routes: [
       ...getAuthRoutes(),
       ...getAdminRoutes(),
-      // ...getOrganizationsRoutes(),
     ],
   );
 }
