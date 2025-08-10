@@ -31,7 +31,7 @@ void run(List<String> args) async {
   
   // ------------------------------------------
 
-
+  // ВАЖНО: Устанавливаем AuthConfig ДО любых операций с auth
   auth.AuthConfig.set(auth.AuthConfig(
     sendValidationEmail: (session, email, validationCode) async {
       print('Код подтверждения для $email: $validationCode');
@@ -48,12 +48,8 @@ void run(List<String> args) async {
     args,
     Protocol(),
     Endpoints(),
-    // authenticationHandler: auth.authenticationHandler,
     authenticationHandler: auth.authenticationHandler,
-    
   );
-
-
 
   if (!isMaintenance) {
     // Setup a default page at the web root.
@@ -61,16 +57,12 @@ void run(List<String> args) async {
     pod.webServer.addRoute(RouteRoot(), '/index.html');
     // Serve all files in the /static directory.
     pod.webServer.addRoute(RouteStaticDirectory(serverDirectory: 'static', basePath: '/'),'/*',);
-    
   }
-
-  
-  // ------------------------------------------
 
   // Start the server.
   await pod.start();
 
-  // Добавляем простой print для диагностики
+  // Инициализация БД ПОСЛЕ запуска сервера и установки AuthConfig
   print('=== STARTING DATABASE INITIALIZATION ===');
   
   try {

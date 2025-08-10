@@ -216,15 +216,20 @@ class ServerInit {
           
           if (emailAuth == null) {
             print('[ServerInit] Creating EmailAuth for Super Admin...');
+            final passwordHash = await auth.AuthConfig.current.passwordHashGenerator('123qweasd');
+            print('[ServerInit] Generated password hash: $passwordHash');
+            
             await auth.EmailAuth.db.insertRow(
               session,
               auth.EmailAuth(
                 userId: superAdminUser.id!,
                 email: superAdminEmail,
-                hash: auth.AuthConfig.current.passwordHashGenerator('123qweasd').toString(),
-                
+                hash: passwordHash,
               ),
             );
+            print('[ServerInit] EmailAuth created for Super Admin');
+          } else {
+            print('[ServerInit] EmailAuth already exists for Super Admin');
           }
         }
 
@@ -373,12 +378,13 @@ class ServerInit {
               
               if (emailAuth == null) {
                 print('[ServerInit] Creating EmailAuth for Demo User...');
+                final passwordHash = await auth.AuthConfig.current.passwordHashGenerator('123qweasd');
                 await auth.EmailAuth.db.insertRow(
                   session,
                   auth.EmailAuth(
                     userId: demoUser.id!,
                     email: demoUserEmail,
-                    hash: auth.AuthConfig.current.passwordHashGenerator('123qweasd').toString(),
+                    hash: passwordHash,
                   ),
                 );
               }
