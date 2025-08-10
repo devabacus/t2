@@ -34,7 +34,8 @@ class AdminEndpoint extends Endpoint with AuthContextMixin {
   }
 
   Future<List<UserDetails>> listUsers(Session session) async {
-    await _requirePermission(session, Permissions.viewUsers);
+    // await _requirePermission(session, Permissions.viewUsers);
+    await _requirePermission(session, 'users.read');
     final authContext = await getAuthenticatedUserContext(session);
     final customerUsers = await CustomerUser.db.find(session,
         where: (cu) => cu.customerId.equals(authContext.customerId));
@@ -66,14 +67,16 @@ class AdminEndpoint extends Endpoint with AuthContextMixin {
   }
 
   Future<List<Role>> listRoles(Session session) async {
-    await _requirePermission(session, Permissions.viewRoles);
+    // await _requirePermission(session, Permissions.viewRoles);
+    await _requirePermission(session, 'roles.read'); 
     final authContext = await getAuthenticatedUserContext(session);
     return Role.db.find(session,
         where: (r) => r.customerId.equals(authContext.customerId));
   }
 
   Future<List<Permission>> listPermissions(Session session) async {
-    await _requirePermission(session, Permissions.viewRoles);
+    // await _requirePermission(session, Permissions.viewRoles);
+    await _requirePermission(session, 'roles.read');
     return Permission.db.find(session);
   }
 

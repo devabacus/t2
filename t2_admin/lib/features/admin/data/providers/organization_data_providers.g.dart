@@ -7,7 +7,7 @@ part of 'organization_data_providers.dart';
 // **************************************************************************
 
 String _$organizationRepositoryHash() =>
-    r'55d79fb84bd350b6cc108661e48c8b681a938f9b';
+    r'839c71b7ceab9d2d3930bdbe9cefe248db855e50';
 
 /// See also [organizationRepository].
 @ProviderFor(organizationRepository)

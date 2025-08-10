@@ -1,16 +1,26 @@
 // lib/features/admin/data/repositories/role_repository.dart
 
+import 'package:serverpod_auth_client/serverpod_auth_client.dart';
 import 'package:t2_client/t2_client.dart';
 import '../../domain/repositories/i_role_repository.dart';
 
 class RoleRepository implements IRoleRepository {
   final Client _client;
+  final UserInfo? _currentUser;
 
-  RoleRepository(this._client);
+  RoleRepository(this._client, this._currentUser);
+
+  bool get _isSuperAdmin => _currentUser?.id == 1;
 
   @override
   Future<List<Role>> getRoles() async {
-    return await _client.superAdmin.saListAllRoles();
+    // ✨ УСЛОВНАЯ ЛОГИКА ✨
+    if (_isSuperAdmin) {
+      return await _client.superAdmin.saListAllRoles();
+    } else {
+      // Обычный админ получает роли своей организации через admin_endpoint
+      return await _client.admin.listRoles(); // ИСПОЛЬЗУЕМ ПРАВИЛЬНЫЙ ЭНДПОИНТ
+    }
   }
 
   @override

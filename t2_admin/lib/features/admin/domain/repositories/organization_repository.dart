@@ -1,20 +1,34 @@
 // lib/features/admin/data/repositories/organization_repository.dart
 
+import 'package:serverpod_auth_client/serverpod_auth_client.dart';
 import 'package:t2_client/t2_client.dart';
 import '../../domain/repositories/i_organization_repository.dart';
 
 class OrganizationRepository implements IOrganizationRepository {
   final Client _client;
+  final UserInfo? _currentUser; // <-- Добавьте поле
 
-  OrganizationRepository(this._client);
+  // Обновите конструктор
+  OrganizationRepository(this._client, this._currentUser);
+
+  // Добавьте геттер для проверки
+  bool get _isSuperAdmin => _currentUser?.id == 1;
+
 
   @override
   Future<List<Customer>> getOrganizations() async {
-    try {
-      return await _client.superAdmin.saListCustomers();
-    } catch (e) {
-      // Здесь можно добавить логирование или обработку специфических ошибок
-      throw Exception('Не удалось загрузить список организаций: $e');
+    // ✨ Добавьте условную логику ✨
+    if (_isSuperAdmin) {
+      try {
+        return await _client.superAdmin.saListCustomers();
+      } catch (e) {
+        throw Exception('Не удалось загрузить список организаций: $e');
+      }
+    } else {
+      // Для обычного админа возвращаем пустой список, т.к. у него нет прав
+      // видеть все организации. В идеале, кнопку "Организации"
+      // нужно скрыть для таких пользователей в UI.
+      return [];
     }
   }
 

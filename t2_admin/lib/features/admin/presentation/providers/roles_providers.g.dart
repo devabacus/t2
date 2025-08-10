@@ -6,7 +6,7 @@ part of 'roles_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$rolesListHash() => r'1d51c96cd1155cfaa5a72f3f333e3ec549272336';
+String _$rolesListHash() => r'575c7c6022b6fbe2ce540cd27badce7d1081c1d7';
 
 /// See also [rolesList].
 @ProviderFor(rolesList)
@@ -22,7 +22,7 @@ final rolesListProvider = AutoDisposeFutureProvider<List<Role>>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef RolesListRef = AutoDisposeFutureProviderRef<List<Role>>;
-String _$permissionsListHash() => r'46e3fc6d31743f29fa34361a7642aa2b1bc1fa69';
+String _$permissionsListHash() => r'f49cfde02418374a262f0e77612da5a0a41c1a7c';
 
 /// See also [permissionsList].
 @ProviderFor(permissionsList)
@@ -41,7 +41,7 @@ final permissionsListProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef PermissionsListRef = AutoDisposeFutureProviderRef<List<Permission>>;
-String _$createRoleHash() => r'70bd03b5ebd1d99c6ab22c4c695014e1904a126a';
+String _$createRoleHash() => r'2b61ff2729e5621ca0367a381789e1289ae6f893';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -241,7 +241,7 @@ class _CreateRoleProviderElement extends AutoDisposeFutureProviderElement<void>
   String get customerId => (origin as CreateRoleProvider).customerId;
 }
 
-String _$deleteRoleHash() => r'02b139610e626e8381d5140142542d1245d3a5da';
+String _$deleteRoleHash() => r'ed43ff0e6636a2e9ee24a60a0f69364ac3854023';
 
 /// See also [deleteRole].
 @ProviderFor(deleteRole)
@@ -360,7 +360,7 @@ class _DeleteRoleProviderElement extends AutoDisposeFutureProviderElement<void>
   String get roleId => (origin as DeleteRoleProvider).roleId;
 }
 
-String _$roleDetailsHash() => r'510dc7df31aaa67a5777bc93bca47f4f2ab0c62b';
+String _$roleDetailsHash() => r'2ce8ea4f45ea93832578a9c858731e40f2677510';
 
 /// See also [roleDetails].
 @ProviderFor(roleDetails)
@@ -480,7 +480,7 @@ class _RoleDetailsProviderElement
   String get roleId => (origin as RoleDetailsProvider).roleId;
 }
 
-String _$updateRoleHash() => r'dc8e90e238354362d47315808dd54796a722e66f';
+String _$updateRoleHash() => r'e8cbc1aaa24070f77e5ea7ed1273b249eb6b6f1d';
 
 /// See also [updateRole].
 @ProviderFor(updateRole)

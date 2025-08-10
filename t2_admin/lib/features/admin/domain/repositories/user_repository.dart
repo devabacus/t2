@@ -1,20 +1,35 @@
 // lib/features/admin/data/repositories/user_repository.dart
 
+import 'package:serverpod_auth_client/serverpod_auth_client.dart';
 import 'package:t2_client/t2_client.dart';
 import '../../domain/repositories/i_user_repository.dart';
 
 class UserRepository implements IUserRepository {
   final Client _client;
+  final UserInfo? _currentUser;
 
-  UserRepository(this._client);
+  UserRepository(this._client, this._currentUser);
+
+  bool get _isSuperAdmin => _currentUser?.id == 1;
 
   @override
   Future<List<UserDetails>> getUsers() async {
-    final superUserDetails = await _client.superAdmin.saListAllUsers();
-    return superUserDetails.map((superDetail) => UserDetails(
-      userInfo: superDetail.userInfo,
-      role: superDetail.role,
-    )).toList();
+    // ✨ УСЛОВНАЯ ЛОГИКА ✨
+    if (_isSuperAdmin) {
+      // Суперадмин получает всех пользователей через свой эндпоинт
+      final superUserDetails = await _client.superAdmin.saListAllUsers();
+      return superUserDetails
+          .map(
+            (superDetail) => UserDetails(
+              userInfo: superDetail.userInfo,
+              role: superDetail.role,
+            ),
+          )
+          .toList();
+    } else {
+      // Обычный админ получает пользователей своей организации через admin_endpoint
+      return await _client.admin.listUsers(); // ИСПОЛЬЗУЕМ ПРАВИЛЬНЫЙ ЭНДПОИНТ
+    }
   }
 
   @override
