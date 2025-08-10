@@ -9,17 +9,23 @@ import 'package:t2_server/src/generated/protocol.dart';
 class ServerInit {
   /// Основной метод для запуска процесса инициализации.
   static Future<void> run(Session session) async {
+    print('[ServerInit] Starting database initialization...');
+    
     // 1. Создаем все необходимые права в системе.
     final permissions = await _seedPermissions(session);
+    print('[ServerInit] Permissions seeded: ${permissions.length} permissions created or found.');
     session.log('Permissions seeded: ${permissions.length} permissions created or found.', level: LogLevel.info);
 
     // 2. Создаем роли и пользователей.
     await _seedRolesAndUsers(session, permissions);
-    session.log('Roles and Users seeded successfully.', level: LogLevel.info);
+    print('[ServerInit] Roles and Users seeding process completed.');
+    session.log('Roles and Users seeding process completed.', level: LogLevel.info);
   }
 
   /// Создает или находит все определенные права доступа в базе данных.
   static Future<Map<String, Permission>> _seedPermissions(Session session) async {
+    print('[ServerInit] Seeding permissions...');
+    
     final Map<String, String> permissionDefinitions = {
       // Права для Организаций
       'organizations.read': 'Просмотр списка организаций',
@@ -51,6 +57,9 @@ class ServerInit {
           createdAt: DateTime.now().toUtc(),
         );
         await Permission.db.insertRow(session, permission);
+        print('[ServerInit] Created permission: $key');
+      } else {
+        print('[ServerInit] Permission already exists: $key');
       }
       seededPermissions[key] = permission;
     }
@@ -60,10 +69,13 @@ class ServerInit {
 
   /// Создает роли, пользователей и связывает их с правами.
   static Future<void> _seedRolesAndUsers(Session session, Map<String, Permission> permissions) async {
+    print('[ServerInit] Starting roles and users seeding...');
     
     // --- 1. Создание Организации по умолчанию ---
+    print('[ServerInit] Looking for Default Corp...');
     var defaultCustomer = await Customer.db.findFirstRow(session, where: (c) => c.name.equals('Default Corp'));
     if (defaultCustomer == null) {
+      print('[ServerInit] Creating Default Corp...');
       defaultCustomer = Customer(
           name: 'Default Corp', 
           userId: 0, // будет перезаписано при создании суперадмина
@@ -72,11 +84,16 @@ class ServerInit {
           isDeleted: false
       );
       defaultCustomer = await Customer.db.insertRow(session, defaultCustomer);
+      print('[ServerInit] Default Corp created with ID: ${defaultCustomer.id}');
+    } else {
+      print('[ServerInit] Default Corp already exists with ID: ${defaultCustomer.id}');
     }
     
     // --- 2. Создание роли "Супер Администратор" ---
+    print('[ServerInit] Looking for Super Admin role...');
     var superAdminRole = await Role.db.findFirstRow(session, where: (r) => r.name.equals('Super Admin'));
     if (superAdminRole == null) {
+      print('[ServerInit] Creating Super Admin role...');
       superAdminRole = Role(
         customerId: defaultCustomer.id!,
         name: 'Super Admin',
@@ -84,6 +101,7 @@ class ServerInit {
         createdAt: DateTime.now().toUtc(),
       );
       superAdminRole = await Role.db.insertRow(session, superAdminRole);
+      print('[ServerInit] Super Admin role created with ID: ${superAdminRole.id}');
 
       // Назначаем ВСЕ права этой роли
       for (final p in permissions.values) {
@@ -92,46 +110,75 @@ class ServerInit {
           permissionId: p.id!,
         ));
       }
+      print('[ServerInit] Assigned ${permissions.length} permissions to Super Admin role');
+    } else {
+      print('[ServerInit] Super Admin role already exists with ID: ${superAdminRole.id}');
     }
     
     // --- 3. Создание пользователя "Супер Администратор" ---
     final superAdminEmail = 'admin@example.com';
+    print('[ServerInit] Looking for Super Admin user with email: $superAdminEmail');
+    
     var superAdminUser = await auth.Users.findUserByEmail(session, superAdminEmail);
     if (superAdminUser == null) {
-      superAdminUser = await auth.Users.createUser(
-        session,
-        auth.UserInfo(
-          userName: 'SuperAdmin',
-          email: superAdminEmail,
-          fullName: 'Главный Администратор',
-          created: DateTime.now().toUtc(),
-          scopeNames: [], 
-          blocked: false, 
-          userIdentifier: superAdminEmail,
-        ),
-        '123qweasd', // Установите надежный пароль
-      );
+      print('[ServerInit] Super Admin user not found. Attempting to create...');
+      session.log('Attempting to create Super Admin user...', level: LogLevel.debug);
+      
+      try {
+        superAdminUser = await auth.Users.createUser(
+          session,
+          auth.UserInfo(
+            userName: 'SuperAdmin',
+            email: superAdminEmail,
+            fullName: 'Главный Администратор',
+            created: DateTime.now().toUtc(),
+            scopeNames: [], 
+            blocked: false, 
+            userIdentifier: superAdminEmail,
+          ),
+          '123qweasd',
+        );
 
-      if (superAdminUser != null) {
-        // Связываем пользователя с организацией и ролью
-        await CustomerUser.db.insertRow(session, CustomerUser(
-          customerId: defaultCustomer.id!,
-          userId: superAdminUser.id!,
-          roleId: superAdminRole.id!,
-        ));
+        print('[ServerInit] auth.Users.createUser returned: ${superAdminUser?.toString()}');
+        session.log('auth.Users.createUser for Super Admin returned: ${superAdminUser?.toString()}', level: LogLevel.debug);
 
-        // Обновляем организацию, указывая, кто ее создал
-        defaultCustomer.userId = superAdminUser.id!;
-        await Customer.db.updateRow(session, defaultCustomer);
-        session.log('Super Admin user created successfully with ID: ${superAdminUser.id}', level: LogLevel.info);
-      } else {
-        session.log('Failed to create Super Admin user.', level: LogLevel.error);
+        if (superAdminUser != null) {
+          print('[ServerInit] Creating CustomerUser link...');
+          await CustomerUser.db.insertRow(session, CustomerUser(
+            customerId: defaultCustomer.id!,
+            userId: superAdminUser.id!,
+            roleId: superAdminRole.id!,
+          ));
+
+          defaultCustomer.userId = superAdminUser.id!;
+          await Customer.db.updateRow(session, defaultCustomer);
+          
+          print('[ServerInit] Super Admin user created successfully with ID: ${superAdminUser.id}');
+          session.log('Super Admin user created successfully with ID: ${superAdminUser.id}', level: LogLevel.info);
+        } else {
+          print('[ServerInit] ERROR: auth.Users.createUser returned null for Super Admin');
+          session.log('Failed to create Super Admin user. auth.Users.createUser returned null.', level: LogLevel.error);
+        }
+      } catch (e, stackTrace) {
+        print('[ServerInit] EXCEPTION while creating Super Admin: $e');
+        print('[ServerInit] Stack trace: $stackTrace');
+        session.log(
+          'An exception occurred while creating Super Admin user.',
+          level: LogLevel.error,
+          exception: e,
+          stackTrace: stackTrace,
+        );
       }
+    } else {
+        print('[ServerInit] Super Admin user already exists with ID: ${superAdminUser.id}');
+        session.log('Super Admin user already exists.', level: LogLevel.info);
     }
 
     // --- 4. Создание роли "Demo User" ---
+    print('[ServerInit] Looking for Demo User role...');
     var demoRole = await Role.db.findFirstRow(session, where: (r) => r.name.equals('Demo User'));
     if (demoRole == null) {
+      print('[ServerInit] Creating Demo User role...');
       demoRole = Role(
         customerId: defaultCustomer.id!,
         name: 'Demo User',
@@ -140,7 +187,6 @@ class ServerInit {
       );
       demoRole = await Role.db.insertRow(session, demoRole);
 
-      // Назначаем права только на чтение
       final readPermissions = permissions.values.where((p) => p.key.endsWith('.read'));
       for (final p in readPermissions) {
         await RolePermission.db.insertRow(session, RolePermission(
@@ -148,37 +194,65 @@ class ServerInit {
           permissionId: p.id!,
         ));
       }
+      print('[ServerInit] Demo User role created with ${readPermissions.length} read permissions');
+    } else {
+      print('[ServerInit] Demo User role already exists');
     }
 
     // --- 5. Создание пользователя "Demo User" ---
     final demoUserEmail = 'demo@example.com';
+    print('[ServerInit] Looking for Demo user with email: $demoUserEmail');
+    
     var demoUser = await auth.Users.findUserByEmail(session, demoUserEmail);
     if (demoUser == null) {
-      demoUser = await auth.Users.createUser(
-        session,
-        auth.UserInfo(
-          userName: 'DemoUser',
-          email: demoUserEmail,
-          fullName: 'Демонстрационный Пользователь',
-          created: DateTime.now().toUtc(),
-          scopeNames: [],
-          blocked: false,
-          userIdentifier: demoUserEmail,
-        ),
-        '123qweasd',
-      );
+        print('[ServerInit] Demo user not found. Attempting to create...');
+        session.log('Attempting to create Demo user...', level: LogLevel.debug);
+        
+        try {
+            demoUser = await auth.Users.createUser(
+                session,
+                auth.UserInfo(
+                    userName: 'DemoUser',
+                    email: demoUserEmail,
+                    fullName: 'Демонстрационный Пользователь',
+                    created: DateTime.now().toUtc(),
+                    scopeNames: [],
+                    blocked: false,
+                    userIdentifier: demoUserEmail,
+                ),
+                '123qweasd',
+            );
 
-      if (demoUser != null) {
-        // Связываем демо-пользователя с организацией и демо-ролью
-        await CustomerUser.db.insertRow(session, CustomerUser(
-          customerId: defaultCustomer.id!,
-          userId: demoUser.id!,
-          roleId: demoRole.id!,
-        ));
-        session.log('Demo User created successfully with ID: ${demoUser.id}', level: LogLevel.info);
-      } else {
-        session.log('Failed to create Demo User.', level: LogLevel.error);
-      }
+            print('[ServerInit] auth.Users.createUser for Demo User returned: ${demoUser?.toString()}');
+            session.log('auth.Users.createUser for Demo User returned: ${demoUser?.toString()}', level: LogLevel.debug);
+
+            if (demoUser != null) {
+                await CustomerUser.db.insertRow(session, CustomerUser(
+                    customerId: defaultCustomer.id!,
+                    userId: demoUser.id!,
+                    roleId: demoRole.id!,
+                ));
+                print('[ServerInit] Demo User created successfully with ID: ${demoUser.id}');
+                session.log('Demo User created successfully with ID: ${demoUser.id}', level: LogLevel.info);
+            } else {
+                print('[ServerInit] ERROR: auth.Users.createUser returned null for Demo User');
+                session.log('Failed to create Demo User. auth.Users.createUser returned null.', level: LogLevel.error);
+            }
+        } catch (e, stackTrace) {
+            print('[ServerInit] EXCEPTION while creating Demo user: $e');
+            print('[ServerInit] Stack trace: $stackTrace');
+            session.log(
+                'An exception occurred while creating Demo user.',
+                level: LogLevel.error,
+                exception: e,
+                stackTrace: stackTrace,
+            );
+        }
+    } else {
+        print('[ServerInit] Demo user already exists with ID: ${demoUser.id}');
+        session.log('Demo user already exists.', level: LogLevel.info);
     }
+    
+    print('[ServerInit] Roles and users seeding completed!');
   }
 }

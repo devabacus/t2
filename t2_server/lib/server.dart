@@ -70,16 +70,31 @@ void run(List<String> args) async {
   // Start the server.
   await pod.start();
 
-   try {
+  // Добавляем простой print для диагностики
+  print('=== STARTING DATABASE INITIALIZATION ===');
+  
+  try {
     // Создаем временную сессию для выполнения операций с БД.
     final session = await pod.createSession(enableLogging: true);
+    
+    print('Session created, starting ServerInit.run()...');
+    
     // Запускаем наш скрипт инициализации.
     await ServerInit.run(session);
+    
+    print('ServerInit.run() completed');
+    
     // Закрываем сессию.
     await session.close();
+    
+    print('=== DATABASE INITIALIZATION COMPLETED ===');
   } catch(e, st) {
+    print('=== DATABASE INITIALIZATION FAILED ===');
+    print('Error: $e');
+    print('Stack trace: $st');
+    
     // Логируем любую ошибку, которая могла произойти во время инициализации.
-    Serverpod.instance.logVerbose(
+    pod.logVerbose(
       'Failed to seed initial data: $e \n$st', 
     );
   }
