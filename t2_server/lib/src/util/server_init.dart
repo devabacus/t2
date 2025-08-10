@@ -189,19 +189,44 @@ class ServerInit {
       session.log('Attempting to create Super Admin user...', level: LogLevel.debug);
       
       try {
+        // Создаем UserInfo
+        final userInfo = auth.UserInfo(
+          userName: 'SuperAdmin',
+          email: superAdminEmail,
+          fullName: 'Главный Администратор',
+          created: DateTime.now().toUtc(),
+          scopeNames: [], 
+          blocked: false, 
+          userIdentifier: superAdminEmail,
+        );
+        
+        // Используем createUser который должен создать и email auth
         superAdminUser = await auth.Users.createUser(
           session,
-          auth.UserInfo(
-            userName: 'SuperAdmin',
-            email: superAdminEmail,
-            fullName: 'Главный Администратор',
-            created: DateTime.now().toUtc(),
-            scopeNames: [], 
-            blocked: false, 
-            userIdentifier: superAdminEmail,
-          ),
+          userInfo,
           '123qweasd',
         );
+        
+        // Если createUser не создал email auth, создаем вручную
+        if (superAdminUser != null) {
+          var emailAuth = await auth.EmailAuth.db.findFirstRow(
+            session,
+            where: (ea) => ea.email.equals(superAdminEmail),
+          );
+          
+          if (emailAuth == null) {
+            print('[ServerInit] Creating EmailAuth for Super Admin...');
+            await auth.EmailAuth.db.insertRow(
+              session,
+              auth.EmailAuth(
+                userId: superAdminUser.id!,
+                email: superAdminEmail,
+                hash: auth.AuthConfig.current.passwordHashGenerator('123qweasd').toString(),
+                
+              ),
+            );
+          }
+        }
 
         print('[ServerInit] auth.Users.createUser returned: ${superAdminUser?.toString()}');
         session.log('auth.Users.createUser for Super Admin returned: ${superAdminUser?.toString()}', level: LogLevel.debug);
@@ -322,19 +347,42 @@ class ServerInit {
         session.log('Attempting to create Demo user...', level: LogLevel.debug);
         
         try {
+            // Создаем UserInfo
+            final demoUserInfo = auth.UserInfo(
+                userName: 'DemoUser',
+                email: demoUserEmail,
+                fullName: 'Демонстрационный Пользователь',
+                created: DateTime.now().toUtc(),
+                scopeNames: [],
+                blocked: false,
+                userIdentifier: demoUserEmail,
+            );
+            
             demoUser = await auth.Users.createUser(
                 session,
-                auth.UserInfo(
-                    userName: 'DemoUser',
-                    email: demoUserEmail,
-                    fullName: 'Демонстрационный Пользователь',
-                    created: DateTime.now().toUtc(),
-                    scopeNames: [],
-                    blocked: false,
-                    userIdentifier: demoUserEmail,
-                ),
+                demoUserInfo,
                 '123qweasd',
             );
+            
+            // Если createUser не создал email auth, создаем вручную
+            if (demoUser != null) {
+              var emailAuth = await auth.EmailAuth.db.findFirstRow(
+                session,
+                where: (ea) => ea.email.equals(demoUserEmail),
+              );
+              
+              if (emailAuth == null) {
+                print('[ServerInit] Creating EmailAuth for Demo User...');
+                await auth.EmailAuth.db.insertRow(
+                  session,
+                  auth.EmailAuth(
+                    userId: demoUser.id!,
+                    email: demoUserEmail,
+                    hash: auth.AuthConfig.current.passwordHashGenerator('123qweasd').toString(),
+                  ),
+                );
+              }
+            }
 
             print('[ServerInit] auth.Users.createUser for Demo User returned: ${demoUser?.toString()}');
             session.log('auth.Users.createUser for Demo User returned: ${demoUser?.toString()}', level: LogLevel.debug);
