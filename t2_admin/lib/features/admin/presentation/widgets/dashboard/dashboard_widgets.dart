@@ -135,11 +135,11 @@ class _QuickActions extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
               if (ref.hasPermission('users.read'))
-              _actionButton(context, 'Пользователи', Icons.people_outline, UsersRoutes.usersPath),
+              _actionButton(context, 'Пользователи', Icons.people_outline, UsersRoutes.users),
             if (ref.hasPermission('roles.read'))
-              _actionButton(context, 'Роли', Icons.security_outlined, RolesRoutes.rolesPath),
+              _actionButton(context, 'Роли', Icons.security_outlined, RolesRoutes.roles),
             if (ref.hasPermission('organizations.read'))
-              _actionButton(context, 'Организации', Icons.business_outlined, OrganizationsRoutes.organizationsPath),
+              _actionButton(context, 'Организации', Icons.business_outlined, OrganizationsRoutes.organizations),
           ],
         ),
       ],
