@@ -56,10 +56,11 @@ class ServerInit {
           description: permissionDefinitions[key],
           createdAt: DateTime.now().toUtc(),
         );
-        await Permission.db.insertRow(session, permission);
-        print('[ServerInit] Created permission: $key');
+        // insertRow возвращает объект с установленным id
+        permission = await Permission.db.insertRow(session, permission);
+        print('[ServerInit] Created permission: $key with ID: ${permission.id}');
       } else {
-        print('[ServerInit] Permission already exists: $key');
+        print('[ServerInit] Permission already exists: $key with ID: ${permission.id}');
       }
       seededPermissions[key] = permission;
     }
@@ -155,15 +156,20 @@ class ServerInit {
     if (isNewSuperAdminRole) {
       // Для новой роли просто добавляем все permissions
       print('[ServerInit] Assigning all permissions to new Super Admin role...');
+      int assignedCount = 0;
       for (final p in permissions.values) {
         if (p.id != null) {
           await RolePermission.db.insertRow(session, RolePermission(
             roleId: superAdminRole.id!,
             permissionId: p.id!,
           ));
+          assignedCount++;
+          print('[ServerInit] Assigned permission ${p.key} (ID: ${p.id}) to Super Admin');
+        } else {
+          print('[ServerInit] WARNING: Permission ${p.key} has null ID, skipping');
         }
       }
-      print('[ServerInit] Assigned ${permissions.length} permissions to Super Admin role');
+      print('[ServerInit] Assigned $assignedCount permissions to Super Admin role');
     } else {
       // Для существующей роли проверяем и восстанавливаем отсутствующие
       await _ensureRolePermissions(
@@ -283,15 +289,20 @@ class ServerInit {
     if (isNewDemoRole) {
       // Для новой роли просто добавляем read permissions
       print('[ServerInit] Assigning read permissions to new Demo User role...');
+      int assignedCount = 0;
       for (final p in readPermissions) {
         if (p.id != null) {
           await RolePermission.db.insertRow(session, RolePermission(
             roleId: demoRole.id!,
             permissionId: p.id!,
           ));
+          assignedCount++;
+          print('[ServerInit] Assigned permission ${p.key} (ID: ${p.id}) to Demo User');
+        } else {
+          print('[ServerInit] WARNING: Permission ${p.key} has null ID, skipping');
         }
       }
-      print('[ServerInit] Assigned ${readPermissions.length} read permissions to Demo User role');
+      print('[ServerInit] Assigned $assignedCount read permissions to Demo User role');
     } else {
       // Для существующей роли проверяем и восстанавливаем отсутствующие
       await _ensureRolePermissions(
