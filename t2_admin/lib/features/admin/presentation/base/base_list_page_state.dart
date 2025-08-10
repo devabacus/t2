@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/services/permission/permission_service.dart';
 import '../widgets/common/list_toolbar.dart';
 import '../widgets/common/bulk_actions_bar.dart';
 import '../widgets/common/empty_state.dart';
@@ -30,6 +31,12 @@ abstract class BaseListPageStateCore<T, W extends ConsumerStatefulWidget>
   }
 
   // Абстрактные методы для реализации в наследниках
+  String? get permissionKeyToRead;
+  String? get permissionKeyToCreate;
+  String? get permissionKeyToUpdate;
+  String? get permissionKeyToDelete;
+
+
   String get pageTitle;
   String get entityNameSingular;
   String get entityNamePlural;
@@ -37,6 +44,14 @@ abstract class BaseListPageStateCore<T, W extends ConsumerStatefulWidget>
   Color get themeColor => Colors.blue;
   
   AutoDisposeFutureProvider<List<T>> get listProvider;
+
+
+   // Переопределяем canDelete и canEdit, чтобы они проверяли права
+  @override
+  bool canDelete(T item) => permissionKeyToDelete == null || ref.hasPermission(permissionKeyToDelete!);
+
+  @override
+  bool canEdit(T item) => permissionKeyToUpdate == null || ref.hasPermission(permissionKeyToUpdate!);
   
   List<DataColumn> getColumns();
   DataRow buildDataRow(T item);
@@ -51,8 +66,8 @@ abstract class BaseListPageStateCore<T, W extends ConsumerStatefulWidget>
   void navigateToEdit(T item);
   Future<void> deleteItem(T item);
   
-  bool canDelete(T item) => true;
-  bool canEdit(T item) => true;
+  // bool canDelete(T item) => true;
+  // bool canEdit(T item) => true;
   
   List<Widget> getAdditionalActions(T item) => [];
   List<Widget> getAdditionalBulkActions() => [];

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:t2_admin/core/services/permission/permission_service.dart';
 import 'base_list_page_state.dart';
 
 /// Базовый класс для страниц со списками сущностей
@@ -17,28 +18,37 @@ abstract class BaseListPage<T> extends ConsumerStatefulWidget {
 abstract class BaseListPageState<T, W extends BaseListPage<T>>
     extends BaseListPageStateCore<T, W> {
   
-  @override
+    @override
   Widget build(BuildContext context) {
+    // 2. Проверяем право на чтение. Если его нет, показываем заглушку.
+    if (permissionKeyToRead != null && !ref.hasPermission(permissionKeyToRead!)) {
+      return Scaffold(
+        appBar: buildAppBar(context),
+        body: const Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.lock, size: 64, color: Colors.grey),
+              SizedBox(height: 16),
+              Text('Доступ запрещен', style: TextStyle(fontSize: 18)),
+              Text('У вас нет прав для просмотра этого раздела.'),
+            ],
+          ),
+        ),
+      );
+    }
+    
     final asyncData = ref.watch(listProvider);
     
     return Scaffold(
       appBar: buildAppBar(context),
       body: Column(
-        children: [
-          buildToolbar(),
-          if (selectedItems.isNotEmpty) buildBulkActionsBar(),
-          Expanded(
-            child: asyncData.when(
-              data: (items) => buildDataContent(items),
-              loading: () => buildLoadingWidget(),
-              error: (error, stack) => buildErrorWidget(error),
-            ),
-          ),
-        ],
+        // ... остальная часть build метода
       ),
       floatingActionButton: buildFloatingActionButton(),
     );
   }
+
 
   PreferredSizeWidget buildAppBar(BuildContext context) {
     return AppBar(
@@ -56,6 +66,13 @@ abstract class BaseListPageState<T, W extends BaseListPage<T>>
   }
 
   Widget buildFloatingActionButton() {
+
+      // 3. Скрываем кнопку, если нет права на создание
+    final canCreate = permissionKeyToCreate == null || ref.hasPermission(permissionKeyToCreate!);
+    
+    if (!canCreate) {
+      return const SizedBox.shrink(); // Возвращаем пустой виджет
+    }
     return FloatingActionButton.extended(
       onPressed: navigateToCreate,
       backgroundColor: themeColor,

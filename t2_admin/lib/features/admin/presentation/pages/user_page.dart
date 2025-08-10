@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:t2_admin/core/services/permission/permission_service.dart';
 import 'package:t2_client/t2_client.dart';
 
 import '../base/base_list_page.dart';
@@ -34,6 +35,16 @@ class UsersPage extends BaseListPage<UserDetails> {
 }
  
 class _UsersPageState extends BaseListPageState<UserDetails, UsersPage> {
+
+@override
+  String? get permissionKeyToRead => 'users.read';
+  @override
+  String? get permissionKeyToCreate => 'users.create';
+  @override
+  String? get permissionKeyToUpdate => 'users.update';
+  @override
+  String? get permissionKeyToDelete => 'users.delete';
+
   @override
   String get pageTitle => 'Управление пользователями';
 
@@ -126,6 +137,9 @@ class _UsersPageState extends BaseListPageState<UserDetails, UsersPage> {
   @override
   List<Widget> getAdditionalActions(UserDetails item) {
     final user = item.userInfo;
+     if (!ref.hasPermission('users.block')) {
+      return [];
+    }
     return [
       IconButton(
         icon: Icon(

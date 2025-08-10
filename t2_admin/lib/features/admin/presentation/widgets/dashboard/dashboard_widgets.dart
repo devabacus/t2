@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:serverpod_auth_client/serverpod_auth_client.dart';
+import '../../../../../core/services/permission/permission_service.dart';
 import 'package:t2_client/t2_client.dart';
 
 import '../../providers/dashboard_providers.dart';
@@ -122,9 +123,9 @@ class _StatCard extends StatelessWidget {
   }
 }
 
-class _QuickActions extends StatelessWidget {
+class _QuickActions extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -133,9 +134,12 @@ class _QuickActions extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _actionButton(context, 'Пользователи', Icons.people_outline, UsersRoutes.users),
-            _actionButton(context, 'Роли', Icons.security_outlined, RolesRoutes.roles),
-            _actionButton(context, 'Организации', Icons.business_outlined, OrganizationsRoutes.organizations),
+              if (ref.hasPermission('users.read'))
+              _actionButton(context, 'Пользователи', Icons.people_outline, UsersRoutes.usersPath),
+            if (ref.hasPermission('roles.read'))
+              _actionButton(context, 'Роли', Icons.security_outlined, RolesRoutes.rolesPath),
+            if (ref.hasPermission('organizations.read'))
+              _actionButton(context, 'Организации', Icons.business_outlined, OrganizationsRoutes.organizationsPath),
           ],
         ),
       ],

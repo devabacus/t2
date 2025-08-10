@@ -18,6 +18,18 @@ class OrganizationsPage extends BaseListPage<Customer> {
 
 class _OrganizationsPageState
     extends BaseListPageState<Customer, OrganizationsPage> {
+
+
+
+ @override
+  String? get permissionKeyToRead => 'organizations.read';
+  @override
+  String? get permissionKeyToCreate => 'organizations.create';
+  @override
+  String? get permissionKeyToUpdate => 'organizations.update';
+  @override
+  String? get permissionKeyToDelete => 'organizations.delete';
+
   @override
   String get pageTitle => 'Управление организациями';
 

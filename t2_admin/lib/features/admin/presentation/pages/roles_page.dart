@@ -18,6 +18,16 @@ class RolesPage extends BaseListPage<Role> {
 }
 
 class _RolesPageState extends BaseListPageState<Role, RolesPage> {
+
+   @override
+  String? get permissionKeyToRead => 'roles.read';
+  @override
+  String? get permissionKeyToCreate => 'roles.create';
+  @override
+  String? get permissionKeyToUpdate => 'roles.update';
+  @override
+  String? get permissionKeyToDelete => 'roles.delete';
+
   @override
   String get pageTitle => 'Управление ролями';
 
