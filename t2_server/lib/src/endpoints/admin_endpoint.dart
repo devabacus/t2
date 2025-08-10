@@ -30,7 +30,7 @@ class AdminEndpoint extends Endpoint with AuthContextMixin {
         !userPermissionKeys.contains(permissionKey)) {
       throw Exception(
           'Доступ запрещен: недостаточно прав для выполнения операции.');
-    }
+    } 
   }
 
   Future<List<UserDetails>> listUsers(Session session) async {
