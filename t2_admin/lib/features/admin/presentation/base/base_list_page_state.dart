@@ -36,7 +36,6 @@ abstract class BaseListPageStateCore<T, W extends ConsumerStatefulWidget>
   String? get permissionKeyToUpdate;
   String? get permissionKeyToDelete;
 
-
   String get pageTitle;
   String get entityNameSingular;
   String get entityNamePlural;
@@ -45,12 +44,8 @@ abstract class BaseListPageStateCore<T, W extends ConsumerStatefulWidget>
   
   AutoDisposeFutureProvider<List<T>> get listProvider;
 
-
-   // Переопределяем canDelete и canEdit, чтобы они проверяли права
-  @override
+  // Переопределяем canDelete и canEdit, чтобы они проверяли права
   bool canDelete(T item) => permissionKeyToDelete == null || ref.hasPermission(permissionKeyToDelete!);
-
-  @override
   bool canEdit(T item) => permissionKeyToUpdate == null || ref.hasPermission(permissionKeyToUpdate!);
   
   List<DataColumn> getColumns();
@@ -65,9 +60,6 @@ abstract class BaseListPageStateCore<T, W extends ConsumerStatefulWidget>
   void navigateToCreate();
   void navigateToEdit(T item);
   Future<void> deleteItem(T item);
-  
-  // bool canDelete(T item) => true;
-  // bool canEdit(T item) => true;
   
   List<Widget> getAdditionalActions(T item) => [];
   List<Widget> getAdditionalBulkActions() => [];
@@ -132,12 +124,16 @@ abstract class BaseListPageStateCore<T, W extends ConsumerStatefulWidget>
   }
 
   Widget buildBulkActionsBar() {
+    // ИСПРАВЛЕНИЕ: Проверяем права на удаление перед показом панели массовых действий
+    final canBulkDelete = permissionKeyToDelete == null || ref.hasPermission(permissionKeyToDelete!);
+    
     return BulkActionsBar(
       selectedCount: selectedItems.length,
       themeColor: themeColor,
       additionalActions: getAdditionalBulkActions(),
-      onDelete: () => deleteSelectedItems(),
+      onDelete: canBulkDelete ? () => deleteSelectedItems() : null, // null отключает кнопку
       onCancel: clearSelection,
+      canDelete: canBulkDelete, // Передаем информацию о правах
     );
   }
 
@@ -165,6 +161,9 @@ abstract class BaseListPageStateCore<T, W extends ConsumerStatefulWidget>
       );
     }
     
+    // ИСПРАВЛЕНИЕ: Показываем checkbox только если есть права на удаление
+    final canBulkDelete = permissionKeyToDelete == null || ref.hasPermission(permissionKeyToDelete!);
+    
     return BaseDataTable<T>(
       items: filteredItems,
       columns: getColumns(),
@@ -181,6 +180,7 @@ abstract class BaseListPageStateCore<T, W extends ConsumerStatefulWidget>
       onEdit: navigateToEdit,
       onDelete: showDeleteConfirmation,
       additionalActions: getAdditionalActions,
+      showCheckboxes: canBulkDelete, // Передаем информацию о правах
     );
   }
 
@@ -215,7 +215,6 @@ abstract class BaseListPageStateCore<T, W extends ConsumerStatefulWidget>
     if (confirmed ?? false) {
       try {
         await deleteItem(item);
-        // refreshList(); // refreshList будет вызван после успешного удаления
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -259,15 +258,16 @@ abstract class BaseListPageStateCore<T, W extends ConsumerStatefulWidget>
 
     if (confirmed ?? false) {
       try {
-        for (final item in selectedItems) {
+        // Удаляем элементы один за другим
+        for (final item in selectedItems.toList()) {
           await deleteItem(item);
         }
         clearSelection();
-        // refreshList(); // refreshList будет вызван после успешного удаления
+        refreshList();
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Элементы удалены'),
+            SnackBar(
+              content: Text('Удалено ${selectedItems.length} элементов'),
               backgroundColor: Colors.green,
             ),
           );
@@ -276,7 +276,7 @@ abstract class BaseListPageStateCore<T, W extends ConsumerStatefulWidget>
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Ошибка: $e'),
+              content: Text('Ошибка при удалении: $e'),
               backgroundColor: Colors.red,
             ),
           );

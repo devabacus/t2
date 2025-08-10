@@ -116,7 +116,4 @@ class _RolesPageState extends BaseListPageState<Role, RolesPage> {
     await ref.read(deleteRoleProvider(item.id.toString()).future);
     ref.invalidate(rolesListProvider);
   }
-  
-  @override
-  bool canEdit(Role item) => true;
 }

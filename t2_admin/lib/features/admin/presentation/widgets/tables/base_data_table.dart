@@ -18,6 +18,7 @@ class BaseDataTable<T> extends StatelessWidget {
   final Function(T) onEdit;
   final Function(T) onDelete;
   final List<Widget> Function(T) additionalActions;
+  final bool showCheckboxes; // Новый параметр для контроля отображения checkbox
 
   const BaseDataTable({
     super.key,
@@ -36,6 +37,7 @@ class BaseDataTable<T> extends StatelessWidget {
     required this.onEdit,
     required this.onDelete,
     required this.additionalActions,
+    this.showCheckboxes = true, // По умолчанию показываем checkbox
   });
 
   @override
@@ -45,22 +47,25 @@ class BaseDataTable<T> extends StatelessWidget {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: DataTable(
-          showCheckboxColumn: true,
+          // ИСПРАВЛЕНИЕ 1: Отключаем встроенные checkbox у DataTable, используем кастомные
+          showCheckboxColumn: false,
           sortColumnIndex: sortColumnIndex,
           sortAscending: sortAscending,
           columns: [
-            DataColumn(
-              label: Checkbox(
-                value: isSelectAll,
-                onChanged: (value) {
-                  if (value ?? false) {
-                    onSelectAll();
-                  } else {
-                    onClearSelection();
-                  }
-                },
+            // Колонка с кастомным checkbox для "выбрать все" (только если showCheckboxes = true)
+            if (showCheckboxes)
+              DataColumn(
+                label: Checkbox(
+                  value: isSelectAll,
+                  onChanged: (value) {
+                    if (value ?? false) {
+                      onSelectAll();
+                    } else {
+                      onClearSelection();
+                    }
+                  },
+                ),
               ),
-            ),
             ...columns,
             const DataColumn(label: Text('Действия')),
           ],
@@ -69,15 +74,18 @@ class BaseDataTable<T> extends StatelessWidget {
             final dataRow = buildDataRow(item);
             
             return DataRow(
-              selected: isSelected,
-              onSelectChanged: (_) => onToggleItem(item), 
+              // ИСПРАВЛЕНИЕ 2: Убираем встроенный выбор строки у DataTable
+              // selected: isSelected,
+              // onSelectChanged: (_) => onToggleItem(item), 
               cells: [
-                DataCell(
-                  Checkbox(
-                    value: isSelected,
-                    onChanged: (_) => onToggleItem(item),
+                // Checkbox для выбора строки (только если showCheckboxes = true)
+                if (showCheckboxes)
+                  DataCell(
+                    Checkbox(
+                      value: isSelected,
+                      onChanged: (_) => onToggleItem(item),
+                    ),
                   ),
-                ),
                 ...dataRow.cells,
                 DataCell(
                   _buildActionsCell(item),

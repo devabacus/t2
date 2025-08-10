@@ -6,8 +6,9 @@ class BulkActionsBar extends StatelessWidget {
   final int selectedCount;
   final Color themeColor;
   final List<Widget> additionalActions;
-  final VoidCallback onDelete;
+  final VoidCallback? onDelete; // Может быть null, если нет прав
   final VoidCallback onCancel;
+  final bool canDelete; // Новый параметр для проверки прав
 
   const BulkActionsBar({
     super.key,
@@ -16,6 +17,7 @@ class BulkActionsBar extends StatelessWidget {
     required this.additionalActions,
     required this.onDelete,
     required this.onCancel,
+    this.canDelete = true, // По умолчанию true для обратной совместимости
   });
 
   @override
@@ -34,14 +36,16 @@ class BulkActionsBar extends StatelessWidget {
           ),
           const Spacer(),
           ...additionalActions,
-          TextButton.icon(
-            onPressed: onDelete,
-            icon: const Icon(Icons.delete, color: Colors.red),
-            label: const Text(
-              'Удалить выбранные',
-              style: TextStyle(color: Colors.red),
+          // ИСПРАВЛЕНИЕ: Показываем кнопку удаления только если есть права
+          if (canDelete && onDelete != null)
+            TextButton.icon(
+              onPressed: onDelete,
+              icon: const Icon(Icons.delete, color: Colors.red),
+              label: const Text(
+                'Удалить выбранные',
+                style: TextStyle(color: Colors.red),
+              ),
             ),
-          ),
           TextButton(
             onPressed: onCancel,
             child: const Text('Отменить'),
