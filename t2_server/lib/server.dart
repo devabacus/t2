@@ -53,19 +53,7 @@ void run(List<String> args) async {
     
   );
 
-   try {
-    // Создаем временную сессию для выполнения операций с БД.
-    final session = await pod.createSession(enableLogging: true);
-    // Запускаем наш скрипт инициализации.
-    await ServerInit.run(session);
-    // Закрываем сессию.
-    await session.close();
-  } catch(e, st) {
-    // Логируем любую ошибку, которая могла произойти во время инициализации.
-    Serverpod.instance.logVerbose(
-      'Failed to seed initial data: $e \n$st', 
-    );
-  }
+
 
   if (!isMaintenance) {
     // Setup a default page at the web root.
@@ -81,6 +69,20 @@ void run(List<String> args) async {
 
   // Start the server.
   await pod.start();
+
+   try {
+    // Создаем временную сессию для выполнения операций с БД.
+    final session = await pod.createSession(enableLogging: true);
+    // Запускаем наш скрипт инициализации.
+    await ServerInit.run(session);
+    // Закрываем сессию.
+    await session.close();
+  } catch(e, st) {
+    // Логируем любую ошибку, которая могла произойти во время инициализации.
+    Serverpod.instance.logVerbose(
+      'Failed to seed initial data: $e \n$st', 
+    );
+  }
 
   // Настраиваем future calls, если они есть
   pod.registerFutureCall(
