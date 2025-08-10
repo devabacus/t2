@@ -15,7 +15,6 @@ class AuthWrapperPage extends ConsumerWidget {
       data: (user) {
         if (user != null) {
           return const AdminPage();
-          // return const LoginPage();
         } else {
           return const LoginPage();          
         }

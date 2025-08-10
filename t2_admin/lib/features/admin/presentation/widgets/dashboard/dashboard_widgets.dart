@@ -133,9 +133,9 @@ class _QuickActions extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _actionButton(context, 'Пользователи', Icons.people_outline, UsersRoutes.usersPath),
-            _actionButton(context, 'Роли', Icons.security_outlined, RolesRoutes.rolesPath),
-            _actionButton(context, 'Организации', Icons.business_outlined, OrganizationsRoutes.organizationsPath),
+            _actionButton(context, 'Пользователи', Icons.people_outline, UsersRoutes.users),
+            _actionButton(context, 'Роли', Icons.security_outlined, RolesRoutes.roles),
+            _actionButton(context, 'Организации', Icons.business_outlined, OrganizationsRoutes.organizations),
           ],
         ),
       ],
@@ -144,7 +144,7 @@ class _QuickActions extends StatelessWidget {
 
   Widget _actionButton(BuildContext context, String label, IconData icon, String path) {
     return GestureDetector(
-      onTap: () => context.push(path),
+      onTap: () => context.pushNamed(path),
       child: Column(
         children: [
           CircleAvatar(
