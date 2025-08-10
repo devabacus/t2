@@ -34,7 +34,7 @@ class SuperAdminEndpoint extends Endpoint with AuthContextMixin {
     }
   }
 
-  Future<UserInfo?> saCreateUser(Session session, {
+   Future<UserInfo?> saCreateUser(Session session, {
     required String userName,
     required String email,
     required String password,
@@ -43,32 +43,31 @@ class SuperAdminEndpoint extends Endpoint with AuthContextMixin {
   }) async {
     await _requireSuperAdmin(session);
 
-    var existing = await Users.findUserByEmail(session, email);
-    if (existing != null) {
+    // 1. ✨ Используем Emails.createUser
+    // Этот метод создает и UserInfo, и EmailAuth (запись для входа) за один вызов,
+    // используя имя пользователя, email и пароль.
+    var createdUser = await Emails.createUser(
+      session,
+      userName,
+      email,
+      password,
+    );
+
+    // 2. Проверяем результат
+    if (createdUser == null) {
+      // Это может произойти, если пользователь с таким email уже существует.
       throw Exception('Пользователь с таким email уже существует.');
     }
-    
-    var userInfo = UserInfo(
-        userIdentifier: email,
-        email: email,
-        userName: userName,
-        created: DateTime.now().toUtc(),
-        scopeNames: [],
-        blocked: false
-    );
-    
-    var createdUser = await Users.createUser(session, userInfo, password);
-    // Users.createUser может вернуть null, поэтому нужна проверка
-    if (createdUser == null) return null;
 
+    // 3. Связываем созданного пользователя с организацией и ролью
     await CustomerUser.db.insertRow(session, CustomerUser(
-        customerId: customerId,
-        userId: createdUser.id!,
-        roleId: roleId,
+      customerId: customerId,
+      userId: createdUser.id!,
+      roleId: roleId,
     ));
+    
     return createdUser;
   }
-
 
   // Добавьте эти методы в ваш AdminEndpoint после существующих sa методов:
 
