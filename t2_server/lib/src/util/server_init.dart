@@ -1,9 +1,9 @@
 // t2_server/lib/src/util/server_init.dart
 
 import 'package:serverpod/serverpod.dart';
-import 'package:t2_server/src/generated/protocol.dart';
 // Важно: импортируем модуль auth для работы с пользователями
 import 'package:serverpod_auth_server/module.dart' as auth;
+import 'package:t2_server/src/generated/protocol.dart';
 
 /// Класс для первоначального заполнения базы данных (seeding).
 class ServerInit {
@@ -119,7 +119,7 @@ class ServerInit {
       ));
 
       // Обновляем организацию, указывая, кто ее создал
-      defaultCustomer.userId = superAdminUser!.id!;
+      defaultCustomer.userId = superAdminUser.id!;
       await Customer.db.updateRow(session, defaultCustomer);
     }
 
