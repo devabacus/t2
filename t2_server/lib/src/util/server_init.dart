@@ -95,32 +95,38 @@ class ServerInit {
     }
     
     // --- 3. Создание пользователя "Супер Администратор" ---
-    var superAdminUser = await auth.Users.findUserByEmail(session, 'admin@example.com');
+    final superAdminEmail = 'admin@example.com';
+    var superAdminUser = await auth.Users.findUserByEmail(session, superAdminEmail);
     if (superAdminUser == null) {
       superAdminUser = await auth.Users.createUser(
         session,
         auth.UserInfo(
           userName: 'SuperAdmin',
-          email: 'aa@aa.ru',
+          email: superAdminEmail,
           fullName: 'Главный Администратор',
           created: DateTime.now().toUtc(),
           scopeNames: [], 
           blocked: false, 
-          userIdentifier: 'admin@example.com',
+          userIdentifier: superAdminEmail,
         ),
         '123qweasd', // Установите надежный пароль
       );
 
-      // Связываем пользователя с организацией и ролью
-      await CustomerUser.db.insertRow(session, CustomerUser(
-        customerId: defaultCustomer.id!,
-        userId: superAdminUser!.id!,
-        roleId: superAdminRole.id!,
-      ));
+      if (superAdminUser != null) {
+        // Связываем пользователя с организацией и ролью
+        await CustomerUser.db.insertRow(session, CustomerUser(
+          customerId: defaultCustomer.id!,
+          userId: superAdminUser.id!,
+          roleId: superAdminRole.id!,
+        ));
 
-      // Обновляем организацию, указывая, кто ее создал
-      defaultCustomer.userId = superAdminUser.id!;
-      await Customer.db.updateRow(session, defaultCustomer);
+        // Обновляем организацию, указывая, кто ее создал
+        defaultCustomer.userId = superAdminUser.id!;
+        await Customer.db.updateRow(session, defaultCustomer);
+        session.log('Super Admin user created successfully with ID: ${superAdminUser.id}', level: LogLevel.info);
+      } else {
+        session.log('Failed to create Super Admin user.', level: LogLevel.error);
+      }
     }
 
     // --- 4. Создание роли "Demo User" ---
@@ -145,28 +151,34 @@ class ServerInit {
     }
 
     // --- 5. Создание пользователя "Demo User" ---
-    var demoUser = await auth.Users.findUserByEmail(session, 'demo@example.com');
+    final demoUserEmail = 'demo@example.com';
+    var demoUser = await auth.Users.findUserByEmail(session, demoUserEmail);
     if (demoUser == null) {
       demoUser = await auth.Users.createUser(
         session,
         auth.UserInfo(
           userName: 'DemoUser',
-          email: 'dd@dd.ru',
+          email: demoUserEmail,
           fullName: 'Демонстрационный Пользователь',
           created: DateTime.now().toUtc(),
           scopeNames: [],
           blocked: false,
-          userIdentifier: 'demo@example.com',
+          userIdentifier: demoUserEmail,
         ),
         '123qweasd',
       );
 
-      // Связываем демо-пользователя с организацией и демо-ролью
-      await CustomerUser.db.insertRow(session, CustomerUser(
-        customerId: defaultCustomer.id!,
-        userId: demoUser!.id!,
-        roleId: demoRole.id!,
-      ));
+      if (demoUser != null) {
+        // Связываем демо-пользователя с организацией и демо-ролью
+        await CustomerUser.db.insertRow(session, CustomerUser(
+          customerId: defaultCustomer.id!,
+          userId: demoUser.id!,
+          roleId: demoRole.id!,
+        ));
+        session.log('Demo User created successfully with ID: ${demoUser.id}', level: LogLevel.info);
+      } else {
+        session.log('Failed to create Demo User.', level: LogLevel.error);
+      }
     }
   }
 }
