@@ -18,9 +18,9 @@ abstract class BaseListPage<T> extends ConsumerStatefulWidget {
 abstract class BaseListPageState<T, W extends BaseListPage<T>>
     extends BaseListPageStateCore<T, W> {
   
-    @override
+  @override
   Widget build(BuildContext context) {
-    // 2. Проверяем право на чтение. Если его нет, показываем заглушку.
+    // 1. Проверяем право на чтение. Если его нет, показываем заглушку.
     if (permissionKeyToRead != null && !ref.hasPermission(permissionKeyToRead!)) {
       return Scaffold(
         appBar: buildAppBar(context),
@@ -38,12 +38,25 @@ abstract class BaseListPageState<T, W extends BaseListPage<T>>
       );
     }
     
+    // 2. Получаем данные от провайдера.
     final asyncData = ref.watch(listProvider);
     
+    // 3. Строим основной Scaffold страницы.
     return Scaffold(
       appBar: buildAppBar(context),
       body: Column(
-        // ... остальная часть build метода
+        children: [
+          // Показываем либо панель поиска, либо панель массовых действий
+          if (selectedItems.isEmpty) buildToolbar() else buildBulkActionsBar(),
+          // Основной контент
+          Expanded(
+            child: asyncData.when(
+              data: (items) => buildDataContent(items),
+              loading: () => buildLoadingWidget(),
+              error: (error, stack) => buildErrorWidget(error),
+            ),
+          ),
+        ],
       ),
       floatingActionButton: buildFloatingActionButton(),
     );
@@ -66,8 +79,7 @@ abstract class BaseListPageState<T, W extends BaseListPage<T>>
   }
 
   Widget buildFloatingActionButton() {
-
-      // 3. Скрываем кнопку, если нет права на создание
+    // 3. Скрываем кнопку, если нет права на создание
     final canCreate = permissionKeyToCreate == null || ref.hasPermission(permissionKeyToCreate!);
     
     if (!canCreate) {

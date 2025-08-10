@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:t2_admin/features/admin/presentation/routings/admin_router_config.dart';
+import 'package:t2_admin/features/admin/presentation/routings/admin_routes_constants.dart'; // <-- Добавьте этот импорт
 import 'package:t2_admin/features/admin/presentation/routings/roles_routes_constants.dart';
 import 'package:t2_admin/features/admin/presentation/routings/user_routes_constants.dart';
 import 'package:t2_admin/features/auth/presentation/providers/auth_state_providers.dart';
@@ -42,8 +43,10 @@ GoRouter appRouter(Ref ref) {
         return AuthRoutes.authWrapperPath;
       }
       
+      // ИЗМЕНЕНИЕ ЗДЕСЬ
       if (isLoggedIn && loggingIn) {
-        return null;
+        // Явное перенаправление на главный экран администратора
+        return AdminRoutes.adminPath; 
       }
 
       final requestedPath = state.matchedLocation;
@@ -57,7 +60,8 @@ GoRouter appRouter(Ref ref) {
       }
 
       if (requiredPermission != null && !userPermissions.contains(requiredPermission)) {
-        return '/admin'; 
+        // Если нет прав, перенаправляем на главный экран админа, где он увидит доступные ему разделы
+        return AdminRoutes.adminPath; 
       }
 
       return null;
