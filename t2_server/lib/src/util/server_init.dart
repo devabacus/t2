@@ -85,9 +85,9 @@ class ServerInit {
         .map((rp) => rp.permissionId)
         .toSet();
     
-    // Находим отсутствующие permissions
+    // Находим отсутствующие permissions (проверяем что id не null)
     final missingPermissions = requiredPermissions
-        .where((p) => !existingPermissionIds.contains(p.id!))
+        .where((p) => p.id != null && !existingPermissionIds.contains(p.id!))
         .toList();
     
     if (missingPermissions.isNotEmpty) {
@@ -134,6 +134,8 @@ class ServerInit {
     // --- 2. Создание роли "Супер Администратор" ---
     print('[ServerInit] Looking for Super Admin role...');
     var superAdminRole = await Role.db.findFirstRow(session, where: (r) => r.name.equals('Super Admin'));
+    bool isNewSuperAdminRole = false;
+    
     if (superAdminRole == null) {
       print('[ServerInit] Creating Super Admin role...');
       superAdminRole = Role(
@@ -144,17 +146,32 @@ class ServerInit {
       );
       superAdminRole = await Role.db.insertRow(session, superAdminRole);
       print('[ServerInit] Super Admin role created with ID: ${superAdminRole.id}');
+      isNewSuperAdminRole = true;
     } else {
       print('[ServerInit] Super Admin role already exists with ID: ${superAdminRole.id}');
     }
     
-    // ВАЖНО: Проверяем и восстанавливаем permissions для Super Admin роли
-    // (даже если роль уже существует)
-    await _ensureRolePermissions(
-      session,
-      superAdminRole,
-      permissions.values.toList(), // Super Admin получает ВСЕ permissions
-    );
+    // Назначаем permissions для Super Admin роли
+    if (isNewSuperAdminRole) {
+      // Для новой роли просто добавляем все permissions
+      print('[ServerInit] Assigning all permissions to new Super Admin role...');
+      for (final p in permissions.values) {
+        if (p.id != null) {
+          await RolePermission.db.insertRow(session, RolePermission(
+            roleId: superAdminRole.id!,
+            permissionId: p.id!,
+          ));
+        }
+      }
+      print('[ServerInit] Assigned ${permissions.length} permissions to Super Admin role');
+    } else {
+      // Для существующей роли проверяем и восстанавливаем отсутствующие
+      await _ensureRolePermissions(
+        session,
+        superAdminRole,
+        permissions.values.toList(),
+      );
+    }
     
     // --- 3. Создание пользователя "Супер Администратор" ---
     final superAdminEmail = 'admin@example.com';
@@ -217,7 +234,7 @@ class ServerInit {
         // Проверяем, есть ли связь CustomerUser для этого пользователя
         var customerUser = await CustomerUser.db.findFirstRow(
           session,
-          where: (cu) => cu.userId.equals(superAdminUser?.id!),
+          where: (cu) => cu.userId.equals(superAdminUser!.id!),
         );
         
         if (customerUser == null) {
@@ -241,6 +258,8 @@ class ServerInit {
     // --- 4. Создание роли "Demo User" ---
     print('[ServerInit] Looking for Demo User role...');
     var demoRole = await Role.db.findFirstRow(session, where: (r) => r.name.equals('Demo User'));
+    bool isNewDemoRole = false;
+    
     if (demoRole == null) {
       print('[ServerInit] Creating Demo User role...');
       demoRole = Role(
@@ -251,20 +270,36 @@ class ServerInit {
       );
       demoRole = await Role.db.insertRow(session, demoRole);
       print('[ServerInit] Demo User role created');
+      isNewDemoRole = true;
     } else {
       print('[ServerInit] Demo User role already exists');
     }
     
-    // Проверяем и восстанавливаем permissions для Demo роли
+    // Назначаем permissions для Demo роли
     final readPermissions = permissions.values
         .where((p) => p.key.endsWith('.read'))
         .toList();
     
-    await _ensureRolePermissions(
-      session,
-      demoRole,
-      readPermissions,
-    );
+    if (isNewDemoRole) {
+      // Для новой роли просто добавляем read permissions
+      print('[ServerInit] Assigning read permissions to new Demo User role...');
+      for (final p in readPermissions) {
+        if (p.id != null) {
+          await RolePermission.db.insertRow(session, RolePermission(
+            roleId: demoRole.id!,
+            permissionId: p.id!,
+          ));
+        }
+      }
+      print('[ServerInit] Assigned ${readPermissions.length} read permissions to Demo User role');
+    } else {
+      // Для существующей роли проверяем и восстанавливаем отсутствующие
+      await _ensureRolePermissions(
+        session,
+        demoRole,
+        readPermissions,
+      );
+    }
 
     // --- 5. Создание пользователя "Demo User" ---
     final demoUserEmail = 'demo@example.com';
@@ -322,7 +357,7 @@ class ServerInit {
         // Проверяем, есть ли связь CustomerUser для этого пользователя
         var customerUser = await CustomerUser.db.findFirstRow(
           session,
-          where: (cu) => cu.userId.equals(demoUser?.id!),
+          where: (cu) => cu.userId.equals(demoUser!.id!),
         );
         
         if (customerUser == null) {
