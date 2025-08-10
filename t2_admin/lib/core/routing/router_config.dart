@@ -9,7 +9,6 @@ import 'package:t2_admin/features/admin/presentation/routings/roles_routes_const
 import 'package:t2_admin/features/admin/presentation/routings/user_routes_constants.dart';
 import 'package:t2_admin/features/auth/presentation/providers/auth_state_providers.dart';
 
-import '../../features/admin/presentation/routings/organizations_router_config.dart';
 import '../../features/admin/presentation/routings/organizations_routes_constants.dart';
 import '../../features/auth/presentation/routing/auth_router_config.dart';
 import '../../features/auth/presentation/routing/auth_routes_constants.dart';
@@ -34,7 +33,6 @@ GoRouter appRouter(Ref ref) {
     routes: [
       ...getAuthRoutes(),
       ...getAdminRoutes(),
-      ...getOrganizationsRoutes(),
     ],
     redirect: (BuildContext context, GoRouterState state) {
       final loggingIn = state.matchedLocation == AuthRoutes.authWrapperPath;

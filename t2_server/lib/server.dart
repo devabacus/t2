@@ -5,6 +5,8 @@ import 'package:serverpod_auth_server/serverpod_auth_server.dart' as auth;
 import 'src/generated/protocol.dart';
 import 'src/generated/endpoints.dart';
 import 'package:t2_server/src/birthday_reminder.dart';
+import 'src/util/server_init.dart';
+
 
 enum FutureCallNames {
   birthdayReminder,
@@ -25,6 +27,8 @@ void run(List<String> args) async {
   } catch (e) {
     // Игнорируем любые ошибки парсинга на этом этапе
   }
+
+  
   // ------------------------------------------
 
 
@@ -49,7 +53,19 @@ void run(List<String> args) async {
     
   );
 
-
+   try {
+    // Создаем временную сессию для выполнения операций с БД.
+    final session = await pod.createSession(enableLogging: true);
+    // Запускаем наш скрипт инициализации.
+    await ServerInit.run(session);
+    // Закрываем сессию.
+    await session.close();
+  } catch(e, st) {
+    // Логируем любую ошибку, которая могла произойти во время инициализации.
+    Serverpod.instance.logVerbose(
+      'Failed to seed initial data: $e \n$st', 
+    );
+  }
 
   if (!isMaintenance) {
     // Setup a default page at the web root.
@@ -59,6 +75,8 @@ void run(List<String> args) async {
     pod.webServer.addRoute(RouteStaticDirectory(serverDirectory: 'static', basePath: '/'),'/*',);
     
   }
+
+  
   // ------------------------------------------
 
   // Start the server.

@@ -101,24 +101,25 @@ class ServerInit {
         session,
         auth.UserInfo(
           userName: 'SuperAdmin',
-          email: 'admin@example.com',
+          email: 'aa@aa.ru',
           fullName: 'Главный Администратор',
           created: DateTime.now().toUtc(),
-          scopeNames: [], // Важно! Не используем скоупы auth, у нас своя система
-          blocked: false,
+          scopeNames: [], 
+          blocked: false, 
+          userIdentifier: 'admin@example.com',
         ),
-        'password123', // Установите надежный пароль
+        '123qweasd', // Установите надежный пароль
       );
 
       // Связываем пользователя с организацией и ролью
       await CustomerUser.db.insertRow(session, CustomerUser(
         customerId: defaultCustomer.id!,
-        userId: superAdminUser.id!,
+        userId: superAdminUser!.id!,
         roleId: superAdminRole.id!,
       ));
 
       // Обновляем организацию, указывая, кто ее создал
-      defaultCustomer.userId = superAdminUser.id!;
+      defaultCustomer.userId = superAdminUser!.id!;
       await Customer.db.updateRow(session, defaultCustomer);
     }
 
@@ -150,19 +151,20 @@ class ServerInit {
         session,
         auth.UserInfo(
           userName: 'DemoUser',
-          email: 'demo@example.com',
+          email: 'dd@dd.ru',
           fullName: 'Демонстрационный Пользователь',
           created: DateTime.now().toUtc(),
           scopeNames: [],
           blocked: false,
+          userIdentifier: 'demo@example.com',
         ),
-        'password123',
+        '123qweasd',
       );
 
       // Связываем демо-пользователя с организацией и демо-ролью
       await CustomerUser.db.insertRow(session, CustomerUser(
         customerId: defaultCustomer.id!,
-        userId: demoUser.id!,
+        userId: demoUser!.id!,
         roleId: demoRole.id!,
       ));
     }
