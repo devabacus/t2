@@ -3,8 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-// 1. Добавляем импорт для доступа к нашему use case
+// 1. Добавляем необходимые импорты
 import '../../../auth/domain/providers/auth_usecase_providers.dart';
+import '../../../auth/presentation/providers/auth_state_providers.dart';
 import '../widgets/dashboard/dashboard_widgets.dart';
 
 class AdminPage extends ConsumerWidget {
@@ -12,6 +13,14 @@ class AdminPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // 2. Получаем состояние аутентификации
+    final authState = ref.watch(authStateChangesProvider);
+    final userInfo = authState.valueOrNull;
+
+    // 3. Проверяем, является ли пользователь суперадмином.
+    // На сервере ID суперадмина жестко задан как 1.
+    final bool isSuperAdmin = userInfo?.id == 1;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Панель управления'),
@@ -19,17 +28,16 @@ class AdminPage extends ConsumerWidget {
           IconButton(
             icon: const Icon(Icons.logout),
             tooltip: 'Выход',
-            // 2. Реализуем логику выхода
             onPressed: () async {
-              // Вызываем use case для выхода
               await ref.read(signOutUseCaseProvider)();
-              // GoRouter и AuthWrapperPage автоматически обработают
-              // перенаправление на страницу входа
             },
           )
         ],
       ),
-      body: const DashboardView(),
+      // 4. Отображаем нужный виджет в зависимости от статуса пользователя
+      body: isSuperAdmin
+          ? const DashboardView() // Полный дашборд для суперадмина
+          : const LimitedDashboardView(), // Ограниченный вид для остальных
     );
   }
 }

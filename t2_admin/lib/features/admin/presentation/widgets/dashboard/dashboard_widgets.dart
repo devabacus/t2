@@ -27,7 +27,7 @@ class DashboardView extends ConsumerWidget {
             _StatsGrid(dashboard: dashboard),
             const SizedBox(height: 24),
             // Секция с быстрыми действиями
-            _QuickActions(),
+            QuickActions(),
             const SizedBox(height: 24),
             // Список последних пользователей
             _RecentUsersList(users: dashboard.recentUsers),
@@ -123,7 +123,7 @@ class _StatCard extends StatelessWidget {
   }
 }
 
-class _QuickActions extends ConsumerWidget {
+class QuickActions extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Column(
@@ -207,3 +207,28 @@ class _RecentUsersList extends StatelessWidget {
     );
   }
 }
+
+class LimitedDashboardView extends StatelessWidget {
+  const LimitedDashboardView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Можно добавить приветствие или другую информацию
+          const Text(
+            'Доступные разделы',
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 20),
+          // Используем виджет с быстрыми действиями, который проверяет права
+          QuickActions(),
+        ],
+      ),
+    );
+  }
+}
+
