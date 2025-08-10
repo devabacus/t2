@@ -10,13 +10,29 @@ import '../providers/users_providers.dart';
 import '../routings/user_routes_constants.dart';
 import '../widgets/dialogs/user_dialogs.dart';
 
+// class UserPage extends StatefulWidget {
+//   const UserPage({super.key});
+
+//   @override
+//   State<UserPage> createState() => _UserPageState();
+// }
+
+// class _UserPageState extends State<UserPage> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return const Placeholder();
+//   }
+// }
+
+
+
 class UsersPage extends BaseListPage<UserDetails> {
   const UsersPage({super.key});
 
   @override
   ConsumerState<UsersPage> createState() => _UsersPageState();
 }
-
+ 
 class _UsersPageState extends BaseListPageState<UserDetails, UsersPage> {
   @override
   String get pageTitle => 'Управление пользователями';
