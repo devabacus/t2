@@ -52,19 +52,38 @@ class AdminRepository implements IAdminRepository {
   // если они не должны быть доступны обычному админу.
   
   @override
-  Future<SuperUserDetails?> getUserDetails(int userId) {
-    throw UnimplementedError();
+  Future<SuperUserDetails?> getUserDetails(int userId) async {
+    // Вызываем новый безопасный эндпоинт, который вернет UserDetails
+    final userDetails = await _client.admin.getUserDetails(userId);
+    if (userDetails == null) return null;
+
+    // Страница редактирования ожидает SuperUserDetails, поэтому мы "обогащаем"
+    // полученные данные информацией об организации текущего админа.
+    final customer = await _client.admin.getMyCustomer();
+
+    return SuperUserDetails(
+      userInfo: userDetails.userInfo,
+      role: userDetails.role,
+      customer: customer,
+      // customerUser не используется на странице редактирования, поэтому может быть null
+      customerUser: null, 
+    );
   }
-  
-  @override
+
+ @override
   Future<void> updateUser({
     required int userId,
     required String userName,
     required String email,
-    required String customerId,
+    required String customerId, // Этот параметр игнорируется, т.к. сервер знает организацию админа
     required String roleId,
-  }) {
-    throw UnimplementedError();
+  }) async {
+    await _client.admin.updateUser(
+        userId: userId,
+        userName: userName,
+        email: email,
+        roleId: UuidValue.fromString(roleId),
+    );
   }
 
   @override

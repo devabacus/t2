@@ -160,6 +160,39 @@ class AdminEndpoint extends Endpoint with AuthContextMixin {
       role: role,
     );
   }
+
+    Future<bool> updateUser(Session session, {
+    required int userId,
+    required String userName,
+    required String email,
+    required UuidValue roleId,
+  }) async {
+    // Проверяем право на обновление пользователей
+    await _requirePermission(session, 'users.update');
+    final authContext = await getAuthenticatedUserContext(session);
+
+    // Проверка №1: Убеждаемся, что редактируемый пользователь принадлежит организации админа
+    final userToUpdateLink = await CustomerUser.db.findFirstRow(session, where: (cu) => cu.userId.equals(userId));
+    if (userToUpdateLink == null || userToUpdateLink.customerId != authContext.customerId) {
+        throw Exception('Пользователь не найден в вашей организации.');
+    }
+
+    // Проверка №2: Убеждаемся, что новая роль также принадлежит организации админа
+    final role = await Role.db.findById(session, roleId);
+    if (role == null || role.customerId != authContext.customerId) {
+        throw Exception('Указанная роль не найдена или не принадлежит вашей организации.');
+    }
+
+    // Вызываем общую логику обновления из сервиса
+    return await _adminService.updateUser(
+        session,
+        userId: userId,
+        userName: userName,
+        email: email,
+        customerId: authContext.customerId, // ID организации берем из сессии
+        roleId: roleId,
+    );
+  }
 }
 
 

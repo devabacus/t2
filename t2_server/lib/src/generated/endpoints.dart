@@ -239,6 +239,60 @@ class Endpoints extends _i1.EndpointDispatch {
             roleId: params['roleId'],
           ),
         ),
+        'getUserDetails': _i1.MethodConnector(
+          name: 'getUserDetails',
+          params: {
+            'userId': _i1.ParameterDescription(
+              name: 'userId',
+              type: _i1.getType<int>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['admin'] as _i2.AdminEndpoint).getUserDetails(
+            session,
+            params['userId'],
+          ),
+        ),
+        'updateUser': _i1.MethodConnector(
+          name: 'updateUser',
+          params: {
+            'userId': _i1.ParameterDescription(
+              name: 'userId',
+              type: _i1.getType<int>(),
+              nullable: false,
+            ),
+            'userName': _i1.ParameterDescription(
+              name: 'userName',
+              type: _i1.getType<String>(),
+              nullable: false,
+            ),
+            'email': _i1.ParameterDescription(
+              name: 'email',
+              type: _i1.getType<String>(),
+              nullable: false,
+            ),
+            'roleId': _i1.ParameterDescription(
+              name: 'roleId',
+              type: _i1.getType<_i12.UuidValue>(),
+              nullable: false,
+            ),
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['admin'] as _i2.AdminEndpoint).updateUser(
+            session,
+            userId: params['userId'],
+            userName: params['userName'],
+            email: params['email'],
+            roleId: params['roleId'],
+          ),
+        ),
       },
     );
     connectors['category'] = _i1.EndpointConnector(

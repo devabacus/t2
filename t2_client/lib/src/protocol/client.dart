@@ -119,6 +119,30 @@ class EndpointAdmin extends _i1.EndpointRef {
           'roleId': roleId,
         },
       );
+
+  _i2.Future<_i3.UserDetails?> getUserDetails(int userId) =>
+      caller.callServerEndpoint<_i3.UserDetails?>(
+        'admin',
+        'getUserDetails',
+        {'userId': userId},
+      );
+
+  _i2.Future<bool> updateUser({
+    required int userId,
+    required String userName,
+    required String email,
+    required _i4.UuidValue roleId,
+  }) =>
+      caller.callServerEndpoint<bool>(
+        'admin',
+        'updateUser',
+        {
+          'userId': userId,
+          'userName': userName,
+          'email': email,
+          'roleId': roleId,
+        },
+      );
 }
 
 /// {@category Endpoint}
