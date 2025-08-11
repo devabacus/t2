@@ -7,7 +7,6 @@ import 'package:t2_client/t2_client.dart';
 import '../base/base_edit_page.dart';
 import '../providers/roles_providers.dart';
 import '../providers/users_providers.dart';
-import 'package:collection/collection.dart';
 
 class EditUserPage extends BaseEditPage<SuperUserDetails> {
   const EditUserPage({super.key, required super.itemId});

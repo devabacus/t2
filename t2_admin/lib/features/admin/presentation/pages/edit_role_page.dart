@@ -102,7 +102,7 @@ class _EditRolePageState extends BaseEditPageState<RoleDetails, EditRolePage> {
           constraints: const BoxConstraints(maxHeight: 200),
           child: ListView(
             children: permissions.map((p) => CheckboxListTile(
-              title: Text(p.key ?? 'N/A'),
+              title: Text(p.key),
               value: _selectedPermissions.contains(p.id.toString()),
               onChanged: (selected) {
                 setState(() {
