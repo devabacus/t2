@@ -1137,6 +1137,35 @@ class _SuperAdminEndpoint {
     });
   }
 
+  _i3.Future<_i16.RoleDetails?> saGetRoleDetails(
+    _i1.TestSessionBuilder sessionBuilder,
+    _i5.UuidValue roleId,
+  ) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+        endpoint: 'superAdmin',
+        method: 'saGetRoleDetails',
+      );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'superAdmin',
+          methodName: 'saGetRoleDetails',
+          parameters: _i1.testObjectToJson({'roleId': roleId}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue = await (_localCallContext.method.call(
+          _localUniqueSession,
+          _localCallContext.arguments,
+        ) as _i3.Future<_i16.RoleDetails?>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
   _i3.Future<bool> saUpdateUser(
     _i1.TestSessionBuilder sessionBuilder, {
     required int userId,
@@ -1227,35 +1256,6 @@ class _SuperAdminEndpoint {
           _localUniqueSession,
           _localCallContext.arguments,
         ) as _i3.Future<_i14.SuperUserDetails?>);
-        return _localReturnValue;
-      } finally {
-        await _localUniqueSession.close();
-      }
-    });
-  }
-
-  _i3.Future<_i16.RoleDetails?> saGetRoleDetails(
-    _i1.TestSessionBuilder sessionBuilder,
-    _i5.UuidValue roleId,
-  ) async {
-    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
-      var _localUniqueSession =
-          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
-        endpoint: 'superAdmin',
-        method: 'saGetRoleDetails',
-      );
-      try {
-        var _localCallContext = await _endpointDispatch.getMethodCallContext(
-          createSessionCallback: (_) => _localUniqueSession,
-          endpointPath: 'superAdmin',
-          methodName: 'saGetRoleDetails',
-          parameters: _i1.testObjectToJson({'roleId': roleId}),
-          serializationManager: _serializationManager,
-        );
-        var _localReturnValue = await (_localCallContext.method.call(
-          _localUniqueSession,
-          _localCallContext.arguments,
-        ) as _i3.Future<_i16.RoleDetails?>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();

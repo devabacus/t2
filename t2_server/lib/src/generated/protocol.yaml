@@ -32,10 +32,10 @@ superAdmin:
   - saListAllPermissions:
   - saCreateOrUpdateRole:
   - saDeleteRole:
+  - saGetRoleDetails:
   - saUpdateUser:
   - saDeleteUser:
   - saGetUserDetails:
-  - saGetRoleDetails:
   - saGetCustomer:
 tag:
   - createTag:

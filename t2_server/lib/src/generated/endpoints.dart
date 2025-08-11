@@ -682,6 +682,25 @@ class Endpoints extends _i1.EndpointDispatch {
             params['roleId'],
           ),
         ),
+        'saGetRoleDetails': _i1.MethodConnector(
+          name: 'saGetRoleDetails',
+          params: {
+            'roleId': _i1.ParameterDescription(
+              name: 'roleId',
+              type: _i1.getType<_i12.UuidValue>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['superAdmin'] as _i5.SuperAdminEndpoint)
+                  .saGetRoleDetails(
+            session,
+            params['roleId'],
+          ),
+        ),
         'saUpdateUser': _i1.MethodConnector(
           name: 'saUpdateUser',
           params: {
@@ -759,25 +778,6 @@ class Endpoints extends _i1.EndpointDispatch {
                   .saGetUserDetails(
             session,
             params['userId'],
-          ),
-        ),
-        'saGetRoleDetails': _i1.MethodConnector(
-          name: 'saGetRoleDetails',
-          params: {
-            'roleId': _i1.ParameterDescription(
-              name: 'roleId',
-              type: _i1.getType<_i12.UuidValue>(),
-              nullable: false,
-            )
-          },
-          call: (
-            _i1.Session session,
-            Map<String, dynamic> params,
-          ) async =>
-              (endpoints['superAdmin'] as _i5.SuperAdminEndpoint)
-                  .saGetRoleDetails(
-            session,
-            params['roleId'],
           ),
         ),
         'saGetCustomer': _i1.MethodConnector(

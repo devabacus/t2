@@ -57,6 +57,7 @@ dependencies:
 #   path: ../Packages/simple_storage  
 # ui_kit:
 #   path: ../Packages/ui_kit
+  collection: ^1.19.1
   serverpod_flutter: 2.9.1
   t2_client:
     path: ../t2_client

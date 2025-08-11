@@ -333,6 +333,13 @@ class EndpointSuperAdmin extends _i1.EndpointRef {
         {'roleId': roleId},
       );
 
+  _i2.Future<_i15.RoleDetails?> saGetRoleDetails(_i4.UuidValue roleId) =>
+      caller.callServerEndpoint<_i15.RoleDetails?>(
+        'superAdmin',
+        'saGetRoleDetails',
+        {'roleId': roleId},
+      );
+
   _i2.Future<bool> saUpdateUser({
     required int userId,
     required String userName,
@@ -363,13 +370,6 @@ class EndpointSuperAdmin extends _i1.EndpointRef {
         'superAdmin',
         'saGetUserDetails',
         {'userId': userId},
-      );
-
-  _i2.Future<_i15.RoleDetails?> saGetRoleDetails(_i4.UuidValue roleId) =>
-      caller.callServerEndpoint<_i15.RoleDetails?>(
-        'superAdmin',
-        'saGetRoleDetails',
-        {'roleId': roleId},
       );
 
   _i2.Future<_i11.Customer?> saGetCustomer(_i4.UuidValue customerId) =>

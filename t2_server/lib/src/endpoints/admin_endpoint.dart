@@ -8,7 +8,6 @@ import '../services/admin_service.dart';
 import 'shared/auth_context_mixin.dart';
 
 class AdminEndpoint extends Endpoint with AuthContextMixin {
-
   final AdminService _adminService = AdminService();
 
   Future<void> _requirePermission(Session session, String permissionKey) async {
@@ -33,19 +32,19 @@ class AdminEndpoint extends Endpoint with AuthContextMixin {
         !userPermissionKeys.contains(permissionKey)) {
       throw Exception(
           'Доступ запрещен: недостаточно прав для выполнения операции.');
-    } 
+    }
   }
 
- Future<List<UserDetails>> listUsers(Session session) async {
+  Future<List<UserDetails>> listUsers(Session session) async {
     await _requirePermission(session, 'users.read');
     final authContext = await getAuthenticatedUserContext(session);
-    
+
     // 4. Делегируем вызов сервису
     return _adminService.listUsersForCustomer(session, authContext.customerId);
   }
 
-  Future<bool> updateUserRole(
-      Session session, {required int userId, required UuidValue roleId}) async {
+  Future<bool> updateUserRole(Session session,
+      {required int userId, required UuidValue roleId}) async {
     await _requirePermission(session, Permissions.manageUsers);
     final authContext = await getAuthenticatedUserContext(session);
     var customerUser = await CustomerUser.db.findFirstRow(session,
@@ -59,70 +58,45 @@ class AdminEndpoint extends Endpoint with AuthContextMixin {
   }
 
   Future<List<Role>> listRoles(Session session) async {
-    // await _requirePermission(session, Permissions.viewRoles);
     await _requirePermission(session, 'roles.read'); 
     final authContext = await getAuthenticatedUserContext(session);
-    return Role.db.find(session,
-        where: (r) => r.customerId.equals(authContext.customerId));
+    return _adminService.listRolesForCustomer(session, authContext.customerId);
   }
 
   Future<List<Permission>> listPermissions(Session session) async {
-    // await _requirePermission(session, Permissions.viewRoles);
     await _requirePermission(session, 'roles.read');
-    return Permission.db.find(session);
+    // Разрешения - общие для всех, поэтому вызываем общий метод
+    return _adminService.listAllPermissions(session);
   }
 
-  Future<Role> createOrUpdateRole(
-      Session session, Role role, List<UuidValue> permissionIds) async {
+  Future<Role> createOrUpdateRole(Session session, Role role, List<UuidValue> permissionIds) async {
     await _requirePermission(session, Permissions.manageRoles);
     final authContext = await getAuthenticatedUserContext(session);
-    role.customerId = authContext.customerId;
-    return await session.db.transaction((transaction) async {
-      Role updatedRole;
-      if (role.id == null) {
-        updatedRole =
-            await Role.db.insertRow(session, role, transaction: transaction);
-      } else {
-        final existingRole = await Role.db.findById(session, role.id!);
-        if (existingRole?.customerId != authContext.customerId) {
-          throw Exception('Нельзя редактировать роль другой организации');
-        }
-        updatedRole =
-            await Role.db.updateRow(session, role, transaction: transaction);
+    role.customerId = authContext.customerId; // Устанавливаем customerId перед передачей в сервис
+
+    // Проверяем, что админ не пытается редактировать роль чужой организации
+    if (role.id != null) {
+      final existingRole = await Role.db.findById(session, role.id!);
+      if (existingRole?.customerId != authContext.customerId) {
+        throw Exception('Нельзя редактировать роль другой организации');
       }
-      await RolePermission.db.deleteWhere(session,
-          where: (rp) => rp.roleId.equals(updatedRole.id!),
-          transaction: transaction);
-      if (permissionIds.isNotEmpty) {
-        final newLinks = permissionIds
-            .map((permId) =>
-                RolePermission(roleId: updatedRole.id!, permissionId: permId))
-            .toList();
-        await RolePermission.db.insert(session, newLinks, transaction: transaction);
-      }
-      return updatedRole;
-    });
+    }
+
+    return _adminService.createOrUpdateRole(session, role: role, permissionIds: permissionIds);
   }
 
   Future<bool> deleteRole(Session session, UuidValue roleId) async {
     await _requirePermission(session, Permissions.manageRoles);
     final authContext = await getAuthenticatedUserContext(session);
+    
+    // Проверяем, что админ не пытается удалить роль чужой организации
     final role = await Role.db.findById(session, roleId);
     if (role == null || role.customerId != authContext.customerId) {
       throw Exception('Роль не найдена или принадлежит другой организации');
     }
-    final assignedUsersCount = await CustomerUser.db
-        .count(session, where: (cu) => cu.roleId.equals(roleId));
-    if (assignedUsersCount > 0) {
-      throw Exception(
-          'Нельзя удалить роль, так как она назначена пользователям.');
-    }
-    await session.db.transaction((transaction) async {
-      await RolePermission.db.deleteWhere(session,
-          where: (rp) => rp.roleId.equals(roleId), transaction: transaction);
-      await Role.db.deleteWhere(session,
-          where: (r) => r.id.equals(roleId), transaction: transaction);
-    });
-    return true;
+
+    return _adminService.deleteRole(session, roleId);
   }  
 }
+
+

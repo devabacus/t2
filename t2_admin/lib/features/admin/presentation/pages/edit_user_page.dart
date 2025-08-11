@@ -7,6 +7,7 @@ import 'package:t2_client/t2_client.dart';
 import '../base/base_edit_page.dart';
 import '../providers/roles_providers.dart';
 import '../providers/users_providers.dart';
+import 'package:collection/collection.dart';
 
 class EditUserPage extends BaseEditPage<SuperUserDetails> {
   const EditUserPage({super.key, required super.itemId});
@@ -102,12 +103,21 @@ class _EditUserPageState extends BaseEditPageState<SuperUserDetails, EditUserPag
         loading: () => const LinearProgressIndicator(),
         error: (e, s) => Text('Ошибка: $e'),
       ),
-      const SizedBox(height: 16),
+       const SizedBox(height: 16),
       rolesState.when(
         data: (roles) {
-          final filteredRoles = _selectedCustomerId != null ? roles.where((r) => r.customerId.toString() == _selectedCustomerId).toList() : <Role>[];
+          final filteredRoles = _selectedCustomerId != null 
+              ? roles.where((r) => r.customerId.toString() == _selectedCustomerId).toList() 
+              : <Role>[];
+
+          // --- ИЗМЕНЕНИЕ ЗДЕСЬ: Проверяем, существует ли выбранная роль в отфильтрованном списке ---
+          final bool isRoleInList = filteredRoles.any((role) => role.id.toString() == _selectedRoleId);
+          
+          // Если роли нет в списке (из-за рассинхрона данных), временно сбрасываем значение дропдауна на null, чтобы избежать крэша
+          final String? dropdownValue = isRoleInList ? _selectedRoleId : null;
+
           return DropdownButtonFormField<String>(
-            value: _selectedRoleId,
+            value: dropdownValue, // <-- Используем безопасное значение
             decoration: const InputDecoration(labelText: 'Роль', border: OutlineInputBorder(), prefixIcon: Icon(Icons.security)),
             items: filteredRoles.map((r) => DropdownMenuItem(value: r.id.toString(), child: Text(r.name))).toList(),
             onChanged: filteredRoles.isNotEmpty ? (value) => setState(() => _selectedRoleId = value) : null,

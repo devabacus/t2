@@ -2,11 +2,13 @@
 
 import 'package:serverpod/serverpod.dart';
 import 'package:serverpod_auth_server/serverpod_auth_server.dart';
+
 import '../generated/protocol.dart';
+
 
 /// Сервисный слой для инкапсуляции бизнес-логики администрирования.
 /// Не содержит проверок прав доступа.
-class AdminService {
+class AdminService{
   /// Получает список всех пользователей в системе.
   /// Используется суперадмином.
   Future<List<SuperUserDetails>> listAllUsers(Session session, {int? limit, int? offset}) async {
@@ -54,6 +56,107 @@ class AdminService {
     }
     return userDetailsList;
   }
+
+
+/// Создает нового пользователя в системе.
+  Future<UserInfo?> createUser(Session session, {
+    required String userName,
+    required String email,
+    required String password,
+    required UuidValue customerId,
+    required UuidValue roleId,
+  }) async {
+    var createdUser = await Emails.createUser(session, userName, email, password);
+    if (createdUser == null) {
+      throw Exception('Пользователь с таким email уже существует.');
+    }
+    await CustomerUser.db.insertRow(session, CustomerUser(
+      customerId: customerId,
+      userId: createdUser.id!,
+      roleId: roleId,
+    ));
+    return createdUser;
+  }
+
+ /// Обновляет данные пользователя.
+  Future<bool> updateUser(Session session, {
+    required int userId,
+    required String userName,
+    required String email,
+    required UuidValue customerId,
+    required UuidValue roleId,
+  }) async {
+    final userInfo = await UserInfo.db.findById(session, userId);
+    if (userInfo == null) throw Exception('Пользователь не найден.');
+
+    if (userInfo.email != email) {
+      final existingUser = await Users.findUserByEmail(session, email);
+      if (existingUser != null && existingUser.id != userId) {
+        throw Exception('Пользователь с таким email уже существует.');
+      }
+    }
+
+    final role = await Role.db.findById(session, roleId);
+    if (role == null || role.customerId != customerId) {
+      throw Exception('Роль не найдена или не принадлежит указанной организации.');
+    }
+
+    await session.db.transaction((transaction) async {
+      userInfo.userName = userName;
+      userInfo.email = email;
+      userInfo.userIdentifier = email;
+      await UserInfo.db.updateRow(session, userInfo, transaction: transaction);
+
+      final customerUser = await CustomerUser.db.findFirstRow(session, where: (cu) => cu.userId.equals(userId));
+      if (customerUser != null) {
+        customerUser.customerId = customerId;
+        customerUser.roleId = roleId;
+        await CustomerUser.db.updateRow(session, customerUser, transaction: transaction);
+      } else {
+        await CustomerUser.db.insertRow(session, CustomerUser(customerId: customerId, userId: userId, roleId: roleId), transaction: transaction);
+      }
+    });
+    return true;
+  }
+  
+  /// Удаляет пользователя из системы.
+  Future<bool> deleteUser(Session session, {required int userId, required List<int> superAdminUserIds}) async {
+    if (superAdminUserIds.contains(userId)) {
+      throw Exception('Нельзя удалить суперадминистратора.');
+    }
+    await session.db.transaction((transaction) async {
+      await CustomerUser.db.deleteWhere(session, where: (cu) => cu.userId.equals(userId), transaction: transaction);
+      await UserInfo.db.deleteWhere(session, where: (u) => u.id.equals(userId), transaction: transaction);
+    });
+    return true;
+  }
+
+  /// Блокирует или разблокирует пользователя.
+  Future<bool> blockUser(Session session, int userId, bool blocked) async {
+    final userInfo = await UserInfo.db.findById(session, userId);
+    if (userInfo == null) throw Exception('Пользователь не найден.');
+    userInfo.blocked = blocked;
+    await UserInfo.db.updateRow(session, userInfo);
+    return true;
+  }
+
+  /// Получает детальную информацию о пользователе.
+  Future<SuperUserDetails?> getUserDetails(Session session, int userId) async {
+    final userInfo = await UserInfo.db.findById(session, userId);
+    if (userInfo == null) return null;
+
+    final customerUser = await CustomerUser.db.findFirstRow(session, where: (cu) => cu.userId.equals(userId));
+    Customer? customer;
+    Role? role;
+
+    if (customerUser != null) {
+      customer = await Customer.db.findById(session, customerUser.customerId);
+      role = await Role.db.findById(session, customerUser.roleId);
+    }
+    return SuperUserDetails(userInfo: userInfo, customer: customer, role: role, customerUser: customerUser);
+  }
+
+
 
 
   /// Получает список всех ролей в системе.
@@ -124,4 +227,75 @@ class AdminService {
     return true;
   }
 
+
+/// Возвращает список всех организаций.
+  Future<List<Customer>> listCustomers(Session session) async {
+    return Customer.db.find(session, orderBy: (t) => t.name);
+  }
+
+   /// Сохраняет (создает или обновляет) организацию.
+  Future<Customer> saveCustomer(Session session, {
+    required Customer customer,
+    required int creatorId,
+  }) async {
+    if (customer.id == null) {
+      // ID создателя передается из эндпоинта
+      customer.userId = creatorId;
+      return Customer.db.insertRow(session, customer);
+    } else {
+      return Customer.db.updateRow(session, customer);
+    }
+  }
+
+  
+  /// Возвращает детали одной организации по ID.
+  Future<Customer?> getCustomer(Session session, UuidValue customerId) async {
+    return await Customer.db.findById(session, customerId);
+  }
+
+  /// Удаляет организацию, если к ней не привязаны пользователи.
+  Future<bool> deleteCustomer(Session session, UuidValue customerId) async {
+    final usersCount = await CustomerUser.db.count(
+      session,
+      where: (cu) => cu.customerId.equals(customerId),
+    );
+
+    if (usersCount > 0) {
+      throw Exception(
+        'Нельзя удалить клиента с активными пользователями ($usersCount).',
+      );
+    }
+
+    await session.db.transaction((transaction) async {
+      // Удаляем роли и их связи
+      final roles = await Role.db.find(
+        session,
+        where: (r) => r.customerId.equals(customerId),
+      );
+      
+      for (var role in roles) {
+        await RolePermission.db.deleteWhere(
+          session,
+          where: (rp) => rp.roleId.equals(role.id!),
+          transaction: transaction,
+        );
+      }
+      
+      await Role.db.deleteWhere(
+        session,
+        where: (r) => r.customerId.equals(customerId),
+        transaction: transaction,
+      );
+
+      // Удаляем клиента
+      await Customer.db.deleteWhere(
+        session,
+        where: (c) => c.id.equals(customerId),
+        transaction: transaction,
+      );
+    });
+
+    return true;
+  }
 }
+
