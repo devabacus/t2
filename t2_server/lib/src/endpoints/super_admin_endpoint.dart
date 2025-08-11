@@ -514,7 +514,7 @@ Future<RoleDetails?> saGetRoleDetails(Session session, UuidValue roleId) async {
   
   return RoleDetails(role: role, permissionIds: permissionIds);
 }
-
+ 
 Future<Customer?> saGetCustomer(Session session, UuidValue customerId) async {
   // Нужны проверки доступа (является ли пользователь суперадмином)
   await _requireSuperAdmin(session);
