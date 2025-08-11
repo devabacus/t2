@@ -105,6 +105,35 @@ class AdminEndpoint extends Endpoint with AuthContextMixin {
     // Находим и возвращаем организацию по ее ID
     return await Customer.db.findById(session, authContext.customerId);
   }
+
+
+ Future<UserInfo?> createUser(Session session, {
+    required String userName,
+    required String email,
+    required String password,
+    required UuidValue roleId,
+  }) async {
+    // Проверяем, есть ли у админа право на создание пользователей
+    await _requirePermission(session, 'users.create');
+    final authContext = await getAuthenticatedUserContext(session);
+
+    // Проверка безопасности: убеждаемся, что выбранная роль принадлежит организации админа
+    final role = await Role.db.findById(session, roleId);
+    if (role == null || role.customerId != authContext.customerId) {
+      throw Exception('Указанная роль не найдена или не принадлежит вашей организации.');
+    }
+
+    // Делегируем создание пользователя нашему сервису
+    return await _adminService.createUser(
+      session,
+      userName: userName,
+      email: email,
+      password: password,
+      customerId: authContext.customerId, // ID организации берется из сессии админа
+      roleId: roleId,
+    );
+  }
+
 }
 
 

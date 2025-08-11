@@ -6,6 +6,7 @@ admin:
   - createOrUpdateRole:
   - deleteRole:
   - getMyCustomer:
+  - createUser:
 category:
   - createCategory:
   - getCategories:

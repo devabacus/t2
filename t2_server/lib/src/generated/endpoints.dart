@@ -203,6 +203,42 @@ class Endpoints extends _i1.EndpointDispatch {
           ) async =>
               (endpoints['admin'] as _i2.AdminEndpoint).getMyCustomer(session),
         ),
+        'createUser': _i1.MethodConnector(
+          name: 'createUser',
+          params: {
+            'userName': _i1.ParameterDescription(
+              name: 'userName',
+              type: _i1.getType<String>(),
+              nullable: false,
+            ),
+            'email': _i1.ParameterDescription(
+              name: 'email',
+              type: _i1.getType<String>(),
+              nullable: false,
+            ),
+            'password': _i1.ParameterDescription(
+              name: 'password',
+              type: _i1.getType<String>(),
+              nullable: false,
+            ),
+            'roleId': _i1.ParameterDescription(
+              name: 'roleId',
+              type: _i1.getType<_i12.UuidValue>(),
+              nullable: false,
+            ),
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['admin'] as _i2.AdminEndpoint).createUser(
+            session,
+            userName: params['userName'],
+            email: params['email'],
+            password: params['password'],
+            roleId: params['roleId'],
+          ),
+        ),
       },
     );
     connectors['category'] = _i1.EndpointConnector(

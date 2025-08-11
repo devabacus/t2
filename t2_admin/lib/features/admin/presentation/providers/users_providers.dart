@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:t2_client/t2_client.dart';
 import '../../data/providers/user_data_providers.dart'; // <-- Новый импорт
+import '../../data/providers/admin_data_providers.dart';
 
 part 'users_providers.g.dart';
 
