@@ -32,9 +32,18 @@ class UserRepository implements IUserRepository {
     }
   }
 
-  @override
+ @override
   Future<List<Customer>> getCustomers() async {
-    return await _client.superAdmin.saListCustomers();
+    // --- ИЗМЕНЕНИЕ ЗДЕСЬ ---
+    if (_isSuperAdmin) {
+      // Суперадмин по-прежнему получает список ВСЕХ организаций
+      return await _client.superAdmin.saListCustomers();
+    } else {
+      // Обычный админ получает ТОЛЬКО свою организацию через новый безопасный эндпоинт
+      final myCustomer = await _client.admin.getMyCustomer();
+      // Возвращаем список из одного элемента или пустой список, если что-то пошло не так
+      return myCustomer != null ? [myCustomer] : [];
+    }
   }
 
   @override

@@ -194,6 +194,15 @@ class Endpoints extends _i1.EndpointDispatch {
             params['roleId'],
           ),
         ),
+        'getMyCustomer': _i1.MethodConnector(
+          name: 'getMyCustomer',
+          params: {},
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['admin'] as _i2.AdminEndpoint).getMyCustomer(session),
+        ),
       },
     );
     connectors['category'] = _i1.EndpointConnector(

@@ -5,6 +5,7 @@ admin:
   - listPermissions:
   - createOrUpdateRole:
   - deleteRole:
+  - getMyCustomer:
 category:
   - createCategory:
   - getCategories:

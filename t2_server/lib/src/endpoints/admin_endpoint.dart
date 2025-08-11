@@ -97,6 +97,14 @@ class AdminEndpoint extends Endpoint with AuthContextMixin {
 
     return _adminService.deleteRole(session, roleId);
   }  
+
+
+    Future<Customer?> getMyCustomer(Session session) async {
+    // Получаем контекст пользователя (его ID и ID его организации)
+    final authContext = await getAuthenticatedUserContext(session);
+    // Находим и возвращаем организацию по ее ID
+    return await Customer.db.findById(session, authContext.customerId);
+  }
 }
 
 

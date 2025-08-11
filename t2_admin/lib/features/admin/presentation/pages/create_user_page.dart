@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:t2_client/t2_client.dart';
 
+import '../../../../features/auth/presentation/providers/auth_state_providers.dart'; // <-- 1. Добавляем импорт
 import '../base/base_create_page.dart';
 import '../providers/roles_providers.dart';
 import '../providers/users_providers.dart';
@@ -61,11 +62,9 @@ class _CreateUserPageState extends BaseCreatePageState<CreateUserPage> {
         roleId: _selectedRoleId!,
       ).future);
     } on Exception catch (e) {
-      // Перехватываем специфичные ошибки и делаем их более понятными
       if (e.toString().contains('users_email_key')) {
         throw Exception('Пользователь с таким email уже существует.');
       }
-      // Перебрасываем оригинальную ошибку, если она другая
       rethrow;
     }
   }
@@ -74,57 +73,17 @@ class _CreateUserPageState extends BaseCreatePageState<CreateUserPage> {
   List<Widget> buildFormFields(BuildContext context) {
     final rolesState = ref.watch(rolesListProvider);
     final customersState = ref.watch(customersListProvider);
+    
+    // 2. Определяем, является ли пользователь суперадмином
+    final currentUser = ref.watch(authStateChangesProvider).valueOrNull;
+    final isSuperAdmin = currentUser?.id == 1;
 
-    return [
-      TextFormField(
-        controller: _nameController,
-        decoration: const InputDecoration(
-          labelText: 'Имя пользователя',
-          border: OutlineInputBorder(),
-          prefixIcon: Icon(Icons.person),
-        ),
-        validator: (value) {
-          if (value == null || value.trim().isEmpty) {
-            return 'Введите имя пользователя';
-          }
-          return null;
-        },
-      ),
-      const SizedBox(height: 16),
-      TextFormField(
-        controller: _emailController,
-        decoration: const InputDecoration
-        (
-          labelText: 'Email',
-          border: OutlineInputBorder(),
-          prefixIcon: Icon(Icons.email),
-        ),
-        keyboardType: TextInputType.emailAddress,
-        validator: (value) {
-          if (value == null || !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
-            return 'Введите корректный email';
-          }
-          return null;
-        },
-      ),
-      const SizedBox(height: 16),
-      TextFormField(
-        controller: _passwordController,
-        decoration: const InputDecoration(
-          labelText: 'Пароль',
-          border: OutlineInputBorder(),
-          prefixIcon: Icon(Icons.lock),
-        ),
-        obscureText: true,
-        validator: (value) {
-          if (value == null || value.length < 6) {
-            return 'Пароль должен содержать минимум 6 символов';
-          }
-          return null;
-        },
-      ),
-      const SizedBox(height: 16),
-      customersState.when(
+    // 3. Создаем виджет для выбора организации в зависимости от роли
+    Widget organizationWidget;
+
+    if (isSuperAdmin) {
+      // Для суперадмина - выпадающий список
+      organizationWidget = customersState.when(
         data: (customers) => DropdownButtonFormField<String>(
           value: _selectedCustomerId,
           decoration: const InputDecoration(
@@ -143,7 +102,56 @@ class _CreateUserPageState extends BaseCreatePageState<CreateUserPage> {
         ),
         loading: () => const LinearProgressIndicator(),
         error: (e, s) => Text('Ошибка загрузки организаций: $e'),
+      );
+    } else {
+      // Для обычного админа - нередактируемое поле
+      organizationWidget = customersState.when(
+        data: (customers) {
+          final adminCustomer = customers.isNotEmpty ? customers.first : null;
+          // Автоматически устанавливаем ID организации для формы
+          if (adminCustomer != null) {
+            _selectedCustomerId = adminCustomer.id.toString();
+          }
+          return TextFormField(
+            initialValue: adminCustomer?.name ?? 'Загрузка...',
+            readOnly: true,
+            decoration: InputDecoration(
+              labelText: 'Организация',
+              border: const OutlineInputBorder(),
+              prefixIcon: const Icon(Icons.business),
+              fillColor: Colors.grey[200],
+              filled: true,
+            ),
+          );
+        },
+        loading: () => const LinearProgressIndicator(),
+        error: (e, s) => Text('Ошибка загрузки организации: $e'),
+      );
+    }
+
+    return [
+      TextFormField(
+        controller: _nameController,
+        decoration: const InputDecoration(labelText: 'Имя пользователя', border: OutlineInputBorder(), prefixIcon: Icon(Icons.person)),
+        validator: (value) => (value == null || value.trim().isEmpty) ? 'Введите имя пользователя' : null,
       ),
+      const SizedBox(height: 16),
+      TextFormField(
+        controller: _emailController,
+        decoration: const InputDecoration(labelText: 'Email', border: OutlineInputBorder(), prefixIcon: Icon(Icons.email)),
+        keyboardType: TextInputType.emailAddress,
+        validator: (value) => (value == null || !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) ? 'Введите корректный email' : null,
+      ),
+      const SizedBox(height: 16),
+      TextFormField(
+        controller: _passwordController,
+        decoration: const InputDecoration(labelText: 'Пароль', border: OutlineInputBorder(), prefixIcon: Icon(Icons.lock)),
+        obscureText: true,
+        validator: (value) => (value == null || value.length < 6) ? 'Пароль должен содержать минимум 6 символов' : null,
+      ),
+      const SizedBox(height: 16),
+      // 4. Вставляем созданный виджет в форму
+      organizationWidget,
       const SizedBox(height: 16),
       rolesState.when(
         data: (roles) {
