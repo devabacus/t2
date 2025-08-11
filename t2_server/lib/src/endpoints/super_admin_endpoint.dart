@@ -3,14 +3,15 @@ import 'package:serverpod/serverpod.dart';
 import 'package:serverpod_auth_server/serverpod_auth_server.dart';
 
 import '../generated/protocol.dart';
+import '../services/admin_service.dart';
 import 'shared/auth_context_mixin.dart';
 
 class SuperAdminEndpoint extends Endpoint with AuthContextMixin {
   
-  static const List<int> _superAdminUserIds = [1]; // ⚠️ ЗАМЕНИТЕ НА ВАШ ID
+   final AdminService _adminService = AdminService();
+  static const List<int> _superAdminUserIds = [1];
 
   Future<void> _requireSuperAdmin(Session session) async {
-    // ИСПРАВЛЕНО: Используем ваш AuthContextMixin для получения userId
     final authContext = await getAuthenticatedUserContext(session);
     if (!_superAdminUserIds.contains(authContext.userId)) {
       throw Exception('Доступ запрещен.');
@@ -72,44 +73,14 @@ class SuperAdminEndpoint extends Endpoint with AuthContextMixin {
   // Добавьте эти методы в ваш AdminEndpoint после существующих sa методов:
 
   // Получение всех пользователей системы
-  Future<List<SuperUserDetails>> saListAllUsers(Session session, {
-    UuidValue? customerId,
+   Future<List<SuperUserDetails>> saListAllUsers(Session session, {
+    UuidValue? customerId, // customerId пока не используется в сервисе, но оставим для будущих доработок
     int? limit,
     int? offset,
   }) async {
     await _requireSuperAdmin(session);
-
-    // Фильтруем по customerId если указан
-    final customerUsersQuery = customerId != null
-        ? await CustomerUser.db.find(
-            session,
-            where: (cu) => cu.customerId.equals(customerId),
-            limit: limit ?? 100,
-            offset: offset ?? 0,
-          )
-        : await CustomerUser.db.find(
-            session,
-            limit: limit ?? 100,
-            offset: offset ?? 0,
-          );
-
-    final userDetailsList = <SuperUserDetails>[];
-    for (var cu in customerUsersQuery) {
-      final userInfo = await UserInfo.db.findById(session, cu.userId);
-      if (userInfo == null) continue;
-
-      final customer = await Customer.db.findById(session, cu.customerId);
-      final role = await Role.db.findById(session, cu.roleId);
-
-      userDetailsList.add(SuperUserDetails(
-        userInfo: userInfo,
-        customer: customer,
-        role: role,
-        customerUser: cu,
-      ));
-    }
-
-    return userDetailsList;
+    // 4. Делегируем вызов сервису
+    return _adminService.listAllUsers(session, limit: limit, offset: offset);
   }
 
   // Блокировка/разблокировка пользователя
@@ -212,19 +183,10 @@ Future<bool> saBlockUser(Session session, int userId, bool blocked) async {
   }
 
   // Получение всех ролей в системе
-  Future<List<Role>> saListAllRoles(Session session, {
-    UuidValue? customerId,
-  }) async {
+  Future<List<Role>> saListAllRoles(Session session, {UuidValue? customerId}) async {
     await _requireSuperAdmin(session);
-
-    if (customerId != null) {
-      return Role.db.find(
-        session,
-        where: (r) => r.customerId.equals(customerId),
-      );
-    }
-
-    return Role.db.find(session);
+    // Логика фильтрации по customerId теперь может быть в сервисе, если понадобится
+    return _adminService.listAllRoles(session);
   }
 
   // Перемещение пользователя между организациями
@@ -271,83 +233,24 @@ Future<bool> saBlockUser(Session session, int userId, bool blocked) async {
 // Добавить в t2_server/lib/src/endpoints/super_admin_endpoint.dart
 
   // Получение всех разрешений в системе
-  Future<List<Permission>> saListAllPermissions(Session session) async {
+ Future<List<Permission>> saListAllPermissions(Session session) async {
     await _requireSuperAdmin(session);
-    return Permission.db.find(session, orderBy: (p) => p.key);
+    return _adminService.listAllPermissions(session);
   }
 
   // Создание/обновление роли (суперадмин версия)
-  Future<Role> saCreateOrUpdateRole(Session session, {
+ Future<Role> saCreateOrUpdateRole(Session session, {
     required Role role,
     required List<UuidValue> permissionIds,
   }) async {
     await _requireSuperAdmin(session);
-    
-    return await session.db.transaction((transaction) async {
-      Role updatedRole;
-      if (role.id == null) {
-        // Создаем новую роль
-        updatedRole = await Role.db.insertRow(session, role, transaction: transaction);
-      } else {
-        // Обновляем существующую роль
-        updatedRole = await Role.db.updateRow(session, role, transaction: transaction);
-      }
-      
-      // Удаляем старые связи роль-разрешение
-      await RolePermission.db.deleteWhere(
-        session,
-        where: (rp) => rp.roleId.equals(updatedRole.id!),
-        transaction: transaction,
-      );
-      
-      // Создаем новые связи роль-разрешение
-      if (permissionIds.isNotEmpty) {
-        final newLinks = permissionIds
-            .map((permId) => RolePermission(
-                  roleId: updatedRole.id!,
-                  permissionId: permId,
-                ))
-            .toList();
-        await RolePermission.db.insert(session, newLinks, transaction: transaction);
-      }
-      
-      return updatedRole;
-    });
+    return _adminService.createOrUpdateRole(session, role: role, permissionIds: permissionIds);
   }
 
   // Удаление роли (суперадмин версия)
   Future<bool> saDeleteRole(Session session, UuidValue roleId) async {
     await _requireSuperAdmin(session);
-    
-    // Проверяем, есть ли пользователи с этой ролью
-    final assignedUsersCount = await CustomerUser.db.count(
-      session, 
-      where: (cu) => cu.roleId.equals(roleId),
-    );
-    
-    if (assignedUsersCount > 0) {
-      throw Exception(
-        'Нельзя удалить роль, так как она назначена пользователям ($assignedUsersCount).',
-      );
-    }
-    
-    await session.db.transaction((transaction) async {
-      // Удаляем связи роль-разрешение
-      await RolePermission.db.deleteWhere(
-        session,
-        where: (rp) => rp.roleId.equals(roleId),
-        transaction: transaction,
-      );
-      
-      // Удаляем саму роль
-      await Role.db.deleteWhere(
-        session,
-        where: (r) => r.id.equals(roleId),
-        transaction: transaction,
-      );
-    });
-    
-    return true;
+    return _adminService.deleteRole(session, roleId);
   }
 
   // Обновление информации о пользователе
@@ -492,28 +395,10 @@ Future<bool> saBlockUser(Session session, int userId, bool blocked) async {
     );
   }
 
-Future<RoleDetails?> saGetRoleDetails(Session session, UuidValue roleId) async {
-  await _requireSuperAdmin(session);
-  
-  // ИСПОЛЬЗУЕМ findFirstRow С `where` и `include`. Это правильный синтаксис.
-  final role = await Role.db.findFirstRow(
-    session, 
-    where: (r) => r.id.equals(roleId)
-  );
-
-  if (role == null) {
-    return null;
+  Future<RoleDetails?> saGetRoleDetails(Session session, UuidValue roleId) async {
+    await _requireSuperAdmin(session);
+    return _adminService.getRoleDetails(session, roleId);
   }
-
-  final rolePermissions = await RolePermission.db.find(
-    session,
-    where: (rp) => rp.roleId.equals(roleId),
-  );
-  
-  final permissionIds = rolePermissions.map((rp) => rp.permissionId).toList();
-  
-  return RoleDetails(role: role, permissionIds: permissionIds);
-}
  
 Future<Customer?> saGetCustomer(Session session, UuidValue customerId) async {
   // Нужны проверки доступа (является ли пользователь суперадмином)

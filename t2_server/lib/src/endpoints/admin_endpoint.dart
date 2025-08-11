@@ -4,9 +4,12 @@ import 'package:serverpod_auth_server/serverpod_auth_server.dart';
 
 import '../generated/protocol.dart';
 import '../permissions.dart';
+import '../services/admin_service.dart';
 import 'shared/auth_context_mixin.dart';
 
 class AdminEndpoint extends Endpoint with AuthContextMixin {
+
+  final AdminService _adminService = AdminService();
 
   Future<void> _requirePermission(Session session, String permissionKey) async {
     final authContext = await getAuthenticatedUserContext(session);
@@ -33,23 +36,12 @@ class AdminEndpoint extends Endpoint with AuthContextMixin {
     } 
   }
 
-  Future<List<UserDetails>> listUsers(Session session) async {
-    // await _requirePermission(session, Permissions.viewUsers);
+ Future<List<UserDetails>> listUsers(Session session) async {
     await _requirePermission(session, 'users.read');
     final authContext = await getAuthenticatedUserContext(session);
-    final customerUsers = await CustomerUser.db.find(session,
-        where: (cu) => cu.customerId.equals(authContext.customerId));
-    final userDetailsList = <UserDetails>[];
-    for (var customerUser in customerUsers) {
-      final userInfo = await UserInfo.db.findById(session, customerUser.userId);
-      if (userInfo == null) continue;
-      final role = await Role.db.findById(session, customerUser.roleId);
-      userDetailsList.add(UserDetails(
-        userInfo: userInfo,
-        role: role,
-      ));
-    }
-    return userDetailsList;
+    
+    // 4. Делегируем вызов сервису
+    return _adminService.listUsersForCustomer(session, authContext.customerId);
   }
 
   Future<bool> updateUserRole(
