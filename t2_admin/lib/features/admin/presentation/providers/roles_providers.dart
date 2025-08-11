@@ -3,18 +3,19 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:t2_client/t2_client.dart';
-import '../../data/providers/role_data_providers.dart'; // <-- Новый импорт
+
+import '../../data/providers/admin_data_providers.dart';
 
 part 'roles_providers.g.dart';
 
 @riverpod
 Future<List<Role>> rolesList(Ref ref) async {
-  return ref.watch(roleRepositoryProvider).getRoles();
+  return ref.watch(adminRepositoryProvider).getRoles();
 }
 
 @riverpod
 Future<List<Permission>> permissionsList(Ref ref) async {
-  return ref.watch(roleRepositoryProvider).getPermissions();
+  return ref.watch(adminRepositoryProvider).getPermissions();
 }
 
 @riverpod
@@ -24,7 +25,7 @@ Future<void> createRole(Ref ref, {
   required List<String> permissionIds,
   required String customerId,
 }) async {
-  await ref.read(roleRepositoryProvider).createRole(
+  await ref.read(adminRepositoryProvider).createRole(
     roleName: roleName,
     roleDescription: roleDescription,
     permissionIds: permissionIds,
@@ -35,13 +36,13 @@ Future<void> createRole(Ref ref, {
 
 @riverpod
 Future<void> deleteRole(Ref ref, String roleId) async {
-  await ref.read(roleRepositoryProvider).deleteRole(roleId);
+  await ref.read(adminRepositoryProvider).deleteRole(roleId);
   ref.invalidate(rolesListProvider);
 }
 
 @riverpod
 Future<RoleDetails?> roleDetails(Ref ref, String roleId) async {
-  return ref.watch(roleRepositoryProvider).getRoleDetails(roleId);
+  return ref.watch(adminRepositoryProvider).getRoleDetails(roleId);
 }
 
 @riverpod
@@ -49,7 +50,7 @@ Future<void> updateRole(Ref ref, {
   required Role role,
   required List<String> permissionIds,
 }) async {
-  await ref.read(roleRepositoryProvider).updateRole(
+  await ref.read(adminRepositoryProvider).updateRole(
     role: role,
     permissionIds: permissionIds,
   );

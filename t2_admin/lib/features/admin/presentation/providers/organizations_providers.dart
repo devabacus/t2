@@ -3,14 +3,15 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:t2_client/t2_client.dart';
-import '../../data/providers/organization_data_providers.dart'; // <-- Новый импорт
+
+import '../../data/providers/admin_data_providers.dart';
 
 part 'organizations_providers.g.dart';
 
 @riverpod
 Future<List<Customer>> organizationsList(Ref ref) async {
   // Вызываем метод репозитория вместо прямого вызова клиента
-  return ref.watch(organizationRepositoryProvider).getOrganizations();
+  return ref.watch(adminRepositoryProvider).getCustomers();
 }
 
 @riverpod
@@ -19,7 +20,7 @@ Future<void> createOrganization(Ref ref, {
   required String? organizationEmail,
   required String? organizationInfo,
 }) async {
-  final repository = ref.read(organizationRepositoryProvider);
+  final repository = ref.read(adminRepositoryProvider);
   await repository.createOrganization(
     organizationName: organizationName,
     organizationEmail: organizationEmail,
@@ -31,21 +32,21 @@ Future<void> createOrganization(Ref ref, {
 
 @riverpod
 Future<void> deleteOrganization(Ref ref, String organizationId) async {
-  await ref.read(organizationRepositoryProvider).deleteOrganization(organizationId);
+  await ref.read(adminRepositoryProvider).deleteOrganization(organizationId);
   // Обновляем список
   ref.invalidate(organizationsListProvider);
 }
 
 @riverpod
 Future<Customer?> organizationDetails(Ref ref, String organizationId) async {
-  return ref.watch(organizationRepositoryProvider).getOrganizationDetails(organizationId);
+  return ref.watch(adminRepositoryProvider).getOrganizationDetails(organizationId);
 }
 
 @riverpod
 Future<void> updateOrganization(Ref ref, {
   required Customer customer,
 }) async {
-  await ref.read(organizationRepositoryProvider).updateOrganization(customer: customer);
+  await ref.read(adminRepositoryProvider).updateOrganization(customer: customer);
   // Обновляем кэш
   ref.invalidate(organizationsListProvider);
   ref.invalidate(organizationDetailsProvider(customer.id.toString()));

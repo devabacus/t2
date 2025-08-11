@@ -133,7 +133,33 @@ class AdminEndpoint extends Endpoint with AuthContextMixin {
       roleId: roleId,
     );
   }
+ Future<UserDetails?> getUserDetails(Session session, int userId) async {
+    // Проверяем право на чтение/редактирование пользователей
+    await _requirePermission(session, 'users.read');
+    final authContext = await getAuthenticatedUserContext(session);
 
+    // Проверка безопасности: ищем связь пользователя с организацией админа
+    final customerUser = await CustomerUser.db.findFirstRow(session,
+        where: (cu) =>
+            cu.userId.equals(userId) &
+            cu.customerId.equals(authContext.customerId));
+
+    // Если связи нет, значит пользователь не из этой организации
+    if (customerUser == null) {
+      throw Exception('Пользователь не найден в вашей организации.');
+    }
+
+    // Если все в порядке, получаем и возвращаем данные
+    final userInfo = await UserInfo.db.findById(session, userId);
+    final role = await Role.db.findById(session, customerUser.roleId);
+
+    if (userInfo == null) return null;
+
+    return UserDetails(
+      userInfo: userInfo,
+      role: role,
+    );
+  }
 }
 
 
