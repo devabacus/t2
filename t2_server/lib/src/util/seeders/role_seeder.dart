@@ -1,6 +1,7 @@
 // t2_server/lib/src/util/seeders/role_seeder.dart
 
 import 'package:serverpod/serverpod.dart';
+
 import '../../generated/protocol.dart';
 
 class RoleSeeder {

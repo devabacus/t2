@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:t2_client/t2_client.dart';
 
+import '../../../../core/permissions.dart';
 import '../base/base_list_page.dart';
 import '../providers/organizations_providers.dart';
 import '../routings/organizations_routes_constants.dart';
@@ -21,14 +22,14 @@ class _OrganizationsPageState
 
 
 
- @override
-  String? get permissionKeyToRead => 'organizations.read';
   @override
-  String? get permissionKeyToCreate => 'organizations.create';
+  String? get permissionKeyToRead => Permissions.organizationsRead;
   @override
-  String? get permissionKeyToUpdate => 'organizations.update';
+  String? get permissionKeyToCreate => Permissions.organizationsCreate;
   @override
-  String? get permissionKeyToDelete => 'organizations.delete';
+  String? get permissionKeyToUpdate => Permissions.organizationsUpdate;
+  @override
+  String? get permissionKeyToDelete => Permissions.organizationsDelete;
 
   @override
   String get pageTitle => 'Управление организациями';

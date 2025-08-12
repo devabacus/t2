@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:serverpod_auth_client/serverpod_auth_client.dart';
+import '../../../../../core/permissions.dart';
 import '../../../../../core/services/permission/permission_service.dart';
 import 'package:t2_client/t2_client.dart';
 
@@ -134,11 +135,11 @@ class QuickActions extends ConsumerWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-              if (ref.hasPermission('users.read'))
+              if (ref.hasPermission(Permissions.usersRead))
               _actionButton(context, 'Пользователи', Icons.people_outline, UsersRoutes.users),
-            if (ref.hasPermission('roles.read'))
+            if (ref.hasPermission(Permissions.rolesRead))
               _actionButton(context, 'Роли', Icons.security_outlined, RolesRoutes.roles),
-            if (ref.hasPermission('organizations.read'))
+            if (ref.hasPermission(Permissions.organizationsRead))
               _actionButton(context, 'Организации', Icons.business_outlined, OrganizationsRoutes.organizations),
           ],
         ),

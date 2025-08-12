@@ -36,7 +36,7 @@ class AdminEndpoint extends Endpoint with AuthContextMixin {
   }
 
   Future<List<UserDetails>> listUsers(Session session) async {
-    await _requirePermission(session, 'users.read');
+    await _requirePermission(session, Permissions.usersRead);
     final authContext = await getAuthenticatedUserContext(session);
 
     return _adminService.listUsersForCustomer(session, authContext.customerId);
@@ -44,7 +44,7 @@ class AdminEndpoint extends Endpoint with AuthContextMixin {
 
   Future<bool> updateUserRole(Session session,
       {required int userId, required UuidValue roleId}) async {
-    await _requirePermission(session, Permissions.manageUsers);
+    await _requirePermission(session, Permissions.usersUpdate);
     final authContext = await getAuthenticatedUserContext(session);
     var customerUser = await CustomerUser.db.findFirstRow(session,
         where: (cu) =>
@@ -57,27 +57,31 @@ class AdminEndpoint extends Endpoint with AuthContextMixin {
   }
 
   Future<List<Role>> listRoles(Session session) async {
-    await _requirePermission(session, 'roles.read');
-    // Роли теперь глобальные, получаем все
+    await _requirePermission(session, Permissions.rolesRead);
     return _adminService.listAllRoles(session);
   }
 
   Future<List<Permission>> listPermissions(Session session) async {
-    await _requirePermission(session, 'roles.read');
+    await _requirePermission(session, Permissions.rolesRead);
     return _adminService.listAllPermissions(session);
   }
 
   Future<Role> createOrUpdateRole(
       Session session, Role role, List<UuidValue> permissionIds) async {
-    await _requirePermission(session, Permissions.manageRoles);
-    // Логика с customerId убрана, т.к. роли глобальные
+    if (role.id == null) {
+      // Это создание новой роли
+      await _requirePermission(session, Permissions.rolesCreate);
+    } else {
+      // Это обновление существующей роли
+      await _requirePermission(session, Permissions.rolesUpdate);
+    }
+    
     return _adminService.createOrUpdateRole(
         session, role: role, permissionIds: permissionIds);
   }
 
   Future<bool> deleteRole(Session session, UuidValue roleId) async {
-    await _requirePermission(session, Permissions.manageRoles);
-    // Проверка на customerId больше не нужна
+    await _requirePermission(session, Permissions.rolesDelete);
     return _adminService.deleteRole(session, roleId);
   }
 
@@ -93,11 +97,9 @@ class AdminEndpoint extends Endpoint with AuthContextMixin {
     required String password,
     required UuidValue roleId,
   }) async {
-    await _requirePermission(session, 'users.create');
+    await _requirePermission(session, Permissions.usersCreate);
     final authContext = await getAuthenticatedUserContext(session);
 
-    // ИСПРАВЛЕНО: Проверяем только то, что роль существует.
-    // Привязки к организации у роли больше нет.
     final role = await Role.db.findById(session, roleId);
     if (role == null) {
       throw Exception('Указанная роль не найдена.');
@@ -108,13 +110,13 @@ class AdminEndpoint extends Endpoint with AuthContextMixin {
       userName: userName,
       email: email,
       password: password,
-      customerId: authContext.customerId, // ID организации берется из сессии админа
+      customerId: authContext.customerId,
       roleId: roleId,
     );
   }
 
   Future<UserDetails?> getUserDetails(Session session, int userId) async {
-    await _requirePermission(session, 'users.read');
+    await _requirePermission(session, Permissions.usersRead);
     final authContext = await getAuthenticatedUserContext(session);
 
     final customerUser = await CustomerUser.db.findFirstRow(session,
@@ -144,7 +146,7 @@ class AdminEndpoint extends Endpoint with AuthContextMixin {
     required String email,
     required UuidValue roleId,
   }) async {
-    await _requirePermission(session, 'users.update');
+    await _requirePermission(session, Permissions.usersUpdate);
     final authContext = await getAuthenticatedUserContext(session);
 
     final userToUpdateLink = await CustomerUser.db.findFirstRow(session,
@@ -153,8 +155,7 @@ class AdminEndpoint extends Endpoint with AuthContextMixin {
         userToUpdateLink.customerId != authContext.customerId) {
       throw Exception('Пользователь не найден в вашей организации.');
     }
-
-    // ИСПРАВЛЕНО: Проверяем только то, что роль существует.
+    
     final role = await Role.db.findById(session, roleId);
     if (role == null) {
       throw Exception('Указанная роль не найдена.');
@@ -165,7 +166,7 @@ class AdminEndpoint extends Endpoint with AuthContextMixin {
       userId: userId,
       userName: userName,
       email: email,
-      customerId: authContext.customerId, // ID организации берем из сессии
+      customerId: authContext.customerId,
       roleId: roleId,
     );
   }

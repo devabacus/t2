@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:t2_admin/features/admin/presentation/routings/admin_router_config.dart';
-import 'package:t2_admin/features/admin/presentation/routings/admin_routes_constants.dart'; // <-- Добавьте этот импорт
+import 'package:t2_admin/features/admin/presentation/routings/admin_routes_constants.dart'; 
 import 'package:t2_admin/features/admin/presentation/routings/roles_routes_constants.dart';
 import 'package:t2_admin/features/admin/presentation/routings/user_routes_constants.dart';
 import 'package:t2_admin/features/auth/presentation/providers/auth_state_providers.dart';
@@ -13,6 +13,7 @@ import 'package:t2_admin/features/auth/presentation/providers/auth_state_provide
 import '../../features/admin/presentation/routings/organizations_routes_constants.dart';
 import '../../features/auth/presentation/routing/auth_router_config.dart';
 import '../../features/auth/presentation/routing/auth_routes_constants.dart';
+import '../permissions.dart';
 import '../providers/session_manager_provider.dart';
 
 part 'router_config.g.dart';
@@ -21,9 +22,9 @@ part 'router_config.g.dart';
 GoRouter appRouter(Ref ref) {
 
   final routePermissions = {
-    OrganizationsRoutes.organizationsPath: 'organizations.read',
-    UsersRoutes.usersPath: 'users.read',
-    RolesRoutes.rolesPath: 'roles.read',
+    OrganizationsRoutes.organizationsPath: Permissions.organizationsRead,
+    UsersRoutes.usersPath: Permissions.usersRead,
+    RolesRoutes.rolesPath: Permissions.rolesRead,
   };
 
   final authState = ref.watch(authStateChangesProvider);

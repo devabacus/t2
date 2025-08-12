@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:t2_client/t2_client.dart';
 
+import '../../../../core/permissions.dart';
 import '../base/base_list_page.dart';
 import '../providers/roles_providers.dart';
 import '../routings/roles_routes_constants.dart';
@@ -18,14 +19,14 @@ class RolesPage extends BaseListPage<Role> {
 
 class _RolesPageState extends BaseListPageState<Role, RolesPage> {
 
-   @override
-  String? get permissionKeyToRead => 'roles.read';
   @override
-  String? get permissionKeyToCreate => 'roles.create';
+  String? get permissionKeyToRead => Permissions.rolesRead;
   @override
-  String? get permissionKeyToUpdate => 'roles.update';
+  String? get permissionKeyToCreate => Permissions.rolesCreate;
   @override
-  String? get permissionKeyToDelete => 'roles.delete';
+  String? get permissionKeyToUpdate => Permissions.rolesUpdate;
+  @override
+  String? get permissionKeyToDelete => Permissions.rolesDelete;
 
   @override
   String get pageTitle => 'Управление ролями';

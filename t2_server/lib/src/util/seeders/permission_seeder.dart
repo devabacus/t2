@@ -2,25 +2,27 @@
 
 import 'package:serverpod/serverpod.dart';
 import '../../generated/protocol.dart';
+import '../../permissions.dart';
 
 class PermissionSeeder {
+  // Теперь определения хранятся здесь, а не в виде карты
   static const Map<String, String> _definitions = {
     // Организации
-    'organizations.read': 'Просмотр списка организаций',
-    'organizations.create': 'Создание новых организаций',
-    'organizations.update': 'Редактирование организаций',
-    'organizations.delete': 'Удаление организаций',
+    Permissions.organizationsRead: 'Просмотр списка организаций',
+    Permissions.organizationsCreate: 'Создание новых организаций',
+    Permissions.organizationsUpdate: 'Редактирование организаций',
+    Permissions.organizationsDelete: 'Удаление организаций',
     // Пользователи
-    'users.read': 'Просмотр списка пользователей',
-    'users.create': 'Создание новых пользователей',
-    'users.update': 'Редактирование пользователей',
-    'users.delete': 'Удаление пользователей',
-    'users.block': 'Блокировка и разблокировка пользователей',
+    Permissions.usersRead: 'Просмотр списка пользователей',
+    Permissions.usersCreate: 'Создание новых пользователей',
+    Permissions.usersUpdate: 'Редактирование пользователей',
+    Permissions.usersDelete: 'Удаление пользователей',
+    Permissions.usersBlock: 'Блокировка и разблокировка пользователей',
     // Роли
-    'roles.read': 'Просмотр ролей и разрешений',
-    'roles.create': 'Создание новых ролей',
-    'roles.update': 'Редактирование ролей и их разрешений',
-    'roles.delete': 'Удаление ролей',
+    Permissions.rolesRead: 'Просмотр ролей и разрешений',
+    Permissions.rolesCreate: 'Создание новых ролей',
+    Permissions.rolesUpdate: 'Редактирование ролей и их разрешений',
+    Permissions.rolesDelete: 'Удаление ролей',
   };
    
   /// Создает или находит все определенные права доступа.

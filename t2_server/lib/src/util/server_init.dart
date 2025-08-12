@@ -1,7 +1,7 @@
 // t2_server/lib/src/util/server_init.dart
 
 import 'package:serverpod/serverpod.dart';
-import 'package:t2_server/src/generated/protocol.dart';
+
 import 'seeders/permission_seeder.dart';
 import 'seeders/role_seeder.dart';
 import 'seeders/user_seeder.dart';

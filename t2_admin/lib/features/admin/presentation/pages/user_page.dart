@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:t2_admin/core/services/permission/permission_service.dart';
 import 'package:t2_client/t2_client.dart';
 
+import '../../../../core/permissions.dart';
 import '../base/base_list_page.dart';
 import '../providers/users_providers.dart';
 import '../routings/user_routes_constants.dart';
@@ -37,13 +38,13 @@ class UsersPage extends BaseListPage<UserDetails> {
 class _UsersPageState extends BaseListPageState<UserDetails, UsersPage> {
 
 @override
-  String? get permissionKeyToRead => 'users.read';
+  String? get permissionKeyToRead => Permissions.usersRead;
   @override
-  String? get permissionKeyToCreate => 'users.create';
+  String? get permissionKeyToCreate => Permissions.usersCreate;
   @override
-  String? get permissionKeyToUpdate => 'users.update';
+  String? get permissionKeyToUpdate => Permissions.usersUpdate;
   @override
-  String? get permissionKeyToDelete => 'users.delete';
+  String? get permissionKeyToDelete => Permissions.usersDelete;
 
   @override
   String get pageTitle => 'Управление пользователями';
