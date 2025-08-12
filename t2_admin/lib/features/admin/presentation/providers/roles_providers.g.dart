@@ -7,7 +7,6 @@ part of 'roles_providers.dart';
 // **************************************************************************
 
 String _$rolesListHash() => r'9c16389f143f1c09e438937cd1c1b48db92c5370';
-String _$rolesListHash() => r'9c16389f143f1c09e438937cd1c1b48db92c5370';
 
 /// See also [rolesList].
 @ProviderFor(rolesList)
@@ -23,7 +22,6 @@ final rolesListProvider = AutoDisposeFutureProvider<List<Role>>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef RolesListRef = AutoDisposeFutureProviderRef<List<Role>>;
-String _$permissionsListHash() => r'9af39233d26fbc88599effcd63a896da3ba48836';
 String _$permissionsListHash() => r'9af39233d26fbc88599effcd63a896da3ba48836';
 
 /// See also [permissionsList].
@@ -44,7 +42,6 @@ final permissionsListProvider =
 // ignore: unused_element
 typedef PermissionsListRef = AutoDisposeFutureProviderRef<List<Permission>>;
 String _$createRoleHash() => r'2b905f7216c0ad14f705ecd0d25211f0144ccb97';
-String _$createRoleHash() => r'55a4ea45087f05eb249dfea6639fb53b6c98c22b';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -229,7 +226,6 @@ class _CreateRoleProviderElement extends AutoDisposeFutureProviderElement<void>
 }
 
 String _$deleteRoleHash() => r'360fd1b2909597c49dca82da4ada155e21249cee';
-String _$deleteRoleHash() => r'360fd1b2909597c49dca82da4ada155e21249cee';
 
 /// See also [deleteRole].
 @ProviderFor(deleteRole)
@@ -348,7 +344,6 @@ class _DeleteRoleProviderElement extends AutoDisposeFutureProviderElement<void>
   String get roleId => (origin as DeleteRoleProvider).roleId;
 }
 
-String _$roleDetailsHash() => r'95eb0fb67ad746dd968375b500f1244bc0d1ca2e';
 String _$roleDetailsHash() => r'95eb0fb67ad746dd968375b500f1244bc0d1ca2e';
 
 /// See also [roleDetails].
@@ -469,7 +464,6 @@ class _RoleDetailsProviderElement
   String get roleId => (origin as RoleDetailsProvider).roleId;
 }
 
-String _$updateRoleHash() => r'006296437b3a4d3f49c71fd29742ab5e6eb81a67';
 String _$updateRoleHash() => r'006296437b3a4d3f49c71fd29742ab5e6eb81a67';
 
 /// See also [updateRole].
