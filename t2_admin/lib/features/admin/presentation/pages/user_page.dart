@@ -152,7 +152,7 @@ class _UsersPageState extends BaseListPageState<UserDetails, UsersPage> {
         mouseCursor: SystemMouseCursors.click,
         onPressed: () {
           showBlockUserDialog(
-            context: context,
+            context: context, 
             ref: ref,
             user: user,
             onSuccess: refreshList,
