@@ -23,13 +23,11 @@ Future<void> createRole(Ref ref, {
   required String roleName,
   required String? roleDescription,
   required List<String> permissionIds,
-  required String customerId,
 }) async {
   await ref.read(adminRepositoryProvider).createRole(
     roleName: roleName,
     roleDescription: roleDescription,
     permissionIds: permissionIds,
-    customerId: customerId,
   );
   ref.invalidate(rolesListProvider);
 }  

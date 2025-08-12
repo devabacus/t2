@@ -39,7 +39,6 @@ class AdminEndpoint extends Endpoint with AuthContextMixin {
     await _requirePermission(session, 'users.read');
     final authContext = await getAuthenticatedUserContext(session);
 
-    // 4. Делегируем вызов сервису
     return _adminService.listUsersForCustomer(session, authContext.customerId);
   }
 
@@ -58,72 +57,52 @@ class AdminEndpoint extends Endpoint with AuthContextMixin {
   }
 
   Future<List<Role>> listRoles(Session session) async {
-    await _requirePermission(session, 'roles.read'); 
-    final authContext = await getAuthenticatedUserContext(session);
-    return _adminService.listRolesForCustomer(session, authContext.customerId);
+    await _requirePermission(session, 'roles.read');
+    // Роли теперь глобальные, получаем все
+    return _adminService.listAllRoles(session);
   }
 
   Future<List<Permission>> listPermissions(Session session) async {
     await _requirePermission(session, 'roles.read');
-    // Разрешения - общие для всех, поэтому вызываем общий метод
     return _adminService.listAllPermissions(session);
   }
 
-  Future<Role> createOrUpdateRole(Session session, Role role, List<UuidValue> permissionIds) async {
+  Future<Role> createOrUpdateRole(
+      Session session, Role role, List<UuidValue> permissionIds) async {
     await _requirePermission(session, Permissions.manageRoles);
-    final authContext = await getAuthenticatedUserContext(session);
-    role.customerId = authContext.customerId; // Устанавливаем customerId перед передачей в сервис
-
-    // Проверяем, что админ не пытается редактировать роль чужой организации
-    if (role.id != null) {
-      final existingRole = await Role.db.findById(session, role.id!);
-      if (existingRole?.customerId != authContext.customerId) {
-        throw Exception('Нельзя редактировать роль другой организации');
-      }
-    }
-
-    return _adminService.createOrUpdateRole(session, role: role, permissionIds: permissionIds);
+    // Логика с customerId убрана, т.к. роли глобальные
+    return _adminService.createOrUpdateRole(
+        session, role: role, permissionIds: permissionIds);
   }
 
   Future<bool> deleteRole(Session session, UuidValue roleId) async {
     await _requirePermission(session, Permissions.manageRoles);
-    final authContext = await getAuthenticatedUserContext(session);
-    
-    // Проверяем, что админ не пытается удалить роль чужой организации
-    final role = await Role.db.findById(session, roleId);
-    if (role == null || role.customerId != authContext.customerId) {
-      throw Exception('Роль не найдена или принадлежит другой организации');
-    }
-
+    // Проверка на customerId больше не нужна
     return _adminService.deleteRole(session, roleId);
-  }  
+  }
 
-
-    Future<Customer?> getMyCustomer(Session session) async {
-    // Получаем контекст пользователя (его ID и ID его организации)
+  Future<Customer?> getMyCustomer(Session session) async {
     final authContext = await getAuthenticatedUserContext(session);
-    // Находим и возвращаем организацию по ее ID
     return await Customer.db.findById(session, authContext.customerId);
   }
 
-
- Future<UserInfo?> createUser(Session session, {
+  Future<UserInfo?> createUser(
+    Session session, {
     required String userName,
     required String email,
     required String password,
     required UuidValue roleId,
   }) async {
-    // Проверяем, есть ли у админа право на создание пользователей
     await _requirePermission(session, 'users.create');
     final authContext = await getAuthenticatedUserContext(session);
 
-    // Проверка безопасности: убеждаемся, что выбранная роль принадлежит организации админа
+    // ИСПРАВЛЕНО: Проверяем только то, что роль существует.
+    // Привязки к организации у роли больше нет.
     final role = await Role.db.findById(session, roleId);
-    if (role == null || role.customerId != authContext.customerId) {
-      throw Exception('Указанная роль не найдена или не принадлежит вашей организации.');
+    if (role == null) {
+      throw Exception('Указанная роль не найдена.');
     }
 
-    // Делегируем создание пользователя нашему сервису
     return await _adminService.createUser(
       session,
       userName: userName,
@@ -133,23 +112,20 @@ class AdminEndpoint extends Endpoint with AuthContextMixin {
       roleId: roleId,
     );
   }
- Future<UserDetails?> getUserDetails(Session session, int userId) async {
-    // Проверяем право на чтение/редактирование пользователей
+
+  Future<UserDetails?> getUserDetails(Session session, int userId) async {
     await _requirePermission(session, 'users.read');
     final authContext = await getAuthenticatedUserContext(session);
 
-    // Проверка безопасности: ищем связь пользователя с организацией админа
     final customerUser = await CustomerUser.db.findFirstRow(session,
         where: (cu) =>
             cu.userId.equals(userId) &
             cu.customerId.equals(authContext.customerId));
 
-    // Если связи нет, значит пользователь не из этой организации
     if (customerUser == null) {
       throw Exception('Пользователь не найден в вашей организации.');
     }
 
-    // Если все в порядке, получаем и возвращаем данные
     final userInfo = await UserInfo.db.findById(session, userId);
     final role = await Role.db.findById(session, customerUser.roleId);
 
@@ -161,38 +137,36 @@ class AdminEndpoint extends Endpoint with AuthContextMixin {
     );
   }
 
-    Future<bool> updateUser(Session session, {
+  Future<bool> updateUser(
+    Session session, {
     required int userId,
     required String userName,
     required String email,
     required UuidValue roleId,
   }) async {
-    // Проверяем право на обновление пользователей
     await _requirePermission(session, 'users.update');
     final authContext = await getAuthenticatedUserContext(session);
 
-    // Проверка №1: Убеждаемся, что редактируемый пользователь принадлежит организации админа
-    final userToUpdateLink = await CustomerUser.db.findFirstRow(session, where: (cu) => cu.userId.equals(userId));
-    if (userToUpdateLink == null || userToUpdateLink.customerId != authContext.customerId) {
-        throw Exception('Пользователь не найден в вашей организации.');
+    final userToUpdateLink = await CustomerUser.db.findFirstRow(session,
+        where: (cu) => cu.userId.equals(userId));
+    if (userToUpdateLink == null ||
+        userToUpdateLink.customerId != authContext.customerId) {
+      throw Exception('Пользователь не найден в вашей организации.');
     }
 
-    // Проверка №2: Убеждаемся, что новая роль также принадлежит организации админа
+    // ИСПРАВЛЕНО: Проверяем только то, что роль существует.
     final role = await Role.db.findById(session, roleId);
-    if (role == null || role.customerId != authContext.customerId) {
-        throw Exception('Указанная роль не найдена или не принадлежит вашей организации.');
+    if (role == null) {
+      throw Exception('Указанная роль не найдена.');
     }
 
-    // Вызываем общую логику обновления из сервиса
     return await _adminService.updateUser(
-        session,
-        userId: userId,
-        userName: userName,
-        email: email,
-        customerId: authContext.customerId, // ID организации берем из сессии
-        roleId: roleId,
+      session,
+      userId: userId,
+      userName: userName,
+      email: email,
+      customerId: authContext.customerId, // ID организации берем из сессии
+      roleId: roleId,
     );
   }
 }
-
-

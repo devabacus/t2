@@ -3,7 +3,7 @@ class: Role
 table: role
 fields:
   id: UuidValue?, defaultPersist=random_v7
-  customerId: UuidValue, relation(parent=customer, onDelete=Cascade)
+  # customerId: UuidValue, relation(parent=customer, onDelete=Cascade)
   name: String,
   description: String?,
   createdAt: DateTime?

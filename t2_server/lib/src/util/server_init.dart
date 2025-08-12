@@ -133,24 +133,22 @@ class ServerInit {
     }
     
     // --- 2. Создание роли "Супер Администратор" ---
-    print('[ServerInit] Looking for Super Admin role...');
-    var superAdminRole = await Role.db.findFirstRow(session, where: (r) => r.name.equals('Super Admin'));
-    bool isNewSuperAdminRole = false;
-    
-    if (superAdminRole == null) {
-      print('[ServerInit] Creating Super Admin role...');
-      superAdminRole = Role(
-        customerId: defaultCustomer.id!,
-        name: 'Super Admin',
-        description: 'Имеет доступ ко всем функциям системы.',
-        createdAt: DateTime.now().toUtc(),
-      );
-      superAdminRole = await Role.db.insertRow(session, superAdminRole);
-      print('[ServerInit] Super Admin role created with ID: ${superAdminRole.id}');
-      isNewSuperAdminRole = true;
-    } else {
-      print('[ServerInit] Super Admin role already exists with ID: ${superAdminRole.id}');
-    }
+  print('[ServerInit] Looking for Super Admin role...');
+var superAdminRole = await Role.db.findFirstRow(session, where: (r) => r.name.equals('Super Admin'));
+bool isNewSuperAdminRole = false;
+
+if (superAdminRole == null) {
+  print('[ServerInit] Creating Super Admin role...');
+  superAdminRole = Role(
+    name: 'Super Admin',
+    description: 'Имеет доступ ко всем функциям системы.',
+    createdAt: DateTime.now().toUtc(),
+    updatedAt: DateTime.now().toUtc(),
+  );
+  superAdminRole = await Role.db.insertRow(session, superAdminRole);
+  isNewSuperAdminRole = true;
+  print('[ServerInit] Super Admin role created with ID: ${superAdminRole.id}');
+}
     
     // Назначаем permissions для Super Admin роли
     if (isNewSuperAdminRole) {
@@ -299,7 +297,7 @@ class ServerInit {
     if (demoRole == null) {
       print('[ServerInit] Creating Demo User role...');
       demoRole = Role(
-        customerId: defaultCustomer.id!,
+        // customerId: defaultCustomer.id!,
         name: 'Demo User',
         description: 'Имеет права только на чтение.',
         createdAt: DateTime.now().toUtc(),

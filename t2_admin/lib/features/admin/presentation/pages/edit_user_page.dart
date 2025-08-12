@@ -105,9 +105,7 @@ class _EditUserPageState extends BaseEditPageState<SuperUserDetails, EditUserPag
        const SizedBox(height: 16),
       rolesState.when(
         data: (roles) {
-          final filteredRoles = _selectedCustomerId != null 
-              ? roles.where((r) => r.customerId.toString() == _selectedCustomerId).toList() 
-              : <Role>[];
+          final filteredRoles = roles;
 
           // --- ИЗМЕНЕНИЕ ЗДЕСЬ: Проверяем, существует ли выбранная роль в отфильтрованном списке ---
           final bool isRoleInList = filteredRoles.any((role) => role.id.toString() == _selectedRoleId);

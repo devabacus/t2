@@ -473,12 +473,6 @@ class Protocol extends _i1.SerializationManagerServer {
           columnDefault: 'gen_random_uuid_v7()',
         ),
         _i2.ColumnDefinition(
-          name: 'customerId',
-          columnType: _i2.ColumnType.uuid,
-          isNullable: false,
-          dartType: 'UuidValue',
-        ),
-        _i2.ColumnDefinition(
           name: 'name',
           columnType: _i2.ColumnType.text,
           isNullable: false,
@@ -503,18 +497,7 @@ class Protocol extends _i1.SerializationManagerServer {
           dartType: 'DateTime?',
         ),
       ],
-      foreignKeys: [
-        _i2.ForeignKeyDefinition(
-          constraintName: 'role_fk_0',
-          columns: ['customerId'],
-          referenceTable: 'customer',
-          referenceTableSchema: 'public',
-          referenceColumns: ['id'],
-          onUpdate: _i2.ForeignKeyAction.noAction,
-          onDelete: _i2.ForeignKeyAction.cascade,
-          matchType: null,
-        )
-      ],
+      foreignKeys: [],
       indexes: [
         _i2.IndexDefinition(
           indexName: 'role_pkey',

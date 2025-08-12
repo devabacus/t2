@@ -7,7 +7,6 @@ import 'package:t2_client/t2_client.dart';
 
 import '../base/base_list_page.dart';
 import '../providers/roles_providers.dart';
-import '../providers/users_providers.dart'; // Для получения списка организаций
 import '../routings/roles_routes_constants.dart';
 
 class RolesPage extends BaseListPage<Role> {
@@ -71,31 +70,17 @@ class _RolesPageState extends BaseListPageState<Role, RolesPage> {
     return [
       DataColumn(label: const Text('Название'), onSort: onSort),
       const DataColumn(label: Text('Описание')),
-      const DataColumn(label: Text('Организация')), // Несортируемая колонка
       DataColumn(label: const Text('ID'), onSort: onSort),
     ];
   }
 
   @override
   DataRow buildDataRow(Role role) {
-    // Получаем имя организации для отображения
-    final customerName = ref.watch(customersListProvider).when(
-      data: (customers) {
-        try {
-          return customers.firstWhere((c) => c.id == role.customerId).name;
-        } catch (e) {
-          return 'Не найдена';
-        }
-      },
-      loading: () => 'Загрузка...',
-      error: (_, __) => 'Ошибка',
-    );
-
+    
     return DataRow(
       cells: [
         DataCell(Text(role.name)),
         DataCell(Text(role.description ?? '-')),
-        DataCell(Text(customerName)),
         DataCell(Text(role.id.toString())),
       ],
     );
