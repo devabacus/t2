@@ -1,14 +1,13 @@
-// lib/src/services/admin_service.dart
+// t2_server/lib/src/services/admin_service.dart
 
 import 'package:serverpod/serverpod.dart';
 import 'package:serverpod_auth_server/serverpod_auth_server.dart';
 
 import '../generated/protocol.dart';
 
-
 /// Сервисный слой для инкапсуляции бизнес-логики администрирования.
 /// Не содержит проверок прав доступа.
-class AdminService{
+class AdminService {
   /// Получает список всех пользователей в системе.
   /// Используется суперадмином.
   Future<List<SuperUserDetails>> listAllUsers(Session session, {int? limit, int? offset}) async {
@@ -57,8 +56,7 @@ class AdminService{
     return userDetailsList;
   }
 
-
-/// Создает нового пользователя в системе.
+  /// Создает нового пользователя в системе.
   Future<UserInfo?> createUser(Session session, {
     required String userName,
     required String email,
@@ -78,7 +76,7 @@ class AdminService{
     return createdUser;
   }
 
- /// Обновляет данные пользователя.
+  /// Обновляет данные пользователя.
   Future<bool> updateUser(Session session, {
     required int userId,
     required String userName,
@@ -96,9 +94,10 @@ class AdminService{
       }
     }
 
+    // Проверка, что роль существует, больше не привязана к организации
     final role = await Role.db.findById(session, roleId);
-    if (role == null || role.customerId != customerId) {
-      throw Exception('Роль не найдена или не принадлежит указанной организации.');
+    if (role == null) {
+      throw Exception('Роль не найдена.');
     }
 
     await session.db.transaction((transaction) async {
@@ -118,7 +117,7 @@ class AdminService{
     });
     return true;
   }
-  
+
   /// Удаляет пользователя из системы.
   Future<bool> deleteUser(Session session, {required int userId, required List<int> superAdminUserIds}) async {
     if (superAdminUserIds.contains(userId)) {
@@ -156,19 +155,11 @@ class AdminService{
     return SuperUserDetails(userInfo: userInfo, customer: customer, role: role, customerUser: customerUser);
   }
 
-
-
-
-  /// Получает список всех ролей в системе.
+  /// Получает список всех ролей в системе (они теперь глобальные).
   Future<List<Role>> listAllRoles(Session session) async {
     return await Role.db.find(session, orderBy: (r) => r.name);
   }
 
-  /// Получает список ролей для конкретной организации.
-  Future<List<Role>> listRolesForCustomer(Session session, UuidValue customerId) async {
-    return await Role.db.find(session, where: (r) => r.customerId.equals(customerId));
-  }
-  
   /// Получает все существующие разрешения (permissions).
   Future<List<Permission>> listAllPermissions(Session session) async {
     return await Permission.db.find(session, orderBy: (p) => p.key);
@@ -186,6 +177,7 @@ class AdminService{
   }
 
   /// Создает или обновляет роль и ее связи с разрешениями.
+  /// Роль больше не привязана к customerId.
   Future<Role> createOrUpdateRole(Session session, {
     required Role role,
     required List<UuidValue> permissionIds,
@@ -197,13 +189,13 @@ class AdminService{
       } else {
         updatedRole = await Role.db.updateRow(session, role, transaction: transaction);
       }
-      
+
       await RolePermission.db.deleteWhere(
         session,
         where: (rp) => rp.roleId.equals(updatedRole.id!),
         transaction: transaction,
       );
-      
+
       if (permissionIds.isNotEmpty) {
         final newLinks = permissionIds.map((permId) => RolePermission(roleId: updatedRole.id!, permissionId: permId)).toList();
         await RolePermission.db.insert(session, newLinks, transaction: transaction);
@@ -218,22 +210,21 @@ class AdminService{
     if (assignedUsersCount > 0) {
       throw Exception('Нельзя удалить роль, так как она назначена пользователям ($assignedUsersCount).');
     }
-    
+
     await session.db.transaction((transaction) async {
       await RolePermission.db.deleteWhere(session, where: (rp) => rp.roleId.equals(roleId), transaction: transaction);
       await Role.db.deleteWhere(session, where: (r) => r.id.equals(roleId), transaction: transaction);
     });
-    
+
     return true;
   }
 
-
-/// Возвращает список всех организаций.
+  /// Возвращает список всех организаций.
   Future<List<Customer>> listCustomers(Session session) async {
     return Customer.db.find(session, orderBy: (t) => t.name);
   }
 
-   /// Сохраняет (создает или обновляет) организацию.
+  /// Сохраняет (создает или обновляет) организацию.
   Future<Customer> saveCustomer(Session session, {
     required Customer customer,
     required int creatorId,
@@ -247,13 +238,12 @@ class AdminService{
     }
   }
 
-  
   /// Возвращает детали одной организации по ID.
   Future<Customer?> getCustomer(Session session, UuidValue customerId) async {
     return await Customer.db.findById(session, customerId);
   }
 
-  /// Удаляет организацию, если к ней не привязаны пользователи.
+   /// Удаляет организацию, если к ней не привязаны пользователи.
   Future<bool> deleteCustomer(Session session, UuidValue customerId) async {
     final usersCount = await CustomerUser.db.count(
       session,
@@ -265,28 +255,11 @@ class AdminService{
         'Нельзя удалить клиента с активными пользователями ($usersCount).',
       );
     }
+    
+    // ИСПРАВЛЕНО: Полностью удален блок, который пытался удалять роли по customerId,
+    // так как этой связи больше не существует.
 
     await session.db.transaction((transaction) async {
-      // Удаляем роли и их связи
-      final roles = await Role.db.find(
-        session,
-        where: (r) => r.customerId.equals(customerId),
-      );
-      
-      for (var role in roles) {
-        await RolePermission.db.deleteWhere(
-          session,
-          where: (rp) => rp.roleId.equals(role.id!),
-          transaction: transaction,
-        );
-      }
-      
-      await Role.db.deleteWhere(
-        session,
-        where: (r) => r.customerId.equals(customerId),
-        transaction: transaction,
-      );
-
       // Удаляем клиента
       await Customer.db.deleteWhere(
         session,
@@ -298,4 +271,3 @@ class AdminService{
     return true;
   }
 }
-

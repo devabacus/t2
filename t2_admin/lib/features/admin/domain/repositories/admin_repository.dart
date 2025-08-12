@@ -101,7 +101,6 @@ class AdminRepository implements IAdminRepository {
     required String roleName,
     required String? roleDescription,
     required List<String> permissionIds,
-    required String customerId,
   }) {
     throw UnimplementedError();
   }

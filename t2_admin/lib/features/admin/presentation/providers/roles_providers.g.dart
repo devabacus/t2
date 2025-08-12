@@ -6,7 +6,7 @@ part of 'roles_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$rolesListHash() => r'575c7c6022b6fbe2ce540cd27badce7d1081c1d7';
+String _$rolesListHash() => r'9c16389f143f1c09e438937cd1c1b48db92c5370';
 
 /// See also [rolesList].
 @ProviderFor(rolesList)
@@ -22,7 +22,7 @@ final rolesListProvider = AutoDisposeFutureProvider<List<Role>>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef RolesListRef = AutoDisposeFutureProviderRef<List<Role>>;
-String _$permissionsListHash() => r'f49cfde02418374a262f0e77612da5a0a41c1a7c';
+String _$permissionsListHash() => r'9af39233d26fbc88599effcd63a896da3ba48836';
 
 /// See also [permissionsList].
 @ProviderFor(permissionsList)
@@ -41,7 +41,7 @@ final permissionsListProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef PermissionsListRef = AutoDisposeFutureProviderRef<List<Permission>>;
-String _$createRoleHash() => r'2b61ff2729e5621ca0367a381789e1289ae6f893';
+String _$createRoleHash() => r'2b905f7216c0ad14f705ecd0d25211f0144ccb97';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -78,13 +78,11 @@ class CreateRoleFamily extends Family<AsyncValue<void>> {
     required String roleName,
     required String? roleDescription,
     required List<String> permissionIds,
-    required String customerId,
   }) {
     return CreateRoleProvider(
       roleName: roleName,
       roleDescription: roleDescription,
       permissionIds: permissionIds,
-      customerId: customerId,
     );
   }
 
@@ -96,7 +94,6 @@ class CreateRoleFamily extends Family<AsyncValue<void>> {
       roleName: provider.roleName,
       roleDescription: provider.roleDescription,
       permissionIds: provider.permissionIds,
-      customerId: provider.customerId,
     );
   }
 
@@ -122,14 +119,12 @@ class CreateRoleProvider extends AutoDisposeFutureProvider<void> {
     required String roleName,
     required String? roleDescription,
     required List<String> permissionIds,
-    required String customerId,
   }) : this._internal(
          (ref) => createRole(
            ref as CreateRoleRef,
            roleName: roleName,
            roleDescription: roleDescription,
            permissionIds: permissionIds,
-           customerId: customerId,
          ),
          from: createRoleProvider,
          name: r'createRoleProvider',
@@ -142,7 +137,6 @@ class CreateRoleProvider extends AutoDisposeFutureProvider<void> {
          roleName: roleName,
          roleDescription: roleDescription,
          permissionIds: permissionIds,
-         customerId: customerId,
        );
 
   CreateRoleProvider._internal(
@@ -155,13 +149,11 @@ class CreateRoleProvider extends AutoDisposeFutureProvider<void> {
     required this.roleName,
     required this.roleDescription,
     required this.permissionIds,
-    required this.customerId,
   }) : super.internal();
 
   final String roleName;
   final String? roleDescription;
   final List<String> permissionIds;
-  final String customerId;
 
   @override
   Override overrideWith(
@@ -179,7 +171,6 @@ class CreateRoleProvider extends AutoDisposeFutureProvider<void> {
         roleName: roleName,
         roleDescription: roleDescription,
         permissionIds: permissionIds,
-        customerId: customerId,
       ),
     );
   }
@@ -194,8 +185,7 @@ class CreateRoleProvider extends AutoDisposeFutureProvider<void> {
     return other is CreateRoleProvider &&
         other.roleName == roleName &&
         other.roleDescription == roleDescription &&
-        other.permissionIds == permissionIds &&
-        other.customerId == customerId;
+        other.permissionIds == permissionIds;
   }
 
   @override
@@ -204,7 +194,6 @@ class CreateRoleProvider extends AutoDisposeFutureProvider<void> {
     hash = _SystemHash.combine(hash, roleName.hashCode);
     hash = _SystemHash.combine(hash, roleDescription.hashCode);
     hash = _SystemHash.combine(hash, permissionIds.hashCode);
-    hash = _SystemHash.combine(hash, customerId.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -221,9 +210,6 @@ mixin CreateRoleRef on AutoDisposeFutureProviderRef<void> {
 
   /// The parameter `permissionIds` of this provider.
   List<String> get permissionIds;
-
-  /// The parameter `customerId` of this provider.
-  String get customerId;
 }
 
 class _CreateRoleProviderElement extends AutoDisposeFutureProviderElement<void>
@@ -237,11 +223,9 @@ class _CreateRoleProviderElement extends AutoDisposeFutureProviderElement<void>
   @override
   List<String> get permissionIds =>
       (origin as CreateRoleProvider).permissionIds;
-  @override
-  String get customerId => (origin as CreateRoleProvider).customerId;
 }
 
-String _$deleteRoleHash() => r'ed43ff0e6636a2e9ee24a60a0f69364ac3854023';
+String _$deleteRoleHash() => r'360fd1b2909597c49dca82da4ada155e21249cee';
 
 /// See also [deleteRole].
 @ProviderFor(deleteRole)
@@ -360,7 +344,7 @@ class _DeleteRoleProviderElement extends AutoDisposeFutureProviderElement<void>
   String get roleId => (origin as DeleteRoleProvider).roleId;
 }
 
-String _$roleDetailsHash() => r'2ce8ea4f45ea93832578a9c858731e40f2677510';
+String _$roleDetailsHash() => r'95eb0fb67ad746dd968375b500f1244bc0d1ca2e';
 
 /// See also [roleDetails].
 @ProviderFor(roleDetails)
@@ -480,7 +464,7 @@ class _RoleDetailsProviderElement
   String get roleId => (origin as RoleDetailsProvider).roleId;
 }
 
-String _$updateRoleHash() => r'e8cbc1aaa24070f77e5ea7ed1273b249eb6b6f1d';
+String _$updateRoleHash() => r'006296437b3a4d3f49c71fd29742ab5e6eb81a67';
 
 /// See also [updateRole].
 @ProviderFor(updateRole)

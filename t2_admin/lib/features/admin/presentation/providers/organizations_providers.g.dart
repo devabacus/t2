@@ -6,7 +6,7 @@ part of 'organizations_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$organizationsListHash() => r'cd1bd32d802593aa80dedb4edd581f9e5e92c7a2';
+String _$organizationsListHash() => r'c7d927f0915af2bb7c984f32b7791dcf3f6c23c6';
 
 /// See also [organizationsList].
 @ProviderFor(organizationsList)
@@ -26,7 +26,7 @@ final organizationsListProvider =
 // ignore: unused_element
 typedef OrganizationsListRef = AutoDisposeFutureProviderRef<List<Customer>>;
 String _$createOrganizationHash() =>
-    r'c73383c35e753b3bf67c90c177b6443159d665c7';
+    r'868449ffc9bf307378f7ae070855a60203445b24';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -215,7 +215,7 @@ class _CreateOrganizationProviderElement
 }
 
 String _$deleteOrganizationHash() =>
-    r'fcc9d67a43c6314dbb55de1e9649b40ea048c8c2';
+    r'b9cf7ecb25c25ccb9cadbb9b31a3c41993746716';
 
 /// See also [deleteOrganization].
 @ProviderFor(deleteOrganization)
@@ -340,7 +340,7 @@ class _DeleteOrganizationProviderElement
 }
 
 String _$organizationDetailsHash() =>
-    r'e762480dc726501bbfbc90805665bf3ac412c22c';
+    r'2b8329c6c4805864d06cbaebf3776dfd36eb9704';
 
 /// See also [organizationDetails].
 @ProviderFor(organizationDetails)
@@ -465,7 +465,7 @@ class _OrganizationDetailsProviderElement
 }
 
 String _$updateOrganizationHash() =>
-    r'33ff29fc1f7df4daa841521a1f63fff135450364';
+    r'f0a392fefe6bd2f1e47585ef3832b7259807c0dd';
 
 /// See also [updateOrganization].
 @ProviderFor(updateOrganization)

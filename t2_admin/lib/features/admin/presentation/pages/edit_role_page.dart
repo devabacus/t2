@@ -4,7 +4,6 @@ import 'package:t2_client/t2_client.dart';
 
 import '../base/base_edit_page.dart';
 import '../providers/roles_providers.dart';
-import '../providers/users_providers.dart'; // Для customersListProvider
 
 class EditRolePage extends BaseEditPage<RoleDetails> {
   const EditRolePage({super.key, required super.itemId});
@@ -18,7 +17,6 @@ class _EditRolePageState extends BaseEditPageState<RoleDetails, EditRolePage> {
   final _descriptionController = TextEditingController();
   
   late Role _originalRole;
-  String? _selectedCustomerId;
   final Set<String> _selectedPermissions = <String>{};
 
   @override
@@ -46,7 +44,6 @@ class _EditRolePageState extends BaseEditPageState<RoleDetails, EditRolePage> {
     _originalRole = item.role;
     _nameController.text = item.role.name;
     _descriptionController.text = item.role.description ?? '';
-    _selectedCustomerId = item.role.customerId.toString();
     _selectedPermissions.clear();
     _selectedPermissions.addAll(item.permissionIds.map((id) => id.toString()));
   }
@@ -56,7 +53,6 @@ class _EditRolePageState extends BaseEditPageState<RoleDetails, EditRolePage> {
     final updatedRole = _originalRole.copyWith(
       name: _nameController.text,
       description: _descriptionController.text.isEmpty ? null : _descriptionController.text,
-      customerId: UuidValue.fromString(_selectedCustomerId!),
     );
 
     await ref.read(updateRoleProvider(
@@ -67,7 +63,6 @@ class _EditRolePageState extends BaseEditPageState<RoleDetails, EditRolePage> {
 
   @override
   List<Widget> buildFormFields(BuildContext context, RoleDetails item) {
-    final customersState = ref.watch(customersListProvider);
     final permissionsState = ref.watch(permissionsListProvider);
 
     return [
@@ -83,17 +78,7 @@ class _EditRolePageState extends BaseEditPageState<RoleDetails, EditRolePage> {
         maxLines: 3,
       ),
       const SizedBox(height: 16),
-      customersState.when(
-        data: (customers) => DropdownButtonFormField<String>(
-          value: _selectedCustomerId,
-          decoration: const InputDecoration(labelText: 'Организация', border: OutlineInputBorder(), prefixIcon: Icon(Icons.business)),
-          items: customers.map((c) => DropdownMenuItem(value: c.id.toString(), child: Text(c.name))).toList(),
-          onChanged: (value) => setState(() => _selectedCustomerId = value),
-          validator: (v) => v == null ? 'Выберите организацию' : null,
-        ),
-        loading: () => const LinearProgressIndicator(),
-        error: (e, s) => Text('Ошибка загрузки организаций: $e'),
-      ),
+      
       const SizedBox(height: 16),
       const Text('Разрешения:', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
       const SizedBox(height: 8),

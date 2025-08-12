@@ -32,7 +32,6 @@ abstract class IAdminRepository {
     required String roleName,
     required String? roleDescription,
     required List<String> permissionIds,
-    required String customerId,
   });
   Future<void> updateRole({
     required Role role,

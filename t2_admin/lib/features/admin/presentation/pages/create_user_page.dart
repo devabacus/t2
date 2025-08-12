@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:t2_client/t2_client.dart';
 
 import '../../../../features/auth/presentation/providers/auth_state_providers.dart'; // <-- 1. Добавляем импорт
 import '../base/base_create_page.dart';
@@ -22,6 +21,7 @@ class _CreateUserPageState extends BaseCreatePageState<CreateUserPage> {
   final _passwordController = TextEditingController();
   
   String? _selectedCustomerId;
+  
   String? _selectedRoleId;
 
   @override
@@ -155,9 +155,7 @@ class _CreateUserPageState extends BaseCreatePageState<CreateUserPage> {
       const SizedBox(height: 16),
       rolesState.when(
         data: (roles) {
-          final filteredRoles = _selectedCustomerId != null
-              ? roles.where((role) => role.customerId.toString() == _selectedCustomerId).toList()
-              : <Role>[];
+          final filteredRoles = roles;
 
           return DropdownButtonFormField<String>(
             value: _selectedRoleId,
@@ -165,8 +163,6 @@ class _CreateUserPageState extends BaseCreatePageState<CreateUserPage> {
               labelText: 'Роль',
               border: const OutlineInputBorder(),
               prefixIcon: const Icon(Icons.security),
-              filled: _selectedCustomerId == null,
-              fillColor: Colors.grey[200],
             ),
             items: filteredRoles.map((r) => DropdownMenuItem(value: r.id.toString(), child: Text(r.name))).toList(),
             onChanged: _selectedCustomerId != null ? (value) => setState(() => _selectedRoleId = value) : null,

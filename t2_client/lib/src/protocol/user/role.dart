@@ -14,7 +14,6 @@ import 'package:serverpod_client/serverpod_client.dart' as _i1;
 abstract class Role implements _i1.SerializableModel {
   Role._({
     this.id,
-    required this.customerId,
     required this.name,
     this.description,
     this.createdAt,
@@ -23,7 +22,6 @@ abstract class Role implements _i1.SerializableModel {
 
   factory Role({
     _i1.UuidValue? id,
-    required _i1.UuidValue customerId,
     required String name,
     String? description,
     DateTime? createdAt,
@@ -35,8 +33,6 @@ abstract class Role implements _i1.SerializableModel {
       id: jsonSerialization['id'] == null
           ? null
           : _i1.UuidValueJsonExtension.fromJson(jsonSerialization['id']),
-      customerId:
-          _i1.UuidValueJsonExtension.fromJson(jsonSerialization['customerId']),
       name: jsonSerialization['name'] as String,
       description: jsonSerialization['description'] as String?,
       createdAt: jsonSerialization['createdAt'] == null
@@ -53,8 +49,6 @@ abstract class Role implements _i1.SerializableModel {
   /// the id will be null.
   _i1.UuidValue? id;
 
-  _i1.UuidValue customerId;
-
   String name;
 
   String? description;
@@ -68,7 +62,6 @@ abstract class Role implements _i1.SerializableModel {
   @_i1.useResult
   Role copyWith({
     _i1.UuidValue? id,
-    _i1.UuidValue? customerId,
     String? name,
     String? description,
     DateTime? createdAt,
@@ -78,7 +71,6 @@ abstract class Role implements _i1.SerializableModel {
   Map<String, dynamic> toJson() {
     return {
       if (id != null) 'id': id?.toJson(),
-      'customerId': customerId.toJson(),
       'name': name,
       if (description != null) 'description': description,
       if (createdAt != null) 'createdAt': createdAt?.toJson(),
@@ -97,14 +89,12 @@ class _Undefined {}
 class _RoleImpl extends Role {
   _RoleImpl({
     _i1.UuidValue? id,
-    required _i1.UuidValue customerId,
     required String name,
     String? description,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) : super._(
           id: id,
-          customerId: customerId,
           name: name,
           description: description,
           createdAt: createdAt,
@@ -117,7 +107,6 @@ class _RoleImpl extends Role {
   @override
   Role copyWith({
     Object? id = _Undefined,
-    _i1.UuidValue? customerId,
     String? name,
     Object? description = _Undefined,
     Object? createdAt = _Undefined,
@@ -125,7 +114,6 @@ class _RoleImpl extends Role {
   }) {
     return Role(
       id: id is _i1.UuidValue? ? id : this.id,
-      customerId: customerId ?? this.customerId,
       name: name ?? this.name,
       description: description is String? ? description : this.description,
       createdAt: createdAt is DateTime? ? createdAt : this.createdAt,

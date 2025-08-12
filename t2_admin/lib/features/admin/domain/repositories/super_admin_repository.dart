@@ -71,13 +71,11 @@ class SuperAdminRepository implements IAdminRepository {
     required String roleName,
     required String? roleDescription,
     required List<String> permissionIds,
-    required String customerId,
   }) async {
     await _client.superAdmin.saCreateOrUpdateRole(
         role: Role(
             name: roleName,
             description: roleDescription,
-            customerId: UuidValue.fromString(customerId),
             createdAt: DateTime.now()),
         permissionIds: permissionIds.map((id) => UuidValue.fromString(id)).toList());
   }

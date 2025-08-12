@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../base/base_create_page.dart';
 import '../providers/roles_providers.dart';
-import '../providers/users_providers.dart'; // Для customersListProvider
 
 class CreateRolePage extends BaseCreatePage {
   const CreateRolePage({super.key});
@@ -18,7 +17,6 @@ class _CreateRolePageState extends BaseCreatePageState<CreateRolePage> {
   final _nameController = TextEditingController();
   final _descriptionController = TextEditingController();
   
-  String? _selectedCustomerId;
   final Set<String> _selectedPermissions = <String>{};
 
   @override
@@ -45,7 +43,7 @@ class _CreateRolePageState extends BaseCreatePageState<CreateRolePage> {
   
   @override
   Future<void> createItem() async {
-    if (_selectedCustomerId == null || _selectedPermissions.isEmpty) {
+    if (_selectedPermissions.isEmpty) {
       // Выбрасываем исключение, которое будет поймано в базовом классе
       throw Exception('Выберите организацию и хотя бы одно разрешение.');
     }
@@ -56,14 +54,12 @@ class _CreateRolePageState extends BaseCreatePageState<CreateRolePage> {
           ? null
           : _descriptionController.text,
       permissionIds: _selectedPermissions.toList(),
-      customerId: _selectedCustomerId!,
     ).future);
   }
 
   @override
   List<Widget> buildFormFields(BuildContext context) {
     final permissionsState = ref.watch(permissionsListProvider);
-    final customersState = ref.watch(customersListProvider);
 
     return [
       TextFormField(
@@ -90,28 +86,7 @@ class _CreateRolePageState extends BaseCreatePageState<CreateRolePage> {
         ),
         maxLines: 3,
       ),
-      const SizedBox(height: 16),
-      customersState.when(
-        data: (customers) => DropdownButtonFormField<String>(
-          value: _selectedCustomerId,
-          decoration: const InputDecoration(
-            labelText: 'Организация',
-            border: OutlineInputBorder(),
-            prefixIcon: Icon(Icons.business),
-          ),
-          items: customers
-              .map((customer) => DropdownMenuItem<String>(
-                    value: customer.id.toString(),
-                    child: Text(customer.name),
-                  ))
-              .toList(),
-          onChanged: (value) => setState(() => _selectedCustomerId = value),
-          validator: (value) => value == null ? 'Выберите организацию' : null,
-        ),
-        loading: () => const LinearProgressIndicator(),
-        error: (e, s) => Text('Ошибка загрузки организаций: $e'),
-      ),
-      const SizedBox(height: 16),
+      const SizedBox(height: 16),      
       const Text('Разрешения:', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
       const SizedBox(height: 8),
       permissionsState.when(
