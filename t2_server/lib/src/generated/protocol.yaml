@@ -8,6 +8,8 @@ admin:
   - getMyCustomer:
   - createUser:
   - getUserDetails:
+  - blockUser:
+  - getRoleDetails:
   - updateUser:
 category:
   - createCategory:

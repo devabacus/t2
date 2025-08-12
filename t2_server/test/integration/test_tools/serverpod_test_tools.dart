@@ -20,14 +20,14 @@ import 'package:t2_server/src/generated/user/role.dart' as _i6;
 import 'package:t2_server/src/generated/user/permission.dart' as _i7;
 import 'package:t2_server/src/generated/user/customer.dart' as _i8;
 import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i9;
-import 'package:t2_server/src/generated/category.dart' as _i10;
-import 'package:t2_server/src/generated/category_sync_event.dart' as _i11;
-import 'package:t2_server/src/generated/configuration.dart' as _i12;
-import 'package:t2_server/src/generated/configuration_sync_event.dart' as _i13;
-import 'package:t2_server/src/generated/user/super_user_details.dart' as _i14;
+import 'package:t2_server/src/generated/user/role_details.dart' as _i10;
+import 'package:t2_server/src/generated/category.dart' as _i11;
+import 'package:t2_server/src/generated/category_sync_event.dart' as _i12;
+import 'package:t2_server/src/generated/configuration.dart' as _i13;
+import 'package:t2_server/src/generated/configuration_sync_event.dart' as _i14;
+import 'package:t2_server/src/generated/user/super_user_details.dart' as _i15;
 import 'package:t2_server/src/generated/user/super_admin_dashboard.dart'
-    as _i15;
-import 'package:t2_server/src/generated/user/role_details.dart' as _i16;
+    as _i16;
 import 'package:t2_server/src/generated/tag.dart' as _i17;
 import 'package:t2_server/src/generated/tag_sync_event.dart' as _i18;
 import 'package:t2_server/src/generated/task.dart' as _i19;
@@ -473,6 +473,68 @@ class _AdminEndpoint {
     });
   }
 
+  _i3.Future<bool> blockUser(
+    _i1.TestSessionBuilder sessionBuilder,
+    int userId,
+    bool blocked,
+  ) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+        endpoint: 'admin',
+        method: 'blockUser',
+      );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'admin',
+          methodName: 'blockUser',
+          parameters: _i1.testObjectToJson({
+            'userId': userId,
+            'blocked': blocked,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue = await (_localCallContext.method.call(
+          _localUniqueSession,
+          _localCallContext.arguments,
+        ) as _i3.Future<bool>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _i3.Future<_i10.RoleDetails?> getRoleDetails(
+    _i1.TestSessionBuilder sessionBuilder,
+    _i5.UuidValue roleId,
+  ) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+        endpoint: 'admin',
+        method: 'getRoleDetails',
+      );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'admin',
+          methodName: 'getRoleDetails',
+          parameters: _i1.testObjectToJson({'roleId': roleId}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue = await (_localCallContext.method.call(
+          _localUniqueSession,
+          _localCallContext.arguments,
+        ) as _i3.Future<_i10.RoleDetails?>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
   _i3.Future<bool> updateUser(
     _i1.TestSessionBuilder sessionBuilder, {
     required int userId,
@@ -521,9 +583,9 @@ class _CategoryEndpoint {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i10.Category> createCategory(
+  _i3.Future<_i11.Category> createCategory(
     _i1.TestSessionBuilder sessionBuilder,
-    _i10.Category category,
+    _i11.Category category,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -542,7 +604,7 @@ class _CategoryEndpoint {
         var _localReturnValue = await (_localCallContext.method.call(
           _localUniqueSession,
           _localCallContext.arguments,
-        ) as _i3.Future<_i10.Category>);
+        ) as _i3.Future<_i11.Category>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -550,7 +612,7 @@ class _CategoryEndpoint {
     });
   }
 
-  _i3.Future<List<_i10.Category>> getCategories(
+  _i3.Future<List<_i11.Category>> getCategories(
     _i1.TestSessionBuilder sessionBuilder, {
     int? limit,
   }) async {
@@ -571,7 +633,7 @@ class _CategoryEndpoint {
         var _localReturnValue = await (_localCallContext.method.call(
           _localUniqueSession,
           _localCallContext.arguments,
-        ) as _i3.Future<List<_i10.Category>>);
+        ) as _i3.Future<List<_i11.Category>>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -579,7 +641,7 @@ class _CategoryEndpoint {
     });
   }
 
-  _i3.Future<_i10.Category?> getCategoryById(
+  _i3.Future<_i11.Category?> getCategoryById(
     _i1.TestSessionBuilder sessionBuilder,
     _i5.UuidValue id,
   ) async {
@@ -600,7 +662,7 @@ class _CategoryEndpoint {
         var _localReturnValue = await (_localCallContext.method.call(
           _localUniqueSession,
           _localCallContext.arguments,
-        ) as _i3.Future<_i10.Category?>);
+        ) as _i3.Future<_i11.Category?>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -608,7 +670,7 @@ class _CategoryEndpoint {
     });
   }
 
-  _i3.Future<List<_i10.Category>> getCategoriesSince(
+  _i3.Future<List<_i11.Category>> getCategoriesSince(
     _i1.TestSessionBuilder sessionBuilder,
     DateTime? since,
   ) async {
@@ -629,7 +691,7 @@ class _CategoryEndpoint {
         var _localReturnValue = await (_localCallContext.method.call(
           _localUniqueSession,
           _localCallContext.arguments,
-        ) as _i3.Future<List<_i10.Category>>);
+        ) as _i3.Future<List<_i11.Category>>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -639,7 +701,7 @@ class _CategoryEndpoint {
 
   _i3.Future<bool> updateCategory(
     _i1.TestSessionBuilder sessionBuilder,
-    _i10.Category category,
+    _i11.Category category,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -666,10 +728,10 @@ class _CategoryEndpoint {
     });
   }
 
-  _i3.Stream<_i11.CategorySyncEvent> watchEvents(
+  _i3.Stream<_i12.CategorySyncEvent> watchEvents(
       _i1.TestSessionBuilder sessionBuilder) {
     var _localTestStreamManager =
-        _i1.TestStreamManager<_i11.CategorySyncEvent>();
+        _i1.TestStreamManager<_i12.CategorySyncEvent>();
     _i1.callStreamFunctionAndHandleExceptions(
       () async {
         var _localUniqueSession =
@@ -708,9 +770,9 @@ class _ConfigurationEndpoint {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i12.Configuration> createConfiguration(
+  _i3.Future<_i13.Configuration> createConfiguration(
     _i1.TestSessionBuilder sessionBuilder,
-    _i12.Configuration configuration,
+    _i13.Configuration configuration,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -729,7 +791,7 @@ class _ConfigurationEndpoint {
         var _localReturnValue = await (_localCallContext.method.call(
           _localUniqueSession,
           _localCallContext.arguments,
-        ) as _i3.Future<_i12.Configuration>);
+        ) as _i3.Future<_i13.Configuration>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -737,7 +799,7 @@ class _ConfigurationEndpoint {
     });
   }
 
-  _i3.Future<List<_i12.Configuration>> getConfigurations(
+  _i3.Future<List<_i13.Configuration>> getConfigurations(
     _i1.TestSessionBuilder sessionBuilder, {
     int? limit,
   }) async {
@@ -758,7 +820,7 @@ class _ConfigurationEndpoint {
         var _localReturnValue = await (_localCallContext.method.call(
           _localUniqueSession,
           _localCallContext.arguments,
-        ) as _i3.Future<List<_i12.Configuration>>);
+        ) as _i3.Future<List<_i13.Configuration>>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -766,7 +828,7 @@ class _ConfigurationEndpoint {
     });
   }
 
-  _i3.Future<_i12.Configuration?> getConfigurationById(
+  _i3.Future<_i13.Configuration?> getConfigurationById(
     _i1.TestSessionBuilder sessionBuilder,
     _i5.UuidValue id,
   ) async {
@@ -787,7 +849,7 @@ class _ConfigurationEndpoint {
         var _localReturnValue = await (_localCallContext.method.call(
           _localUniqueSession,
           _localCallContext.arguments,
-        ) as _i3.Future<_i12.Configuration?>);
+        ) as _i3.Future<_i13.Configuration?>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -795,7 +857,7 @@ class _ConfigurationEndpoint {
     });
   }
 
-  _i3.Future<List<_i12.Configuration>> getConfigurationsSince(
+  _i3.Future<List<_i13.Configuration>> getConfigurationsSince(
     _i1.TestSessionBuilder sessionBuilder,
     DateTime? since,
   ) async {
@@ -816,7 +878,7 @@ class _ConfigurationEndpoint {
         var _localReturnValue = await (_localCallContext.method.call(
           _localUniqueSession,
           _localCallContext.arguments,
-        ) as _i3.Future<List<_i12.Configuration>>);
+        ) as _i3.Future<List<_i13.Configuration>>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -826,7 +888,7 @@ class _ConfigurationEndpoint {
 
   _i3.Future<bool> updateConfiguration(
     _i1.TestSessionBuilder sessionBuilder,
-    _i12.Configuration configuration,
+    _i13.Configuration configuration,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -853,10 +915,10 @@ class _ConfigurationEndpoint {
     });
   }
 
-  _i3.Stream<_i13.ConfigurationSyncEvent> watchEvents(
+  _i3.Stream<_i14.ConfigurationSyncEvent> watchEvents(
       _i1.TestSessionBuilder sessionBuilder) {
     var _localTestStreamManager =
-        _i1.TestStreamManager<_i13.ConfigurationSyncEvent>();
+        _i1.TestStreamManager<_i14.ConfigurationSyncEvent>();
     _i1.callStreamFunctionAndHandleExceptions(
       () async {
         var _localUniqueSession =
@@ -990,7 +1052,7 @@ class _SuperAdminEndpoint {
     });
   }
 
-  _i3.Future<List<_i14.SuperUserDetails>> saListAllUsers(
+  _i3.Future<List<_i15.SuperUserDetails>> saListAllUsers(
     _i1.TestSessionBuilder sessionBuilder, {
     _i5.UuidValue? customerId,
     int? limit,
@@ -1017,7 +1079,7 @@ class _SuperAdminEndpoint {
         var _localReturnValue = await (_localCallContext.method.call(
           _localUniqueSession,
           _localCallContext.arguments,
-        ) as _i3.Future<List<_i14.SuperUserDetails>>);
+        ) as _i3.Future<List<_i15.SuperUserDetails>>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1087,7 +1149,7 @@ class _SuperAdminEndpoint {
     });
   }
 
-  _i3.Future<_i15.SuperAdminDashboard> saGetDashboard(
+  _i3.Future<_i16.SuperAdminDashboard> saGetDashboard(
       _i1.TestSessionBuilder sessionBuilder) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -1106,7 +1168,7 @@ class _SuperAdminEndpoint {
         var _localReturnValue = await (_localCallContext.method.call(
           _localUniqueSession,
           _localCallContext.arguments,
-        ) as _i3.Future<_i15.SuperAdminDashboard>);
+        ) as _i3.Future<_i16.SuperAdminDashboard>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1267,7 +1329,7 @@ class _SuperAdminEndpoint {
     });
   }
 
-  _i3.Future<_i16.RoleDetails?> saGetRoleDetails(
+  _i3.Future<_i10.RoleDetails?> saGetRoleDetails(
     _i1.TestSessionBuilder sessionBuilder,
     _i5.UuidValue roleId,
   ) async {
@@ -1288,7 +1350,7 @@ class _SuperAdminEndpoint {
         var _localReturnValue = await (_localCallContext.method.call(
           _localUniqueSession,
           _localCallContext.arguments,
-        ) as _i3.Future<_i16.RoleDetails?>);
+        ) as _i3.Future<_i10.RoleDetails?>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1364,7 +1426,7 @@ class _SuperAdminEndpoint {
     });
   }
 
-  _i3.Future<_i14.SuperUserDetails?> saGetUserDetails(
+  _i3.Future<_i15.SuperUserDetails?> saGetUserDetails(
     _i1.TestSessionBuilder sessionBuilder,
     int userId,
   ) async {
@@ -1385,7 +1447,7 @@ class _SuperAdminEndpoint {
         var _localReturnValue = await (_localCallContext.method.call(
           _localUniqueSession,
           _localCallContext.arguments,
-        ) as _i3.Future<_i14.SuperUserDetails?>);
+        ) as _i3.Future<_i15.SuperUserDetails?>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();

@@ -139,6 +139,16 @@ class AdminEndpoint extends Endpoint with AuthContextMixin {
     );
   }
 
+  Future<bool> blockUser(Session session, int userId, bool blocked) async {
+    await _requirePermission(session, Permissions.usersBlock);
+    return _adminService.blockUser(session, userId, blocked);
+  }
+
+    Future<RoleDetails?> getRoleDetails(
+      Session session, UuidValue roleId) async {
+    return _adminService.getRoleDetails(session, roleId);
+  }
+
   Future<bool> updateUser(
     Session session, {
     required int userId,

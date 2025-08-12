@@ -17,13 +17,13 @@ import 'package:t2_client/src/protocol/user/role.dart' as _i5;
 import 'package:t2_client/src/protocol/user/permission.dart' as _i6;
 import 'package:t2_client/src/protocol/user/customer.dart' as _i7;
 import 'package:serverpod_auth_client/serverpod_auth_client.dart' as _i8;
-import 'package:t2_client/src/protocol/category.dart' as _i9;
-import 'package:t2_client/src/protocol/category_sync_event.dart' as _i10;
-import 'package:t2_client/src/protocol/configuration.dart' as _i11;
-import 'package:t2_client/src/protocol/configuration_sync_event.dart' as _i12;
-import 'package:t2_client/src/protocol/user/super_user_details.dart' as _i13;
-import 'package:t2_client/src/protocol/user/super_admin_dashboard.dart' as _i14;
-import 'package:t2_client/src/protocol/user/role_details.dart' as _i15;
+import 'package:t2_client/src/protocol/user/role_details.dart' as _i9;
+import 'package:t2_client/src/protocol/category.dart' as _i10;
+import 'package:t2_client/src/protocol/category_sync_event.dart' as _i11;
+import 'package:t2_client/src/protocol/configuration.dart' as _i12;
+import 'package:t2_client/src/protocol/configuration_sync_event.dart' as _i13;
+import 'package:t2_client/src/protocol/user/super_user_details.dart' as _i14;
+import 'package:t2_client/src/protocol/user/super_admin_dashboard.dart' as _i15;
 import 'package:t2_client/src/protocol/tag.dart' as _i16;
 import 'package:t2_client/src/protocol/tag_sync_event.dart' as _i17;
 import 'package:t2_client/src/protocol/task.dart' as _i18;
@@ -127,6 +127,26 @@ class EndpointAdmin extends _i1.EndpointRef {
         {'userId': userId},
       );
 
+  _i2.Future<bool> blockUser(
+    int userId,
+    bool blocked,
+  ) =>
+      caller.callServerEndpoint<bool>(
+        'admin',
+        'blockUser',
+        {
+          'userId': userId,
+          'blocked': blocked,
+        },
+      );
+
+  _i2.Future<_i9.RoleDetails?> getRoleDetails(_i4.UuidValue roleId) =>
+      caller.callServerEndpoint<_i9.RoleDetails?>(
+        'admin',
+        'getRoleDetails',
+        {'roleId': roleId},
+      );
+
   _i2.Future<bool> updateUser({
     required int userId,
     required String userName,
@@ -152,44 +172,44 @@ class EndpointCategory extends _i1.EndpointRef {
   @override
   String get name => 'category';
 
-  _i2.Future<_i9.Category> createCategory(_i9.Category category) =>
-      caller.callServerEndpoint<_i9.Category>(
+  _i2.Future<_i10.Category> createCategory(_i10.Category category) =>
+      caller.callServerEndpoint<_i10.Category>(
         'category',
         'createCategory',
         {'category': category},
       );
 
-  _i2.Future<List<_i9.Category>> getCategories({int? limit}) =>
-      caller.callServerEndpoint<List<_i9.Category>>(
+  _i2.Future<List<_i10.Category>> getCategories({int? limit}) =>
+      caller.callServerEndpoint<List<_i10.Category>>(
         'category',
         'getCategories',
         {'limit': limit},
       );
 
-  _i2.Future<_i9.Category?> getCategoryById(_i4.UuidValue id) =>
-      caller.callServerEndpoint<_i9.Category?>(
+  _i2.Future<_i10.Category?> getCategoryById(_i4.UuidValue id) =>
+      caller.callServerEndpoint<_i10.Category?>(
         'category',
         'getCategoryById',
         {'id': id},
       );
 
-  _i2.Future<List<_i9.Category>> getCategoriesSince(DateTime? since) =>
-      caller.callServerEndpoint<List<_i9.Category>>(
+  _i2.Future<List<_i10.Category>> getCategoriesSince(DateTime? since) =>
+      caller.callServerEndpoint<List<_i10.Category>>(
         'category',
         'getCategoriesSince',
         {'since': since},
       );
 
-  _i2.Future<bool> updateCategory(_i9.Category category) =>
+  _i2.Future<bool> updateCategory(_i10.Category category) =>
       caller.callServerEndpoint<bool>(
         'category',
         'updateCategory',
         {'category': category},
       );
 
-  _i2.Stream<_i10.CategorySyncEvent> watchEvents() =>
-      caller.callStreamingServerEndpoint<_i2.Stream<_i10.CategorySyncEvent>,
-          _i10.CategorySyncEvent>(
+  _i2.Stream<_i11.CategorySyncEvent> watchEvents() =>
+      caller.callStreamingServerEndpoint<_i2.Stream<_i11.CategorySyncEvent>,
+          _i11.CategorySyncEvent>(
         'category',
         'watchEvents',
         {},
@@ -204,46 +224,46 @@ class EndpointConfiguration extends _i1.EndpointRef {
   @override
   String get name => 'configuration';
 
-  _i2.Future<_i11.Configuration> createConfiguration(
-          _i11.Configuration configuration) =>
-      caller.callServerEndpoint<_i11.Configuration>(
+  _i2.Future<_i12.Configuration> createConfiguration(
+          _i12.Configuration configuration) =>
+      caller.callServerEndpoint<_i12.Configuration>(
         'configuration',
         'createConfiguration',
         {'configuration': configuration},
       );
 
-  _i2.Future<List<_i11.Configuration>> getConfigurations({int? limit}) =>
-      caller.callServerEndpoint<List<_i11.Configuration>>(
+  _i2.Future<List<_i12.Configuration>> getConfigurations({int? limit}) =>
+      caller.callServerEndpoint<List<_i12.Configuration>>(
         'configuration',
         'getConfigurations',
         {'limit': limit},
       );
 
-  _i2.Future<_i11.Configuration?> getConfigurationById(_i4.UuidValue id) =>
-      caller.callServerEndpoint<_i11.Configuration?>(
+  _i2.Future<_i12.Configuration?> getConfigurationById(_i4.UuidValue id) =>
+      caller.callServerEndpoint<_i12.Configuration?>(
         'configuration',
         'getConfigurationById',
         {'id': id},
       );
 
-  _i2.Future<List<_i11.Configuration>> getConfigurationsSince(
+  _i2.Future<List<_i12.Configuration>> getConfigurationsSince(
           DateTime? since) =>
-      caller.callServerEndpoint<List<_i11.Configuration>>(
+      caller.callServerEndpoint<List<_i12.Configuration>>(
         'configuration',
         'getConfigurationsSince',
         {'since': since},
       );
 
-  _i2.Future<bool> updateConfiguration(_i11.Configuration configuration) =>
+  _i2.Future<bool> updateConfiguration(_i12.Configuration configuration) =>
       caller.callServerEndpoint<bool>(
         'configuration',
         'updateConfiguration',
         {'configuration': configuration},
       );
 
-  _i2.Stream<_i12.ConfigurationSyncEvent> watchEvents() =>
+  _i2.Stream<_i13.ConfigurationSyncEvent> watchEvents() =>
       caller.callStreamingServerEndpoint<
-          _i2.Stream<_i12.ConfigurationSyncEvent>, _i12.ConfigurationSyncEvent>(
+          _i2.Stream<_i13.ConfigurationSyncEvent>, _i13.ConfigurationSyncEvent>(
         'configuration',
         'watchEvents',
         {},
@@ -291,12 +311,12 @@ class EndpointSuperAdmin extends _i1.EndpointRef {
         },
       );
 
-  _i2.Future<List<_i13.SuperUserDetails>> saListAllUsers({
+  _i2.Future<List<_i14.SuperUserDetails>> saListAllUsers({
     _i4.UuidValue? customerId,
     int? limit,
     int? offset,
   }) =>
-      caller.callServerEndpoint<List<_i13.SuperUserDetails>>(
+      caller.callServerEndpoint<List<_i14.SuperUserDetails>>(
         'superAdmin',
         'saListAllUsers',
         {
@@ -326,8 +346,8 @@ class EndpointSuperAdmin extends _i1.EndpointRef {
         {'customerId': customerId},
       );
 
-  _i2.Future<_i14.SuperAdminDashboard> saGetDashboard() =>
-      caller.callServerEndpoint<_i14.SuperAdminDashboard>(
+  _i2.Future<_i15.SuperAdminDashboard> saGetDashboard() =>
+      caller.callServerEndpoint<_i15.SuperAdminDashboard>(
         'superAdmin',
         'saGetDashboard',
         {},
@@ -382,8 +402,8 @@ class EndpointSuperAdmin extends _i1.EndpointRef {
         {'roleId': roleId},
       );
 
-  _i2.Future<_i15.RoleDetails?> saGetRoleDetails(_i4.UuidValue roleId) =>
-      caller.callServerEndpoint<_i15.RoleDetails?>(
+  _i2.Future<_i9.RoleDetails?> saGetRoleDetails(_i4.UuidValue roleId) =>
+      caller.callServerEndpoint<_i9.RoleDetails?>(
         'superAdmin',
         'saGetRoleDetails',
         {'roleId': roleId},
@@ -414,8 +434,8 @@ class EndpointSuperAdmin extends _i1.EndpointRef {
         {'userId': userId},
       );
 
-  _i2.Future<_i13.SuperUserDetails?> saGetUserDetails(int userId) =>
-      caller.callServerEndpoint<_i13.SuperUserDetails?>(
+  _i2.Future<_i14.SuperUserDetails?> saGetUserDetails(int userId) =>
+      caller.callServerEndpoint<_i14.SuperUserDetails?>(
         'superAdmin',
         'saGetUserDetails',
         {'userId': userId},

@@ -257,6 +257,48 @@ class Endpoints extends _i1.EndpointDispatch {
             params['userId'],
           ),
         ),
+        'blockUser': _i1.MethodConnector(
+          name: 'blockUser',
+          params: {
+            'userId': _i1.ParameterDescription(
+              name: 'userId',
+              type: _i1.getType<int>(),
+              nullable: false,
+            ),
+            'blocked': _i1.ParameterDescription(
+              name: 'blocked',
+              type: _i1.getType<bool>(),
+              nullable: false,
+            ),
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['admin'] as _i2.AdminEndpoint).blockUser(
+            session,
+            params['userId'],
+            params['blocked'],
+          ),
+        ),
+        'getRoleDetails': _i1.MethodConnector(
+          name: 'getRoleDetails',
+          params: {
+            'roleId': _i1.ParameterDescription(
+              name: 'roleId',
+              type: _i1.getType<_i12.UuidValue>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['admin'] as _i2.AdminEndpoint).getRoleDetails(
+            session,
+            params['roleId'],
+          ),
+        ),
         'updateUser': _i1.MethodConnector(
           name: 'updateUser',
           params: {

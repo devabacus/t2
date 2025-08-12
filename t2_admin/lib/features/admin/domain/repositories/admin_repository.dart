@@ -88,13 +88,13 @@ class AdminRepository implements IAdminRepository {
 
   @override
   Future<void> blockUser(int userId, bool blocked) {
-     throw UnimplementedError();
+     return _client.admin.blockUser(userId, blocked);
   }
 
-  @override
-  Future<RoleDetails?> getRoleDetails(String roleId) {
-    throw UnimplementedError();
-  }
+@override
+Future<RoleDetails?> getRoleDetails(String roleId) async {
+  return _client.admin.getRoleDetails(UuidValue.fromString(roleId));
+}
 
   @override
   Future<void> createRole({
