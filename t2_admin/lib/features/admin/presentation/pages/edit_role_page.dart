@@ -60,7 +60,7 @@ class _EditRolePageState extends BaseEditPageState<RoleDetails, EditRolePage> {
       permissionIds: _selectedPermissions.toList(),
     ).future);
   }
-
+   
   @override
   List<Widget> buildFormFields(BuildContext context, RoleDetails item) {
     final permissionsState = ref.watch(permissionsListProvider);
