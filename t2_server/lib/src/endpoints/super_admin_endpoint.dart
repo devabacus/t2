@@ -1,4 +1,4 @@
-// lib/src/endpoints/super_admin_endpoint.dart
+// manifest: startProject
 import 'package:serverpod/serverpod.dart';
 import 'package:serverpod_auth_server/serverpod_auth_server.dart';
 

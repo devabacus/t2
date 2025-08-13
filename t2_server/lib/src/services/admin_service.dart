@@ -1,4 +1,4 @@
-// t2_server/lib/src/services/admin_service.dart
+// manifest: startProject
 
 import 'package:serverpod/serverpod.dart';
 import 'package:serverpod_auth_server/serverpod_auth_server.dart';

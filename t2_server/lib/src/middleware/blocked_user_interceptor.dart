@@ -1,4 +1,4 @@
-// t2_server/lib/src/middleware/blocked_user_interceptor.dart
+// manifest: startProject
 import 'package:serverpod/serverpod.dart';
 import 'package:serverpod_auth_server/serverpod_auth_server.dart' as auth;
 

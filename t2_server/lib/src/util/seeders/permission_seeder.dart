@@ -1,4 +1,4 @@
-// t2_server/lib/src/util/seeders/permission_seeder.dart
+// manifest: startProject
 
 import 'package:serverpod/serverpod.dart';
 import '../../generated/protocol.dart';

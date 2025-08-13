@@ -1,3 +1,4 @@
+# manifest: startProject
 class: SuperAdminDashboard
 fields:
   totalUsers: int

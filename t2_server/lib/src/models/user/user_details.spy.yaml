@@ -1,3 +1,4 @@
+# manifest: startProject
 class: UserDetails
 fields:
   userInfo: module:auth:UserInfo

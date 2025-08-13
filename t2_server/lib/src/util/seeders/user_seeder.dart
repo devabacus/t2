@@ -1,4 +1,4 @@
-// t2_server/lib/src/util/seeders/user_seeder.dart
+// manifest: startProject
 
 import 'package:serverpod/serverpod.dart';
 import 'package:serverpod_auth_server/module.dart' as auth;

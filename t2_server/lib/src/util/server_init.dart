@@ -1,4 +1,4 @@
-// t2_server/lib/src/util/server_init.dart
+// manifest: startProject
 
 import 'package:serverpod/serverpod.dart';
 
