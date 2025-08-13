@@ -1,4 +1,5 @@
-// Этот файл экспортирует все наши "чертежи" настроек.
+// manifest: startProject
+
 export 'definitions/boolean_setting.dart';
 export 'definitions/options_setting.dart';
 export 'definitions/string_setting.dart';

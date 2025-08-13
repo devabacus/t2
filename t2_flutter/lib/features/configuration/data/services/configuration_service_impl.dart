@@ -1,4 +1,4 @@
-// lib/features/configuration/data/services/configuration_service_impl.dart
+// manifest: startProject
 
 import 'package:uuid/uuid.dart';
 

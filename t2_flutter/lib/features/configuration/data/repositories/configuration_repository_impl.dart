@@ -1,8 +1,4 @@
-// lib/features/configuration/data/repositories/configuration_repository_impl.dart
-
-// УДАЛИТЕ ИМПОРТЫ:
-// import 'package:t2_client/t2_client.dart' as serverpod;
-// import '../../domain/entities/extensions/configuration_entity_extension.dart';
+// manifest: startProject
 
 import '../../domain/entities/extensions/configuration_entity_extension.dart';
 
@@ -13,7 +9,6 @@ import '../../domain/repositories/configuration_repository.dart';
 import '../../../../core/data/datasources/local/database_types.dart';
 import '../datasources/local/interfaces/configuration_local_datasource_service.dart';
 import '../../../../core/data/datasources/local/interfaces/sync_metadata_local_datasource_service.dart';
-// ИМПОРТИРУЕМ НАШУ НОВУЮ АБСТРАКЦИЮ:
 import '../../domain/datasources/i_configuration_remote_data_source.dart'; 
 import '../models/extensions/configuration_model_extension.dart';
 import '../datasources/local/tables/extensions/configuration_table_extension.dart';

@@ -1,4 +1,4 @@
-// lib/shared/widgets/blocked_user_screen.dart
+// manifest: startProject
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

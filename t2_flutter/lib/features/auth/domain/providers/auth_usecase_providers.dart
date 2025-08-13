@@ -1,3 +1,4 @@
+// manifest: startProject
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../data/providers/auth_data_providers.dart';
 import '../usecases/auth_usecases.dart';

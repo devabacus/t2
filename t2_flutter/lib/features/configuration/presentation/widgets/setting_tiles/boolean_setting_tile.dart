@@ -1,3 +1,4 @@
+// manifest: startProject
 import 'package:flutter/material.dart';
 import '../../models/setting_view_model.dart';
 

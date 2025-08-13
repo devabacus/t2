@@ -1,4 +1,4 @@
-// lib/features/configuration/domain/datasources/i_configuration_remote_data_source.dart
+// manifest: startProject
 
 import '../entities/configuration/configuration_entity.dart';
 

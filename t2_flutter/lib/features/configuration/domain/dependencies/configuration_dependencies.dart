@@ -1,4 +1,4 @@
-// lib/features/configuration/domain/dependencies/configuration_dependencies.dart
+// manifest: startProject
 
 import '../../data/datasources/local/daos/configuration/configuration_dao.dart';
 import '../../../../core/data/datasources/local/daos/sync_metadata_dao.dart';

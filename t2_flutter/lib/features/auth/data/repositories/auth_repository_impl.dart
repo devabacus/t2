@@ -1,3 +1,4 @@
+// manifest: startProject
 import 'package:serverpod_auth_client/serverpod_auth_client.dart';
 import '../../domain/repositories/i_auth_repository.dart';
 import '../datasources/remote/i_auth_remote_data_source.dart';

@@ -1,3 +1,4 @@
+// manifest: startProject
 import 'package:drift/drift.dart';
 import '../../../../data/datasources/local/tables/extensions/configuration_table_extension.dart';
 import '../../../../domain/entities/configuration/configuration_entity.dart';

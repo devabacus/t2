@@ -1,4 +1,4 @@
-// lib/features/configuration/domain/services/i_configuration_service.dart
+// manifest: startProject
 
 /// Абстрактный интерфейс для сервиса конфигурации.
 /// Определяет контракт для доступа к настройкам приложения.
