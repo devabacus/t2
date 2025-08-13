@@ -1,4 +1,4 @@
-// lib/core/dependencies/configuration_dependencies_impl.dart
+// manifest: startProject
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:t2/core/data/datasources/local/daos/sync_metadata_dao.dart';

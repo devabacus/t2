@@ -1,4 +1,4 @@
-// lib/core/data/datasources/remote/serverpod_configuration_data_source.dart
+// manifest: startProject
 
 import 'package:t2/features/configuration/domain/datasources/i_configuration_remote_data_source.dart';
 import 'package:t2/features/configuration/domain/entities/configuration/configuration_entity.dart';
