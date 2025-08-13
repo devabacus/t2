@@ -1,4 +1,4 @@
-// lib/features/admin/presentation/routings/organizations_routes_constants.dart
+// manifest: startProject
 
 class OrganizationsRoutes {
   static const String organizations = 'organizations';

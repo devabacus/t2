@@ -1,4 +1,4 @@
-// lib/core/routing/router_config.dart
+// manifest: startProject
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

@@ -1,3 +1,4 @@
+// manifest: startProject
 import 'package:serverpod_auth_client/serverpod_auth_client.dart';
 
 abstract class IAuthRemoteDataSource {

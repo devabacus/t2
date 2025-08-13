@@ -1,4 +1,4 @@
-// lib/features/admin/presentation/widgets/common/list_toolbar.dart
+// manifest: startProject
 
 import 'package:flutter/material.dart';
 

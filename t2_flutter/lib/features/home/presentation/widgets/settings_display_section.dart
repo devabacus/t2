@@ -1,3 +1,4 @@
+// manifest: startProject
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:t2/features/configuration/domain/providers/configuration/app_settings_providers.dart';

@@ -1,4 +1,4 @@
-// lib/features/admin/data/repositories/admin_repository.dart
+// manifest: startProject
 
 import 'package:t2_client/t2_client.dart';
 import '../../domain/repositories/i_admin_repository.dart';

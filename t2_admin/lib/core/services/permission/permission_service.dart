@@ -1,4 +1,4 @@
-// lib/core/services/permission/permission_service.dart
+// manifest: startProject
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/session_manager_provider.dart';

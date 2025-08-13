@@ -1,4 +1,4 @@
-// lib/features/admin/presentation/widgets/common/bulk_actions_bar.dart
+// manifest: startProject
 
 import 'package:flutter/material.dart';
 

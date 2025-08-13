@@ -1,4 +1,4 @@
-// lib/features/admin/presentation/widgets/common/empty_state.dart
+// manifest: startProject
 
 import 'package:flutter/material.dart';
 

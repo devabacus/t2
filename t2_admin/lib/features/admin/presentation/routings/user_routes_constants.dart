@@ -1,4 +1,4 @@
-// lib/features/admin/presentation/routing/user_routes_constants.dart
+// manifest: startProject
 
 class UsersRoutes {
   // Названия роутов

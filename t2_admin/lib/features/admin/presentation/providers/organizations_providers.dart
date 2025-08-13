@@ -1,4 +1,4 @@
-// lib/features/admin/presentation/providers/organizations_providers.dart
+// manifest: startProject
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

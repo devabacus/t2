@@ -1,4 +1,4 @@
-// lib/features/admin/presentation/routings/organizations_router_config.dart
+// manifest: startProject
 
 import 'package:go_router/go_router.dart';
 import '../pages/edit_organization_page.dart';

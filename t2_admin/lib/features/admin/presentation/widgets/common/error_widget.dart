@@ -1,5 +1,4 @@
-// lib/features/admin/presentation/widgets/common/error_widget.dart
-
+// manifest: startProject
 import 'package:flutter/material.dart';
 
 class CustomErrorWidget extends StatelessWidget {

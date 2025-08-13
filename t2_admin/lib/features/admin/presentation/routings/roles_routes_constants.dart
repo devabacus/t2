@@ -1,4 +1,4 @@
-// lib/features/admin/presentation/routings/roles_routes_constants.dart
+// manifest: startProject
 
 class RolesRoutes {
   static const String roles = 'roles';

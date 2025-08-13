@@ -1,3 +1,4 @@
+// manifest: startProject
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../../core/providers/session_manager_provider.dart';
 import '../../domain/repositories/i_auth_repository.dart';

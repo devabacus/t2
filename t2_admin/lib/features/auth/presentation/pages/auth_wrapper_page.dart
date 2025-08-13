@@ -1,4 +1,4 @@
-// t2_admin/lib/features/auth/presentation/pages/auth_wrapper_page.dart
+// manifest: startProject
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

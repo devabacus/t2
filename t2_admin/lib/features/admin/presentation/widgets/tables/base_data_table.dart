@@ -1,4 +1,4 @@
-// lib/features/admin/presentation/widgets/tables/base_data_table.dart
+// manifest: startProject
 
 import 'package:flutter/material.dart';
 

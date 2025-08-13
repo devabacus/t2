@@ -1,4 +1,4 @@
-// lib/features/admin/presentation/pages/create_organization_page.dart
+// manifest: startProject
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

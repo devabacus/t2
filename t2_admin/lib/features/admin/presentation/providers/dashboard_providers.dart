@@ -1,3 +1,4 @@
+// manifest: startProject
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:t2_client/t2_client.dart';
 
