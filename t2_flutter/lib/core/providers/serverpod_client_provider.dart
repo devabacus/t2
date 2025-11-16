@@ -70,6 +70,7 @@ enum ConnectionStatus {
   disconnected,
 }
 
+// пока не используется
 extension ConnectionStatusExtension on ConnectionStatus {
   bool get isConnected => this == ConnectionStatus.connected;
   bool get isDisconnected => this == ConnectionStatus.disconnected;

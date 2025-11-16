@@ -144,7 +144,7 @@ class AdminEndpoint extends Endpoint with AuthContextMixin {
     return _adminService.blockUser(session, userId, blocked);
   }
 
-    Future<RoleDetails?> getRoleDetails(
+  Future<RoleDetails?> getRoleDetails(
       Session session, UuidValue roleId) async {
     return _adminService.getRoleDetails(session, roleId);
   }

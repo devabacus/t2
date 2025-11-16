@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:t2/features/home/presentation/providers/tag/tag_state_providers.dart';
+import 'package:t2/features/home/presentation/providers/task/task_state_providers.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../core/providers/session_manager_provider.dart';
@@ -50,15 +52,12 @@ class _CreationSectionState extends ConsumerState<CreationSection> {
 
   Future<void> _createCategory() async {
     if (_categoryController.text.trim().isEmpty) return;
-      final currentUser = ref.watch(authStateChangesProvider).valueOrNull;
+    final currentUser = ref.watch(authStateChangesProvider).valueOrNull;
 
     final customerId = ref.read(currentCustomerIdProvider);
     if (currentUser?.id == null || customerId == null) return;
 
-    final useCase = ref.read(createCategoryUseCaseProvider);
-    if (useCase == null) return;
-
-    final category = CategoryEntity(
+    final newCategory = CategoryEntity(
       id: const Uuid().v7(),
       userId: currentUser!.id!,
       customerId: customerId,
@@ -66,21 +65,20 @@ class _CreationSectionState extends ConsumerState<CreationSection> {
       lastModified: DateTime.now(),
       title: _categoryController.text.trim(),
     );
-    await useCase(category);
+
+    await ref.read(categoriesProvider.notifier).addCategory(newCategory);
+
     _categoryController.clear();
   }
 
   Future<void> _createTask() async {
     if (_taskController.text.trim().isEmpty) return;
-      final currentUser = ref.watch(authStateChangesProvider).valueOrNull;
+    final currentUser = ref.watch(authStateChangesProvider).valueOrNull;
 
     final customerId = ref.read(currentCustomerIdProvider);
     if (currentUser?.id == null || customerId == null) return;
 
-    final useCase = ref.read(createTaskUseCaseProvider);
-    if (useCase == null) return;
-
-    final task = TaskEntity(
+    final newTask = TaskEntity(
       id: const Uuid().v7(),
       userId: currentUser!.id!,
       customerId: customerId,
@@ -89,21 +87,19 @@ class _CreationSectionState extends ConsumerState<CreationSection> {
       title: _taskController.text.trim(),
       categoryId: widget.selectedCategoryId,
     );
-    await useCase(task);
+    await ref.read(tasksProvider.notifier).addTask(newTask);
+
     _taskController.clear();
   }
 
   Future<void> _createTag() async {
     if (_tagController.text.trim().isEmpty) return;
-      final currentUser = ref.watch(authStateChangesProvider).valueOrNull;
+    final currentUser = ref.watch(authStateChangesProvider).valueOrNull;
 
     final customerId = ref.read(currentCustomerIdProvider);
     if (currentUser?.id == null || customerId == null) return;
 
-    final useCase = ref.read(createTagUseCaseProvider);
-    if (useCase == null) return;
-
-    final tag = TagEntity(
+    final newTag = TagEntity(
       id: const Uuid().v7(),
       userId: currentUser!.id!,
       customerId: customerId,
@@ -111,7 +107,7 @@ class _CreationSectionState extends ConsumerState<CreationSection> {
       lastModified: DateTime.now(),
       title: _tagController.text.trim(),
     );
-    await useCase(tag);
+    await ref.read(tagsProvider.notifier).addTag(newTag);
     _tagController.clear();
   }
 
@@ -133,11 +129,16 @@ class _CreationSectionState extends ConsumerState<CreationSection> {
                 Expanded(
                   child: TextField(
                     controller: _categoryController,
-                    decoration: const InputDecoration(labelText: 'Название категории'),
+                    decoration: const InputDecoration(
+                      labelText: 'Название категории',
+                    ),
                   ),
                 ),
                 const SizedBox(width: 8),
-                ElevatedButton(onPressed: _createCategory, child: const Text('+ Категория')),
+                ElevatedButton(
+                  onPressed: _createCategory,
+                  child: const Text('+ Категория'),
+                ),
               ],
             ),
             const SizedBox(height: 12),
@@ -147,13 +148,18 @@ class _CreationSectionState extends ConsumerState<CreationSection> {
                   flex: 2,
                   child: TextField(
                     controller: _taskController,
-                    decoration: const InputDecoration(labelText: 'Название задачи'),
+                    decoration: const InputDecoration(
+                      labelText: 'Название задачи',
+                    ),
                   ),
                 ),
                 const SizedBox(width: 8),
                 Expanded(flex: 1, child: _buildCategorySelector()),
                 const SizedBox(width: 8),
-                ElevatedButton(onPressed: _createTask, child: const Text('+ Задача')),
+                ElevatedButton(
+                  onPressed: _createTask,
+                  child: const Text('+ Задача'),
+                ),
               ],
             ),
             const SizedBox(height: 12),
@@ -162,11 +168,16 @@ class _CreationSectionState extends ConsumerState<CreationSection> {
                 Expanded(
                   child: TextField(
                     controller: _tagController,
-                    decoration: const InputDecoration(labelText: 'Название тега'),
+                    decoration: const InputDecoration(
+                      labelText: 'Название тега',
+                    ),
                   ),
                 ),
                 const SizedBox(width: 8),
-                ElevatedButton(onPressed: _createTag, child: const Text('+ Тег')),
+                ElevatedButton(
+                  onPressed: _createTag,
+                  child: const Text('+ Тег'),
+                ),
               ],
             ),
           ],
@@ -178,24 +189,27 @@ class _CreationSectionState extends ConsumerState<CreationSection> {
   Widget _buildCategorySelector() {
     final categoriesAsync = ref.watch(categoriesStreamProvider);
     return categoriesAsync.when(
-      data: (categories) => DropdownButtonFormField<String>(
-        value: widget.selectedCategoryId,
-        decoration: const InputDecoration(
-          labelText: 'Категория',
-          border: OutlineInputBorder(),
-          contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-          labelStyle: TextStyle(fontSize: 12),
-        ),
-        isExpanded: true,
-        items: [
-          const DropdownMenuItem(value: null, child: Text('Без категории')),
-          ...categories.map((category) => DropdownMenuItem(
-                value: category.id,
-                child: Text(category.title, overflow: TextOverflow.ellipsis),
-              )),
-        ],
-        onChanged: widget.onCategoryChanged,
-      ),
+      data:
+          (categories) => DropdownButtonFormField<String>(
+            value: widget.selectedCategoryId,
+            decoration: const InputDecoration(
+              labelText: 'Категория',
+              border: OutlineInputBorder(),
+              contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+              labelStyle: TextStyle(fontSize: 12),
+            ),
+            isExpanded: true,
+            items: [
+              const DropdownMenuItem(value: null, child: Text('Без категории')),
+              ...categories.map(
+                (category) => DropdownMenuItem(
+                  value: category.id,
+                  child: Text(category.title, overflow: TextOverflow.ellipsis),
+                ),
+              ),
+            ],
+            onChanged: widget.onCategoryChanged,
+          ),
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (e, s) => Text('Ошибка: $e'),
     );

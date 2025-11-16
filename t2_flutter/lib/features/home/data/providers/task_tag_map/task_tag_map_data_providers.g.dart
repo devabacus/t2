@@ -283,7 +283,7 @@ class _TaskTagMapRepositoryProviderElement
 }
 
 String _$currentUserTaskTagMapRepositoryHash() =>
-    r'1f195724ea56146723071cc574c9eca166ace554';
+    r'f427097da8a42355f8a034711ad5e2962ca10590';
 
 /// See also [currentUserTaskTagMapRepository].
 @ProviderFor(currentUserTaskTagMapRepository)

@@ -246,7 +246,7 @@ class _CategoryRepositoryProviderElement
 }
 
 String _$currentUserCategoryRepositoryHash() =>
-    r'3bcff8da0f9ce6889ba1f91fcb8ac17f3b44109e';
+    r'43e93e71a04b15d0654cec98437fc33215a02905';
 
 /// Удобный провайдер для получения репозитория текущего пользователя
 /// Автоматически следит за сменой пользователя и предоставляет соответствующий репозиторий

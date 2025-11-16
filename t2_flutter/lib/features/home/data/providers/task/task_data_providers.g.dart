@@ -242,7 +242,7 @@ class _TaskRepositoryProviderElement
 }
 
 String _$currentUserTaskRepositoryHash() =>
-    r'ed01d1bcf4bdbc5320a1999bbc4d92e14ee4cffc';
+    r'080c4d93e94013035c3a3bc6fdf899fb54670158';
 
 /// Удобный провайдер для получения репозитория текущего пользователя
 /// Автоматически следит за сменой пользователя и предоставляет соответствующий репозиторий

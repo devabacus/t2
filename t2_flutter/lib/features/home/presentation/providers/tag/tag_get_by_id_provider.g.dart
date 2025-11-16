@@ -6,7 +6,7 @@ part of 'tag_get_by_id_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getTagByIdHash() => r'af40b2b35fd17d210cc022d69681735edb1f1ba6';
+String _$getTagByIdHash() => r'df5868da02fb688c1be192eb3395355ecd549d80';
 
 /// Copied from Dart SDK
 class _SystemHash {

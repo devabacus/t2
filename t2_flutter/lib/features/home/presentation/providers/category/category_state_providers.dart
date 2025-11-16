@@ -37,11 +37,10 @@ class Categories extends _$Categories {
 @riverpod
 Stream<List<CategoryEntity>> categoriesStream(Ref ref) {
   final watchUseCase = ref.watch(watchCategoriesUseCaseProvider);
-  
+
   if (watchUseCase == null) {
     return Stream.value(<CategoryEntity>[]);
   }
-  
+
   return watchUseCase();
 }
-  

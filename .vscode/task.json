@@ -1,0 +1,14 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Open Obsidian Docs",
+      "type": "shell",
+      "command": "obsidian",
+      "args": [
+        "g:\\Projects\\Flutter\\serverpod\\t2\t2_docs\\"
+      ],
+      "problemMatcher": []
+    }
+  ]
+}

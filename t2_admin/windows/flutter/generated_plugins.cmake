@@ -6,7 +6,6 @@ list(APPEND FLUTTER_PLUGIN_LIST
   connectivity_plus
   file_selector_windows
   share_plus
-  sqlite3_flutter_libs
   url_launcher_windows
 )
 

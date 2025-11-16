@@ -1,5 +1,4 @@
 # manifest: startProject
-
 cd "g:\Projects\Flutter\serverpod\t2\t2_flutter";
 cd "g:\Projects\Flutter\serverpod\t2\t2_flutter"; dart run build_runner build --delete-conflicting-outputs
 
@@ -17,7 +16,8 @@ cd "g:\Projects\Flutter\serverpod\t2\t2_server";
 docker compose down -v
 docker volume rm t2_server_t2_data
 
-
+     
+cd "g:\Projects\Flutter\serverpod\t2\t2_server";
 docker compose up -d
 serverpod create-migration --experimental-features=all --force
 serverpod generate --experimental-features=all

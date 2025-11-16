@@ -256,7 +256,7 @@ class _ConfigurationRepositoryProviderElement
 }
 
 String _$currentUserConfigurationRepositoryHash() =>
-    r'0de9490f01a39a3ce27b835499a0daedc1317882';
+    r'c05c8c8331647b5bf8d89793cab442078b19eb22';
 
 /// Удобный провайдер для получения репозитория текущего пользователя
 /// Автоматически следит за сменой пользователя и предоставляет соответствующий репозиторий

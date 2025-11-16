@@ -1,20 +1,14 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "Serverpod (t2_server)", // <-- ВОТ ЭТА КОНФИГУРАЦИЯ ДЛЯ СЕРВЕРА
-            // "cwd": "t2_server", // Укажите папку с вашим сервером
-            "request": "launch",
-            "type": "dart",
-            "program": "bin/main.dart", // Точка входа для сервера
-            "args": [
-                "--role",
-                "monolith",
-                "--apply-migrations"
-            ]
-        }
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Serverpod: server/bin/main.dart",
+      "type": "dart",
+      "request": "launch",
+      "program": "bin/main.dart",
+      "cwd": "",
+      "args": [
+      ]
+    }
+  ]
 }
