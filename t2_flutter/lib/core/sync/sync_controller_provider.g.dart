@@ -6,9 +6,20 @@ part of 'sync_controller_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$syncControllerHash() => r'ba9396558e3663b1bbce39cc83d29edc2a2902d4';
+String _$syncControllerHash() => r'9e5c114120b2481a1010c9a0c909f65550368b5f';
 
-/// See also [SyncController].
+/// Контроллер, управляющий процессом автоматической синхронизации данных.
+///
+/// Этот контроллер централизованно отслеживает ключевые события в приложении:
+/// 1. Изменение статуса подключения к сети ([ConnectivityResult]).
+/// 2. Вход нового пользователя ([authStateChangesProvider]).
+///
+/// При наступлении этих событий он инициирует полную синхронизацию данных
+/// для всех репозиториев, зарегистрированных в [SyncRegistry].
+///
+/// Также предоставляет публичный метод [triggerSync] для ручного запуска.
+///
+/// Copied from [SyncController].
 @ProviderFor(SyncController)
 final syncControllerProvider =
     AutoDisposeNotifierProvider<SyncController, void>.internal(

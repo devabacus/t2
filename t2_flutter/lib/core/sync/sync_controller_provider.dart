@@ -7,6 +7,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:serverpod_auth_client/serverpod_auth_client.dart';
 
 import '../../features/auth/presentation/providers/auth_state_providers.dart';
+import '../services/logger/ref_logger_extensions.dart';
 import 'sync_registry.dart';
 
 part 'sync_controller_provider.g.dart';
@@ -26,7 +27,7 @@ class SyncController extends _$SyncController {
   // Подписка на события изменения статуса сети.
   StreamSubscription? _connectivitySubscription;
   // Подписка на события изменения статуса аутентификации пользователя.
-  ProviderSubscription? _authSubscription; 
+  ProviderSubscription? _authSubscription;
 
   /// Инициализация контроллера.
   ///
@@ -44,8 +45,7 @@ class SyncController extends _$SyncController {
     // Отменяем подписки при уничтожении контроллера, чтобы избежать утечек памяти.
     ref.onDispose(() {
       _connectivitySubscription?.cancel();
-      _authSubscription
-          ?.close(); 
+      _authSubscription?.close();
     });
   }
 
@@ -61,7 +61,9 @@ class SyncController extends _$SyncController {
         final isLoggedIn = next.valueOrNull != null;
         // Запускаем синхронизацию только в момент входа пользователя.
         if (!wasLoggedIn && isLoggedIn) {
-          print('✅ Обнаружен вход пользователя. Запускаем синхронизацию...');
+          ref.logInfo(
+            'Обнаружен вход пользователя. Запускаем синхронизацию...',
+          );
           _triggerSync();
         }
       },
@@ -78,10 +80,11 @@ class SyncController extends _$SyncController {
     final isOnline = results.any((result) => result != ConnectivityResult.none);
 
     if (isOnline) {
-      print('✅ Обнаружено подключение к сети. Запускаем синхронизацию...');
+      ref.logInfo('Обнаружено подключение к сети. Запускаем синхронизацию...');
       _triggerSync();
     }
   }
+
   /// Внутренний метод, который выполняет основную логику синхронизации.
   ///
   /// Он получает [SyncRegistry] и вызывает у него метод `syncAll`, который,
@@ -89,13 +92,13 @@ class SyncController extends _$SyncController {
   Future<void> _triggerSync() async {
     try {
       await Future.delayed(const Duration(milliseconds: 500));
-      
+
       final registry = ref.read(syncRegistryProvider);
       await registry.syncAll();
-      
-      print('✅ Синхронизация всех сущностей завершена');
-    } catch (e) {
-      print('❌ Ошибка автоматической синхронизации: $e');
+
+      ref.logInfo('Синхронизация всех сущностей завершена');
+    } catch (e, stackTrace) {
+      ref.logError('Ошибка автоматической синхронизации', e, stackTrace);
     }
   }
 
@@ -103,7 +106,7 @@ class SyncController extends _$SyncController {
   ///
   /// Может быть полезен для реализации кнопки "Обновить" в UI.
   Future<void> triggerSync() async {
-    print('🔄 Запуск ручной синхронизации...');
+    ref.logInfo('Запуск ручной синхронизации...');
     await _triggerSync();
   }
 }
