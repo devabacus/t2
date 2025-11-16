@@ -2,6 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'logger_service.dart';
+import 'talker_logger_service.dart';
 
 part 'logger_provider.g.dart';
 

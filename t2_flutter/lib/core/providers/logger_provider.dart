@@ -4,6 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
 import '../services/logger/logger_service.dart';
+import '../services/logger/talker_logger_service.dart';
 
 part 'logger_provider.g.dart';
 
