@@ -1,3 +1,4 @@
+// manifest: startProject
 import 'package:logger/logger.dart' as logger_lib;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:talker_flutter/talker_flutter.dart';

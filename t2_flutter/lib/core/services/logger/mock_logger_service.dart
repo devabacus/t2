@@ -1,3 +1,4 @@
+// manifest: startProject
 // Mock реализация для тестов
 import 'package:flutter/material.dart';
 

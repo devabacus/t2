@@ -1,3 +1,4 @@
+// manifest: startProject
 import 'package:talker_flutter/talker_flutter.dart';
 import 'package:flutter/material.dart';
 
