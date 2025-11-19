@@ -19,7 +19,7 @@ class AppConfig {
         return dotenv.env['LOCAL_BASE_URL_DESKTOP'] ?? 'http://localhost:8080/';
       } else {
         // Теперь можно безопасно использовать dart:io
-        if (Platform.isAndroid) {
+        if (Platform.isAndroid) { 
           // Для эмулятора Android используем специальный адрес
           return dotenv.env['LOCAL_BASE_URL_ANDROID'] ??
               'http://10.0.2.2:8080/';

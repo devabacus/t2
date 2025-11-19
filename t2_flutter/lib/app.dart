@@ -18,7 +18,7 @@ class App extends ConsumerWidget {
 
     // Используем MaterialApp.router
     return MaterialApp.router(
-      title: 'T2 App',
+      title: 'Шалон проект',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),

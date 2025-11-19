@@ -31,14 +31,14 @@ class _HomePageState extends ConsumerState<HomePage> {
 
     if (currentUser == null) {
       return Scaffold(
-        appBar: AppBar(title: const Text('T2 Demo')),
+        appBar: AppBar(title: const Text('Шалон проект')),
         body: const Center(child: Text('Пожалуйста, войдите в систему')),
       );
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('T2 Demo Home'),
+        title: const Text('Шалон проект'),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
