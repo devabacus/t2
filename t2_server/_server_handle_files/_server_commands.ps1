@@ -28,12 +28,12 @@ cd "g:\Projects\Flutter\serverpod\t2\t2_server"; serverpod generate --experiment
 
 
 #kubernaties
-# 1. Установить nginx ingress
+# 1. Установить nginx ingressЕ
 # 2. Установить дополнение cert-manager
-# Секрет для Docker Registry
+# Секрет для Docker RegistryTT
 kubectl apply -f k8s_1/
 
-# проброс порта для бд
+# проброс порта для бдT
 Start-Job -ScriptBlock { kubectl port-forward pod/pg-proxy-pod 54321:5432 }
 kubectl port-forward pod/pg-proxy-pod 54321:5432
 
@@ -46,7 +46,7 @@ kubectl get pods -w
 
 # Проверим сервисы
 kubectl get svc
-kubectl get svc t2-server-service -o yaml 
+kubectl get svc t2-server-service -o yaml Е
 
 # логи приложения
 kubectl logs -f -l app=t2-server
