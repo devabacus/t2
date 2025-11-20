@@ -1,4 +1,8 @@
 {
+<<<<<<< HEAD
     "idf.pythonInstallPath": "/usr/bin/python3",
     "cmake.sourceDirectory": "/home/user/Projects/t2/t2_flutter/linux"
+=======
+    "idf.pythonInstallPath": "g:\\SDKs\\esp\\tools\\tools\\idf-python\\3.11.2\\python.exe"
+>>>>>>> ddd3e5d2692bd77ee1c6a82d5c3d7b72c05d4a20
 }
